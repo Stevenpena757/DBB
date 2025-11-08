@@ -49,7 +49,7 @@ export default function SubmitContent() {
   const articleForm = useForm({
     resolver: zodResolver(articleSchema),
     defaultValues: {
-      businessId: 0,
+      businessId: businesses[0]?.id || 1,
       title: "",
       content: "",
       excerpt: "",
@@ -61,7 +61,7 @@ export default function SubmitContent() {
   const howToForm = useForm({
     resolver: zodResolver(howToSchema),
     defaultValues: {
-      businessId: 0,
+      businessId: businesses[0]?.id || 1,
       title: "",
       description: "",
       imageUrl: "",
@@ -157,13 +157,16 @@ export default function SubmitContent() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Your Business</FormLabel>
-                          <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value.toString()}>
+                          <Select 
+                            onValueChange={(value) => field.onChange(parseInt(value))} 
+                            value={field.value?.toString() || businesses[0]?.id.toString()}
+                          >
                             <FormControl>
                               <SelectTrigger data-testid="select-article-business">
                                 <SelectValue placeholder="Select your business" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-[100]">
                               {businesses.map(b => (
                                 <SelectItem key={b.id} value={b.id.toString()}>{b.name}</SelectItem>
                               ))}
@@ -198,7 +201,7 @@ export default function SubmitContent() {
                                 <SelectValue placeholder="Select category" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-[100]">
                               {categories.map(cat => (
                                 <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                               ))}
@@ -273,13 +276,16 @@ export default function SubmitContent() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Your Business</FormLabel>
-                          <Select onValueChange={(value) => field.onChange(parseInt(value))} value={field.value.toString()}>
+                          <Select 
+                            onValueChange={(value) => field.onChange(parseInt(value))} 
+                            value={field.value?.toString() || businesses[0]?.id.toString()}
+                          >
                             <FormControl>
                               <SelectTrigger data-testid="select-howto-business">
                                 <SelectValue placeholder="Select your business" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-[100]">
                               {businesses.map(b => (
                                 <SelectItem key={b.id} value={b.id.toString()}>{b.name}</SelectItem>
                               ))}
@@ -314,7 +320,7 @@ export default function SubmitContent() {
                                 <SelectValue placeholder="Select category" />
                               </SelectTrigger>
                             </FormControl>
-                            <SelectContent>
+                            <SelectContent className="z-[100]">
                               {categories.map(cat => (
                                 <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                               ))}
