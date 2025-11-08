@@ -160,166 +160,116 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
 
-        <section className="py-4 border-b bg-card/50">
+        <section className="py-3 border-b">
           <div className="container mx-auto px-4">
-            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4">
-              <Button variant="ghost" className="hover-elevate" data-testid="link-category-all">
-                All Categories
-              </Button>
-              <span className="text-muted-foreground">•</span>
-              <Button variant="ghost" className="hover-elevate" data-testid="link-category-health">
-                <Stethoscope className="h-4 w-4 mr-2" />
-                Health (150+)
-              </Button>
-              <span className="text-muted-foreground">•</span>
-              <Button variant="ghost" className="hover-elevate" data-testid="link-category-beauty">
-                <Sparkles className="h-4 w-4 mr-2" />
-                Beauty (200+)
-              </Button>
-              <span className="text-muted-foreground">•</span>
-              <Button variant="ghost" className="hover-elevate" data-testid="link-category-aesthetics">
-                <Heart className="h-4 w-4 mr-2" />
-                Aesthetics (120+)
-              </Button>
-              <span className="text-muted-foreground">•</span>
-              <Button variant="ghost" className="hover-elevate" data-testid="link-category-vendors">
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Shop Vendors
-              </Button>
+            <div className="flex flex-wrap items-center justify-center gap-1 text-sm">
+              <button className="px-4 py-2 rounded-full hover-elevate active-elevate-2 font-medium" data-testid="link-category-all">
+                All
+              </button>
+              <button className="px-4 py-2 rounded-full hover-elevate active-elevate-2" data-testid="link-category-health">
+                Health
+              </button>
+              <button className="px-4 py-2 rounded-full hover-elevate active-elevate-2" data-testid="link-category-beauty">
+                Beauty
+              </button>
+              <button className="px-4 py-2 rounded-full hover-elevate active-elevate-2" data-testid="link-category-aesthetics">
+                Aesthetics
+              </button>
+              <button className="px-4 py-2 rounded-full hover-elevate active-elevate-2" data-testid="link-category-vendors">
+                Shop
+              </button>
             </div>
           </div>
         </section>
 
-        <section className="py-8 md:py-12 bg-primary/5 border-b">
+        <section className="py-4 bg-muted/30">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold">
-                  Featured Business
-                </div>
-                <Button variant="ghost" size="sm" data-testid="button-view-featured">
-                  View Profile
-                  <ArrowRight className="ml-1 h-3 w-3" />
-                </Button>
-              </div>
-
-              <Card>
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-20 h-20 rounded-md overflow-hidden shrink-0 bg-muted">
-                      <img src={salonImage} alt="Luxe Beauty Salon" className="w-full h-full object-cover" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-bold mb-1" data-testid="text-featured-business-name">Luxe Beauty Salon</h3>
-                      <p className="text-sm text-muted-foreground mb-3">Full-service salon in Uptown Dallas</p>
-                      <div className="flex flex-wrap gap-2">
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                          <FileText className="h-3 w-3" />
-                          5 Articles
-                        </div>
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                          <Lightbulb className="h-3 w-3" />
-                          3 How-Tos
-                        </div>
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-                          <Instagram className="h-3 w-3" />
-                          Social Linked
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground border-l-2 border-primary pl-3">
-                    "By sharing helpful content about hair care and styling tips, we've connected with so many new clients in DFW. The free visibility feature is a game-changer!"
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <h2 className="text-lg font-semibold mb-2">Ideas for you</h2>
           </div>
         </section>
 
-        <section className="py-6 md:py-8">
+        <section className="py-6 md:py-8 bg-white">
           <div className="container mx-auto px-3">
-            <h2 className="text-xl md:text-2xl font-bold mb-4 px-1">Explore DFW Beauty</h2>
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-1">
-                <div className="aspect-[3/4] overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-business-1">
+                <div className="aspect-[3/4] overflow-hidden">
                   <img src={salonImage} alt="Luxe Beauty Salon" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
+                <div className="p-3">
                   <h3 className="font-semibold text-sm mb-1">Luxe Beauty Salon</h3>
-                  <p className="text-xs text-muted-foreground">Full-service salon • Uptown Dallas</p>
-                </CardContent>
-              </Card>
+                  <p className="text-xs text-muted-foreground">Uptown Dallas</p>
+                </div>
+              </div>
 
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-post-1">
-                <div className="aspect-square overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-post-1">
+                <div className="aspect-square overflow-hidden">
                   <img src={clinicImage} alt="Elite Medical Aesthetics" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
-                  <p className="text-xs font-medium mb-2">Elite Medical Aesthetics</p>
-                  <p className="text-xs text-muted-foreground line-clamp-2">Complimentary consultations this weekend</p>
-                </CardContent>
-              </Card>
+                <div className="p-3">
+                  <p className="text-xs font-medium mb-1">Elite Medical Aesthetics</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">Winter skincare tips</p>
+                </div>
+              </div>
 
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-2">
-                <div className="aspect-[4/5] overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-business-2">
+                <div className="aspect-[4/5] overflow-hidden">
                   <img src={spaImage} alt="Serenity Wellness Spa" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
-                  <h3 className="font-semibold text-sm mb-1">Serenity Wellness Spa</h3>
-                  <p className="text-xs text-muted-foreground">Massage & wellness • Plano</p>
-                </CardContent>
-              </Card>
+                <div className="p-3">
+                  <h3 className="font-semibold text-sm mb-1">Serenity Wellness</h3>
+                  <p className="text-xs text-muted-foreground">Plano</p>
+                </div>
+              </div>
 
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-3">
-                <div className="aspect-[3/4] overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-business-3">
+                <div className="aspect-[3/4] overflow-hidden">
                   <img src={hairImage} alt="Divine Hair Studio" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
+                <div className="p-3">
                   <h3 className="font-semibold text-sm mb-1">Divine Hair Studio</h3>
-                  <p className="text-xs text-muted-foreground">Hair salon • Fort Worth</p>
-                </CardContent>
-              </Card>
+                  <p className="text-xs text-muted-foreground">Fort Worth</p>
+                </div>
+              </div>
 
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-post-2">
-                <div className="aspect-[4/3] overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-post-2">
+                <div className="aspect-[4/3] overflow-hidden">
                   <img src={nailImage} alt="Nail article" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
-                  <p className="text-xs font-medium mb-2">Perfect Nails Dallas</p>
-                  <p className="text-xs text-muted-foreground line-clamp-2">5 tips for long-lasting gel manicures</p>
-                </CardContent>
-              </Card>
+                <div className="p-3">
+                  <p className="text-xs font-medium mb-1">Perfect Nails Dallas</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">5 tips for lasting gel manicures</p>
+                </div>
+              </div>
 
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-4">
-                <div className="aspect-square overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-business-4">
+                <div className="aspect-square overflow-hidden">
                   <img src={fitnessImage} alt="Radiant Fitness" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
+                <div className="p-3">
                   <h3 className="font-semibold text-sm mb-1">Radiant Fitness</h3>
-                  <p className="text-xs text-muted-foreground">Wellness studio • Irving</p>
-                </CardContent>
-              </Card>
+                  <p className="text-xs text-muted-foreground">Irving</p>
+                </div>
+              </div>
 
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-5">
-                <div className="aspect-[3/4] overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-business-5">
+                <div className="aspect-[3/4] overflow-hidden">
                   <img src={clinicImage} alt="Glow Medical Spa" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
+                <div className="p-3">
                   <h3 className="font-semibold text-sm mb-1">Glow Medical Spa</h3>
-                  <p className="text-xs text-muted-foreground">Med spa • Richardson</p>
-                </CardContent>
-              </Card>
+                  <p className="text-xs text-muted-foreground">Richardson</p>
+                </div>
+              </div>
 
-              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-6">
-                <div className="aspect-[4/5] overflow-hidden bg-muted">
+              <div className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer" data-testid="pin-business-6">
+                <div className="aspect-[4/5] overflow-hidden">
                   <img src={salonImage} alt="Beauty article" className="w-full h-full object-cover" />
                 </div>
-                <CardContent className="p-3">
-                  <p className="text-xs font-medium mb-2">Luxe Beauty Salon</p>
-                  <p className="text-xs text-muted-foreground line-clamp-2">Winter hair care: How to combat dryness</p>
-                </CardContent>
-              </Card>
+                <div className="p-3">
+                  <p className="text-xs font-medium mb-1">Hair care tips</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">Combat winter dryness</p>
+                </div>
+              </div>
             </div>
 
             <div className="text-center mt-6">
@@ -330,87 +280,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-8 md:py-12 border-t bg-primary/5">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto space-y-6">
-              <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold mb-2">
-                  Free Visibility
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold">Promote Your Business for Free</h2>
-                <p className="text-muted-foreground">
-                  Increase your visibility without paying - share valuable content with the community
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-4">
-                <Card className="hover-elevate" data-testid="card-free-articles">
-                  <CardContent className="p-4 text-center space-y-3">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
-                      <FileText className="h-6 w-6" />
-                    </div>
-                    <h3 className="font-semibold">Write Articles</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Share industry insights and expertise
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="hover-elevate" data-testid="card-free-howtos">
-                  <CardContent className="p-4 text-center space-y-3">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
-                      <Lightbulb className="h-6 w-6" />
-                    </div>
-                    <h3 className="font-semibold">Share How-Tos</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Create helpful guides and tutorials
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="hover-elevate" data-testid="card-free-social">
-                  <CardContent className="p-4 text-center space-y-3">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
-                      <Instagram className="h-6 w-6" />
-                    </div>
-                    <h3 className="font-semibold">Link Social Media</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Connect your Instagram, TikTok & more
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <Button size="lg" className="w-full" data-testid="button-submit-content">
-                Submit Your Content
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-8 md:py-12 border-t">
-          <div className="container mx-auto px-4">
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="text-center space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold">Claim Your Listing</h2>
-                <p className="text-muted-foreground">
-                  Get discovered by DFW clients looking for your services
-                </p>
-              </div>
-              <div className="grid gap-3">
-                <Button size="lg" className="w-full" data-testid="button-claim-listing-cta">
-                  Claim Your Listing
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button size="lg" variant="outline" className="w-full" data-testid="button-become-vendor-cta">
-                  Become a Vendor
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
       <Footer />
     </div>

@@ -1,207 +1,217 @@
-# Design Guidelines: DFW Health, Beauty & Aesthetics Directory + Social Platform
+# Design Guidelines: Dallas Beauty Book - Pinterest-Inspired Visual Discovery
 
-## Design Approach: Reference-Based Hybrid
+## Design Philosophy
 
-**Primary References:**
-- **Airbnb**: Card-based business discovery, visual-first directory layout, location-centric browsing
-- **Instagram**: Social feed patterns, content creation flows, engagement interactions
-- **Yelp**: Business profiles, category filtering, claim business workflows
+Dallas Beauty Book adopts Pinterest's proven design principles for a clean, visual-first discovery platform:
 
-**Key Design Principles:**
-- Visual sophistication befitting beauty/aesthetics industry
-- Texas-sized confidence with generous spacing and bold typography
-- Community-first interactions with seamless business-to-user connections
-- Mobile-optimized for on-the-go Dallas metro discovery
+### Core Principles
+1. **Subtle Interaction** - User-controlled experience, not forced
+2. **Bold & Physical** - Clear visual hierarchy with tactile feel
+3. **Playful Yet Balanced** - Fun without being overwhelming
+4. **Visual-First** - Images drive discovery and engagement
 
-## Typography System
+## Color Palette
 
-**Font Families:**
-- Primary: Inter (CDN) - clean, modern sans-serif for UI elements, body text
-- Display: Syne or Outfit (CDN) - bold, contemporary for headlines, business names
+### Pinterest-Inspired Clean Aesthetic
+- **Background**: Pure white (#FFFFFF) for maximum clarity
+- **Primary Accent**: Pinterest red (0° 85% 45%) - used sparingly for CTAs
+- **Text**: 
+  - Primary: Very dark gray (0° 0% 13%)
+  - Secondary: Medium gray (0° 0% 45%)
+- **Borders**: Very light gray (0° 0% 93%) - minimal, subtle
+- **Cards**: Pure white with subtle shadows
 
-**Hierarchy:**
-- Hero Headlines: 3xl to 6xl, bold weight
-- Section Headers: 2xl to 4xl, semibold
-- Business Names: xl to 2xl, semibold
-- Body Text: base to lg, normal weight
-- Captions/Meta: sm to base, medium weight
+### Design Tokens
+```
+--background: Pure white
+--foreground: Dark gray text
+--card: White background
+--border: Very light gray (barely visible)
+--muted: Light gray (0° 0% 96%)
+--primary: Pinterest red accent
+```
+
+## Typography
+
+### Font Stack
+```
+-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif
+```
+Native system fonts for best performance and familiarity
+
+### Hierarchy
+- **Pin Titles**: 14px semibold
+- **Descriptions**: 12px regular, muted color
+- **Section Headers**: 18px-24px semibold
+- **Body Text**: 14px regular
 
 ## Layout System
 
-**Spacing Primitives:** Tailwind units of 2, 4, 6, 8, 12, 16, 20, 24
-- Micro spacing: 2, 4 (within components)
-- Standard gaps: 6, 8 (between elements)
-- Section padding: 12, 16, 20 (mobile to desktop)
-- Major sections: 24 (desktop hero/feature areas)
+### Masonry Grid (Pinterest's Signature)
+- **Mobile**: 2 columns with 12px gap
+- **Tablet**: 3 columns with 16px gap
+- **Desktop**: 4 columns with 16px gap
+- Variable height cards (natural content flow)
+- `columns-2 md:columns-3 lg:columns-4` CSS columns layout
 
-**Container Strategy:**
-- Full-width sections with max-w-7xl inner containers
-- Business cards/grids: max-w-6xl
-- Content reading areas: max-w-4xl
-- Forms: max-w-2xl
+### Pin Cards
+- **Style**: Clean white cards with subtle shadows
+- **Border Radius**: 16px (rounded-2xl) for soft, friendly feel
+- **Shadow**: 
+  - Default: subtle (`shadow-sm`)
+  - Hover: elevated (`shadow-md`)
+- **No borders**: Shadows create depth instead
+- **Aspect Ratios**: Mix of 3:4, square, 4:5, 4:3 for visual variety
 
-## Component Library
+### Spacing
+- **Card padding**: 12px (p-3)
+- **Section padding**: 24px mobile, 32px desktop
+- **Vertical gaps**: 12-16px between cards
 
-### Navigation
-**Main Header:**
-- Sticky transparent-to-solid on scroll
-- Logo left, search bar center (desktop), auth/profile right
-- Category pills below header (Health | Beauty | Aesthetics)
-- Mobile: Hamburger menu with slide-out drawer
+## Component Patterns
 
-### Homepage Components
+### Hero Carousel
+- Clean image carousel with text overlay
+- Minimal gradient for text readability
+- Circular navigation arrows (white, subtle)
+- Dot indicators at bottom
+- Height: 400px mobile, 500px desktop
 
-**Hero Section (80vh):**
-- Full-bleed background image: High-quality Dallas skyline or upscale beauty/wellness imagery
-- Centered content overlay with blurred-background search card
-- Search bar with location autocomplete (DFW neighborhoods)
-- Category quick-filters as chips
-- Trust indicator: "500+ DFW Businesses Listed"
+### Category Navigation
+- Horizontal scrollable pills
+- Rounded-full buttons
+- Simple text labels, no heavy icons
+- Minimal hover states
+- Centered layout
 
-**Featured Categories Grid:**
-- 3-column on desktop (Health | Beauty | Aesthetics)
-- Large icon + title + business count + CTA
-- Hover lift effect (subtle)
+### Pin/Card Structure
+```html
+<div class="rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow">
+  <img /> <!-- Variable aspect ratio -->
+  <div class="p-3">
+    <h3>Title</h3>
+    <p class="text-xs text-muted-foreground">Location/Description</p>
+  </div>
+</div>
+```
 
-**Discover Section:**
-- Masonry grid (Pinterest-style) of business cards
-- Each card: business image, logo badge, name, category tag, rating stars, location badge
-- "Load More" infinite scroll
+### Header
+- Clean white background
+- Large rounded search bar (center)
+- Icon-only navigation (minimal text)
+- Sticky positioning
+- Height: 64px
 
-**How It Works:**
-- 3-step horizontal timeline (desktop) / vertical stack (mobile)
-- Icons + headlines + descriptions
-- For businesses: Claim → Create → Connect
-- For users: Discover → Engage → Support Local
+### Footer
+- Minimal link layout (horizontal)
+- Centered alignment
+- Small text
+- No heavy graphics
+- Just essential links
 
-**Community Highlights:**
-- Recent posts from claimed businesses
-- 2-column on desktop: larger featured post left, 2 stacked smaller posts right
-- Each post: business avatar, name, timestamp, content preview, engagement metrics
+### Mobile Bottom Navigation
+- Fixed at bottom with 4 key sections
+- Icon + label layout
+- Home, Explore, Shop, Saved
+- Clean background with subtle border
 
-**Call-to-Action Sections:**
-- "Claim Your Business" - centered with benefits list (3 columns on desktop)
-- "Join the Community" - for users, with email signup
+## Interaction Design
 
-### Directory Pages
+### Hover States
+- **Cards**: Elevation increase (shadow-sm → shadow-md)
+- **Buttons**: Subtle background brightness change
+- **Links**: Color change to foreground
+- No heavy animations or transforms
 
-**Search/Filter Sidebar (Desktop):**
-- Sticky positioned
-- Category checkboxes
-- Location radius slider
-- Service type multi-select
-- Price range (if applicable)
-- "Apply Filters" + "Clear All" buttons
+### Touch Targets
+- Minimum 44px x 44px for mobile
+- Rounded corners for friendly feel
+- Clear visual feedback on interaction
 
-**Results Grid:**
-- Cards layout: 2-3 columns based on viewport
-- Card structure: Image top (16:9), logo overlay (bottom-left corner), business name, category tag, 1-line description, rating + reviews, location + distance, "View Profile" button
+## Images
 
-**Mobile:** Filters in expandable bottom sheet, single-column cards
+### Optimization
+- Lazy loading for all pins
+- Variable aspect ratios for natural masonry
+- Object-cover for proper cropping
+- Compressed for performance
 
-### Business Profile Pages
-
-**Hero Banner:**
-- Full-width cover image (business ambiance shot)
-- Overlay gradient for text readability
-- Business name + category + verification badge
-- Primary CTA: "Book Appointment" or custom action
-- Secondary actions: Save, Share, Message
-
-**Info Tabs:**
-- Horizontal tabs: Overview | Services | Gallery | Reviews | Posts
-- Sticky below hero on scroll
-
-**Overview Tab:**
-- 2-column layout (desktop): Main content left (about, hours, contact) + sidebar right (location map, quick stats, social links)
-
-**Services Section:**
-- List or grid of services with descriptions and pricing
-- "Request Quote" per service
-
-**Gallery:**
-- Masonry grid of business photos
-- Lightbox modal on click
-
-**Reviews:**
-- Star rating summary at top
-- Individual reviews with avatar, name, date, rating, text
-- Reply threads from business owners (indented)
-
-**Posts (Social Feed):**
-- Business can create: text posts, image posts, promotions, events
-- Card layout similar to Instagram posts
-- Engagement: Like, Comment, Share
-
-### Social Feed (Community Page)
-
-**Feed Layout:**
-- Single column, centered (max-w-2xl)
-- Post composition card at top (for business accounts)
-- Posts display: Avatar + business name + timestamp + content (text/image) + engagement bar (like count, comment count) + comment input
-- "Load More" pagination
-
-**Post Types:**
-- Standard update
-- Before/After showcase (2-image slider)
-- Promotion/special offer (highlighted card treatment)
-- Event announcement (date badge)
-
-### Claim Your Business Flow
-
-**Multi-Step Form (3 steps):**
-1. Business Search/Verify (search existing or add new)
-2. Business Details (name, category, address, contact, hours, description)
-3. Upload Media (logo, cover photo, gallery images)
-
-**Progress Indicator:**
-- Horizontal stepper at top
-- "Save & Continue" + "Back" navigation
-
-**Confirmation:**
-- Success state with next steps
-- Prompt to complete profile and create first post
-
-### User Account/Dashboard
-
-**Business Dashboard:**
-- Sidebar navigation: Profile, Posts, Analytics, Messages, Settings
-- Analytics cards: Profile views, post engagement, review summary
-- Recent activity feed
-- Quick actions: Create Post, Respond to Review, Update Hours
-
-**User Account:**
-- Saved businesses grid
-- Activity feed (likes, comments)
-- Settings and preferences
-
-## Images Strategy
-
-**Hero Section:** Yes - large, high-impact image
-- Upscale Dallas landmark OR premium beauty/wellness environment
-- Professional photography quality
-- Overlay with blurred-background search component
-
-**Business Cards:** Featured image for each business (16:9 ratio)
-
-**Profile Pages:** Cover image + logo + gallery images
-
-**Posts:** Support for single or multiple images per post
-
-**Category Features:** Icon-based (use Heroicons via CDN)
+### Aspect Ratios
+- Portrait: 3:4
+- Square: 1:1
+- Landscape: 4:3
+- Tall: 4:5
 
 ## Accessibility
 
-- Consistent focus states across all interactive elements
-- Form labels and aria-labels throughout
+- Clean contrast ratios (WCAG AA minimum)
+- Keyboard navigation support
+- Semantic HTML structure
 - Alt text for all images
-- Keyboard navigation for modals and menus
-- WCAG AA contrast ratios for text
+- Focus states on interactive elements
 
-## Texas/DFW Aesthetic Touches
+## Mobile-First Approach
 
-- Confident, spacious layouts reflecting Texas scale
-- Modern sophistication for health/beauty market
-- Local imagery: Dallas skyline, recognizable landmarks
-- Copy tone: Warm, welcoming, community-focused ("y'all", "neighbor")
-- Trust signals: "Dallas Local", "DFW Verified Business" badges
+1. Design for thumb reach zones
+2. Bottom navigation for key actions
+3. Larger tap targets (minimum 44px)
+4. Vertical scrolling as primary interaction
+5. Simplified header on mobile
+
+## Pinterest-Specific Patterns
+
+### Infinite Scroll
+- Load more content as user scrolls
+- No pagination
+- "Show More" button for manual trigger
+- Seamless browsing experience
+
+### Visual Hierarchy
+- Images first, text second
+- Large, beautiful imagery
+- Minimal text overlay
+- Let content speak for itself
+
+### Clean White Space
+- Generous padding and margins
+- Breathing room between elements
+- Not cluttered or overwhelming
+- Focus on visual content
+
+## Performance
+
+- Code splitting for faster loads
+- Progressive Web App capabilities
+- Server-side rendering for SEO
+- Image optimization critical
+- Minimal JavaScript overhead
+
+## DFW Brand Integration
+
+While following Pinterest's clean aesthetic:
+- Use "Dallas Beauty Book" branding in header
+- Pinterest red accent for Dallas Beauty Book CTAs
+- DFW-specific content and locations
+- Professional aesthetic for beauty industry
+- Trust indicators where appropriate
+
+## Don'ts
+
+❌ Heavy borders or outlines on cards
+❌ Cluttered layouts with too much text
+❌ Aggressive animations or transitions
+❌ Dark or busy backgrounds
+❌ Small, hard-to-read text
+❌ Complex navigation patterns
+❌ Heavy CTAs that disrupt browsing
+
+## Do's
+
+✅ Clean white backgrounds
+✅ Large, beautiful images
+✅ Subtle shadows for depth
+✅ Rounded corners (16px)
+✅ Minimal, purposeful text
+✅ Clear visual hierarchy
+✅ Mobile-first responsive design
+✅ Fast, optimized performance

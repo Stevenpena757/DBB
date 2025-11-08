@@ -1,33 +1,39 @@
-import { SearchBar } from "./SearchBar";
-import { CategoryPill } from "./CategoryPill";
-import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-import heroImage from '@assets/generated_images/Dallas_skyline_hero_background_1130e27c.png';
-
-const categories = ["Health", "Beauty", "Aesthetics", "Wellness", "Fitness"];
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import heroImage from "@assets/generated_images/Beauty_salon_business_photo_a5408ce8.png";
 
 export function Hero() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
   return (
-    <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
+    <section className="relative h-[400px] md:h-[500px] overflow-hidden bg-muted">
       <div 
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroImage})` }}
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${heroImage})`
+        }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
-      
-      <div className="relative z-10 container mx-auto px-4 py-12 md:py-20 text-center space-y-6">
-        <div className="space-y-3 max-w-3xl mx-auto">
-          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
-            DFW's <span className="text-primary">Beauty Directory</span>
-          </h1>
-          <p className="text-base md:text-lg text-white/90">
-            Health, Beauty & Aesthetics businesses in Dallas-Fort Worth
+      <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
+        <div className="space-y-3">
+          <p className="text-sm md:text-base text-white/95 font-medium tracking-wide">
+            Discover DFW Beauty
           </p>
+          <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-md">
+            Winter self-care essentials
+          </h1>
         </div>
+      </div>
+      
+      <button className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md hover-elevate active-elevate-2" data-testid="button-hero-prev">
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <button className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md hover-elevate active-elevate-2" data-testid="button-hero-next">
+        <ChevronRight className="h-5 w-5" />
+      </button>
 
-        <SearchBar variant="hero" />
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        <div className="w-2 h-2 rounded-full bg-white"></div>
+        <div className="w-2 h-2 rounded-full bg-white/40"></div>
+        <div className="w-2 h-2 rounded-full bg-white/40"></div>
+        <div className="w-2 h-2 rounded-full bg-white/40"></div>
+        <div className="w-2 h-2 rounded-full bg-white/40"></div>
       </div>
     </section>
   );
