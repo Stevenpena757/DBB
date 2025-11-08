@@ -18,13 +18,13 @@ export function Hero() {
       />
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
         <div className="space-y-4 max-w-3xl">
-          <h1 className="text-5xl md:text-7xl text-white drop-shadow-lg" style={{ fontFamily: 'Pacifico, cursive' }}>
+          <h1 className="text-5xl md:text-7xl drop-shadow-lg" style={{ fontFamily: 'Pacifico, cursive', color: '#E89FB4' }}>
             DallasBeautyBook
           </h1>
-          <p className="text-lg md:text-2xl text-white/95 font-semibold drop-shadow-md">
+          <p className="text-lg md:text-2xl font-semibold drop-shadow-md" style={{ color: '#FFE5EC' }}>
             Where DFW Beauty Meets Community
           </p>
-          <p className="text-sm md:text-base text-white/90 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base max-w-2xl mx-auto" style={{ color: '#FFF5F7' }}>
             Your trusted directory for Health, Beauty & Aesthetics services—powered by local businesses, experts, and community insights
           </p>
         </div>

@@ -12,9 +12,13 @@ Dallas Beauty Book adopts Pinterest's proven design principles for a clean, visu
 
 ## Color Palette
 
-### Pinterest-Inspired Clean Aesthetic
+### Beauty-Inspired Elegant Aesthetic
 - **Background**: Pure white (#FFFFFF) for maximum clarity
-- **Primary Accent**: Pinterest red (0° 85% 45%) - used sparingly for CTAs
+- **Primary Accent**: Rose gold/dusty pink (340° 65% 52%) - elegant beauty brand color
+- **Brand Colors**:
+  - Logo/Hero: Soft rose (#E89FB4) - warm, feminine, inviting
+  - Tagline: Light blush (#FFE5EC) - elegant and readable
+  - Supporting text: Soft white (#FFF5F7) - subtle and sophisticated
 - **Text**: 
   - Primary: Very dark gray (0° 0% 13%)
   - Secondary: Medium gray (0° 0% 45%)
