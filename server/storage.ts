@@ -59,6 +59,11 @@ export interface IStorage {
   
   // Mixed Feed (for home page)
   getMixedFeed(): Promise<Array<Business | Article | HowTo>>;
+  
+  // Upvoting
+  upvoteBusiness(id: number): Promise<Business | undefined>;
+  upvoteArticle(id: number): Promise<Article | undefined>;
+  upvoteHowTo(id: number): Promise<HowTo | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -143,7 +148,7 @@ export class MemStorage implements IStorage {
 
     sampleBusinesses.forEach(business => {
       const id = this.businessIdCounter++;
-      this.businesses.set(id, { ...business, id, createdAt: new Date() });
+      this.businesses.set(id, { ...business, id, upvotes: 0, createdAt: new Date() });
     });
 
     // Seed sample articles
@@ -168,7 +173,7 @@ export class MemStorage implements IStorage {
 
     sampleArticles.forEach(article => {
       const id = this.articleIdCounter++;
-      this.articles.set(id, { ...article, id, views: 0, createdAt: new Date() });
+      this.articles.set(id, { ...article, id, views: 0, upvotes: 0, createdAt: new Date() });
     });
   }
 
@@ -205,7 +210,8 @@ export class MemStorage implements IStorage {
       tiktokHandle: null,
       facebookUrl: null,
       ...insertBusiness, 
-      id, 
+      id,
+      upvotes: 0,
       createdAt: new Date() 
     };
     this.businesses.set(id, business);
@@ -265,7 +271,7 @@ export class MemStorage implements IStorage {
 
   async createArticle(insertArticle: InsertArticle): Promise<Article> {
     const id = this.articleIdCounter++;
-    const article: Article = { ...insertArticle, id, views: 0, createdAt: new Date() };
+    const article: Article = { ...insertArticle, id, views: 0, upvotes: 0, createdAt: new Date() };
     this.articles.set(id, article);
     return article;
   }
@@ -293,7 +299,7 @@ export class MemStorage implements IStorage {
 
   async createHowTo(insertHowTo: InsertHowTo): Promise<HowTo> {
     const id = this.howToIdCounter++;
-    const howTo: HowTo = { ...insertHowTo, id, views: 0, createdAt: new Date() };
+    const howTo: HowTo = { ...insertHowTo, id, views: 0, upvotes: 0, createdAt: new Date() };
     this.howTos.set(id, howTo);
     return howTo;
   }
@@ -313,6 +319,7 @@ export class MemStorage implements IStorage {
       website: null,
       phone: null,
       email: null,
+      featured: false,
       ...insertVendor, 
       id, 
       createdAt: new Date() 
@@ -380,6 +387,34 @@ export class MemStorage implements IStorage {
     
     // Shuffle for variety
     return mixed.sort(() => Math.random() - 0.5);
+  }
+
+  // Upvoting
+  async upvoteBusiness(id: number): Promise<Business | undefined> {
+    const business = this.businesses.get(id);
+    if (!business) return undefined;
+    
+    const updated = { ...business, upvotes: business.upvotes + 1 };
+    this.businesses.set(id, updated);
+    return updated;
+  }
+
+  async upvoteArticle(id: number): Promise<Article | undefined> {
+    const article = this.articles.get(id);
+    if (!article) return undefined;
+    
+    const updated = { ...article, upvotes: article.upvotes + 1 };
+    this.articles.set(id, updated);
+    return updated;
+  }
+
+  async upvoteHowTo(id: number): Promise<HowTo | undefined> {
+    const howTo = this.howTos.get(id);
+    if (!howTo) return undefined;
+    
+    const updated = { ...howTo, upvotes: howTo.upvotes + 1 };
+    this.howTos.set(id, updated);
+    return updated;
   }
 }
 

@@ -58,12 +58,14 @@ export const businesses = pgTable("businesses", {
   tiktokHandle: text("tiktok_handle"),
   facebookUrl: text("facebook_url"),
   featured: boolean("featured").default(false).notNull(),
+  upvotes: integer("upvotes").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export type Business = typeof businesses.$inferSelect;
 export const insertBusinessSchema = createInsertSchema(businesses).omit({
   id: true,
+  upvotes: true,
   createdAt: true,
 });
 export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
@@ -98,6 +100,7 @@ export const articles = pgTable("articles", {
   excerpt: text("excerpt").notNull(),
   category: text("category").notNull(),
   views: integer("views").default(0).notNull(),
+  upvotes: integer("upvotes").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -105,6 +108,7 @@ export type Article = typeof articles.$inferSelect;
 export const insertArticleSchema = createInsertSchema(articles).omit({
   id: true,
   views: true,
+  upvotes: true,
   createdAt: true,
 });
 export type InsertArticle = z.infer<typeof insertArticleSchema>;
@@ -119,6 +123,7 @@ export const howTos = pgTable("how_tos", {
   imageUrl: text("image_url").notNull(),
   category: text("category").notNull(),
   views: integer("views").default(0).notNull(),
+  upvotes: integer("upvotes").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -126,6 +131,7 @@ export type HowTo = typeof howTos.$inferSelect;
 export const insertHowToSchema = createInsertSchema(howTos).omit({
   id: true,
   views: true,
+  upvotes: true,
   createdAt: true,
 });
 export type InsertHowTo = z.infer<typeof insertHowToSchema>;

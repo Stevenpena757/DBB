@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import type { Business, Article, HowTo } from "@shared/schema";
-import { FileText, Lightbulb, MapPin } from "lucide-react";
+import { FileText, Lightbulb, MapPin, Heart } from "lucide-react";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 type FeedItem = Business | Article | HowTo;
 
@@ -55,6 +56,41 @@ export default function Home() {
   const { data: howTos = [] } = useQuery<HowTo[]>({
     queryKey: ['/api/how-tos'],
   });
+
+  // Upvote mutations
+  const upvoteBusinessMutation = useMutation({
+    mutationFn: (id: number) => apiRequest(`/api/businesses/${id}/upvote`, { method: "POST" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/businesses'] });
+    },
+  });
+
+  const upvoteArticleMutation = useMutation({
+    mutationFn: (id: number) => apiRequest(`/api/articles/${id}/upvote`, { method: "POST" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/articles'] });
+    },
+  });
+
+  const upvoteHowToMutation = useMutation({
+    mutationFn: (id: number) => apiRequest(`/api/how-tos/${id}/upvote`, { method: "POST" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/how-tos'] });
+    },
+  });
+
+  const handleUpvote = (e: React.MouseEvent, item: FeedItem) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isBusiness(item)) {
+      upvoteBusinessMutation.mutate(item.id);
+    } else if (isArticle(item)) {
+      upvoteArticleMutation.mutate(item.id);
+    } else if (isHowTo(item)) {
+      upvoteHowToMutation.mutate(item.id);
+    }
+  };
   
   const feedItems: FeedItem[] = [
     ...businesses,
@@ -171,14 +207,24 @@ export default function Home() {
                     <a 
                       href={`/business/${item.id}`}
                       key={key}
-                      className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer block"
+                      className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer block group relative"
                       data-testid={`pin-business-${item.id}`}
                     >
                       <div className={`${aspectRatio} overflow-hidden`}>
                         <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="p-3">
-                        <h3 className="font-semibold text-sm mb-1">{item.name}</h3>
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <h3 className="font-semibold text-sm flex-1">{item.name}</h3>
+                          <button
+                            onClick={(e) => handleUpvote(e, item)}
+                            className="flex items-center gap-1 px-2 py-1 rounded-full hover-elevate active-elevate-2 text-xs font-medium"
+                            data-testid={`button-upvote-business-${item.id}`}
+                          >
+                            <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
+                            <span className="text-primary">{item.upvotes}</span>
+                          </button>
+                        </div>
                         <p className="text-xs text-muted-foreground flex items-center gap-1">
                           <MapPin className="h-3 w-3" />
                           {item.location}
@@ -199,9 +245,19 @@ export default function Home() {
                         <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="p-3">
-                        <div className="flex items-center gap-1 mb-1">
-                          <FileText className="h-3 w-3 text-muted-foreground" />
-                          <span className="text-xs text-muted-foreground">Article</span>
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <div className="flex items-center gap-1">
+                            <FileText className="h-3 w-3 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">Article</span>
+                          </div>
+                          <button
+                            onClick={(e) => handleUpvote(e, item)}
+                            className="flex items-center gap-1 px-2 py-1 rounded-full hover-elevate active-elevate-2 text-xs font-medium"
+                            data-testid={`button-upvote-article-${item.id}`}
+                          >
+                            <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
+                            <span className="text-primary">{item.upvotes}</span>
+                          </button>
                         </div>
                         <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
                         <p className="text-xs text-muted-foreground line-clamp-2">{item.excerpt}</p>

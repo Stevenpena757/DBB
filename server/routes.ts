@@ -318,6 +318,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ============ UPVOTING ============
+  app.post("/api/businesses/:id/upvote", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const business = await storage.upvoteBusiness(id);
+      
+      if (!business) {
+        return res.status(404).json({ error: "Business not found" });
+      }
+      
+      res.json(business);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upvote business" });
+    }
+  });
+
+  app.post("/api/articles/:id/upvote", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const article = await storage.upvoteArticle(id);
+      
+      if (!article) {
+        return res.status(404).json({ error: "Article not found" });
+      }
+      
+      res.json(article);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upvote article" });
+    }
+  });
+
+  app.post("/api/how-tos/:id/upvote", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const howTo = await storage.upvoteHowTo(id);
+      
+      if (!howTo) {
+        return res.status(404).json({ error: "How-to not found" });
+      }
+      
+      res.json(howTo);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upvote how-to" });
+    }
+  });
+
   // ============ MIXED FEED (Home Page) ============
   app.get("/api/feed", async (req, res) => {
     try {
