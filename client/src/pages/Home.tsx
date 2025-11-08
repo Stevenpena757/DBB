@@ -5,6 +5,7 @@ import { CategoryCard } from "@/components/CategoryCard";
 import { BusinessCard } from "@/components/BusinessCard";
 import { PostCard } from "@/components/PostCard";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Heart, Sparkles, Stethoscope, ArrowRight } from "lucide-react";
 import salonImage from '@assets/generated_images/Beauty_salon_business_photo_a5408ce8.png';
 import clinicImage from '@assets/generated_images/Medical_aesthetics_clinic_photo_4076e3a0.png';
@@ -95,18 +96,40 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
 
-        <section className="py-16 md:py-24">
+        <section className="py-16 md:py-24 bg-primary/5">
           <div className="container mx-auto px-4">
-            <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">Explore by Category</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Find the perfect health, beauty, and wellness services for your needs
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              <CategoryCard icon={Stethoscope} title="Health" businessCount={150} />
-              <CategoryCard icon={Sparkles} title="Beauty" businessCount={200} />
-              <CategoryCard icon={Heart} title="Aesthetics" businessCount={120} />
+            <div className="max-w-4xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+                <div className="space-y-6">
+                  <h2 className="text-3xl md:text-4xl font-bold">Claim Your Listing</h2>
+                  <p className="text-lg text-muted-foreground">
+                    Join hundreds of DFW Health, Beauty, and Aesthetics businesses already growing their presence. Get discovered by local clients, share updates, and build your community.
+                  </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                      <span>Free business profile with photos and details</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                      <span>Post updates and promotions to the community</span>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">✓</div>
+                      <span>Connect with local DFW customers</span>
+                    </li>
+                  </ul>
+                  <Button size="lg" data-testid="button-claim-listing-primary">
+                    Claim Your Listing Now
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="grid grid-cols-1 gap-6">
+                  <CategoryCard icon={Stethoscope} title="Health" businessCount={150} />
+                  <CategoryCard icon={Sparkles} title="Beauty" businessCount={200} />
+                  <CategoryCard icon={Heart} title="Aesthetics" businessCount={120} />
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -134,9 +157,9 @@ export default function Home() {
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">How It Works</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">Why Dallas Beauty Book?</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                For businesses and community members
+                The DFW directory built specifically for your industry
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -144,27 +167,27 @@ export default function Home() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto text-2xl font-bold">
                   1
                 </div>
-                <h3 className="text-xl font-semibold">Claim Your Business</h3>
+                <h3 className="text-xl font-semibold">Claim Your Listing</h3>
                 <p className="text-muted-foreground">
-                  Register your business and create your profile in minutes
+                  Free profile for Health, Beauty & Aesthetics businesses in DFW
                 </p>
               </div>
               <div className="text-center space-y-3">
                 <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto text-2xl font-bold">
                   2
                 </div>
-                <h3 className="text-xl font-semibold">Share & Connect</h3>
+                <h3 className="text-xl font-semibold">Engage Your Community</h3>
                 <p className="text-muted-foreground">
-                  Post updates, promotions, and engage with the community
+                  Share updates, promotions, and connect with local clients
                 </p>
               </div>
               <div className="text-center space-y-3">
                 <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto text-2xl font-bold">
                   3
                 </div>
-                <h3 className="text-xl font-semibold">Grow Together</h3>
+                <h3 className="text-xl font-semibold">Industry-Focused</h3>
                 <p className="text-muted-foreground">
-                  Build your presence and attract new customers
+                  Reach clients specifically looking for beauty services in DFW
                 </p>
               </div>
             </div>
@@ -174,9 +197,9 @@ export default function Home() {
         <section className="py-16 bg-card/50">
           <div className="container mx-auto px-4">
             <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">Community Highlights</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">Join Our Community</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Latest updates from DFW businesses
+                DFW's exclusive community for Health, Beauty & Aesthetics professionals and enthusiasts. See what businesses are sharing today.
               </p>
             </div>
             <div className="max-w-2xl mx-auto space-y-6">
@@ -199,28 +222,29 @@ export default function Home() {
               />
             </div>
             <div className="text-center mt-8">
-              <Button variant="outline" data-testid="button-view-community">
-                View Community Feed
+              <Button size="lg" data-testid="button-view-community">
+                Explore the Community
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </div>
         </section>
 
-        <section className="py-16 md:py-24 bg-primary/5">
+        <section className="py-16 md:py-24 border-t">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold">Own a Business?</h2>
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              <Badge className="mb-2">DFW's #1 Beauty Directory</Badge>
+              <h2 className="text-3xl md:text-4xl font-bold">Exclusively for Health, Beauty & Aesthetics</h2>
               <p className="text-lg text-muted-foreground">
-                Join hundreds of DFW businesses already growing their presence on our platform
+                Unlike general directories, Dallas Beauty Book is laser-focused on serving only the Health, Beauty, and Aesthetics industry in the DFW metro area. This means more targeted exposure and a dedicated community of local clients looking specifically for your services.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                 <Button size="lg" data-testid="button-claim-business-cta">
-                  Claim Your Business
+                  Claim Your Listing
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button size="lg" variant="outline" data-testid="button-learn-more">
-                  Learn More
+                  See How It Works
                 </Button>
               </div>
             </div>

@@ -10,7 +10,7 @@ export function Header() {
         <div className="flex items-center gap-8">
           <a href="/" className="flex items-center gap-2" data-testid="link-home">
             <div className="font-bold text-xl tracking-tight">
-              <span className="text-primary">DFW</span> Beauty
+              Dallas <span className="text-primary">Beauty Book</span>
             </div>
           </a>
           
@@ -18,11 +18,11 @@ export function Header() {
             <Button variant="ghost" data-testid="button-nav-discover">
               Discover
             </Button>
-            <Button variant="ghost" data-testid="button-nav-community">
+            <Button data-testid="button-nav-community">
               Community
             </Button>
-            <Button variant="ghost" data-testid="button-nav-claim">
-              Claim Business
+            <Button data-testid="button-nav-claim">
+              Claim Your Listing
             </Button>
           </nav>
         </div>

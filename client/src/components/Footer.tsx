@@ -10,10 +10,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
             <h3 className="font-bold text-lg">
-              <span className="text-primary">DFW</span> Beauty
+              Dallas <span className="text-primary">Beauty Book</span>
             </h3>
             <p className="text-sm text-muted-foreground">
-              Connecting Dallas-Fort Worth's best health, beauty, and aesthetics businesses with the community.
+              DFW's exclusive directory for Health, Beauty, and Aesthetics professionals. Claim your listing and join our community.
             </p>
             <div className="flex gap-2">
               <Button variant="ghost" size="icon" data-testid="button-social-facebook">
@@ -87,7 +87,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>&copy; 2025 DFW Beauty & Aesthetics. All rights reserved.</p>
+          <p>&copy; 2025 Dallas Beauty Book. DFW's exclusive Health, Beauty & Aesthetics directory.</p>
         </div>
       </div>
     </footer>

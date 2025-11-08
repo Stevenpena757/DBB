@@ -20,15 +20,15 @@ export function Hero() {
       <div className="relative z-10 container mx-auto px-4 py-20 text-center space-y-8">
         <div className="space-y-4 max-w-4xl mx-auto">
           <Badge variant="secondary" className="bg-white/10 text-white border-white/20 backdrop-blur-sm">
-            500+ DFW Businesses Listed
+            DFW's Exclusive Health, Beauty & Aesthetics Directory
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-            Discover Dallas-Fort Worth's
+            Your Complete Guide to
             <br />
-            <span className="text-primary">Premier Beauty & Wellness</span>
+            <span className="text-primary">DFW Beauty Professionals</span>
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
-            Connect with the best health, beauty, and aesthetics businesses in the DFW metro area
+            The only directory dedicated exclusively to Health, Beauty, and Aesthetics businesses in the Dallas-Fort Worth area
           </p>
         </div>
 
