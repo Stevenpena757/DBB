@@ -160,35 +160,77 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
 
-        <section className="py-8 md:py-12">
+        <section className="py-4 border-b bg-card/50">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto">
-              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-health">
-                <CardContent className="p-4 md:p-6 text-center space-y-2">
-                  <Stethoscope className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
-                  <h3 className="font-semibold text-sm md:text-base">Health</h3>
-                  <p className="text-xs text-muted-foreground">150+</p>
-                </CardContent>
-              </Card>
-              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-beauty">
-                <CardContent className="p-4 md:p-6 text-center space-y-2">
-                  <Sparkles className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
-                  <h3 className="font-semibold text-sm md:text-base">Beauty</h3>
-                  <p className="text-xs text-muted-foreground">200+</p>
-                </CardContent>
-              </Card>
-              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-aesthetics">
-                <CardContent className="p-4 md:p-6 text-center space-y-2">
-                  <Heart className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
-                  <h3 className="font-semibold text-sm md:text-base">Aesthetics</h3>
-                  <p className="text-xs text-muted-foreground">120+</p>
-                </CardContent>
-              </Card>
-              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-vendors">
-                <CardContent className="p-4 md:p-6 text-center space-y-2">
-                  <ShoppingCart className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
-                  <h3 className="font-semibold text-sm md:text-base">Vendors</h3>
-                  <p className="text-xs text-muted-foreground">Shop</p>
+            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4">
+              <Button variant="ghost" className="hover-elevate" data-testid="link-category-all">
+                All Categories
+              </Button>
+              <span className="text-muted-foreground">•</span>
+              <Button variant="ghost" className="hover-elevate" data-testid="link-category-health">
+                <Stethoscope className="h-4 w-4 mr-2" />
+                Health (150+)
+              </Button>
+              <span className="text-muted-foreground">•</span>
+              <Button variant="ghost" className="hover-elevate" data-testid="link-category-beauty">
+                <Sparkles className="h-4 w-4 mr-2" />
+                Beauty (200+)
+              </Button>
+              <span className="text-muted-foreground">•</span>
+              <Button variant="ghost" className="hover-elevate" data-testid="link-category-aesthetics">
+                <Heart className="h-4 w-4 mr-2" />
+                Aesthetics (120+)
+              </Button>
+              <span className="text-muted-foreground">•</span>
+              <Button variant="ghost" className="hover-elevate" data-testid="link-category-vendors">
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Shop Vendors
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-8 md:py-12 bg-primary/5 border-b">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold">
+                  Featured Business
+                </div>
+                <Button variant="ghost" size="sm" data-testid="button-view-featured">
+                  View Profile
+                  <ArrowRight className="ml-1 h-3 w-3" />
+                </Button>
+              </div>
+
+              <Card>
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-20 h-20 rounded-md overflow-hidden shrink-0 bg-muted">
+                      <img src={salonImage} alt="Luxe Beauty Salon" className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold mb-1" data-testid="text-featured-business-name">Luxe Beauty Salon</h3>
+                      <p className="text-sm text-muted-foreground mb-3">Full-service salon in Uptown Dallas</p>
+                      <div className="flex flex-wrap gap-2">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                          <FileText className="h-3 w-3" />
+                          5 Articles
+                        </div>
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                          <Lightbulb className="h-3 w-3" />
+                          3 How-Tos
+                        </div>
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                          <Instagram className="h-3 w-3" />
+                          Social Linked
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm text-muted-foreground border-l-2 border-primary pl-3">
+                    "By sharing helpful content about hair care and styling tips, we've connected with so many new clients in DFW. The free visibility feature is a game-changer!"
+                  </p>
                 </CardContent>
               </Card>
             </div>
