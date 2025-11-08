@@ -38,13 +38,13 @@ export function Footer() {
                 Claim Your Business
               </a>
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
+                Submit Free Content
+              </a>
+              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
                 Become a Vendor
               </a>
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
                 Pricing
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
-                Success Stories
               </a>
             </nav>
           </div>

@@ -7,7 +7,7 @@ import { PostCard } from "@/components/PostCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, Sparkles, Stethoscope, ArrowRight, ShoppingCart, Users, Building2 } from "lucide-react";
+import { Heart, Sparkles, Stethoscope, ArrowRight, ShoppingCart, Users, Building2, FileText, Instagram, Lightbulb } from "lucide-react";
 import salonImage from '@assets/generated_images/Beauty_salon_business_photo_a5408ce8.png';
 import clinicImage from '@assets/generated_images/Medical_aesthetics_clinic_photo_4076e3a0.png';
 import spaImage from '@assets/generated_images/Wellness_spa_business_photo_aeff6e69.png';
@@ -272,11 +272,70 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="py-8 md:py-12 border-t bg-primary/5">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto space-y-6">
+              <div className="text-center space-y-2">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold mb-2">
+                  Free Visibility
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold">Promote Your Business for Free</h2>
+                <p className="text-muted-foreground">
+                  Increase your visibility without paying - share valuable content with the community
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4">
+                <Card className="hover-elevate" data-testid="card-free-articles">
+                  <CardContent className="p-4 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+                      <FileText className="h-6 w-6" />
+                    </div>
+                    <h3 className="font-semibold">Write Articles</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Share industry insights and expertise
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover-elevate" data-testid="card-free-howtos">
+                  <CardContent className="p-4 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+                      <Lightbulb className="h-6 w-6" />
+                    </div>
+                    <h3 className="font-semibold">Share How-Tos</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Create helpful guides and tutorials
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover-elevate" data-testid="card-free-social">
+                  <CardContent className="p-4 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto">
+                      <Instagram className="h-6 w-6" />
+                    </div>
+                    <h3 className="font-semibold">Link Social Media</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Connect your Instagram, TikTok & more
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <Button size="lg" className="w-full" data-testid="button-submit-content">
+                Submit Your Content
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </section>
+
         <section className="py-8 md:py-12 border-t">
           <div className="container mx-auto px-4">
             <div className="max-w-2xl mx-auto space-y-6">
               <div className="text-center space-y-3">
-                <h2 className="text-2xl md:text-3xl font-bold">For Business Owners</h2>
+                <h2 className="text-2xl md:text-3xl font-bold">Claim Your Listing</h2>
                 <p className="text-muted-foreground">
                   Get discovered by DFW clients looking for your services
                 </p>
