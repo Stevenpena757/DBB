@@ -18,6 +18,9 @@ export function Header() {
             <Button variant="ghost" data-testid="button-nav-discover">
               Discover
             </Button>
+            <Button variant="ghost" data-testid="button-nav-vendors">
+              Vendors
+            </Button>
             <Button data-testid="button-nav-community">
               Community
             </Button>

@@ -3,10 +3,11 @@ import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
 import { CategoryCard } from "@/components/CategoryCard";
 import { BusinessCard } from "@/components/BusinessCard";
+import { VendorCard } from "@/components/VendorCard";
 import { PostCard } from "@/components/PostCard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Sparkles, Stethoscope, ArrowRight } from "lucide-react";
+import { Heart, Sparkles, Stethoscope, ArrowRight, ShoppingCart } from "lucide-react";
 import salonImage from '@assets/generated_images/Beauty_salon_business_photo_a5408ce8.png';
 import clinicImage from '@assets/generated_images/Medical_aesthetics_clinic_photo_4076e3a0.png';
 import spaImage from '@assets/generated_images/Wellness_spa_business_photo_aeff6e69.png';
@@ -15,6 +16,69 @@ import fitnessImage from '@assets/generated_images/Fitness_wellness_studio_photo
 import nailImage from '@assets/generated_images/Nail_salon_business_photo_ddb408ec.png';
 
 export default function Home() {
+  const vendors = [
+    {
+      id: "v1",
+      name: "Beauty Supply Pro",
+      category: "Professional Products",
+      description: "Premium salon and spa supplies, equipment, and furniture for beauty professionals across DFW",
+      rating: 4.9,
+      reviewCount: 156,
+      productTypes: ["Hair Products", "Equipment", "Furniture", "Tools"],
+      verified: true,
+    },
+    {
+      id: "v2",
+      name: "MedSpa Essentials",
+      category: "Medical Aesthetics",
+      description: "Professional-grade aesthetic equipment, injectables, and medical supplies for licensed practitioners",
+      rating: 4.8,
+      reviewCount: 89,
+      productTypes: ["Injectables", "Equipment", "Skincare", "Lasers"],
+      verified: true,
+    },
+    {
+      id: "v3",
+      name: "Wellness Wholesale",
+      category: "Wellness & Spa",
+      description: "Wholesale massage tables, aromatherapy products, and spa equipment for wellness centers",
+      rating: 4.7,
+      reviewCount: 124,
+      productTypes: ["Massage Tables", "Aromatherapy", "Linens", "Decor"],
+      verified: false,
+    },
+    {
+      id: "v4",
+      name: "Nail Tech Suppliers",
+      category: "Nail Products",
+      description: "Complete nail salon supplies including polishes, gels, acrylics, and nail art equipment",
+      rating: 4.9,
+      reviewCount: 203,
+      productTypes: ["Polishes", "Gels", "Acrylics", "Equipment"],
+      verified: true,
+    },
+    {
+      id: "v5",
+      name: "Hair Studio Supply",
+      category: "Hair Care",
+      description: "Professional hair care products, styling tools, and salon equipment from top brands",
+      rating: 4.8,
+      reviewCount: 167,
+      productTypes: ["Hair Care", "Styling Tools", "Color", "Extensions"],
+      verified: true,
+    },
+    {
+      id: "v6",
+      name: "Skincare Solutions",
+      category: "Skincare Products",
+      description: "Medical-grade skincare products and treatment solutions for aestheticians and dermatologists",
+      rating: 4.9,
+      reviewCount: 142,
+      productTypes: ["Medical-Grade", "Treatments", "Devices", "Retail"],
+      verified: true,
+    },
+  ];
+
   const businesses = [
     {
       id: "1",
@@ -130,6 +194,35 @@ export default function Home() {
                   <CategoryCard icon={Heart} title="Aesthetics" businessCount={120} />
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 md:py-24 border-t">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center space-y-6 mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
+                <ShoppingCart className="h-4 w-4" />
+                <span className="font-semibold text-sm">Vendors Marketplace</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold">Shop Business Inventory & Supplies</h2>
+              <p className="text-lg text-muted-foreground">
+                Connect with trusted vendors and suppliers serving the DFW beauty industry. Find equipment, products, and supplies for your business.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {vendors.map((vendor) => (
+                <VendorCard key={vendor.id} {...vendor} />
+              ))}
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button size="lg" data-testid="button-browse-vendors">
+                Browse All Vendors
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button size="lg" variant="outline" data-testid="button-become-vendor">
+                Become a Vendor
+              </Button>
             </div>
           </div>
         </section>
