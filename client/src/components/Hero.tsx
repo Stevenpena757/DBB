@@ -13,19 +13,24 @@ export function Hero() {
       <div 
         className="absolute inset-0"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4))'
+          background: 'linear-gradient(to bottom, rgba(17, 20, 24, 0.7), rgba(17, 20, 24, 0.8), rgba(17, 20, 24, 0.7))'
         }}
       />
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-        <div className="space-y-4 max-w-3xl">
-          <h1 className="text-5xl md:text-7xl drop-shadow-lg" style={{ fontFamily: 'Pacifico, cursive', color: '#E89FB4' }}>
-            DallasBeautyBook
+        <div className="space-y-6 max-w-4xl">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center glow-primary">
+              <span className="text-white font-bold text-3xl" style={{ fontFamily: 'var(--font-accent)' }}>G</span>
+            </div>
+          </div>
+          <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
+            GENESIS
           </h1>
-          <p className="text-lg md:text-2xl font-semibold drop-shadow-md" style={{ color: '#FFE5EC' }}>
-            Where DFW Beauty Meets Community
+          <p className="text-xl md:text-3xl font-semibold text-white drop-shadow-md" style={{ fontFamily: 'var(--font-display)' }}>
+            The Future of DFW Health & Beauty Discovery
           </p>
-          <p className="text-sm md:text-base max-w-2xl mx-auto" style={{ color: '#FFF5F7' }}>
-            Your trusted directory for Health, Beauty & Aesthetics services—powered by local businesses, experts, and community insights
+          <p className="text-base md:text-lg max-w-2xl mx-auto text-gray-200">
+            AI-powered directory connecting you with top Health, Beauty & Aesthetics services—driven by innovation, community, and excellence
           </p>
         </div>
       </div>

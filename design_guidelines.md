@@ -1,221 +1,210 @@
-# Design Guidelines: Dallas Beauty Book - Pinterest-Inspired Visual Discovery
+# Design Guidelines: GENESIS - NeoVibrant Luxe Directory
 
 ## Design Philosophy
 
-Dallas Beauty Book adopts Pinterest's proven design principles for a clean, visual-first discovery platform:
+GENESIS embodies a "NeoVibrant Luxe" aesthetic—modern, AI-powered, and tech-forward with bold colors, sophisticated gradients, and strategic glow effects. The design balances vibrant energy with professional credibility for DFW's health, beauty, and aesthetics community.
 
-### Core Principles
-1. **Subtle Interaction** - User-controlled experience, not forced
-2. **Bold & Physical** - Clear visual hierarchy with tactile feel
-3. **Playful Yet Balanced** - Fun without being overwhelming
-4. **Visual-First** - Images drive discovery and engagement
+**Core Principles**:
+- **Tech-Forward Luxury**: Premium aesthetic with cutting-edge visual language
+- **Universal Appeal**: Professional and aspirational without gender coding
+- **Data-Driven Discovery**: Clear hierarchy for business listings and community insights
+- **Adaptive Experience**: Seamless dark/light mode transitions
 
-## Color Palette
+## Design Approach
 
-### Beauty-Inspired Elegant Aesthetic
-- **Background**: Pure white (#FFFFFF) for maximum clarity
-- **Primary Accent**: Rose gold/dusty pink (340° 65% 52%) - elegant beauty brand color
-- **Brand Colors**:
-  - Logo/Hero: Soft rose (#E89FB4) - warm, feminine, inviting
-  - Tagline: Light blush (#FFE5EC) - elegant and readable
-  - Supporting text: Soft white (#FFF5F7) - subtle and sophisticated
-- **Text**: 
-  - Primary: Very dark gray (0° 0% 13%)
-  - Secondary: Medium gray (0° 0% 45%)
-- **Borders**: Very light gray (0° 0% 93%) - minimal, subtle
-- **Cards**: Pure white with subtle shadows
+**System Foundation**: Material Design principles adapted with aggressive customization for the NeoVibrant aesthetic. Emphasis on elevation, dynamic color, and responsive depth.
 
-### Design Tokens
-```
---background: Pure white
---foreground: Dark gray text
---card: White background
---border: Very light gray (barely visible)
---muted: Light gray (0° 0% 96%)
---primary: Pinterest red accent
-```
+**Key Differentiators**: Bold gradients, strategic glow effects on interactive elements, and a vibrant color system that commands attention while maintaining professionalism.
+
+## Color System
+
+### Light Mode
+- **Background**: Pure white (#FFFFFF)
+- **Surface**: Off-white (#F8FAFC)
+- **Text Primary**: Deep charcoal (#1A1A1A)
+- **Text Secondary**: Medium gray (#64748B)
+- **Border**: Light gray (#E2E8F0)
+
+### Dark Mode
+- **Background**: Rich black (#0A0A0A)
+- **Surface**: Dark slate (#1A1F2E)
+- **Text Primary**: Pure white (#FFFFFF)
+- **Text Secondary**: Light gray (#94A3B8)
+- **Border**: Dark gray (#2D3748)
+
+### Brand Colors (Mode-Agnostic)
+- **Primary**: Electric Azure (#0077FF) - CTAs, links, primary actions
+- **Secondary**: Vivid Lime (#A3FF12) - Success states, upvotes, highlights
+- **Accent**: Cyber Gold (#FFD100) - Premium features, verified badges, marketplace
+
+### Gradient Treatments
+- **Hero Gradient**: Azure to Lime (135deg, #0077FF → #A3FF12)
+- **Card Hover**: Subtle Azure glow (box-shadow: 0 0 20px rgba(0, 119, 255, 0.3))
+- **Premium Elements**: Gold shimmer gradient (90deg, #FFD100 → #FFA500)
+- **Background Patterns**: Mesh gradients combining all three brand colors at 5-10% opacity
 
 ## Typography
 
 ### Font Stack
-```
--apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif
-```
-Native system fonts for best performance and familiarity
+- **Headings**: Montserrat ExtraBold (800 weight) - powerful, modern
+- **Logo/Accent**: Space Grotesk (500-700 weight) - tech-forward personality
+- **Body/UI**: Inter (400-600 weight) - optimal readability
 
 ### Hierarchy
-- **Pin Titles**: 14px semibold
-- **Descriptions**: 12px regular, muted color
-- **Section Headers**: 18px-24px semibold
-- **Body Text**: 14px regular
+- **H1**: 48px/56px (mobile: 32px/40px) - Montserrat ExtraBold
+- **H2**: 36px/44px (mobile: 24px/32px) - Montserrat ExtraBold
+- **H3**: 24px/32px (mobile: 20px/28px) - Space Grotesk Bold
+- **Body**: 16px/24px - Inter Regular
+- **Small**: 14px/20px - Inter Regular
+- **Caption**: 12px/16px - Inter Medium
 
 ## Layout System
 
-### Masonry Grid (Pinterest's Signature)
-- **Mobile**: 2 columns with 12px gap
-- **Tablet**: 3 columns with 16px gap
-- **Desktop**: 4 columns with 16px gap
-- Variable height cards (natural content flow)
-- `columns-2 md:columns-3 lg:columns-4` CSS columns layout
+### Spacing Primitives
+Use Tailwind units: **4, 6, 8, 12, 16** for consistent vertical rhythm.
+- Section padding: py-16 (desktop), py-12 (mobile)
+- Card padding: p-6
+- Component gaps: gap-6 (standard), gap-8 (sections)
 
-### Pin Cards
-- **Style**: Clean white cards with subtle shadows
-- **Border Radius**: 16px (rounded-2xl) for soft, friendly feel
-- **Shadow**: 
-  - Default: subtle (`shadow-sm`)
-  - Hover: elevated (`shadow-md`)
-- **No borders**: Shadows create depth instead
-- **Aspect Ratios**: Mix of 3:4, square, 4:5, 4:3 for visual variety
+### Grid Patterns
+- **Business Listings**: 3-column grid (lg), 2-column (md), 1-column (mobile)
+- **Featured Vendors**: 4-column grid with variable card heights
+- **Social Feed**: Single column, max-width 720px centered
+- **Marketplace**: 3-4 column product grid with consistent aspect ratios
 
-### Spacing
-- **Card padding**: 12px (p-3)
-- **Section padding**: 24px mobile, 32px desktop
-- **Vertical gaps**: 12-16px between cards
+### Container Strategy
+- Full-width hero: w-full with gradient backgrounds
+- Content sections: max-w-7xl mx-auto
+- Reading content: max-w-3xl
+- Forms: max-w-md
 
-## Component Patterns
+## Core Components
 
-### Hero Carousel
-- Clean image carousel with text overlay
-- Minimal gradient for text readability
-- Circular navigation arrows (white, subtle)
-- Dot indicators at bottom
-- Height: 400px mobile, 500px desktop
+### Hero Section
+- Full-width with mesh gradient background (Azure/Lime/Gold blend)
+- Large hero image: Modern tech aesthetic, diverse beauty professionals, vibrant lighting
+- Overlaid search bar with blur backdrop (backdrop-blur-lg bg-white/10)
+- Text: Large Montserrat ExtraBold headline + Space Grotesk subheading
+- CTA buttons with blurred backgrounds, no hover effects on blur
 
-### Category Navigation
-- Horizontal scrollable pills
-- Rounded-full buttons
-- Simple text labels, no heavy icons
-- Minimal hover states
-- Centered layout
+### Navigation
+- Sticky header with blur backdrop (backdrop-blur-md)
+- Logo: Space Grotesk with gradient text treatment
+- Dark/light mode toggle (prominent placement)
+- Search icon with glow effect on focus
+- Mobile: Bottom navigation bar with 5 key sections
 
-### Pin/Card Structure
-```html
-<div class="rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow">
-  <img /> <!-- Variable aspect ratio -->
-  <div class="p-3">
-    <h3>Title</h3>
-    <p class="text-xs text-muted-foreground">Location/Description</p>
-  </div>
-</div>
-```
+### Business Listing Cards
+- Rounded-xl (12px) with subtle shadow
+- Featured image (16:9 aspect ratio)
+- Business name: Space Grotesk Bold
+- Category tags with gradient backgrounds
+- Upvote counter with Vivid Lime accent
+- Hover: Lift effect with Azure glow shadow
 
-### Header
-- Clean white background
-- Large rounded search bar (center)
-- Icon-only navigation (minimal text)
-- Sticky positioning
-- Height: 64px
+### Social Feed Cards
+- Clean white/dark cards with rounded-lg
+- Profile image + username + timestamp
+- Post content with image gallery support
+- Interaction bar: Like (Lime), Comment, Share
+- Verified badges in Cyber Gold
 
-### Footer
-- Minimal link layout (horizontal)
-- Centered alignment
-- Small text
-- No heavy graphics
-- Just essential links
+### Marketplace Product Cards
+- Square product images (1:1)
+- Price in Cyber Gold
+- Vendor badge with glow effect
+- Add to cart: Primary Azure button
+- Grid layout with consistent heights
 
-### Mobile Bottom Navigation
-- Fixed at bottom with 4 key sections
-- Icon + label layout
-- Home, Explore, Shop, Saved
-- Clean background with subtle border
+### Forms & Inputs
+- Rounded-lg inputs with focus glow (Azure)
+- Floating labels (Space Grotesk)
+- Error states in red, success in Vivid Lime
+- Submit buttons with gradient backgrounds
 
-## Interaction Design
+### Badges & Tags
+- Rounded-full pills
+- Gradient backgrounds for categories
+- Solid colors for status indicators
+- Small Inter Medium text
 
-### Hover States
-- **Cards**: Elevation increase (shadow-sm → shadow-md)
-- **Buttons**: Subtle background brightness change
-- **Links**: Color change to foreground
-- No heavy animations or transforms
+## Interactive Elements
 
-### Touch Targets
-- Minimum 44px x 44px for mobile
-- Rounded corners for friendly feel
-- Clear visual feedback on interaction
+### Buttons
+- **Primary**: Azure background, white text, subtle glow
+- **Secondary**: Outline style with Azure border
+- **Accent**: Cyber Gold for premium actions
+- Rounded-lg (8px), padding: px-6 py-3
+- Hover: Brightness increase + glow intensity
+
+### Glow Effects
+Apply strategically to:
+- Focused inputs (box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.2))
+- Active cards (Azure glow)
+- Premium features (Gold glow)
+- Upvote buttons on hover (Lime glow)
+
+### Transitions
+- Duration: 200ms for micro-interactions
+- Easing: cubic-bezier(0.4, 0, 0.2, 1)
+- Properties: transform, box-shadow, background-color
 
 ## Images
 
-### Optimization
-- Lazy loading for all pins
-- Variable aspect ratios for natural masonry
-- Object-cover for proper cropping
-- Compressed for performance
+### Hero Image
+Large, high-quality lifestyle image showing:
+- Modern aesthetic clinic or beauty space
+- Diverse professionals in tech-forward setting
+- Vibrant, well-lit environment
+- Placement: Full-width hero section, 60vh height
 
-### Aspect Ratios
-- Portrait: 3:4
-- Square: 1:1
-- Landscape: 4:3
-- Tall: 4:5
+### Listing Images
+- Professional business photos (interiors, services, team)
+- 16:9 aspect ratio for consistency
+- High-quality, well-lit, modern aesthetic
+
+### Profile/Avatar Images
+- Circular crops (rounded-full)
+- Consistent sizing across components
+- Fallback gradients for missing images
+
+### Background Elements
+- Abstract gradient meshes for section backgrounds
+- Subtle geometric patterns at 3% opacity
+- No stock photos in backgrounds
 
 ## Accessibility
 
-- Clean contrast ratios (WCAG AA minimum)
-- Keyboard navigation support
+- WCAG AA contrast ratios in both modes
+- Keyboard navigation with visible focus states (Azure glow)
 - Semantic HTML structure
-- Alt text for all images
-- Focus states on interactive elements
+- ARIA labels for icon-only buttons
+- Screen reader text for complex interactions
+- Motion reduction media query support
 
-## Mobile-First Approach
+## Mobile Optimization
 
-1. Design for thumb reach zones
-2. Bottom navigation for key actions
-3. Larger tap targets (minimum 44px)
-4. Vertical scrolling as primary interaction
-5. Simplified header on mobile
+- Touch targets: minimum 44px height
+- Bottom navigation: 5 icons (Home, Explore, Post, Marketplace, Profile)
+- Simplified header on mobile (logo + search + menu)
+- Single-column layouts with full-width cards
+- Swipeable carousels for featured content
+- Sticky search bar below header
 
-## Pinterest-Specific Patterns
+## Dark Mode Implementation
 
-### Infinite Scroll
-- Load more content as user scrolls
-- No pagination
-- "Show More" button for manual trigger
-- Seamless browsing experience
-
-### Visual Hierarchy
-- Images first, text second
-- Large, beautiful imagery
-- Minimal text overlay
-- Let content speak for itself
-
-### Clean White Space
-- Generous padding and margins
-- Breathing room between elements
-- Not cluttered or overwhelming
-- Focus on visual content
+- Automatic system preference detection
+- Manual toggle in header
+- Smooth transitions between modes (300ms)
+- Adjusted glow intensities (more subtle in dark mode)
+- Inverted text but consistent brand colors
+- Elevated surfaces with lighter grays
 
 ## Performance
 
-- Code splitting for faster loads
+- Lazy loading for all images
+- Code splitting for marketplace/social features
 - Progressive Web App capabilities
-- Server-side rendering for SEO
-- Image optimization critical
-- Minimal JavaScript overhead
-
-## DFW Brand Integration
-
-While following Pinterest's clean aesthetic:
-- Use "Dallas Beauty Book" branding in header
-- Pinterest red accent for Dallas Beauty Book CTAs
-- DFW-specific content and locations
-- Professional aesthetic for beauty industry
-- Trust indicators where appropriate
-
-## Don'ts
-
-❌ Heavy borders or outlines on cards
-❌ Cluttered layouts with too much text
-❌ Aggressive animations or transitions
-❌ Dark or busy backgrounds
-❌ Small, hard-to-read text
-❌ Complex navigation patterns
-❌ Heavy CTAs that disrupt browsing
-
-## Do's
-
-✅ Clean white backgrounds
-✅ Large, beautiful images
-✅ Subtle shadows for depth
-✅ Rounded corners (16px)
-✅ Minimal, purposeful text
-✅ Clear visual hierarchy
-✅ Mobile-first responsive design
-✅ Fast, optimized performance
+- Optimized gradient rendering
+- Minimal animation overhead
+- CDN delivery for fonts

@@ -6,9 +6,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-border">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-4">
-        <a href="/" className="flex items-center" data-testid="link-logo">
-          <div className="text-2xl text-primary" style={{ fontFamily: 'Pacifico, cursive' }}>
-            DallasBeautyBook
+        <a href="/" className="flex items-center gap-2" data-testid="link-logo">
+          <div className="flex items-center gap-1">
+            <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded flex items-center justify-center">
+              <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-accent)' }}>G</span>
+            </div>
+            <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>
+              GENESIS
+            </span>
           </div>
         </a>
 
@@ -17,8 +22,8 @@ export function Header() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input 
               type="search"
-              placeholder="Search for beauty services..."
-              className="pl-10 h-12 rounded-full border-2 border-border bg-muted/50 focus:bg-white"
+              placeholder="Search health, beauty & aesthetics services..."
+              className="pl-10 h-12 rounded-full border-2 border-border bg-card/80 focus:bg-card focus:border-primary transition-colors"
               data-testid="input-header-search"
             />
           </div>
@@ -26,8 +31,8 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <a href="/submit-content" className="hidden md:block" title="Share content and grow your business for FREE">
-            <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold">
-              Get FREE Visibility →
+            <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+              Get Visibility →
             </Button>
           </a>
           <Button variant="ghost" size="icon" className="hidden md:flex rounded-full" data-testid="button-notifications">

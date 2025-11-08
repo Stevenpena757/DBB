@@ -122,7 +122,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-b from-accent/10 via-primary/5 to-accent/15">
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-br from-background via-card to-muted">
       <Header />
       <main className="flex-1">
         <Hero />
@@ -173,8 +173,8 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h2 className="text-xl font-bold mb-1 text-primary" style={{ fontFamily: 'Pacifico, cursive' }}>Build your Beauty</h2>
-                <p className="text-sm text-muted-foreground">Track the services and businesses you love</p>
+                <h2 className="text-2xl font-bold mb-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>Your Network</h2>
+                <p className="text-sm text-muted-foreground">Track and discover services that matter to you</p>
               </div>
               <div className="flex items-center gap-2">
                 <select 
@@ -213,7 +213,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-6 md:py-8 bg-gradient-to-b from-accent/10 via-primary/5 to-accent/5">
+        <section className="py-6 md:py-8">
           <div className="container mx-auto px-3">
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
               {feedItems.map((item, index) => {

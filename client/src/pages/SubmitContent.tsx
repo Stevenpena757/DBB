@@ -97,36 +97,35 @@ export default function SubmitContent() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-accent/10 via-primary/5 to-accent/15 pb-20 md:pb-6">
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted pb-20 md:pb-6">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-3 text-primary" style={{ fontFamily: 'Pacifico, cursive' }}>Get FREE Visibility</h1>
-          <p className="text-lg text-muted-foreground mb-2">
-            Share your expertise and grow your business — no payment required
+          <h1 className="text-3xl md:text-5xl font-extrabold mb-3 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>Amplify Your Reach</h1>
+          <p className="text-lg font-semibold text-foreground mb-2">
+            Share expertise. Build authority. Grow your business.
           </p>
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            Join our thriving community of DFW beauty professionals. Your contributions get upvoted by the community, 
-            increasing your visibility and helping potential clients discover your services.
+            Join our AI-powered platform connecting DFW's top health, beauty & aesthetics professionals with clients seeking excellence
           </p>
         </div>
 
-        <div className="bg-gradient-to-b from-primary/5 to-accent/10 p-6 rounded-2xl mb-8 border border-primary/10">
-          <h2 className="text-xl font-bold mb-4 text-center">How It Works</h2>
+        <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 p-6 rounded-lg mb-8 border border-primary/20 glow-primary">
+          <h2 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>How It Works</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-3 text-xl font-bold">1</div>
-              <h3 className="font-semibold mb-2">Submit Content</h3>
-              <p className="text-sm text-muted-foreground">Share articles, how-tos, or expert tips with the DFW beauty community</p>
+              <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-3 text-xl font-bold text-white glow-primary" style={{ fontFamily: 'var(--font-display)' }}>1</div>
+              <h3 className="font-bold mb-2" style={{ fontFamily: 'var(--font-display)' }}>Submit Content</h3>
+              <p className="text-sm text-muted-foreground">Share expert insights with DFW's health & beauty community</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-3 text-xl font-bold">2</div>
-              <h3 className="font-semibold mb-2">Get Upvoted</h3>
-              <p className="text-sm text-muted-foreground">Quality content gets upvoted by the community, boosting your visibility</p>
+              <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-secondary to-accent flex items-center justify-center mx-auto mb-3 text-xl font-bold text-foreground glow-secondary" style={{ fontFamily: 'var(--font-display)' }}>2</div>
+              <h3 className="font-bold mb-2" style={{ fontFamily: 'var(--font-display)' }}>Get Upvoted</h3>
+              <p className="text-sm text-muted-foreground">Quality content earns community recognition and boosts visibility</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-3 text-xl font-bold">3</div>
-              <h3 className="font-semibold mb-2">Grow Your Business</h3>
-              <p className="text-sm text-muted-foreground">Higher visibility = more clients discovering your services organically</p>
+              <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-accent to-primary flex items-center justify-center mx-auto mb-3 text-xl font-bold text-foreground glow-accent" style={{ fontFamily: 'var(--font-display)' }}>3</div>
+              <h3 className="font-bold mb-2" style={{ fontFamily: 'var(--font-display)' }}>Grow Your Reach</h3>
+              <p className="text-sm text-muted-foreground">Higher visibility = more clients discovering your services</p>
             </div>
           </div>
         </div>
