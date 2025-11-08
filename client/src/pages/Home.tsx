@@ -1,13 +1,13 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
-import { CategoryCard } from "@/components/CategoryCard";
 import { BusinessCard } from "@/components/BusinessCard";
 import { VendorCard } from "@/components/VendorCard";
 import { PostCard } from "@/components/PostCard";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Heart, Sparkles, Stethoscope, ArrowRight, ShoppingCart } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Heart, Sparkles, Stethoscope, ArrowRight, ShoppingCart, Users, Building2 } from "lucide-react";
 import salonImage from '@assets/generated_images/Beauty_salon_business_photo_a5408ce8.png';
 import clinicImage from '@assets/generated_images/Medical_aesthetics_clinic_photo_4076e3a0.png';
 import spaImage from '@assets/generated_images/Wellness_spa_business_photo_aeff6e69.png';
@@ -160,184 +160,135 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
 
-        <section className="py-16 md:py-24 bg-primary/5">
+        <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-                <div className="space-y-6">
-                  <h2 className="text-3xl md:text-4xl font-bold">Claim Your Listing</h2>
-                  <p className="text-lg text-muted-foreground">
-                    Join hundreds of DFW Health, Beauty, and Aesthetics businesses already growing their presence. Get discovered by local clients, share updates, and build your community.
-                  </p>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">✓</div>
-                      <span>Free business profile with photos and details</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">✓</div>
-                      <span>Post updates and promotions to the community</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">✓</div>
-                      <span>Connect with local DFW customers</span>
-                    </li>
-                  </ul>
-                  <Button size="lg" data-testid="button-claim-listing-primary">
-                    Claim Your Listing Now
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-4xl mx-auto">
+              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-health">
+                <CardContent className="p-4 md:p-6 text-center space-y-2">
+                  <Stethoscope className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
+                  <h3 className="font-semibold text-sm md:text-base">Health</h3>
+                  <p className="text-xs text-muted-foreground">150+</p>
+                </CardContent>
+              </Card>
+              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-beauty">
+                <CardContent className="p-4 md:p-6 text-center space-y-2">
+                  <Sparkles className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
+                  <h3 className="font-semibold text-sm md:text-base">Beauty</h3>
+                  <p className="text-xs text-muted-foreground">200+</p>
+                </CardContent>
+              </Card>
+              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-aesthetics">
+                <CardContent className="p-4 md:p-6 text-center space-y-2">
+                  <Heart className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
+                  <h3 className="font-semibold text-sm md:text-base">Aesthetics</h3>
+                  <p className="text-xs text-muted-foreground">120+</p>
+                </CardContent>
+              </Card>
+              <Card className="hover-elevate active-elevate-2 cursor-pointer" data-testid="card-category-vendors">
+                <CardContent className="p-4 md:p-6 text-center space-y-2">
+                  <ShoppingCart className="h-8 w-8 md:h-10 md:w-10 mx-auto text-primary" />
+                  <h3 className="font-semibold text-sm md:text-base">Vendors</h3>
+                  <p className="text-xs text-muted-foreground">Shop</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-8 md:py-12 bg-card/50">
+          <div className="container mx-auto px-4">
+            <Tabs defaultValue="businesses" className="max-w-4xl mx-auto">
+              <TabsList className="grid w-full grid-cols-3 mb-6">
+                <TabsTrigger value="businesses" data-testid="tab-businesses">
+                  <Building2 className="h-4 w-4 mr-2" />
+                  Businesses
+                </TabsTrigger>
+                <TabsTrigger value="community" data-testid="tab-community">
+                  <Users className="h-4 w-4 mr-2" />
+                  Community
+                </TabsTrigger>
+                <TabsTrigger value="vendors" data-testid="tab-vendors">
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  Vendors
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="businesses" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {businesses.slice(0, 4).map((business) => (
+                    <BusinessCard key={business.id} {...business} />
+                  ))}
+                </div>
+                <div className="text-center pt-4">
+                  <Button variant="outline" data-testid="button-view-all-businesses">
+                    View All Businesses
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 gap-6">
-                  <CategoryCard icon={Stethoscope} title="Health" businessCount={150} />
-                  <CategoryCard icon={Sparkles} title="Beauty" businessCount={200} />
-                  <CategoryCard icon={Heart} title="Aesthetics" businessCount={120} />
+              </TabsContent>
+
+              <TabsContent value="community" className="space-y-4">
+                <div className="space-y-4 max-w-2xl mx-auto">
+                  <PostCard
+                    id="1"
+                    businessName="Luxe Beauty Salon"
+                    timestamp="2 hours ago"
+                    content="New fall collection just arrived! Book your appointment now and get 20% off your first visit."
+                    image={salonImage}
+                    likes={24}
+                    comments={5}
+                  />
+                  <PostCard
+                    id="2"
+                    businessName="Elite Medical Aesthetics"
+                    timestamp="5 hours ago"
+                    content="Join us for a complimentary consultation this weekend!"
+                    likes={42}
+                    comments={12}
+                  />
                 </div>
-              </div>
-            </div>
+                <div className="text-center pt-4">
+                  <Button variant="outline" data-testid="button-view-community">
+                    View All Posts
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="vendors" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {vendors.slice(0, 4).map((vendor) => (
+                    <VendorCard key={vendor.id} {...vendor} />
+                  ))}
+                </div>
+                <div className="text-center pt-4">
+                  <Button variant="outline" data-testid="button-browse-all-vendors">
+                    Browse All Vendors
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 
-        <section className="py-16 md:py-24 border-t">
+        <section className="py-8 md:py-12 border-t">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center space-y-6 mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary">
-                <ShoppingCart className="h-4 w-4" />
-                <span className="font-semibold text-sm">Vendors Marketplace</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold">Shop Business Inventory & Supplies</h2>
-              <p className="text-lg text-muted-foreground">
-                Connect with trusted vendors and suppliers serving the DFW beauty industry. Find equipment, products, and supplies for your business.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {vendors.map((vendor) => (
-                <VendorCard key={vendor.id} {...vendor} />
-              ))}
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button size="lg" data-testid="button-browse-vendors">
-                Browse All Vendors
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline" data-testid="button-become-vendor">
-                Become a Vendor
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16 bg-card/50">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">Discover Businesses</h2>
-                <p className="text-muted-foreground">Top-rated businesses in your area</p>
-              </div>
-              <Button variant="outline" data-testid="button-view-all">
-                View All
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {businesses.map((business) => (
-                <BusinessCard key={business.id} {...business} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">Why Dallas Beauty Book?</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                The DFW directory built specifically for your industry
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              <div className="text-center space-y-3">
-                <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto text-2xl font-bold">
-                  1
-                </div>
-                <h3 className="text-xl font-semibold">Claim Your Listing</h3>
-                <p className="text-muted-foreground">
-                  Free profile for Health, Beauty & Aesthetics businesses in DFW
-                </p>
-              </div>
-              <div className="text-center space-y-3">
-                <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto text-2xl font-bold">
-                  2
-                </div>
-                <h3 className="text-xl font-semibold">Engage Your Community</h3>
-                <p className="text-muted-foreground">
-                  Share updates, promotions, and connect with local clients
-                </p>
-              </div>
-              <div className="text-center space-y-3">
-                <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto text-2xl font-bold">
-                  3
-                </div>
-                <h3 className="text-xl font-semibold">Industry-Focused</h3>
-                <p className="text-muted-foreground">
-                  Reach clients specifically looking for beauty services in DFW
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16 bg-card/50">
-          <div className="container mx-auto px-4">
-            <div className="text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold">Join Our Community</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                DFW's exclusive community for Health, Beauty & Aesthetics professionals and enthusiasts. See what businesses are sharing today.
-              </p>
-            </div>
             <div className="max-w-2xl mx-auto space-y-6">
-              <PostCard
-                id="1"
-                businessName="Luxe Beauty Salon"
-                timestamp="2 hours ago"
-                content="New fall collection just arrived! Book your appointment now and get 20% off your first visit. We're excited to show y'all our latest styles!"
-                image={salonImage}
-                likes={24}
-                comments={5}
-              />
-              <PostCard
-                id="2"
-                businessName="Elite Medical Aesthetics"
-                timestamp="5 hours ago"
-                content="Join us for a complimentary consultation this weekend. Learn about our latest treatments and meet our expert team!"
-                likes={42}
-                comments={12}
-              />
-            </div>
-            <div className="text-center mt-8">
-              <Button size="lg" data-testid="button-view-community">
-                Explore the Community
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16 md:py-24 border-t">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center space-y-6">
-              <Badge className="mb-2">DFW's #1 Beauty Directory</Badge>
-              <h2 className="text-3xl md:text-4xl font-bold">Exclusively for Health, Beauty & Aesthetics</h2>
-              <p className="text-lg text-muted-foreground">
-                Unlike general directories, Dallas Beauty Book is laser-focused on serving only the Health, Beauty, and Aesthetics industry in the DFW metro area. This means more targeted exposure and a dedicated community of local clients looking specifically for your services.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Button size="lg" data-testid="button-claim-business-cta">
+              <div className="text-center space-y-3">
+                <h2 className="text-2xl md:text-3xl font-bold">For Business Owners</h2>
+                <p className="text-muted-foreground">
+                  Get discovered by DFW clients looking for your services
+                </p>
+              </div>
+              <div className="grid gap-3">
+                <Button size="lg" className="w-full" data-testid="button-claim-listing-cta">
                   Claim Your Listing
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" data-testid="button-learn-more">
-                  See How It Works
+                <Button size="lg" variant="outline" className="w-full" data-testid="button-become-vendor-cta">
+                  Become a Vendor
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
             </div>
