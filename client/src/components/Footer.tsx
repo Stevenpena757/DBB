@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter, Building2, Sparkles, ShoppingCart, Heart } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
 
 export function Footer() {
@@ -88,6 +88,27 @@ export function Footer() {
 
         <div className="pt-8 border-t text-center text-sm text-muted-foreground">
           <p>&copy; 2025 Dallas Beauty Book. DFW's exclusive Health, Beauty & Aesthetics directory.</p>
+        </div>
+      </div>
+
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t md:hidden z-50 pb-safe">
+        <div className="grid grid-cols-4 h-16">
+          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-home">
+            <Building2 className="h-5 w-5" />
+            <span className="text-xs font-medium">Home</span>
+          </button>
+          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-explore">
+            <Sparkles className="h-5 w-5" />
+            <span className="text-xs font-medium">Explore</span>
+          </button>
+          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-vendors">
+            <ShoppingCart className="h-5 w-5" />
+            <span className="text-xs font-medium">Shop</span>
+          </button>
+          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-saved">
+            <Heart className="h-5 w-5" />
+            <span className="text-xs font-medium">Saved</span>
+          </button>
         </div>
       </div>
     </footer>

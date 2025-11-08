@@ -155,7 +155,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0">
       <Header />
       <main className="flex-1">
         <Hero />
@@ -237,80 +237,96 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-8 md:py-12 bg-card/50">
-          <div className="container mx-auto px-4">
-            <Tabs defaultValue="businesses" className="max-w-4xl mx-auto">
-              <TabsList className="grid w-full grid-cols-3 mb-6">
-                <TabsTrigger value="businesses" data-testid="tab-businesses">
-                  <Building2 className="h-4 w-4 mr-2" />
-                  Businesses
-                </TabsTrigger>
-                <TabsTrigger value="community" data-testid="tab-community">
-                  <Users className="h-4 w-4 mr-2" />
-                  Community
-                </TabsTrigger>
-                <TabsTrigger value="vendors" data-testid="tab-vendors">
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Vendors
-                </TabsTrigger>
-              </TabsList>
+        <section className="py-6 md:py-8">
+          <div className="container mx-auto px-3">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 px-1">Explore DFW Beauty</h2>
+            <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-1">
+                <div className="aspect-[3/4] overflow-hidden bg-muted">
+                  <img src={salonImage} alt="Luxe Beauty Salon" className="w-full h-full object-cover" />
+                </div>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold text-sm mb-1">Luxe Beauty Salon</h3>
+                  <p className="text-xs text-muted-foreground">Full-service salon • Uptown Dallas</p>
+                </CardContent>
+              </Card>
 
-              <TabsContent value="businesses" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {businesses.slice(0, 4).map((business) => (
-                    <BusinessCard key={business.id} {...business} />
-                  ))}
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-post-1">
+                <div className="aspect-square overflow-hidden bg-muted">
+                  <img src={clinicImage} alt="Elite Medical Aesthetics" className="w-full h-full object-cover" />
                 </div>
-                <div className="text-center pt-4">
-                  <Button variant="outline" data-testid="button-view-all-businesses">
-                    View All Businesses
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </TabsContent>
+                <CardContent className="p-3">
+                  <p className="text-xs font-medium mb-2">Elite Medical Aesthetics</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">Complimentary consultations this weekend</p>
+                </CardContent>
+              </Card>
 
-              <TabsContent value="community" className="space-y-4">
-                <div className="space-y-4 max-w-2xl mx-auto">
-                  <PostCard
-                    id="1"
-                    businessName="Luxe Beauty Salon"
-                    timestamp="2 hours ago"
-                    content="New fall collection just arrived! Book your appointment now and get 20% off your first visit."
-                    image={salonImage}
-                    likes={24}
-                    comments={5}
-                  />
-                  <PostCard
-                    id="2"
-                    businessName="Elite Medical Aesthetics"
-                    timestamp="5 hours ago"
-                    content="Join us for a complimentary consultation this weekend!"
-                    likes={42}
-                    comments={12}
-                  />
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-2">
+                <div className="aspect-[4/5] overflow-hidden bg-muted">
+                  <img src={spaImage} alt="Serenity Wellness Spa" className="w-full h-full object-cover" />
                 </div>
-                <div className="text-center pt-4">
-                  <Button variant="outline" data-testid="button-view-community">
-                    View All Posts
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </TabsContent>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold text-sm mb-1">Serenity Wellness Spa</h3>
+                  <p className="text-xs text-muted-foreground">Massage & wellness • Plano</p>
+                </CardContent>
+              </Card>
 
-              <TabsContent value="vendors" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {vendors.slice(0, 4).map((vendor) => (
-                    <VendorCard key={vendor.id} {...vendor} />
-                  ))}
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-3">
+                <div className="aspect-[3/4] overflow-hidden bg-muted">
+                  <img src={hairImage} alt="Divine Hair Studio" className="w-full h-full object-cover" />
                 </div>
-                <div className="text-center pt-4">
-                  <Button variant="outline" data-testid="button-browse-all-vendors">
-                    Browse All Vendors
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold text-sm mb-1">Divine Hair Studio</h3>
+                  <p className="text-xs text-muted-foreground">Hair salon • Fort Worth</p>
+                </CardContent>
+              </Card>
+
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-post-2">
+                <div className="aspect-[4/3] overflow-hidden bg-muted">
+                  <img src={nailImage} alt="Nail article" className="w-full h-full object-cover" />
                 </div>
-              </TabsContent>
-            </Tabs>
+                <CardContent className="p-3">
+                  <p className="text-xs font-medium mb-2">Perfect Nails Dallas</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">5 tips for long-lasting gel manicures</p>
+                </CardContent>
+              </Card>
+
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-4">
+                <div className="aspect-square overflow-hidden bg-muted">
+                  <img src={fitnessImage} alt="Radiant Fitness" className="w-full h-full object-cover" />
+                </div>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold text-sm mb-1">Radiant Fitness</h3>
+                  <p className="text-xs text-muted-foreground">Wellness studio • Irving</p>
+                </CardContent>
+              </Card>
+
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-5">
+                <div className="aspect-[3/4] overflow-hidden bg-muted">
+                  <img src={clinicImage} alt="Glow Medical Spa" className="w-full h-full object-cover" />
+                </div>
+                <CardContent className="p-3">
+                  <h3 className="font-semibold text-sm mb-1">Glow Medical Spa</h3>
+                  <p className="text-xs text-muted-foreground">Med spa • Richardson</p>
+                </CardContent>
+              </Card>
+
+              <Card className="mb-3 md:mb-4 break-inside-avoid overflow-hidden hover-elevate cursor-pointer" data-testid="pin-business-6">
+                <div className="aspect-[4/5] overflow-hidden bg-muted">
+                  <img src={salonImage} alt="Beauty article" className="w-full h-full object-cover" />
+                </div>
+                <CardContent className="p-3">
+                  <p className="text-xs font-medium mb-2">Luxe Beauty Salon</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">Winter hair care: How to combat dryness</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="text-center mt-6">
+              <Button variant="outline" size="lg" data-testid="button-load-more">
+                Show More
+              </Button>
+            </div>
           </div>
         </section>
 

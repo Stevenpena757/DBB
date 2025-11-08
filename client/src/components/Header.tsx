@@ -16,13 +16,7 @@ export function Header() {
           
           <nav className="hidden md:flex items-center gap-1">
             <Button variant="ghost" data-testid="button-nav-discover">
-              Discover
-            </Button>
-            <Button variant="ghost" data-testid="button-nav-vendors">
-              Vendors
-            </Button>
-            <Button data-testid="button-nav-community">
-              Community
+              Explore
             </Button>
             <Button data-testid="button-nav-claim">
               Claim Your Listing
