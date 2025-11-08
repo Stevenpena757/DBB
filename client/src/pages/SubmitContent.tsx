@@ -76,10 +76,7 @@ export default function SubmitContent() {
 
   const articleMutation = useMutation({
     mutationFn: async (data: z.infer<typeof articleSchema>) => {
-      return apiRequest('/api/articles', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+      return apiRequest('POST', '/api/articles', data);
     },
     onSuccess: () => {
       toast({ title: "Article submitted!", description: "Your article is now visible in the directory." });
@@ -90,10 +87,7 @@ export default function SubmitContent() {
 
   const howToMutation = useMutation({
     mutationFn: async (data: z.infer<typeof howToSchema>) => {
-      return apiRequest('/api/how-tos', {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+      return apiRequest('POST', '/api/how-tos', data);
     },
     onSuccess: () => {
       toast({ title: "How-To submitted!", description: "Your guide is now visible in the directory." });
@@ -106,10 +100,35 @@ export default function SubmitContent() {
     <div className="min-h-screen bg-white pb-20 md:pb-6">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">Get FREE Visibility</h1>
-          <p className="text-lg text-muted-foreground">
-            Share your expertise and appear in our directory — no payment required
+          <h1 className="text-3xl md:text-4xl font-bold mb-3 text-primary" style={{ fontFamily: 'Pacifico, cursive' }}>Get FREE Visibility</h1>
+          <p className="text-lg text-muted-foreground mb-2">
+            Share your expertise and grow your business — no payment required
           </p>
+          <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+            Join our thriving community of DFW beauty professionals. Your contributions get upvoted by the community, 
+            increasing your visibility and helping potential clients discover your services.
+          </p>
+        </div>
+
+        <div className="bg-gradient-to-b from-primary/5 to-accent/10 p-6 rounded-2xl mb-8 border border-primary/10">
+          <h2 className="text-xl font-bold mb-4 text-center">How It Works</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-3 text-xl font-bold">1</div>
+              <h3 className="font-semibold mb-2">Submit Content</h3>
+              <p className="text-sm text-muted-foreground">Share articles, how-tos, or expert tips with the DFW beauty community</p>
+            </div>
+            <div className="text-center">
+              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-3 text-xl font-bold">2</div>
+              <h3 className="font-semibold mb-2">Get Upvoted</h3>
+              <p className="text-sm text-muted-foreground">Quality content gets upvoted by the community, boosting your visibility</p>
+            </div>
+            <div className="text-center">
+              <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-3 text-xl font-bold">3</div>
+              <h3 className="font-semibold mb-2">Grow Your Business</h3>
+              <p className="text-sm text-muted-foreground">Higher visibility = more clients discovering your services organically</p>
+            </div>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-4 mb-8">

@@ -59,21 +59,21 @@ export default function Home() {
 
   // Upvote mutations
   const upvoteBusinessMutation = useMutation({
-    mutationFn: (id: number) => apiRequest(`/api/businesses/${id}/upvote`, { method: "POST" }),
+    mutationFn: (id: number) => apiRequest("POST", `/api/businesses/${id}/upvote`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/businesses'] });
     },
   });
 
   const upvoteArticleMutation = useMutation({
-    mutationFn: (id: number) => apiRequest(`/api/articles/${id}/upvote`, { method: "POST" }),
+    mutationFn: (id: number) => apiRequest("POST", `/api/articles/${id}/upvote`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/articles'] });
     },
   });
 
   const upvoteHowToMutation = useMutation({
-    mutationFn: (id: number) => apiRequest(`/api/how-tos/${id}/upvote`, { method: "POST" }),
+    mutationFn: (id: number) => apiRequest("POST", `/api/how-tos/${id}/upvote`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/how-tos'] });
     },
@@ -169,10 +169,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-4 bg-muted/30">
+        <section className="py-6 md:py-8 bg-gradient-to-b from-primary/5 to-accent/10">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-semibold">Ideas for you</h2>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-bold mb-1 text-primary" style={{ fontFamily: 'Pacifico, cursive' }}>Build your Beauty</h2>
+                <p className="text-sm text-muted-foreground">Track the services and businesses you love</p>
+              </div>
               <div className="flex items-center gap-2">
                 <select 
                   value={selectedLocation} 
@@ -192,10 +195,25 @@ export default function Home() {
                 </select>
               </div>
             </div>
+
+            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-white/60 backdrop-blur-sm rounded-2xl border border-primary/10">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary" data-testid="text-total-contributions">{businesses.length + articles.length + howTos.length}</div>
+                <div className="text-xs text-muted-foreground">Total Contributions</div>
+              </div>
+              <div className="text-center border-x border-primary/10">
+                <div className="text-2xl font-bold text-primary" data-testid="text-community-upvotes">{businesses.reduce((sum, b) => sum + b.upvotes, 0) + articles.reduce((sum, a) => sum + a.upvotes, 0) + howTos.reduce((sum, h) => sum + h.upvotes, 0)}</div>
+                <div className="text-xs text-muted-foreground">Community Upvotes</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary" data-testid="text-active-businesses">{businesses.filter(b => b.isClaimed).length}</div>
+                <div className="text-xs text-muted-foreground">Active Businesses</div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section className="py-6 md:py-8 bg-white">
+        <section className="py-6 md:py-8 bg-gradient-to-b from-accent/10 to-white">
           <div className="container mx-auto px-3">
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
               {feedItems.map((item, index) => {
@@ -277,9 +295,19 @@ export default function Home() {
                         <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="p-3">
-                        <div className="flex items-center gap-1 mb-1">
-                          <Lightbulb className="h-3 w-3 text-muted-foreground" />
-                          <span className="text-xs text-muted-foreground">How-To</span>
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <div className="flex items-center gap-1">
+                            <Lightbulb className="h-3 w-3 text-muted-foreground" />
+                            <span className="text-xs text-muted-foreground">How-To</span>
+                          </div>
+                          <button
+                            onClick={(e) => handleUpvote(e, item)}
+                            className="flex items-center gap-1 px-2 py-1 rounded-full hover-elevate active-elevate-2 text-xs font-medium"
+                            data-testid={`button-upvote-howto-${item.id}`}
+                          >
+                            <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
+                            <span className="text-primary">{item.upvotes}</span>
+                          </button>
                         </div>
                         <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
                         <p className="text-xs text-muted-foreground line-clamp-2">{item.description}</p>
