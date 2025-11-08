@@ -122,7 +122,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-b from-white via-accent/5 to-primary/5">
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-b from-accent/10 via-primary/5 to-accent/15">
       <Header />
       <main className="flex-1">
         <Hero />
