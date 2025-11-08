@@ -97,7 +97,7 @@ export default function SubmitContent() {
   });
 
   return (
-    <div className="min-h-screen bg-white pb-20 md:pb-6">
+    <div className="min-h-screen bg-gradient-to-b from-white via-accent/5 to-primary/5 pb-20 md:pb-6">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-3 text-primary" style={{ fontFamily: 'Pacifico, cursive' }}>Get FREE Visibility</h1>

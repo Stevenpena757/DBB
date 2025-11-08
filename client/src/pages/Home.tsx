@@ -122,7 +122,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pb-16 md:pb-0">
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-b from-white via-accent/5 to-primary/5">
       <Header />
       <main className="flex-1">
         <Hero />
@@ -213,7 +213,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-6 md:py-8 bg-gradient-to-b from-accent/10 to-white">
+        <section className="py-6 md:py-8 bg-gradient-to-b from-accent/10 via-primary/5 to-accent/5">
           <div className="container mx-auto px-3">
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
               {feedItems.map((item, index) => {
@@ -232,7 +232,7 @@ export default function Home() {
                         <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                       </div>
                       <div className="p-3">
-                        <div className="flex items-start justify-between gap-2 mb-1">
+                        <div className="flex items-start justify-between gap-2 mb-2">
                           <h3 className="font-semibold text-sm flex-1">{item.name}</h3>
                           <button
                             onClick={(e) => handleUpvote(e, item)}
@@ -243,10 +243,18 @@ export default function Home() {
                             <span className="text-primary">{item.upvotes}</span>
                           </button>
                         </div>
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          {item.location}
-                        </p>
+                        <div className="space-y-1">
+                          <p className="text-xs text-muted-foreground flex items-center gap-1">
+                            <MapPin className="h-3 w-3 flex-shrink-0" />
+                            <span className="truncate">{item.location}</span>
+                          </p>
+                          {item.phone && (
+                            <p className="text-xs font-medium text-primary">{item.phone}</p>
+                          )}
+                          {item.address && (
+                            <p className="text-xs text-muted-foreground line-clamp-1">{item.address}</p>
+                          )}
+                        </div>
                       </div>
                     </a>
                   );
