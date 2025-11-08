@@ -7,8 +7,8 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full bg-white border-b border-border">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-4">
         <a href="/" className="flex items-center" data-testid="link-logo">
-          <div className="text-xl font-bold text-primary">
-            Dallas Beauty Book
+          <div className="text-2xl text-primary" style={{ fontFamily: 'Pacifico, cursive' }}>
+            DallasBeautyBook
           </div>
         </a>
 

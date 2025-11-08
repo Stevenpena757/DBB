@@ -11,13 +11,16 @@ export function Hero() {
         }}
       />
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-        <div className="space-y-3">
-          <p className="text-sm md:text-base text-white/95 font-medium tracking-wide">
-            Discover DFW Beauty
-          </p>
-          <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-md">
-            Winter self-care essentials
+        <div className="space-y-4 max-w-3xl">
+          <h1 className="text-5xl md:text-7xl text-white drop-shadow-lg" style={{ fontFamily: 'Pacifico, cursive' }}>
+            DallasBeautyBook
           </h1>
+          <p className="text-lg md:text-2xl text-white/95 font-semibold drop-shadow-md">
+            Where DFW Beauty Meets Community
+          </p>
+          <p className="text-sm md:text-base text-white/90 max-w-2xl mx-auto">
+            Your trusted directory for Health, Beauty & Aesthetics services—powered by local businesses, experts, and community insights
+          </p>
         </div>
       </div>
       
