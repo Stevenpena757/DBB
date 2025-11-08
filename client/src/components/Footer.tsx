@@ -22,22 +22,22 @@ export function Footer() {
 
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t md:hidden z-50 pb-safe">
         <div className="grid grid-cols-4 h-16">
-          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-home">
+          <a href="/" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-home">
             <Building2 className="h-5 w-5" />
             <span className="text-xs font-medium">Home</span>
-          </button>
-          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-explore">
+          </a>
+          <a href="/explore" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-explore">
             <Sparkles className="h-5 w-5" />
             <span className="text-xs font-medium">Explore</span>
-          </button>
-          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-vendors">
+          </a>
+          <a href="/shop" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-vendors">
             <ShoppingCart className="h-5 w-5" />
             <span className="text-xs font-medium">Shop</span>
-          </button>
-          <button className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-saved">
+          </a>
+          <a href="/saved" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-saved">
             <Heart className="h-5 w-5" />
             <span className="text-xs font-medium">Saved</span>
-          </button>
+          </a>
         </div>
       </div>
     </footer>

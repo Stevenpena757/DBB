@@ -25,6 +25,11 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+          <a href="/submit-content" className="hidden md:block">
+            <Button variant="default" size="sm" data-testid="button-submit-content">
+              Get FREE Visibility
+            </Button>
+          </a>
           <Button variant="ghost" size="icon" className="hidden md:flex rounded-full" data-testid="button-notifications">
             <Bell className="h-5 w-5" />
           </Button>
