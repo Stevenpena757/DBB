@@ -26,11 +26,11 @@ export function Hero() {
           <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
             DallasBeautyBook
           </h1>
-          <p className="text-xl md:text-3xl font-semibold text-white drop-shadow-md" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-xl md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
             Community-Driven Beauty Discovery
           </p>
-          <p className="text-base md:text-lg max-w-2xl mx-auto text-gray-200">
-            Where businesses gain <span className="font-semibold text-white">FREE visibility</span> by sharing content, vendors offer services, and the most active & upvoted businesses shine
+          <p className="text-base md:text-xl max-w-2xl mx-auto text-white font-medium">
+            Where businesses gain <span className="font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">FREE visibility</span> by sharing content, vendors offer services, and the most <span className="font-bold text-accent">active & upvoted</span> businesses <span className="font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">shine</span>
           </p>
         </div>
       </div>
