@@ -31,6 +31,11 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+          <a href="/pricing" className="hidden lg:block">
+            <Button variant="ghost" size="sm" data-testid="button-pricing">
+              Pricing
+            </Button>
+          </a>
           <a href="/submit-content" className="hidden md:block" title="Share content and grow your business for FREE">
             <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
               Share & Get Noticed

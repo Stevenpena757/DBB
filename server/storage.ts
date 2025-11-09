@@ -306,7 +306,48 @@ export class MemStorage implements IStorage {
       const id = this.businessIdCounter++;
       // Give some businesses initial upvotes to show community engagement
       const upvotes = index < 5 ? Math.floor(Math.random() * 20) + 5 : Math.floor(Math.random() * 10);
-      this.businesses.set(id, { ...business, id, upvotes, createdAt: new Date() });
+      
+      // Mock subscription tiers for monetization demo
+      let subscriptionTier: "free" | "pro" | "premium" = "free";
+      let isSponsored = false;
+      let sponsoredUntil: Date | null = null;
+      
+      // Make some businesses Premium
+      if ([0, 5].includes(index)) {
+        subscriptionTier = "premium";
+      }
+      // Make some businesses Pro
+      else if ([1, 2, 6, 9].includes(index)) {
+        subscriptionTier = "pro";
+      }
+      
+      // Make one Premium business sponsored
+      if (index === 0) {
+        isSponsored = true;
+        const futureDate = new Date();
+        futureDate.setDate(futureDate.getDate() + 30); // Sponsored for 30 days
+        sponsoredUntil = futureDate;
+      }
+      
+      this.businesses.set(id, { 
+        address: null,
+        phone: null,
+        website: null,
+        additionalImages: null,
+        claimedBy: null,
+        instagramHandle: null,
+        tiktokHandle: null,
+        facebookUrl: null,
+        isClaimed: false,
+        featured: false,
+        ...business, 
+        id, 
+        upvotes, 
+        subscriptionTier,
+        isSponsored,
+        sponsoredUntil,
+        createdAt: new Date() 
+      });
     });
 
     // Seed sample articles
@@ -332,6 +373,88 @@ export class MemStorage implements IStorage {
     sampleArticles.forEach(article => {
       const id = this.articleIdCounter++;
       this.articles.set(id, { ...article, id, views: 0, upvotes: 0, createdAt: new Date() });
+    });
+
+    // Seed sample vendors for marketplace
+    const sampleVendors: InsertVendor[] = [
+      {
+        name: "BeautyPro Supply Co.",
+        description: "Professional beauty equipment and supplies for salons and spas",
+        category: "Equipment",
+        imageUrl: "https://images.unsplash.com/photo-1522337094846-8a818192de1f?w=800",
+        phone: "(214) 555-0101",
+        website: "https://beautyprosupply.example.com",
+        email: "sales@beautyprosupply.example.com",
+      },
+      {
+        name: "Elite Aesthetics Distributors",
+        description: "Premium skincare products and aesthetic supplies for medical spas",
+        category: "Products",
+        imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800",
+        phone: "(972) 555-0202",
+        website: "https://eliteaesthetics.example.com",
+        email: "info@eliteaesthetics.example.com",
+      },
+      {
+        name: "Salon Furniture Direct",
+        description: "High-quality salon chairs, stations, and furniture at wholesale prices",
+        category: "Furniture",
+        imageUrl: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800",
+        phone: "(469) 555-0303",
+        website: "https://salonfurnituredirect.example.com",
+        email: "orders@salonfurnituredirect.example.com",
+      },
+      {
+        name: "MedSpa Tools & Tech",
+        description: "Advanced laser equipment and medical-grade aesthetic technology",
+        category: "Tools",
+        imageUrl: "https://images.unsplash.com/photo-1581594693702-fbdc51b2763b?w=800",
+        phone: "(214) 555-0404",
+        website: "https://medspatools.example.com",
+        email: "support@medspatools.example.com",
+      },
+      {
+        name: "Professional Beauty Supplies",
+        description: "Complete range of hair, nail, and beauty supplies for professionals",
+        category: "Supplies",
+        imageUrl: "https://images.unsplash.com/photo-1522338140262-f46f5913618a?w=800",
+        phone: "(817) 555-0505",
+        website: "https://probeautysupplies.example.com",
+        email: "wholesale@probeautysupplies.example.com",
+      },
+    ];
+
+    sampleVendors.forEach((vendor, index) => {
+      const id = this.vendorIdCounter++;
+      
+      // Mock subscription tiers for vendors
+      let subscriptionTier: "free" | "pro" | "premium" = "free";
+      let commissionRate = 20; // Default 20% for free tier
+      let featured = false;
+      
+      // Make vendor 2 Premium with lower commission and featured
+      if (index === 1) {
+        subscriptionTier = "premium";
+        commissionRate = 10;
+        featured = true;
+      }
+      // Make vendors 0 and 3 Pro with mid-tier commission
+      else if ([0, 3].includes(index)) {
+        subscriptionTier = "pro";
+        commissionRate = 15;
+      }
+      
+      this.vendors.set(id, {
+        website: null,
+        phone: null,
+        email: null,
+        ...vendor,
+        id,
+        subscriptionTier,
+        commissionRate,
+        featured,
+        createdAt: new Date()
+      });
     });
   }
 
@@ -367,6 +490,11 @@ export class MemStorage implements IStorage {
       instagramHandle: null,
       tiktokHandle: null,
       facebookUrl: null,
+      isClaimed: false,
+      featured: false,
+      subscriptionTier: "free",
+      isSponsored: false,
+      sponsoredUntil: null,
       ...insertBusiness, 
       id,
       upvotes: 0,
@@ -478,6 +606,8 @@ export class MemStorage implements IStorage {
       phone: null,
       email: null,
       featured: false,
+      commissionRate: 15,
+      subscriptionTier: "free",
       ...insertVendor, 
       id, 
       createdAt: new Date() 

@@ -40,6 +40,9 @@ export const dfwLocations = [
   "Flower Mound",
 ] as const;
 
+// Subscription tiers for monetization
+export const subscriptionTiers = ["free", "pro", "premium"] as const;
+
 // Businesses table
 export const businesses = pgTable("businesses", {
   id: serial("id").primaryKey(),
@@ -59,6 +62,10 @@ export const businesses = pgTable("businesses", {
   facebookUrl: text("facebook_url"),
   featured: boolean("featured").default(false).notNull(),
   upvotes: integer("upvotes").default(0).notNull(),
+  // Monetization fields
+  subscriptionTier: text("subscription_tier").default("free").notNull(), // "free", "pro", "premium"
+  isSponsored: boolean("is_sponsored").default(false).notNull(),
+  sponsoredUntil: timestamp("sponsored_until"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -66,6 +73,9 @@ export type Business = typeof businesses.$inferSelect;
 export const insertBusinessSchema = createInsertSchema(businesses).omit({
   id: true,
   upvotes: true,
+  subscriptionTier: true,
+  isSponsored: true,
+  sponsoredUntil: true,
   createdAt: true,
 });
 export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
@@ -147,12 +157,17 @@ export const vendors = pgTable("vendors", {
   phone: text("phone"),
   email: text("email"),
   featured: boolean("featured").default(false).notNull(),
+  // Monetization: Commission rate for marketplace transactions
+  commissionRate: integer("commission_rate").default(15).notNull(), // Percentage (e.g., 15 = 15%)
+  subscriptionTier: text("subscription_tier").default("free").notNull(), // "free", "pro", "premium"
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export type Vendor = typeof vendors.$inferSelect;
 export const insertVendorSchema = createInsertSchema(vendors).omit({
   id: true,
+  commissionRate: true,
+  subscriptionTier: true,
   createdAt: true,
 });
 export type InsertVendor = z.infer<typeof insertVendorSchema>;

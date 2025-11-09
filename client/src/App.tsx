@@ -8,6 +8,8 @@ import Home from "@/pages/Home";
 import Explore from "@/pages/Explore";
 import Shop from "@/pages/Shop";
 import Saved from "@/pages/Saved";
+import Pricing from "@/pages/Pricing";
+import Vendors from "@/pages/Vendors";
 import BusinessProfile from "@/pages/BusinessProfile";
 import SubmitContent from "@/pages/SubmitContent";
 import NotFound from "@/pages/not-found";
@@ -19,6 +21,8 @@ function Router() {
       <Route path="/explore" component={Explore} />
       <Route path="/shop" component={Shop} />
       <Route path="/saved" component={Saved} />
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/vendors" component={Vendors} />
       <Route path="/submit-content" component={SubmitContent} />
       <Route path="/business/:id" component={BusinessProfile} />
       <Route component={NotFound} />

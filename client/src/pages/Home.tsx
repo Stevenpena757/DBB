@@ -5,7 +5,7 @@ import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import type { Business, Article, HowTo } from "@shared/schema";
-import { FileText, Lightbulb, MapPin, Heart } from "lucide-react";
+import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 
 type FeedItem = Business | Article | HowTo;
@@ -265,19 +265,51 @@ export default function Home() {
                 const key = `${itemType}-${item.id}`;
                 
                 if (isBusiness(item)) {
+                  const isSponsored = item.isSponsored && item.sponsoredUntil && new Date(item.sponsoredUntil) > new Date();
+                  const isPro = item.subscriptionTier === "pro";
+                  const isPremium = item.subscriptionTier === "premium";
+                  
                   return (
                     <a 
                       href={`/business/${item.id}`}
                       key={key}
-                      className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer block group relative"
+                      className={`mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer block group relative ${
+                        isPremium ? 'ring-2 ring-secondary/30' : ''
+                      } ${isSponsored ? 'ring-2 ring-accent/50' : ''}`}
                       data-testid={`pin-business-${item.id}`}
                     >
-                      <div className={`${aspectRatio} overflow-hidden`}>
+                      {isSponsored && (
+                        <div className="absolute top-2 left-2 z-10 bg-gradient-to-r from-accent to-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                          <Sparkles className="h-2.5 w-2.5" />
+                          SPONSORED
+                        </div>
+                      )}
+                      <div className={`${aspectRatio} overflow-hidden relative`}>
                         <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                        {isPremium && (
+                          <div className="absolute top-2 right-2 bg-gradient-to-br from-secondary to-accent rounded-full p-1.5">
+                            <Crown className="h-3 w-3 text-white" />
+                          </div>
+                        )}
+                        {isPro && !isPremium && (
+                          <div className="absolute top-2 right-2 bg-gradient-to-br from-primary to-accent rounded-full p-1.5">
+                            <BadgeCheck className="h-3 w-3 text-white" />
+                          </div>
+                        )}
                       </div>
                       <div className="p-3">
                         <div className="flex items-start justify-between gap-2 mb-2">
-                          <h3 className="font-semibold text-sm flex-1">{item.name}</h3>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-sm flex items-center gap-1.5">
+                              {item.name}
+                              {isPremium && (
+                                <Crown className="h-3.5 w-3.5 text-secondary flex-shrink-0" />
+                              )}
+                              {isPro && !isPremium && (
+                                <BadgeCheck className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                              )}
+                            </h3>
+                          </div>
                           <button
                             onClick={(e) => handleUpvote(e, item)}
                             className="flex items-center gap-1 px-2 py-1 rounded-full hover-elevate active-elevate-2 text-xs font-medium"
