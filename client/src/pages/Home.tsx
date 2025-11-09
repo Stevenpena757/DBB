@@ -376,50 +376,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-6 md:py-8 bg-gradient-to-b from-primary/5 to-accent/10">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-2xl font-bold mb-1 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>Your Network</h2>
-                <p className="text-sm text-muted-foreground">Track and discover services that matter to you</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <select 
-                  value={selectedLocation} 
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="px-3 py-1.5 text-sm rounded-full border bg-white hover-elevate cursor-pointer"
-                  data-testid="select-location"
-                >
-                  <option value="all">All DFW</option>
-                  <option value="Dallas">Dallas</option>
-                  <option value="Fort Worth">Fort Worth</option>
-                  <option value="Plano">Plano</option>
-                  <option value="Irving">Irving</option>
-                  <option value="Frisco">Frisco</option>
-                  <option value="Arlington">Arlington</option>
-                  <option value="Richardson">Richardson</option>
-                  <option value="McKinney">McKinney</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3 mb-6 p-4 bg-white/60 backdrop-blur-sm rounded-2xl border border-primary/10">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary" data-testid="text-total-contributions">{businesses.length + articles.length + howTos.length}</div>
-                <div className="text-xs text-muted-foreground">Total Contributions</div>
-              </div>
-              <div className="text-center border-x border-primary/10">
-                <div className="text-2xl font-bold text-primary" data-testid="text-community-upvotes">{businesses.reduce((sum, b) => sum + b.upvotes, 0) + articles.reduce((sum, a) => sum + a.upvotes, 0) + howTos.reduce((sum, h) => sum + h.upvotes, 0)}</div>
-                <div className="text-xs text-muted-foreground">Community Upvotes</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary" data-testid="text-active-businesses">{businesses.filter(b => b.isClaimed).length}</div>
-                <div className="text-xs text-muted-foreground">Active Businesses</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section className="py-6 md:py-8">
           <div className="container mx-auto px-3">
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
