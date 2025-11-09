@@ -4,6 +4,12 @@
 
 Dallas Beauty Book is a Pinterest-inspired visual discovery platform designed exclusively for DFW's Health, Beauty, and Aesthetics businesses. The application provides a clean, visual-first interface where users can discover businesses, read articles and how-to guides, shop from vendors, and save their favorite content. The platform follows Pinterest's proven design principles with a masonry grid layout, subtle interactions, and a focus on visual content.
 
+**Monetization Strategy:**
+The platform implements a three-tier subscription model (Free, Pro $29/mo, Premium $99/mo) that preserves the core promise of FREE visibility through content creation. Revenue streams include:
+- Subscription tiers with enhanced features and reduced marketplace commissions
+- Sponsored content placements for premium visibility in the feed
+- Vendor marketplace with commission-based revenue (20% free, 15% pro, 10% premium)
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
@@ -57,10 +63,10 @@ Preferred communication style: Simple, everyday language.
 - WebSocket-based connection pooling
 
 **Data Models:**
-- Businesses: Core entity with category, location, contact info, social media links
+- Businesses: Core entity with category, location, contact info, social media links, subscription tier (free/pro/premium), sponsored status, and upvote tracking
 - Articles: Long-form content with excerpts, categories, and view tracking
 - How-Tos: Step-by-step guides with structured step arrays
-- Vendors: Product suppliers with ratings and product type listings
+- Vendors: Product suppliers with ratings, product type listings, subscription tier, and commission rates
 - Vendor Products: Individual products linked to vendors
 - Saves: User bookmarks for businesses and content (session-based)
 - Posts: Social media-style updates from businesses
@@ -72,8 +78,10 @@ Preferred communication style: Simple, everyday language.
 - Serial IDs for all primary keys
 - Text fields for flexible content storage
 - JSONB fields for structured data (steps in how-tos, hours of operation)
-- Boolean flags for featured status and verification
-- Timestamp fields for creation tracking and sorting
+- Boolean flags for featured status, verification, and sponsored status
+- Subscription tier enum (free, pro, premium) for businesses and vendors
+- Integer fields for upvote counts and commission rates
+- Timestamp fields for creation tracking, sorting, and sponsored content expiration
 - Predefined enums for categories and DFW locations
 
 **Data Access Pattern:**
