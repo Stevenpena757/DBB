@@ -39,10 +39,10 @@ export default function Vendors() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-8 max-w-3xl mx-auto">
               <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>
-                Connect With Suppliers
+                Find Your Suppliers
               </h1>
               <p className="text-lg text-muted-foreground">
-                We help beauty businesses find the equipment, products, and supplies they need to thrive
+                Browse equipment, products, and supplies from trusted vendors - all in one place for your business
               </p>
             </div>
 
