@@ -73,8 +73,27 @@ Preferred communication style: Simple, everyday language.
 - Conditional cookie security (secure: false in development, secure: true in production)
 - User profile management with automatic creation/update on login
 - Protected API routes using isAuthenticated middleware
+- Admin middleware (isAdmin) for protecting admin-only routes
 - Frontend auth state management via useAuth hook with TanStack Query
 - Graceful handling of unauthorized responses (401s treated as logged-out state)
+
+**Admin Panel:**
+- Role-based access control with admin middleware
+- Dedicated admin router at `/api/admin/*` with endpoints for:
+  - User management (view all users, update user roles)
+  - Business management (view all businesses, update subscription tiers, toggle featured status)
+  - Claim request management (view, approve, reject claims)
+  - Platform analytics (user/business/content stats, subscription distribution)
+- Admin Dashboard UI (`/admin`) with tabs for Analytics, Users, Businesses, and Claims
+- Admin link in header (only visible to users with role="admin")
+- Secure proof document viewing for claim verification
+
+**File Upload System:**
+- Multer-based file upload handling for proof documents
+- Support for JPG, PNG, and PDF files (max 10MB)
+- Files stored in private object storage directory (PRIVATE_OBJECT_DIR)
+- Secure download route (`/api/admin/proof/:filename`) protected by admin middleware
+- Directory traversal protection and file type validation
 
 **Data Models:**
 - Users: Platform users authenticated via Replit Auth with profile info (username, email, profileImage)

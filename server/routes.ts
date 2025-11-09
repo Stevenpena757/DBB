@@ -12,6 +12,10 @@ import {
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
+import multer from "multer";
+import { writeFile, mkdir } from "fs/promises";
+import { join } from "path";
+import { existsSync } from "fs";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -303,6 +307,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(products);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch products" });
+    }
+  });
+
+  // ============ FILE UPLOADS ============
+  const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+    fileFilter: (req, file, cb) => {
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
+      if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+      } else {
+        cb(new Error('Invalid file type. Only JPG, PNG, and PDF files are allowed.'));
+      }
+    }
+  });
+
+  app.post("/api/upload/proof-document", isAuthenticated, upload.single('document'), async (req: any, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      // Create upload directory if it doesn't exist
+      const uploadDir = process.env.PRIVATE_OBJECT_DIR || join(process.cwd(), '.private');
+      if (!existsSync(uploadDir)) {
+        await mkdir(uploadDir, { recursive: true });
+      }
+
+      // Generate unique filename
+      const timestamp = Date.now();
+      const safeFilename = req.file.originalname.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const filename = `proof_${timestamp}_${safeFilename}`;
+      const filePath = join(uploadDir, filename);
+
+      // Write file to storage
+      await writeFile(filePath, req.file.buffer);
+
+      // Return only the filename (not a URL)
+      res.json({ filename });
+    } catch (error) {
+      console.error("File upload error:", error);
+      res.status(500).json({ error: "Failed to upload file" });
+    }
+  });
+
+  // Secure download route for proof documents (admin only)
+  app.get("/api/admin/proof/:filename", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { filename } = req.params;
+      
+      // Validate filename to prevent directory traversal
+      if (!filename || filename.includes('..') || filename.includes('/')) {
+        return res.status(400).json({ error: "Invalid filename" });
+      }
+
+      const uploadDir = process.env.PRIVATE_OBJECT_DIR || join(process.cwd(), '.private');
+      const filePath = join(uploadDir, filename);
+
+      // Check if file exists
+      if (!existsSync(filePath)) {
+        return res.status(404).json({ error: "File not found" });
+      }
+
+      // Read and serve the file
+      const { readFile: readFileAsync } = await import('fs/promises');
+      const fileBuffer = await readFileAsync(filePath);
+      
+      // Set appropriate content type
+      const ext = filename.toLowerCase().split('.').pop();
+      const contentTypes: Record<string, string> = {
+        'pdf': 'application/pdf',
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'png': 'image/png'
+      };
+      
+      res.setHeader('Content-Type', contentTypes[ext || 'pdf'] || 'application/octet-stream');
+      res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
+      res.send(fileBuffer);
+    } catch (error) {
+      console.error("File download error:", error);
+      res.status(500).json({ error: "Failed to download file" });
     }
   });
 

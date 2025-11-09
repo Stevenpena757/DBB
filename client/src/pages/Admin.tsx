@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Users, Building2, FileCheck, BarChart3 } from "lucide-react";
+import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink } from "lucide-react";
 import type { User, Business, ClaimRequest } from "@shared/schema";
 
 export default function Admin() {
@@ -398,6 +398,21 @@ export default function Admin() {
                               {claim.claimantEmail} • {claim.claimantPhone}
                             </div>
                             <div className="text-sm mt-2">{claim.message}</div>
+                            {claim.proofDocumentUrl && (
+                              <div className="mt-2">
+                                <a 
+                                  href={`/api/admin/proof/${claim.proofDocumentUrl}`}
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                                  data-testid={`link-proof-document-${claim.id}`}
+                                >
+                                  <FileCheck className="h-4 w-4" />
+                                  View Proof Document
+                                  <ExternalLink className="h-3 w-3" />
+                                </a>
+                              </div>
+                            )}
                           </div>
                           <div className="flex gap-2">
                             <Button

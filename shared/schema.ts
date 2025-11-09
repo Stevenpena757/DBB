@@ -239,6 +239,7 @@ export const claimRequests = pgTable("claim_requests", {
   claimantEmail: text("claimant_email").notNull(),
   claimantPhone: text("claimant_phone").notNull(),
   message: text("message").notNull(),
+  proofDocumentUrl: text("proof_document_url"), // URL to uploaded proof document (utility bill, business license, etc.)
   status: text("status").default("pending").notNull(), // "pending", "approved", "rejected"
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

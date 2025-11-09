@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Phone, Mail, Globe, MapPin, Instagram, Facebook, Bookmark, Share2, CheckCircle } from "lucide-react";
+import { Phone, Mail, Globe, MapPin, Instagram, Facebook, Bookmark, Share2, CheckCircle, Upload, FileCheck } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
 import type { Business, Article, HowTo } from "@shared/schema";
 
@@ -25,6 +26,8 @@ const claimFormSchema = z.object({
 export default function BusinessProfile() {
   const { id } = useParams();
   const { toast } = useToast();
+  const [proofDocument, setProofDocument] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const { data: business, isLoading } = useQuery<Business>({
     queryKey: [`/api/businesses/${id}`],
@@ -51,17 +54,65 @@ export default function BusinessProfile() {
   });
 
   const claimMutation = useMutation({
-    mutationFn: async (data: z.infer<typeof claimFormSchema>) => {
-      return apiRequest(`/api/claim-requests`, {
+    mutationFn: async (data: z.infer<typeof claimFormSchema> & { proofDocumentUrl?: string }) => {
+      const response = await fetch(`/api/claim-requests`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...data, businessId: parseInt(id!), status: "pending" }),
+        credentials: "include"
       });
+      if (!response.ok) throw new Error("Failed to submit claim request");
+      return response.json();
     },
     onSuccess: () => {
       toast({ title: "Claim request submitted!", description: "We'll review and get back to you soon." });
       claimForm.reset();
+      setProofDocument(null);
     },
   });
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setProofDocument(e.target.files[0]);
+    }
+  };
+
+  const handleClaimSubmit = async (data: z.infer<typeof claimFormSchema>) => {
+    try {
+      setIsUploading(true);
+      let proofDocumentUrl: string | undefined;
+
+      // Upload proof document if provided
+      if (proofDocument) {
+        const formData = new FormData();
+        formData.append('document', proofDocument);
+
+        const uploadResponse = await fetch('/api/upload/proof-document', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload document');
+        }
+
+        const uploadData = await uploadResponse.json();
+        proofDocumentUrl = uploadData.filename;
+      }
+
+      // Submit claim request with document filename
+      await claimMutation.mutateAsync({ ...data, proofDocumentUrl });
+    } catch (error) {
+      toast({ 
+        title: "Error", 
+        description: "Failed to submit claim request. Please try again.",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -117,7 +168,7 @@ export default function BusinessProfile() {
                       <DialogTitle>Claim {business.name}</DialogTitle>
                     </DialogHeader>
                     <Form {...claimForm}>
-                      <form onSubmit={claimForm.handleSubmit((data) => claimMutation.mutate(data))} className="space-y-4">
+                      <form onSubmit={claimForm.handleSubmit(handleClaimSubmit)} className="space-y-4">
                         <FormField
                           control={claimForm.control}
                           name="claimantName"
@@ -170,8 +221,57 @@ export default function BusinessProfile() {
                             </FormItem>
                           )}
                         />
-                        <Button type="submit" className="w-full" data-testid="button-submit-claim">
-                          Submit Claim Request
+                        
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">
+                            Proof of Ownership (utility bill, business license, etc.)
+                          </label>
+                          <div className="border-2 border-dashed rounded-md p-4 hover-elevate cursor-pointer">
+                            <input
+                              type="file"
+                              accept="image/*,.pdf"
+                              onChange={handleFileChange}
+                              className="hidden"
+                              id="proof-document-upload"
+                              data-testid="input-proof-document"
+                            />
+                            <label
+                              htmlFor="proof-document-upload"
+                              className="flex flex-col items-center gap-2 cursor-pointer"
+                            >
+                              {proofDocument ? (
+                                <>
+                                  <FileCheck className="h-8 w-8 text-primary" />
+                                  <span className="text-sm font-medium">{proofDocument.name}</span>
+                                  <span className="text-xs text-muted-foreground">
+                                    {(proofDocument.size / 1024 / 1024).toFixed(2)} MB
+                                  </span>
+                                </>
+                              ) : (
+                                <>
+                                  <Upload className="h-8 w-8 text-muted-foreground" />
+                                  <span className="text-sm text-muted-foreground">
+                                    Click to upload document
+                                  </span>
+                                  <span className="text-xs text-muted-foreground">
+                                    JPG, PNG, or PDF (max 10MB)
+                                  </span>
+                                </>
+                              )}
+                            </label>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            Upload a utility bill, business license, or other proof that you own this business
+                          </p>
+                        </div>
+                        
+                        <Button 
+                          type="submit" 
+                          className="w-full" 
+                          data-testid="button-submit-claim"
+                          disabled={isUploading}
+                        >
+                          {isUploading ? "Uploading..." : "Submit Claim Request"}
                         </Button>
                       </form>
                     </Form>
