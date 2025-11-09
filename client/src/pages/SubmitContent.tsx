@@ -12,9 +12,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { FileText, Lightbulb, Instagram, CheckCircle } from "lucide-react";
+import { FileText, Lightbulb, Instagram, CheckCircle, LogIn } from "lucide-react";
 import type { Business } from "@shared/schema";
 import { categories } from "@shared/schema";
+import { useAuth } from "@/hooks/useAuth";
 
 const articleSchema = z.object({
   businessId: z.number(),
@@ -41,10 +42,72 @@ const howToSchema = z.object({
 export default function SubmitContent() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("article");
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   const { data: businesses = [] } = useQuery<Business[]>({
     queryKey: ['/api/businesses'],
   });
+
+  // Show login prompt if not authenticated
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-card to-muted flex items-center justify-center px-4">
+        <Card className="max-w-md w-full">
+          <CardHeader>
+            <div className="flex justify-center mb-4">
+              <LogIn className="h-12 w-12 text-primary" />
+            </div>
+            <CardTitle className="text-center text-2xl">Login Required</CardTitle>
+            <CardDescription className="text-center">
+              You need to be logged in to submit content and grow your business on Dallas Beauty Book
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-muted/50 p-4 rounded-lg">
+              <h3 className="font-semibold mb-2">Why create an account?</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Submit articles and how-to guides</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Claim and manage your business</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Save and bookmark content</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                  <span>Track your content performance</span>
+                </li>
+              </ul>
+            </div>
+            <a href="/api/login" className="block">
+              <Button className="w-full" size="lg" data-testid="button-login-submit">
+                Log In to Continue
+              </Button>
+            </a>
+            <p className="text-xs text-center text-muted-foreground">
+              By logging in, you agree to our Terms of Service and Privacy Policy
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const articleForm = useForm({
     resolver: zodResolver(articleSchema),

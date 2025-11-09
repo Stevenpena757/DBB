@@ -69,10 +69,12 @@ export function Header() {
           
           {isAuthenticated && user && (
             <>
-              <Avatar className="h-8 w-8" data-testid="avatar-user">
-                <AvatarImage src={user.profileImage || undefined} alt={user.username} />
-                <AvatarFallback>{user.username[0]?.toUpperCase()}</AvatarFallback>
-              </Avatar>
+              <a href="/dashboard">
+                <Avatar className="h-8 w-8 hover-elevate cursor-pointer" data-testid="avatar-user" title="View Dashboard">
+                  <AvatarImage src={user.profileImage || undefined} alt={user.username} />
+                  <AvatarFallback>{user.username[0]?.toUpperCase()}</AvatarFallback>
+                </Avatar>
+              </a>
               <a href="/api/logout">
                 <Button variant="ghost" size="icon" className="rounded-full" data-testid="button-logout" title="Log out">
                   <LogOut className="h-5 w-5" />
