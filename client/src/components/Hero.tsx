@@ -68,7 +68,7 @@ export function Hero() {
             DFW's Beauty Listings
           </p>
           <p className="text-xs md:text-xl max-w-2xl mx-auto text-white font-medium leading-relaxed">
-            Gain <span className="font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">FREE visibility</span> by sharing your expertise. Connect with suppliers. Get <span className="font-bold text-accent">discovered</span> by the most <span className="font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">active</span> community in Dallas
+            Gain <span className="font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">FREE visibility</span> by sharing your expertise. Get <span className="font-bold text-accent">discovered</span> by the most <span className="font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">active</span> community in Dallas
           </p>
         </div>
       </div>
