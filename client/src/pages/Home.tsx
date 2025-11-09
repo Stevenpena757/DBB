@@ -309,9 +309,9 @@ export default function Home() {
                     <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
                       <MapPin className="h-5 w-5 md:h-8 md:w-8 text-white" />
                     </div>
-                    <h3 className="text-xl md:text-4xl font-extrabold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Vendor Marketplace</h3>
+                    <h3 className="text-xl md:text-4xl font-extrabold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Connect With Suppliers</h3>
                     <p className="text-[10px] md:text-sm text-center max-w-lg leading-tight md:leading-snug text-foreground/70 px-4">
-                      Suppliers connect with beauty businesses
+                      Find equipment, products & supplies for your business
                     </p>
                   </div>
                 </div>

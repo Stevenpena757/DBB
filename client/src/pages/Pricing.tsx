@@ -147,10 +147,10 @@ export default function Pricing() {
               <Card className="bg-gradient-to-br from-primary/5 to-accent/10 border-primary/20">
                 <CardHeader>
                   <CardTitle className="text-center text-2xl">
-                    Vendor Marketplace
+                    Are You a Supplier?
                   </CardTitle>
                   <CardDescription className="text-center">
-                    For suppliers looking to connect with DFW beauty businesses
+                    Reach 1000+ DFW beauty businesses actively searching for equipment, products, and supplies
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -182,7 +182,7 @@ export default function Pricing() {
                 </CardContent>
                 <CardFooter className="flex justify-center">
                   <Button variant="default" size="lg" data-testid="button-vendor-signup" className="bg-gradient-to-r from-primary to-secondary">
-                    Become a Vendor Partner
+                    List Your Products
                   </Button>
                 </CardFooter>
               </Card>
