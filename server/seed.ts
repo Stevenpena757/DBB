@@ -98,6 +98,7 @@ export default async function seed() {
     const articlesData = [
       {
         businessId: 1,
+        userId: sampleUser.id,
         title: "Winter Hair Care: Combat DFW's Dry Weather",
         content: "Winter in DFW brings dry air that can wreak havoc on your hair. Here are expert tips to keep your locks healthy...",
         excerpt: "Expert tips for maintaining healthy, hydrated hair during DFW's dry winter months",
@@ -107,6 +108,7 @@ export default async function seed() {
       },
       {
         businessId: 1,
+        userId: sampleUser.id,
         title: "Injectable Trends 2024: What's Popular in DFW",
         content: "The aesthetic industry is constantly evolving. Here are the latest injectable trends we're seeing in Dallas-Fort Worth...",
         excerpt: "Discover the latest injectable trends dominating the DFW aesthetic scene",
@@ -122,6 +124,7 @@ export default async function seed() {
     const howTosData = [
       {
         businessId: 1,
+        userId: sampleUser.id,
         title: "How to Prepare for Your First Botox Appointment",
         description: "A comprehensive guide to preparing for your first cosmetic injectable treatment",
         imageUrl: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800",
