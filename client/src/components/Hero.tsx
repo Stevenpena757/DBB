@@ -65,7 +65,7 @@ export function Hero() {
             </div>
           </div>
           <p className="text-base md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
-            DFW Beauty Listings
+            DFW Featured Beauty Listings
           </p>
           <p className="text-xs md:text-xl max-w-2xl mx-auto text-white font-medium leading-relaxed">
             Gain <span className="font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">FREE visibility</span> by sharing your expertise. Get <span className="font-bold text-accent">discovered</span> by the most <span className="font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">active</span> community in Dallas
