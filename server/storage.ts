@@ -37,6 +37,7 @@ export interface IStorage {
   getArticleById(id: number): Promise<Article | undefined>;
   getArticlesByBusinessId(businessId: number): Promise<Article[]>;
   getArticlesByCategory(category: string): Promise<Article[]>;
+  getArticlesByUserId(userId: number): Promise<Article[]>;
   createArticle(article: InsertArticle): Promise<Article>;
   incrementArticleViews(id: number): Promise<void>;
   
@@ -44,6 +45,7 @@ export interface IStorage {
   getAllHowTos(): Promise<HowTo[]>;
   getHowToById(id: number): Promise<HowTo | undefined>;
   getHowTosByBusinessId(businessId: number): Promise<HowTo[]>;
+  getHowTosByUserId(userId: number): Promise<HowTo[]>;
   createHowTo(howTo: InsertHowTo): Promise<HowTo>;
   
   // Vendors

@@ -119,6 +119,7 @@ export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
 export const posts = pgTable("posts", {
   id: serial("id").primaryKey(),
   businessId: integer("business_id").notNull().references(() => businesses.id),
+  userId: integer("user_id").notNull().references(() => users.id),
   title: text("title").notNull(),
   content: text("content").notNull(),
   imageUrl: text("image_url"),
@@ -139,6 +140,7 @@ export type InsertPost = z.infer<typeof insertPostSchema>;
 export const articles = pgTable("articles", {
   id: serial("id").primaryKey(),
   businessId: integer("business_id").notNull().references(() => businesses.id),
+  userId: integer("user_id").notNull().references(() => users.id),
   title: text("title").notNull(),
   content: text("content").notNull(),
   imageUrl: text("image_url").notNull(),
@@ -162,6 +164,7 @@ export type InsertArticle = z.infer<typeof insertArticleSchema>;
 export const howTos = pgTable("how_tos", {
   id: serial("id").primaryKey(),
   businessId: integer("business_id").notNull().references(() => businesses.id),
+  userId: integer("user_id").notNull().references(() => users.id),
   title: text("title").notNull(),
   description: text("description").notNull(),
   steps: jsonb("steps").notNull(), // Array of {step: number, title: string, content: string}

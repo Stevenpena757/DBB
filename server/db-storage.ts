@@ -106,6 +106,10 @@ export class DbStorage implements IStorage {
     return db.select().from(articles).where(eq(articles.category, category)).orderBy(desc(articles.createdAt));
   }
 
+  async getArticlesByUserId(userId: number): Promise<Article[]> {
+    return db.select().from(articles).where(eq(articles.userId, userId)).orderBy(desc(articles.createdAt));
+  }
+
   async createArticle(article: InsertArticle): Promise<Article> {
     const result = await db.insert(articles).values(article).returning();
     return result[0];
@@ -130,6 +134,10 @@ export class DbStorage implements IStorage {
 
   async getHowTosByBusinessId(businessId: number): Promise<HowTo[]> {
     return db.select().from(howTos).where(eq(howTos.businessId, businessId)).orderBy(desc(howTos.createdAt));
+  }
+
+  async getHowTosByUserId(userId: number): Promise<HowTo[]> {
+    return db.select().from(howTos).where(eq(howTos.userId, userId)).orderBy(desc(howTos.createdAt));
   }
 
   async createHowTo(howTo: InsertHowTo): Promise<HowTo> {

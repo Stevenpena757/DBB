@@ -111,10 +111,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ============ ARTICLES ============
   app.get("/api/articles", async (req, res) => {
     try {
-      const { category, businessId } = req.query;
+      const { category, businessId, userId } = req.query;
       
       let articles;
-      if (category) {
+      if (userId) {
+        articles = await storage.getArticlesByUserId(parseInt(userId as string));
+      } else if (category) {
         articles = await storage.getArticlesByCategory(category as string);
       } else if (businessId) {
         articles = await storage.getArticlesByBusinessId(parseInt(businessId as string));
@@ -172,10 +174,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ============ HOW-TOS ============
   app.get("/api/how-tos", async (req, res) => {
     try {
-      const { businessId } = req.query;
+      const { businessId, userId } = req.query;
       
       let howTos;
-      if (businessId) {
+      if (userId) {
+        howTos = await storage.getHowTosByUserId(parseInt(userId as string));
+      } else if (businessId) {
         howTos = await storage.getHowTosByBusinessId(parseInt(businessId as string));
       } else {
         howTos = await storage.getAllHowTos();

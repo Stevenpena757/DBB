@@ -10,13 +10,23 @@ export default function Dashboard() {
   const { user, isAuthenticated, isLoading } = useAuth();
 
   const { data: articles = [] } = useQuery<Article[]>({
-    queryKey: ['/api/articles'],
-    enabled: isAuthenticated,
+    queryKey: ['/api/articles', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const response = await fetch(`/api/articles?userId=${user.id}`);
+      return response.json();
+    },
+    enabled: isAuthenticated && !!user?.id,
   });
 
   const { data: howTos = [] } = useQuery<HowTo[]>({
-    queryKey: ['/api/how-tos'],
-    enabled: isAuthenticated,
+    queryKey: ['/api/how-tos', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const response = await fetch(`/api/how-tos?userId=${user.id}`);
+      return response.json();
+    },
+    enabled: isAuthenticated && !!user?.id,
   });
 
   const { data: saves = [] } = useQuery<Save[]>({
@@ -64,7 +74,7 @@ export default function Dashboard() {
     );
   }
 
-  // Filter content by user - will need to query by userId once backend supports it
+  // Articles and howTos are already filtered by userId from the API
   const userArticles = articles;
   const userHowTos = howTos;
 
