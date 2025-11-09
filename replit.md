@@ -67,15 +67,26 @@ Preferred communication style: Simple, everyday language.
 - Neon serverless PostgreSQL for scalable database hosting
 - WebSocket-based connection pooling
 
+**Authentication System:**
+- Replit Auth integration with OpenID Connect (OIDC)
+- Session-based authentication using express-session with PostgreSQL storage
+- Conditional cookie security (secure: false in development, secure: true in production)
+- User profile management with automatic creation/update on login
+- Protected API routes using isAuthenticated middleware
+- Frontend auth state management via useAuth hook with TanStack Query
+- Graceful handling of unauthorized responses (401s treated as logged-out state)
+
 **Data Models:**
+- Users: Platform users authenticated via Replit Auth with profile info (username, email, profileImage)
 - Businesses: Core entity with category, location, contact info, social media links, subscription tier (free/pro/premium), sponsored status, and upvote tracking
 - Articles: Long-form content with excerpts, categories, and view tracking
 - How-Tos: Step-by-step guides with structured step arrays
 - Vendors: Product suppliers with ratings, product type listings, subscription tier, and commission rates
 - Vendor Products: Individual products linked to vendors
-- Saves: User bookmarks for businesses and content (session-based)
+- Saves: User bookmarks for businesses and content (linked to user accounts)
 - Posts: Social media-style updates from businesses
 - Claim Requests: Business ownership verification workflow
+- Sessions: PostgreSQL session storage for authentication (managed by express-session)
 
 ### Storage Architecture
 
