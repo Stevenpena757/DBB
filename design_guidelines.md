@@ -1,54 +1,54 @@
-# Design Guidelines: GENESIS - NeoVibrant Luxe Directory
+# Design Guidelines: GENESIS - Copper Radiance Directory
 
 ## Design Philosophy
 
-GENESIS embodies a "NeoVibrant Luxe" aesthetic—modern, AI-powered, and tech-forward with bold colors, sophisticated gradients, and strategic glow effects. The design balances vibrant energy with professional credibility for DFW's health, beauty, and aesthetics community.
+GENESIS embodies a "Copper Radiance" aesthetic—warm, sophisticated, and luxurious with copper and champagne tones. The design conveys professional expertise and welcoming elegance for DFW's health, beauty, and aesthetics community.
 
 **Core Principles**:
-- **Tech-Forward Luxury**: Premium aesthetic with cutting-edge visual language
-- **Universal Appeal**: Professional and aspirational without gender coding
-- **Data-Driven Discovery**: Clear hierarchy for business listings and community insights
-- **Adaptive Experience**: Seamless dark/light mode transitions
+- **Warm Luxury**: Premium aesthetic with sophisticated copper gradients
+- **Professional Elegance**: Refined and aspirational without being cold
+- **Expert Discovery**: Clear hierarchy for business listings and community insights
+- **Adaptive Warmth**: Seamless dark/light mode with consistent copper tones
 
 ## Design Approach
 
-**System Foundation**: Material Design principles adapted with aggressive customization for the NeoVibrant aesthetic. Emphasis on elevation, dynamic color, and responsive depth.
+**System Foundation**: Material Design principles with sophisticated customization for warm, luxurious aesthetics. Emphasis on soft elevation, copper gradients, and warm shadows.
 
-**Key Differentiators**: Bold gradients, strategic glow effects on interactive elements, and a vibrant color system that commands attention while maintaining professionalism.
+**Key Differentiators**: Copper-to-gold gradients, warm glowing shadows on interactive elements, champagne accents that convey expertise and trust.
 
 ## Color System
 
 ### Light Mode
-- **Background**: Pure white (#FFFFFF)
-- **Surface**: Off-white (#F8FAFC)
-- **Text Primary**: Deep charcoal (#1A1A1A)
-- **Text Secondary**: Medium gray (#64748B)
-- **Border**: Light gray (#E2E8F0)
+- **Background**: Warm white (#FDFBF9)
+- **Surface**: Champagne mist (#F9F5F2)
+- **Text Primary**: Rich espresso (#2C1810)
+- **Text Secondary**: Warm gray (#6B5B52)
+- **Border**: Soft taupe (#E8DDD6)
 
 ### Dark Mode
-- **Background**: Rich black (#0A0A0A)
-- **Surface**: Dark slate (#1A1F2E)
-- **Text Primary**: Pure white (#FFFFFF)
-- **Text Secondary**: Light gray (#94A3B8)
-- **Border**: Dark gray (#2D3748)
+- **Background**: Deep cocoa (#1A0F0A)
+- **Surface**: Dark copper (#2B1D16)
+- **Text Primary**: Warm white (#FFF8F3)
+- **Text Secondary**: Light copper (#C9B5A8)
+- **Border**: Bronze gray (#4A3B32)
 
 ### Brand Colors (Mode-Agnostic)
-- **Primary**: Electric Azure (#0077FF) - CTAs, links, primary actions
-- **Secondary**: Vivid Lime (#A3FF12) - Success states, upvotes, highlights
-- **Accent**: Cyber Gold (#FFD100) - Premium features, verified badges, marketplace
+- **Primary**: Copper Rose (#D67A59) - CTAs, links, primary actions
+- **Secondary**: Peach Nude (#E3A28D) - Success states, upvotes, highlights
+- **Accent**: Highlight Gold (#F2C97D) - Premium features, verified badges, marketplace
 
 ### Gradient Treatments
-- **Hero Gradient**: Azure to Lime (135deg, #0077FF → #A3FF12)
-- **Card Hover**: Subtle Azure glow (box-shadow: 0 0 20px rgba(0, 119, 255, 0.3))
-- **Premium Elements**: Gold shimmer gradient (90deg, #FFD100 → #FFA500)
-- **Background Patterns**: Mesh gradients combining all three brand colors at 5-10% opacity
+- **Hero Gradient**: Copper to Gold (135deg, #D67A59 → #F2C97D)
+- **Card Hover**: Warm copper glow (box-shadow: 0 4px 20px rgba(214, 122, 89, 0.25))
+- **Premium Elements**: Gold shimmer (90deg, #F2C97D → #E8B86D)
+- **Background Patterns**: Soft copper mesh at 6% opacity with champagne highlights
 
 ## Typography
 
 ### Font Stack
-- **Headings**: Montserrat ExtraBold (800 weight) - powerful, modern
-- **Logo/Accent**: Space Grotesk (500-700 weight) - tech-forward personality
-- **Body/UI**: Inter (400-600 weight) - optimal readability
+- **Headings**: Montserrat ExtraBold (800) - powerful, sophisticated
+- **Logo/Accent**: Space Grotesk (500-700) - modern elegance
+- **Body/UI**: Inter (400-600) - optimal readability
 
 ### Hierarchy
 - **H1**: 48px/56px (mobile: 32px/40px) - Montserrat ExtraBold
@@ -56,155 +56,127 @@ GENESIS embodies a "NeoVibrant Luxe" aesthetic—modern, AI-powered, and tech-fo
 - **H3**: 24px/32px (mobile: 20px/28px) - Space Grotesk Bold
 - **Body**: 16px/24px - Inter Regular
 - **Small**: 14px/20px - Inter Regular
-- **Caption**: 12px/16px - Inter Medium
 
 ## Layout System
 
-### Spacing Primitives
-Use Tailwind units: **4, 6, 8, 12, 16** for consistent vertical rhythm.
+**Spacing Primitives**: Tailwind units **4, 6, 8, 12, 16**
 - Section padding: py-16 (desktop), py-12 (mobile)
 - Card padding: p-6
 - Component gaps: gap-6 (standard), gap-8 (sections)
 
-### Grid Patterns
-- **Business Listings**: 3-column grid (lg), 2-column (md), 1-column (mobile)
-- **Featured Vendors**: 4-column grid with variable card heights
-- **Social Feed**: Single column, max-width 720px centered
-- **Marketplace**: 3-4 column product grid with consistent aspect ratios
+**Grid Patterns**:
+- Business Listings: 3-col (lg), 2-col (md), 1-col (mobile)
+- Featured Vendors: 4-col with varied heights
+- Social Feed: Single column, max-w-3xl centered
+- Marketplace: 3-4 col product grid
 
-### Container Strategy
-- Full-width hero: w-full with gradient backgrounds
-- Content sections: max-w-7xl mx-auto
-- Reading content: max-w-3xl
+**Containers**:
+- Hero: w-full with copper gradient overlays
+- Content: max-w-7xl mx-auto
 - Forms: max-w-md
 
 ## Core Components
 
 ### Hero Section
-- Full-width with mesh gradient background (Azure/Lime/Gold blend)
-- Large hero image: Modern tech aesthetic, diverse beauty professionals, vibrant lighting
-- Overlaid search bar with blur backdrop (backdrop-blur-lg bg-white/10)
-- Text: Large Montserrat ExtraBold headline + Space Grotesk subheading
-- CTA buttons with blurred backgrounds, no hover effects on blur
+- Full-width with large lifestyle image (60vh height)
+- Copper-to-gold gradient overlay (opacity 40%)
+- Search bar with blur backdrop (backdrop-blur-lg bg-white/20 in light, bg-black/20 in dark)
+- Large Montserrat headline + Space Grotesk subheading in white
+- CTA buttons with blurred backgrounds, no hover blur effects
 
 ### Navigation
 - Sticky header with blur backdrop (backdrop-blur-md)
-- Logo: Space Grotesk with gradient text treatment
-- Dark/light mode toggle (prominent placement)
-- Search icon with glow effect on focus
-- Mobile: Bottom navigation bar with 5 key sections
+- Logo: Space Grotesk with copper gradient text
+- Dark/light toggle with copper accent
+- Search with warm glow on focus
+- Mobile: Bottom nav with 5 icons (Home, Explore, Post, Marketplace, Profile)
 
 ### Business Listing Cards
-- Rounded-xl (12px) with subtle shadow
-- Featured image (16:9 aspect ratio)
+- Rounded-xl with warm copper shadow
+- Featured image (16:9)
 - Business name: Space Grotesk Bold
-- Category tags with gradient backgrounds
-- Upvote counter with Vivid Lime accent
-- Hover: Lift effect with Azure glow shadow
+- Category tags with peach gradient backgrounds
+- Upvote counter with Peach Nude accent
+- Hover: Lift with copper glow shadow
 
 ### Social Feed Cards
-- Clean white/dark cards with rounded-lg
+- Warm white/dark cards, rounded-lg
 - Profile image + username + timestamp
-- Post content with image gallery support
-- Interaction bar: Like (Lime), Comment, Share
-- Verified badges in Cyber Gold
+- Post content with image galleries
+- Interactions: Like (Peach), Comment, Share
+- Verified badges in Highlight Gold
 
 ### Marketplace Product Cards
-- Square product images (1:1)
-- Price in Cyber Gold
-- Vendor badge with glow effect
-- Add to cart: Primary Azure button
-- Grid layout with consistent heights
+- Square images (1:1)
+- Price in Highlight Gold
+- Vendor badge with warm glow
+- Add to cart: Copper Rose button
+- Consistent grid heights
 
 ### Forms & Inputs
-- Rounded-lg inputs with focus glow (Azure)
+- Rounded-lg with warm copper focus glow
 - Floating labels (Space Grotesk)
-- Error states in red, success in Vivid Lime
-- Submit buttons with gradient backgrounds
+- Error states in warm red, success in Peach Nude
+- Submit buttons with copper-gold gradient
 
 ### Badges & Tags
-- Rounded-full pills
-- Gradient backgrounds for categories
-- Solid colors for status indicators
+- Rounded-full pills with copper/gold gradients
 - Small Inter Medium text
+- Category badges use secondary color
 
 ## Interactive Elements
 
-### Buttons
-- **Primary**: Azure background, white text, subtle glow
-- **Secondary**: Outline style with Azure border
-- **Accent**: Cyber Gold for premium actions
-- Rounded-lg (8px), padding: px-6 py-3
-- Hover: Brightness increase + glow intensity
+**Buttons**:
+- Primary: Copper Rose bg, white text, warm shadow
+- Secondary: Peach Nude outline
+- Accent: Highlight Gold for premium
+- Rounded-lg, px-6 py-3
+- Hover: Warm glow intensification
 
-### Glow Effects
-Apply strategically to:
-- Focused inputs (box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.2))
-- Active cards (Azure glow)
-- Premium features (Gold glow)
-- Upvote buttons on hover (Lime glow)
+**Glow Effects**:
+- Focused inputs: 0 0 0 3px rgba(214, 122, 89, 0.2)
+- Active cards: Warm copper glow
+- Premium features: Gold glow
+- Strategic application for warmth
 
-### Transitions
-- Duration: 200ms for micro-interactions
-- Easing: cubic-bezier(0.4, 0, 0.2, 1)
-- Properties: transform, box-shadow, background-color
+**Transitions**: 200ms, cubic-bezier(0.4, 0, 0.2, 1)
 
 ## Images
 
 ### Hero Image
-Large, high-quality lifestyle image showing:
-- Modern aesthetic clinic or beauty space
-- Diverse professionals in tech-forward setting
-- Vibrant, well-lit environment
-- Placement: Full-width hero section, 60vh height
+Large lifestyle image showing:
+- Modern aesthetic clinic/spa with warm lighting
+- Diverse professionals in elegant setting
+- Soft, inviting ambiance with natural light
+- Placement: Full-width hero, 60vh, with copper gradient overlay
 
 ### Listing Images
-- Professional business photos (interiors, services, team)
-- 16:9 aspect ratio for consistency
-- High-quality, well-lit, modern aesthetic
+- Professional business photography
+- 16:9 aspect ratio
+- Warm, well-lit environments
 
-### Profile/Avatar Images
+### Profile Images
 - Circular crops (rounded-full)
-- Consistent sizing across components
-- Fallback gradients for missing images
+- Consistent sizing
+- Copper gradient fallbacks
 
 ### Background Elements
-- Abstract gradient meshes for section backgrounds
-- Subtle geometric patterns at 3% opacity
-- No stock photos in backgrounds
+- Soft copper gradient meshes
+- Champagne geometric patterns at 4% opacity
 
-## Accessibility
+## Accessibility & Mobile
 
-- WCAG AA contrast ratios in both modes
-- Keyboard navigation with visible focus states (Azure glow)
-- Semantic HTML structure
-- ARIA labels for icon-only buttons
-- Screen reader text for complex interactions
-- Motion reduction media query support
+- WCAG AA contrast in both modes
+- Copper glow for focus states
+- Touch targets: 44px minimum
+- Bottom nav on mobile
+- Simplified mobile header
+- Motion reduction support
 
-## Mobile Optimization
+## Dark Mode
 
-- Touch targets: minimum 44px height
-- Bottom navigation: 5 icons (Home, Explore, Post, Marketplace, Profile)
-- Simplified header on mobile (logo + search + menu)
-- Single-column layouts with full-width cards
-- Swipeable carousels for featured content
-- Sticky search bar below header
-
-## Dark Mode Implementation
-
-- Automatic system preference detection
-- Manual toggle in header
-- Smooth transitions between modes (300ms)
-- Adjusted glow intensities (more subtle in dark mode)
-- Inverted text but consistent brand colors
-- Elevated surfaces with lighter grays
-
-## Performance
-
-- Lazy loading for all images
-- Code splitting for marketplace/social features
-- Progressive Web App capabilities
-- Optimized gradient rendering
-- Minimal animation overhead
-- CDN delivery for fonts
+- System preference detection
+- Manual toggle with smooth 300ms transition
+- Warmer copper tones in dark mode
+- Consistent brand colors across modes
+- Elevated surfaces with bronze-gray tones
