@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { Search, Bell, MessageCircle, User, LogOut } from "lucide-react";
+import { Search, Bell, MessageCircle, User, LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
@@ -40,6 +40,15 @@ export function Header() {
               Pricing
             </Button>
           </a>
+          
+          {isAuthenticated && user?.role === "admin" && (
+            <a href="/admin" className="hidden lg:block">
+              <Button variant="ghost" size="sm" data-testid="button-admin">
+                <ShieldCheck className="h-4 w-4 mr-2" />
+                Admin
+              </Button>
+            </a>
+          )}
           
           {!isLoading && !isAuthenticated && (
             <a href="/api/login">

@@ -13,6 +13,7 @@ import Vendors from "@/pages/Vendors";
 import BusinessProfile from "@/pages/BusinessProfile";
 import SubmitContent from "@/pages/SubmitContent";
 import Dashboard from "@/pages/Dashboard";
+import Admin from "@/pages/Admin";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
       <Route path="/vendors" component={Vendors} />
       <Route path="/submit-content" component={SubmitContent} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/admin" component={Admin} />
       <Route path="/business/:id" component={BusinessProfile} />
       <Route component={NotFound} />
     </Switch>
