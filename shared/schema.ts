@@ -268,3 +268,51 @@ export const insertSaveSchema = createInsertSchema(saves).omit({
   createdAt: true,
 });
 export type InsertSave = z.infer<typeof insertSaveSchema>;
+
+// Forum posts (Q&A and Tips)
+export const forumPosts = pgTable("forum_posts", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  businessId: integer("business_id").references(() => businesses.id), // Optional - if posted by a business
+  type: text("type").notNull(), // "question" or "tip"
+  category: text("category").notNull(), // "Hair", "Skin", "Makeup", "Business Tips", etc.
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  upvotes: integer("upvotes").default(0).notNull(),
+  replyCount: integer("reply_count").default(0).notNull(),
+  viewCount: integer("view_count").default(0).notNull(),
+  hasAcceptedAnswer: boolean("has_accepted_answer").default(false).notNull(), // For questions
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type ForumPost = typeof forumPosts.$inferSelect;
+export const insertForumPostSchema = createInsertSchema(forumPosts).omit({
+  id: true,
+  upvotes: true,
+  replyCount: true,
+  viewCount: true,
+  hasAcceptedAnswer: true,
+  createdAt: true,
+});
+export type InsertForumPost = z.infer<typeof insertForumPostSchema>;
+
+// Forum replies (answers and comments)
+export const forumReplies = pgTable("forum_replies", {
+  id: serial("id").primaryKey(),
+  postId: integer("post_id").notNull().references(() => forumPosts.id),
+  userId: integer("user_id").references(() => users.id),
+  businessId: integer("business_id").references(() => businesses.id), // Optional - if posted by a business
+  content: text("content").notNull(),
+  upvotes: integer("upvotes").default(0).notNull(),
+  isAcceptedAnswer: boolean("is_accepted_answer").default(false).notNull(), // For question answers
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type ForumReply = typeof forumReplies.$inferSelect;
+export const insertForumReplySchema = createInsertSchema(forumReplies).omit({
+  id: true,
+  upvotes: true,
+  isAcceptedAnswer: true,
+  createdAt: true,
+});
+export type InsertForumReply = z.infer<typeof insertForumReplySchema>;
