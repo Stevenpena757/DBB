@@ -8,7 +8,9 @@ import {
   insertHowToSchema,
   insertClaimRequestSchema,
   insertSaveSchema,
-  insertPostSchema
+  insertPostSchema,
+  insertForumPostSchema,
+  insertForumReplySchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -535,6 +537,137 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(howTo);
     } catch (error) {
       res.status(500).json({ error: "Failed to upvote how-to" });
+    }
+  });
+
+  // ============ FORUM POSTS ============
+  app.get("/api/forum", async (req, res) => {
+    try {
+      const { type, category } = req.query;
+      const posts = await storage.getAllForumPosts(
+        type as string | undefined,
+        category as string | undefined
+      );
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch forum posts" });
+    }
+  });
+
+  app.get("/api/forum/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const post = await storage.getForumPostById(id);
+      
+      if (!post) {
+        return res.status(404).json({ error: "Forum post not found" });
+      }
+      
+      await storage.incrementForumPostViews(id);
+      res.json(post);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch forum post" });
+    }
+  });
+
+  app.post("/api/forum", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertForumPostSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
+      const post = await storage.createForumPost(validatedData);
+      res.status(201).json(post);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create forum post" });
+    }
+  });
+
+  app.post("/api/forum/:id/upvote", isAuthenticated, async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const post = await storage.upvoteForumPost(id);
+      
+      if (!post) {
+        return res.status(404).json({ error: "Forum post not found" });
+      }
+      
+      res.json(post);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upvote forum post" });
+    }
+  });
+
+  // ============ FORUM REPLIES ============
+  app.get("/api/forum/:id/replies", async (req, res) => {
+    try {
+      const postId = parseInt(req.params.id);
+      const replies = await storage.getRepliesByPostId(postId);
+      res.json(replies);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch replies" });
+    }
+  });
+
+  app.post("/api/forum/:id/replies", isAuthenticated, async (req: any, res) => {
+    try {
+      const postId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertForumReplySchema.parse({
+        ...req.body,
+        postId,
+        userId: user.id,
+      });
+      const reply = await storage.createForumReply(validatedData);
+      res.status(201).json(reply);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create reply" });
+    }
+  });
+
+  app.post("/api/forum/replies/:id/upvote", isAuthenticated, async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const reply = await storage.upvoteForumReply(id);
+      
+      if (!reply) {
+        return res.status(404).json({ error: "Reply not found" });
+      }
+      
+      res.json(reply);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to upvote reply" });
+    }
+  });
+
+  app.post("/api/forum/replies/:id/accept", isAuthenticated, async (req: any, res) => {
+    try {
+      const replyId = parseInt(req.params.id);
+      const { postId } = req.body;
+      
+      await storage.acceptAnswer(replyId, postId);
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to accept answer" });
     }
   });
 
