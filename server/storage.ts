@@ -267,18 +267,6 @@ export class MemStorage implements IStorage {
         featured: false,
       },
       {
-        name: "BLEU Dentistry",
-        description: "Modern cosmetic dentistry with enhanced teeth whitening services",
-        category: "Cosmetic Dentistry",
-        location: "Dallas",
-        address: "Dallas, TX",
-        phone: "(214) 699-4976",
-        website: "https://www.bleudentist.com/services/enhanced-whitening/",
-        imageUrl: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800",
-        isClaimed: false,
-        featured: false,
-      },
-      {
         name: "We Whiten – Preston Center",
         description: "Dedicated teeth whitening studio delivering brilliant smiles",
         category: "Teeth Whitening",
