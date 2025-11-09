@@ -146,9 +146,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/articles", async (req, res) => {
+  app.post("/api/articles", isAuthenticated, async (req: any, res) => {
     try {
-      const validatedData = insertArticleSchema.parse(req.body);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertArticleSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
       const article = await storage.createArticle(validatedData);
       res.status(201).json(article);
     } catch (error) {
@@ -192,9 +202,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/how-tos", async (req, res) => {
+  app.post("/api/how-tos", isAuthenticated, async (req: any, res) => {
     try {
-      const validatedData = insertHowToSchema.parse(req.body);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertHowToSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
       const howTo = await storage.createHowTo(validatedData);
       res.status(201).json(howTo);
     } catch (error) {
@@ -223,9 +243,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/posts", async (req, res) => {
+  app.post("/api/posts", isAuthenticated, async (req: any, res) => {
     try {
-      const validatedData = insertPostSchema.parse(req.body);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertPostSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
       const post = await storage.createPost(validatedData);
       res.status(201).json(post);
     } catch (error) {
@@ -272,9 +302,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ============ CLAIM REQUESTS ============
-  app.post("/api/claim-requests", async (req, res) => {
+  app.post("/api/claim-requests", isAuthenticated, async (req: any, res) => {
     try {
-      const validatedData = insertClaimRequestSchema.parse(req.body);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertClaimRequestSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
       const claimRequest = await storage.createClaimRequest(validatedData);
       res.status(201).json(claimRequest);
     } catch (error) {
@@ -296,24 +336,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ============ SAVES ============
-  app.get("/api/saves", async (req, res) => {
+  app.get("/api/saves", isAuthenticated, async (req: any, res) => {
     try {
-      const { sessionId } = req.query;
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
       
-      if (!sessionId) {
-        return res.status(400).json({ error: "Session ID required" });
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
       }
       
-      const saves = await storage.getSavesBySessionId(sessionId as string);
+      const saves = await storage.getSavesByUserId(user.id);
       res.json(saves);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch saves" });
     }
   });
 
-  app.post("/api/saves", async (req, res) => {
+  app.post("/api/saves", isAuthenticated, async (req: any, res) => {
     try {
-      const validatedData = insertSaveSchema.parse(req.body);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertSaveSchema.parse({
+        ...req.body,
+        userId: user.id,
+        sessionId: null,
+      });
       const save = await storage.createSave(validatedData);
       res.status(201).json(save);
     } catch (error) {
@@ -324,9 +376,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/saves/:id", async (req, res) => {
+  app.delete("/api/saves/:id", isAuthenticated, async (req: any, res) => {
     try {
       const id = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
       await storage.deleteSave(id);
       res.status(204).send();
     } catch (error) {
@@ -335,9 +394,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ============ UPVOTING ============
-  app.post("/api/businesses/:id/upvote", async (req, res) => {
+  app.post("/api/businesses/:id/upvote", isAuthenticated, async (req: any, res) => {
     try {
       const id = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
       const business = await storage.upvoteBusiness(id);
       
       if (!business) {
