@@ -25,6 +25,7 @@ export interface IStorage {
   getBusinessesByCategory(category: string): Promise<Business[]>;
   getBusinessesByLocation(location: string): Promise<Business[]>;
   getFeaturedBusinesses(): Promise<Business[]>;
+  getBusinessesClaimedByUser(userId: number): Promise<Pick<Business, 'id' | 'name'>[]>;
   createBusiness(business: InsertBusiness): Promise<Business>;
   updateBusiness(id: number, business: Partial<InsertBusiness>): Promise<Business | undefined>;
   

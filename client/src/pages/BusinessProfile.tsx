@@ -349,6 +349,26 @@ export default function BusinessProfile() {
               </CardContent>
             </Card>
 
+            {(business.address || business.location) && (
+              <Card>
+                <CardContent className="p-0 overflow-hidden">
+                  <div className="w-full" style={{ height: '250px' }} data-testid="map-container">
+                    <iframe
+                      title={`Map showing location of ${business.name}`}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(business.address || `${business.name}, ${business.location}`)}&output=embed`}
+                      data-testid="map-iframe"
+                    ></iframe>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {(business.instagramHandle || business.tiktokHandle || business.facebookUrl) && (
               <Card>
                 <CardContent className="p-4 space-y-3">

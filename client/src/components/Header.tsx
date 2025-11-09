@@ -65,7 +65,7 @@ export function Header() {
 
           {isAuthenticated && (
             <>
-              <a href="/submit-content" className="hidden md:block" title="Share content and grow your business for FREE">
+              <a href={user?.claimedBusinesses?.[0] ? `/business/${user.claimedBusinesses[0].id}` : "/submit-content"} className="hidden md:block" title="Share content and grow your business for FREE">
                 <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
                   Share & Get Noticed
                 </Button>

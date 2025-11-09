@@ -62,6 +62,10 @@ export class DbStorage implements IStorage {
     return db.select().from(businesses).where(eq(businesses.featured, true)).orderBy(desc(businesses.upvotes));
   }
 
+  async getBusinessesClaimedByUser(userId: number): Promise<Pick<Business, 'id' | 'name'>[]> {
+    return db.select({ id: businesses.id, name: businesses.name }).from(businesses).where(eq(businesses.claimedBy, userId));
+  }
+
   async createBusiness(business: InsertBusiness): Promise<Business> {
     const result = await db.insert(businesses).values(business).returning();
     return result[0];

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import type { User } from "@shared/schema";
+import type { UserWithClaimedBusinesses } from "@shared/schema";
 import { isUnauthorizedError } from "@/lib/authUtils";
 
 export function useAuth() {
-  const { data: user, isLoading, error } = useQuery<User | null>({
+  const { data: user, isLoading, error } = useQuery<UserWithClaimedBusinesses | null>({
     queryKey: ["/api/auth/user"],
     retry: false,
     queryFn: async ({ signal }) => {

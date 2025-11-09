@@ -67,6 +67,9 @@ export const users = pgTable("users", {
 });
 
 export type User = typeof users.$inferSelect;
+export type UserWithClaimedBusinesses = User & {
+  claimedBusinesses: Array<{ id: number; name: string }>;
+};
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
