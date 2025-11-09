@@ -1,7 +1,7 @@
 import { db } from "./db";
 import { users, businesses, articles, howTos, vendors, vendorProducts } from "@shared/schema";
 
-async function seed() {
+export default async function seed() {
   console.log("🌱 Seeding database...");
 
   try {
