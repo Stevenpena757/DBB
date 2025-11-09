@@ -1,9 +1,13 @@
 import { Input } from "@/components/ui/input";
-import { Search, Bell, MessageCircle, User } from "lucide-react";
+import { Search, Bell, MessageCircle, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
+import { useAuth } from "@/hooks/useAuth";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function Header() {
+  const { user, isAuthenticated, isLoading } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-border">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-4">
@@ -36,21 +40,52 @@ export function Header() {
               Pricing
             </Button>
           </a>
-          <a href="/submit-content" className="hidden md:block" title="Share content and grow your business for FREE">
-            <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
-              Share & Get Noticed
-            </Button>
-          </a>
-          <Button variant="ghost" size="icon" className="hidden md:flex rounded-full" data-testid="button-notifications">
-            <Bell className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="hidden md:flex rounded-full" data-testid="button-messages">
-            <MessageCircle className="h-5 w-5" />
-          </Button>
+          
+          {!isLoading && !isAuthenticated && (
+            <a href="/api/login">
+              <Button variant="default" size="sm" data-testid="button-login" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                Log In
+              </Button>
+            </a>
+          )}
+
+          {isAuthenticated && (
+            <>
+              <a href="/submit-content" className="hidden md:block" title="Share content and grow your business for FREE">
+                <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                  Share & Get Noticed
+                </Button>
+              </a>
+              <Button variant="ghost" size="icon" className="hidden md:flex rounded-full" data-testid="button-notifications">
+                <Bell className="h-5 w-5" />
+              </Button>
+              <Button variant="ghost" size="icon" className="hidden md:flex rounded-full" data-testid="button-messages">
+                <MessageCircle className="h-5 w-5" />
+              </Button>
+            </>
+          )}
+
           <ThemeToggle />
-          <Button variant="ghost" size="icon" className="rounded-full" data-testid="button-profile">
-            <User className="h-5 w-5" />
-          </Button>
+          
+          {isAuthenticated && user && (
+            <>
+              <Avatar className="h-8 w-8" data-testid="avatar-user">
+                <AvatarImage src={user.profileImage || undefined} alt={user.username} />
+                <AvatarFallback>{user.username[0]?.toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <a href="/api/logout">
+                <Button variant="ghost" size="icon" className="rounded-full" data-testid="button-logout" title="Log out">
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </a>
+            </>
+          )}
+
+          {!isAuthenticated && !isLoading && (
+            <Button variant="ghost" size="icon" className="rounded-full" data-testid="button-profile">
+              <User className="h-5 w-5" />
+            </Button>
+          )}
         </div>
       </div>
     </header>

@@ -1,4 +1,5 @@
 import { 
+  type User, type InsertUser,
   type Business, type InsertBusiness,
   type Post, type InsertPost,
   type Article, type InsertArticle,
@@ -10,6 +11,12 @@ import {
 } from "@shared/schema";
 
 export interface IStorage {
+  // Users
+  getUserById(id: number): Promise<User | undefined>;
+  getUserByReplitId(replitId: string): Promise<User | undefined>;
+  createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, user: Partial<InsertUser>): Promise<User | undefined>;
+  
   // Businesses
   getAllBusinesses(): Promise<Business[]>;
   getBusinessById(id: number): Promise<Business | undefined>;
@@ -51,11 +58,16 @@ export interface IStorage {
   // Claim Requests
   createClaimRequest(request: InsertClaimRequest): Promise<ClaimRequest>;
   getClaimRequestsByBusinessId(businessId: number): Promise<ClaimRequest[]>;
+  getClaimRequestsByUserId(userId: number): Promise<ClaimRequest[]>;
+  updateClaimRequest(id: number, status: string): Promise<ClaimRequest | undefined>;
+  approveClaimRequest(id: number): Promise<void>;
   
   // Saves
   getSavesBySessionId(sessionId: string): Promise<Save[]>;
+  getSavesByUserId(userId: number): Promise<Save[]>;
   createSave(save: InsertSave): Promise<Save>;
   deleteSave(id: number): Promise<void>;
+  deleteSaveByUserAndItem(userId: number | null, sessionId: string | null, itemType: string, itemId: number): Promise<void>;
   
   // Mixed Feed (for home page)
   getMixedFeed(): Promise<Array<Business | Article | HowTo>>;
@@ -726,4 +738,8 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Import DbStorage for production use
+import { DbStorage } from "./db-storage";
+
+// Export singleton instance - use DbStorage for persistent data
+export const storage = new DbStorage();

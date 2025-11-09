@@ -1,6 +1,7 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb, varchar, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 
 // Categories for DFW Health, Beauty & Aesthetics
 export const categories = [
@@ -43,6 +44,35 @@ export const dfwLocations = [
 // Subscription tiers for monetization
 export const subscriptionTiers = ["free", "pro", "premium"] as const;
 
+// Session storage table (required for Replit Auth)
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// Users table - for authentication via Replit Auth
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  replitId: text("replit_id").notNull().unique(), // From Replit Auth
+  username: text("username").notNull(),
+  email: text("email"),
+  profileImage: text("profile_image"),
+  role: text("role").default("user").notNull(), // "user", "business_owner", "admin"
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type User = typeof users.$inferSelect;
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertUser = z.infer<typeof insertUserSchema>;
+
 // Businesses table
 export const businesses = pgTable("businesses", {
   id: serial("id").primaryKey(),
@@ -59,7 +89,7 @@ export const businesses = pgTable("businesses", {
   rating: integer("rating").default(0).notNull(), // Average rating (0-5 scale, store as 0-50 for decimal precision)
   reviewCount: integer("review_count").default(0).notNull(),
   isClaimed: boolean("is_claimed").default(false).notNull(),
-  claimedBy: integer("claimed_by"),
+  claimedBy: integer("claimed_by").references(() => users.id),
   instagramHandle: text("instagram_handle"),
   tiktokHandle: text("tiktok_handle"),
   facebookUrl: text("facebook_url"),
@@ -201,17 +231,19 @@ export type InsertVendorProduct = z.infer<typeof insertVendorProductSchema>;
 export const claimRequests = pgTable("claim_requests", {
   id: serial("id").primaryKey(),
   businessId: integer("business_id").notNull().references(() => businesses.id),
+  userId: integer("user_id").notNull().references(() => users.id),
   claimantName: text("claimant_name").notNull(),
   claimantEmail: text("claimant_email").notNull(),
   claimantPhone: text("claimant_phone").notNull(),
   message: text("message").notNull(),
-  status: text("status").notNull(), // "pending", "approved", "rejected"
+  status: text("status").default("pending").notNull(), // "pending", "approved", "rejected"
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export type ClaimRequest = typeof claimRequests.$inferSelect;
 export const insertClaimRequestSchema = createInsertSchema(claimRequests).omit({
   id: true,
+  status: true,
   createdAt: true,
 });
 export type InsertClaimRequest = z.infer<typeof insertClaimRequestSchema>;
@@ -219,9 +251,10 @@ export type InsertClaimRequest = z.infer<typeof insertClaimRequestSchema>;
 // User saves (saved businesses, articles, etc.)
 export const saves = pgTable("saves", {
   id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id), // Authenticated users
   itemType: text("item_type").notNull(), // "business", "article", "how-to", "product"
   itemId: integer("item_id").notNull(),
-  sessionId: text("session_id").notNull(), // For non-authenticated users
+  sessionId: text("session_id"), // For non-authenticated users (optional)
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
