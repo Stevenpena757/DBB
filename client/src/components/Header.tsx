@@ -35,6 +35,11 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+          <a href="/forum" className="hidden lg:block">
+            <Button variant="ghost" size="sm" data-testid="button-forum">
+              Forum
+            </Button>
+          </a>
           <a href="/" className="hidden lg:block">
             <Button variant="ghost" size="sm" data-testid="button-claim-listing">
               Claim Your Listing
