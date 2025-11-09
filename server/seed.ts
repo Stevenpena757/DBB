@@ -20,7 +20,7 @@ export default async function seed() {
       role: "business_owner"
     }).returning();
 
-    // Seed real DFW businesses
+    // Seed real DFW businesses from directory
     const businessesData = [
       {
         name: "Enlighten MD",
@@ -36,59 +36,204 @@ export default async function seed() {
         featured: true,
         rating: 48,
         reviewCount: 156,
-        services: ["Laser Hair Removal", "Botox", "Dermal Fillers", "Chemical Peels"],
-        additionalImages: [
-          "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800",
-          "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800"
-        ]
+        services: ["Laser Hair Removal", "Botox", "Dermal Fillers", "Chemical Peels"]
       },
       {
-        name: "Reflections Med Spa",
-        description: "Full-service medical spa specializing in non-invasive aesthetic treatments and anti-aging solutions",
+        name: "Advanced Skin Fitness Medical Spa",
+        description: "Advanced medical spa specializing in laser treatments and CoolSculpting for body contouring",
         category: "Med Spa",
         location: "Dallas",
-        address: "Dallas, TX",
+        address: "9201 N Central Expy, Ste 210, Dallas, TX 75231",
+        phone: "(214) 521-5277",
+        website: "https://advancedskinfitness.com/",
         imageUrl: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800",
-        rating: 46,
-        reviewCount: 89,
-        services: ["CoolSculpting", "Laser Treatments", "Injectables", "Facials"],
-        additionalImages: [
-          "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=800"
-        ]
+        rating: 47,
+        reviewCount: 124,
+        services: ["Laser Hair Removal", "CoolSculpting", "Skin Rejuvenation", "Facials"]
       },
       {
-        name: "Salon Pari",
-        description: "High-end hair salon in Plano offering precision cuts, balayage, and luxury hair treatments",
-        category: "Hair Salon",
-        location: "Plano",
-        address: "Plano, TX",
-        imageUrl: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800",
-        rating: 50,
-        reviewCount: 234,
-        services: ["Hair Color", "Balayage", "Hair Extensions", "Keratin Treatments"],
+        name: "North Dallas Dermatology Associates",
+        description: "Cosmetic dermatology practice offering laser treatments and medical-grade skincare solutions",
+        category: "Dermatology",
+        location: "Dallas",
+        address: "8144 Walnut Hill Ln, Suite 1300, Dallas, TX 75231",
+        phone: "(214) 420-7070",
+        website: "https://northdallasderm.com/",
+        imageUrl: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800",
+        rating: 49,
+        reviewCount: 203,
+        services: ["Laser Treatments", "Cosmetic Procedures", "Medical Dermatology", "Skin Cancer Screening"],
         featured: true
       },
       {
-        name: "True Beauty Bar",
-        description: "Modern beauty lounge offering lash extensions, brow services, and makeup artistry in Fort Worth",
-        category: "Lash & Brow",
-        location: "Fort Worth",
-        address: "Fort Worth, TX",
-        imageUrl: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800",
-        rating: 47,
-        reviewCount: 112,
-        services: ["Lash Extensions", "Microblading", "Brow Lamination", "Makeup Services"]
+        name: "SkinSpirit – West Village",
+        description: "Uptown med spa offering injectables, advanced skin treatments, and personalized aesthetic care",
+        category: "Med Spa",
+        location: "Dallas",
+        address: "West Village, Dallas, TX",
+        phone: "(469) 259-2800",
+        website: "https://www.skinspirit.com/locations/west-village",
+        imageUrl: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800",
+        rating: 48,
+        reviewCount: 187,
+        services: ["Injectables", "Laser Treatments", "Facials", "Body Contouring"]
       },
       {
-        name: "Bloom Wellness Spa",
-        description: "Holistic wellness spa combining massage therapy, facials, and body treatments in a serene atmosphere",
-        category: "Wellness Spa",
-        location: "Frisco",
-        address: "Frisco, TX",
-        imageUrl: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800",
+        name: "Lemmon Avenue Plastic Surgery & Laser Center",
+        description: "Medical aesthetics center combining plastic surgery expertise with advanced laser technology",
+        category: "Med Spa",
+        location: "Dallas",
+        address: "2801 Lemmon Avenue W, Suite 300, Dallas, TX 75204",
+        phone: "214-702-0707",
+        website: "https://www.lemmonavenueplasticsurgery.com/",
+        imageUrl: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800",
+        rating: 50,
+        reviewCount: 241,
+        services: ["Plastic Surgery", "Laser Treatments", "Injectables", "Skin Rejuvenation"],
+        featured: true
+      },
+      {
+        name: "Amazing Lash Studio – West Village",
+        description: "Premier lash extension studio in Uptown Dallas offering custom lash designs",
+        category: "Lash & Brow",
+        location: "Dallas",
+        address: "3699 McKinney Ave, Suite 502, Dallas, TX 75204",
+        phone: "(469) 904-6290",
+        website: "https://www.amazinglashstudio.com/",
+        imageUrl: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800",
+        rating: 46,
+        reviewCount: 98,
+        services: ["Lash Extensions", "Volume Lashes", "Lash Lifts", "Lash Tinting"]
+      },
+      {
+        name: "The Lash Lounge – Lakewood",
+        description: "Lakewood's premier lash extension salon with expert lash artists and custom styling",
+        category: "Lash & Brow",
+        location: "Dallas",
+        address: "6465 E Mockingbird Ln, #372, Dallas, TX 75214",
+        phone: "214-239-0331",
+        website: "https://www.thelashlounge.com/tx-dallas-lakewood/",
+        imageUrl: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=800",
+        rating: 48,
+        reviewCount: 156,
+        services: ["Lash Extensions", "Brow Services", "Lash Fills", "Custom Styling"]
+      },
+      {
+        name: "The Lash Lounge – Park Cities",
+        description: "Park Cities lash boutique offering luxurious lash extensions and brow services",
+        category: "Lash & Brow",
+        location: "Dallas",
+        address: "5560 W Lovers Ln, Ste 255, Dallas, TX 75209",
+        phone: "214-432-1142",
+        website: "https://www.thelashlounge.com/tx-dallas-park-cities/",
+        imageUrl: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800",
+        rating: 47,
+        reviewCount: 134,
+        services: ["Lash Extensions", "Brow Lamination", "Lash Lifts", "Brow Tinting"]
+      },
+      {
+        name: "Verbena Parlor + Social House",
+        description: "Upscale nail salon and social lounge offering premium nail services in a chic atmosphere",
+        category: "Nail Salon",
+        location: "Dallas",
+        address: "2626 Howell St, #166, Dallas, TX 75204",
+        phone: "214-433-7359",
+        website: "https://www.verbenaparlor.com/",
+        imageUrl: "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800",
         rating: 49,
         reviewCount: 178,
-        services: ["Massage Therapy", "Facials", "Body Wraps", "Aromatherapy"]
+        services: ["Manicures", "Pedicures", "Gel Nails", "Nail Art"],
+        featured: true
+      },
+      {
+        name: "Ideal Image – West Village",
+        description: "National med spa chain offering laser hair removal, injectables, and skin treatments",
+        category: "Med Spa",
+        location: "Dallas",
+        address: "3839 McKinney Ave, Suite 110, Dallas, TX 75204",
+        phone: "469-784-9932",
+        website: "https://www.idealimage.com/locations/texas/dallas-west-village",
+        imageUrl: "https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=800",
+        rating: 45,
+        reviewCount: 267,
+        services: ["Laser Hair Removal", "Botox", "CoolSculpting", "IPL Treatments"]
+      },
+      {
+        name: "Milan Laser Hair Removal – Addison",
+        description: "Specialized laser hair removal clinic in Addison with guaranteed permanent results",
+        category: "Laser Hair Removal",
+        location: "Dallas",
+        address: "5225 Belt Line Rd, Dallas, TX 75254",
+        phone: "469-312-2993",
+        website: "https://milanlaserdallas.com/locations/dallas/",
+        imageUrl: "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=800",
+        rating: 48,
+        reviewCount: 312,
+        services: ["Laser Hair Removal", "Full Body Hair Removal", "Facial Hair Removal"]
+      },
+      {
+        name: "Milan Laser Hair Removal – Northeast Dallas",
+        description: "Northeast Dallas location offering unlimited laser hair removal packages",
+        category: "Laser Hair Removal",
+        location: "Dallas",
+        address: "6464 E Northwest Hwy, Ste 345, Dallas, TX 75214",
+        phone: "(469) 902-2916",
+        website: "https://milanlaser.com/locations/tx/dallas/6464-e-nw-hwy",
+        imageUrl: "https://images.unsplash.com/photo-1559599189-fe84dea4eb79?w=800",
+        rating: 47,
+        reviewCount: 289,
+        services: ["Laser Hair Removal", "Permanent Hair Reduction", "All Skin Types"]
+      },
+      {
+        name: "MINT dentistry – Uptown",
+        description: "Modern cosmetic dentistry practice offering teeth whitening and smile enhancement",
+        category: "Cosmetic Dentistry",
+        location: "Dallas",
+        address: "2520 Fairmount St, Suite 100, Dallas, TX 75201",
+        phone: "469-440-7149",
+        website: "https://mintdentistry.com/dentist/dfw/uptown",
+        imageUrl: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800",
+        rating: 46,
+        reviewCount: 201,
+        services: ["Teeth Whitening", "Veneers", "Cosmetic Dentistry", "General Dentistry"]
+      },
+      {
+        name: "BLEU Dentistry",
+        description: "Contemporary dental practice specializing in enhanced whitening services and cosmetic procedures",
+        category: "Cosmetic Dentistry",
+        location: "Dallas",
+        address: "Dallas, TX",
+        phone: "(214) 699-4976",
+        website: "https://www.bleudentist.com/",
+        imageUrl: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800",
+        rating: 48,
+        reviewCount: 167,
+        services: ["Enhanced Whitening", "Cosmetic Dentistry", "Smile Makeovers", "Veneers"]
+      },
+      {
+        name: "We Whiten – Preston Center",
+        description: "Dedicated teeth whitening studio offering quick and effective professional whitening treatments",
+        category: "Teeth Whitening",
+        location: "Dallas",
+        address: "7700 W Northwest Hwy, Dallas, TX 75225",
+        phone: "(972) 649-0459",
+        website: "https://www.wewhiten.com/",
+        imageUrl: "https://images.unsplash.com/photo-1598256989800-fe5f95da9787?w=800",
+        rating: 47,
+        reviewCount: 143,
+        services: ["Professional Whitening", "Express Whitening", "Custom Trays"]
+      },
+      {
+        name: "Laced by Lonice Spa & Boutique",
+        description: "Full-service beauty destination offering aesthetics, facials, lashes, and whitening services",
+        category: "Med Spa",
+        location: "Dallas",
+        address: "2504 Kimsey Dr, Dallas, TX 75235",
+        website: "https://www.lacedbylonice.com/",
+        imageUrl: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800",
+        rating: 49,
+        reviewCount: 112,
+        services: ["Facials", "Lash Extensions", "Teeth Whitening", "Aesthetic Services"]
       }
     ];
 
