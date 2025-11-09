@@ -127,6 +127,49 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
 
+        <section className="py-12 md:py-16 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-3 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>
+              How It Works
+            </h2>
+            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
+              A community-driven platform where everyone wins
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <div className="text-center space-y-3" data-testid="section-share-content">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto glow-primary">
+                  <FileText className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold">Share & Grow</h3>
+                <p className="text-sm text-muted-foreground">
+                  Businesses earn <span className="font-semibold text-foreground">FREE visibility</span> by contributing articles, how-tos, and engaging with the community
+                </p>
+              </div>
+              
+              <div className="text-center space-y-3" data-testid="section-vendor-marketplace">
+                <div className="w-16 h-16 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center mx-auto glow-primary">
+                  <MapPin className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold">Vendor Marketplace</h3>
+                <p className="text-sm text-muted-foreground">
+                  Suppliers and vendors connect directly with beauty businesses, offering specialized products and services
+                </p>
+              </div>
+              
+              <div className="text-center space-y-3" data-testid="section-community-recognition">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary via-accent to-secondary rounded-2xl flex items-center justify-center mx-auto glow-primary">
+                  <Heart className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold">Rise to the Top</h3>
+                <p className="text-sm text-muted-foreground">
+                  The most active, rated, and upvoted businesses are prominently featured—rewarding quality and engagement
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="py-3 border-b">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap items-center justify-center gap-1 text-sm">
@@ -218,7 +261,8 @@ export default function Home() {
             <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
               {feedItems.map((item, index) => {
                 const aspectRatio = getAspectRatio(index);
-                const key = `feed-item-${item.id}`;
+                const itemType = isBusiness(item) ? 'business' : isArticle(item) ? 'article' : 'howto';
+                const key = `${itemType}-${item.id}`;
                 
                 if (isBusiness(item)) {
                   return (

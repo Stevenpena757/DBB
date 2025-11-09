@@ -27,10 +27,10 @@ export function Hero() {
             DallasBeautyBook
           </h1>
           <p className="text-xl md:text-3xl font-semibold text-white drop-shadow-md" style={{ fontFamily: 'var(--font-display)' }}>
-            Where DFW Beauty Meets Community
+            Community-Driven Beauty Discovery
           </p>
           <p className="text-base md:text-lg max-w-2xl mx-auto text-gray-200">
-            Your trusted directory for Health, Beauty & Aesthetics services—powered by local businesses, experts, and community insights
+            Where businesses gain <span className="font-semibold text-white">FREE visibility</span> by sharing content, vendors offer services, and the most active & upvoted businesses shine
           </p>
         </div>
       </div>
