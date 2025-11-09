@@ -1,0 +1,54 @@
+DallasBeautyBook Color Palette - placeholder
+
+DallasBeautyBook.com — Color Scheme: 'Copper Radiance'
+==============================================================
+
+1) Primary Brand Gradient (Hero + Brand)
+   Name: Copper Light -> Blonde Gold -> Soft Ivory
+   CSS: linear-gradient(135deg, #D67A59 0%, #E3A28D 40%, #F7E9D8 100%)
+
+2) Core Palette
+   - Primary .......... Copper Rose        #D67A59   (CTAs, icons, accent dividers, logo gradients)
+   - Secondary ........ Peach Nude         #E3A28D   (Buttons, section backgrounds, soft gradients)
+   - Light Accent ..... Champagne Ivory    #F7E9D8   (Page backgrounds, cards, hover states)
+   - Neutral Base ..... Soft Taupe         #CDB9A3   (Input borders, subtle UI chrome, quiet text)
+   - Contrast/Text .... Warm Espresso      #3D2B1F   (Headings, body copy; prefer over pure black)
+
+3) Supporting Shades
+   - Highlight Gold ... #F2C97D   (Shimmer accents, thin rules, hover highlights)
+   - Rose Blush ....... #F0D6C8   (Section separators, soft overlays)
+   - Cream White ...... #FFF9F5   (Primary page background)
+   - Soft Shadow ...... rgba(61,43,31,0.08) (Elevation/shadows on cards and modals)
+
+4) Gradient Library (Examples)
+   - Primary Glow:  linear-gradient(135deg, #E8B898, #F7E9D8)
+   - Copper Kiss:   linear-gradient(90deg,  #D67A59, #E3A28D)
+   - Ivory Fade:    linear-gradient(180deg, #FFF9F5, #F7E9D8)
+
+5) Usage Notes
+   - Buttons: Solid #D67A59 with white text; hover -> #E3A28D; subtle shadow rgba(61,43,31,0.08)
+   - Headers/Callouts: Optional gradient text (Copper Rose -> Blonde Gold)
+   - Backgrounds: Favor light ivory/cream with very soft gradient bands; avoid heavy darks
+   - Text: Use Warm Espresso #3D2B1F for high legibility on light backgrounds
+   - Cards: Cream White background with 8px-16px radius; shadow rgba(61,43,31,0.08)
+   - Icons/Lines: Use Highlight Gold #F2C97D sparingly for premium feel
+
+6) Accessibility (Quick Tips)
+   - Body text on Cream/Champagne should use #3D2B1F for WCAG-friendly contrast
+   - Copper accents (#D67A59) are best for buttons on very light backgrounds
+   - Reserve gradients for large surfaces; use solids for small UI controls
+
+7) Sample CSS Tokens
+   --color-primary:        #D67A59;
+   --color-secondary:      #E3A28D;
+   --color-ivory:          #F7E9D8;
+   --color-cream:          #FFF9F5;
+   --color-taupe:          #CDB9A3;
+   --color-gold:           #F2C97D;
+   --color-text:           #3D2B1F;
+   --shadow-soft:          0 8px 24px rgba(61,43,31,0.08);
+
+   --gradient-brand:       linear-gradient(135deg, #D67A59 0%, #E3A28D 40%, #F7E9D8 100%);
+   --gradient-primaryGlow: linear-gradient(135deg, #E8B898, #F7E9D8);
+   --gradient-copperKiss:  linear-gradient(90deg,  #D67A59, #E3A28D);
+   --gradient-ivoryFade:   linear-gradient(180deg, #FFF9F5, #F7E9D8);
