@@ -55,19 +55,19 @@ export function Hero() {
         }}
       />
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-        <div className="space-y-6 max-w-4xl">
+        <div className="space-y-3 md:space-y-6 max-w-4xl">
           <div className="relative inline-block">
-            <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
+            <h1 className="text-3xl md:text-8xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
               DallasBeautyBook
             </h1>
-            <div className="absolute -bottom-3 left-0 right-0 h-8 md:h-10 text-primary/40 opacity-60">
+            <div className="absolute -bottom-2 md:-bottom-3 left-0 right-0 h-5 md:h-10 text-primary/40 opacity-60">
               <DallasSkyline />
             </div>
           </div>
-          <p className="text-xl md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-base md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
             Community-Driven Beauty Discovery
           </p>
-          <p className="text-base md:text-xl max-w-2xl mx-auto text-white font-medium">
+          <p className="text-xs md:text-xl max-w-2xl mx-auto text-white font-medium leading-relaxed">
             Where businesses gain <span className="font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">FREE visibility</span> by sharing content, vendors offer services, and the most <span className="font-bold text-accent">active & upvoted</span> businesses <span className="font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">shine</span>
           </p>
         </div>
