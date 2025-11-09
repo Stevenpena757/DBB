@@ -460,6 +460,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin endpoint to seed production database (one-time use)
+  app.post("/api/admin/seed", async (req, res) => {
+    try {
+      // Check if already seeded
+      const existingBusinesses = await storage.getAllBusinesses();
+      if (existingBusinesses.length > 0) {
+        return res.status(400).json({ 
+          error: "Database already contains data. Seeding skipped to prevent duplicates." 
+        });
+      }
+
+      // Run seed
+      const seed = (await import("./seed")).default;
+      await seed();
+      
+      res.json({ 
+        success: true, 
+        message: "Database seeded successfully with sample businesses, articles, and content." 
+        });
+    } catch (error) {
+      console.error("Seed error:", error);
+      res.status(500).json({ error: "Failed to seed database" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
