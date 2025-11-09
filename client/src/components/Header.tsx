@@ -40,7 +40,7 @@ export function Header() {
               Forum
             </Button>
           </a>
-          <a href="/" className="hidden lg:block">
+          <a href="/claim-listing" className="hidden lg:block">
             <Button variant="ghost" size="sm" data-testid="button-claim-listing">
               Claim Your Listing
             </Button>

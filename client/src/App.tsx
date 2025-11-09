@@ -16,6 +16,7 @@ import Dashboard from "@/pages/Dashboard";
 import Admin from "@/pages/Admin";
 import Forum from "@/pages/Forum";
 import ForumPost from "@/pages/ForumPost";
+import ClaimListing from "@/pages/ClaimListing";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -32,6 +33,7 @@ function Router() {
       <Route path="/admin" component={Admin} />
       <Route path="/forum" component={Forum} />
       <Route path="/forum/:id" component={ForumPost} />
+      <Route path="/claim-listing" component={ClaimListing} />
       <Route path="/business/:id" component={BusinessProfile} />
       <Route component={NotFound} />
     </Switch>

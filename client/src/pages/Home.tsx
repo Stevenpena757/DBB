@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { Business, Article, HowTo } from "@shared/schema";
-import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles, Star, ChevronLeft, ChevronRight, Lock } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -111,15 +111,23 @@ function BusinessCard({ business, images, rating, contributionCount, isSponsored
       <div className="p-3">
         <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex-1">
-            <h3 className="font-bold text-base flex items-center gap-1.5 mb-1">
-              {business.name}
-              {isPremium && (
-                <Crown className="h-3.5 w-3.5 text-secondary flex-shrink-0" />
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-bold text-base flex items-center gap-1.5">
+                {business.name}
+                {isPremium && (
+                  <Crown className="h-3.5 w-3.5 text-secondary flex-shrink-0" />
+                )}
+                {isPro && !isPremium && (
+                  <BadgeCheck className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                )}
+              </h3>
+              {business.isClaimed && (
+                <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 flex items-center gap-0.5">
+                  <Lock className="h-2.5 w-2.5" />
+                  Claimed
+                </Badge>
               )}
-              {isPro && !isPremium && (
-                <BadgeCheck className="h-3.5 w-3.5 text-primary flex-shrink-0" />
-              )}
-            </h3>
+            </div>
             <div className="flex items-center gap-2 text-xs">
               <div className="flex items-center gap-0.5">
                 <Star className="h-3 w-3 fill-accent text-accent" />
