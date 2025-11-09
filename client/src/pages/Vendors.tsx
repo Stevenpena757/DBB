@@ -39,10 +39,10 @@ export default function Vendors() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-8 max-w-3xl mx-auto">
               <h1 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>
-                Vendor Marketplace
+                Connect With Suppliers
               </h1>
               <p className="text-lg text-muted-foreground">
-                Connect with trusted suppliers for equipment, products, and services
+                We help beauty businesses find the equipment, products, and supplies they need to thrive
               </p>
             </div>
 
@@ -76,8 +76,8 @@ export default function Vendors() {
                   <Sparkles className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">Become a Vendor Partner</h3>
-                  <p className="text-sm text-muted-foreground">Reach 1000+ DFW beauty businesses</p>
+                  <h3 className="text-xl font-bold">Suppliers: Reach DFW Beauty Businesses</h3>
+                  <p className="text-sm text-muted-foreground">List your products and connect with 1000+ active businesses</p>
                 </div>
               </div>
               <div className="grid md:grid-cols-3 gap-4 text-sm">

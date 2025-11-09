@@ -76,10 +76,10 @@ export default function Pricing() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12 max-w-3xl mx-auto">
               <h1 className="text-4xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>
-                Choose Your Growth Plan
+                Grow Your Beauty Business
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground">
-                Get FREE visibility by sharing content, or upgrade for premium features and maximum reach
+                Start FREE. Share your expertise. Get discovered. Upgrade when you're ready to dominate your market
               </p>
             </div>
 

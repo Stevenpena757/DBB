@@ -2,13 +2,18 @@
 
 ## Overview
 
-Dallas Beauty Book is a Pinterest-inspired visual discovery platform designed exclusively for DFW's Health, Beauty, and Aesthetics businesses. The application provides a clean, visual-first interface where users can discover businesses, read articles and how-to guides, shop from vendors, and save their favorite content. The platform follows Pinterest's proven design principles with a masonry grid layout, subtle interactions, and a focus on visual content.
+Dallas Beauty Book is a Pinterest-inspired B2B SaaS platform built FOR DFW's Health, Beauty, and Aesthetics businesses and entrepreneurs. This is their platform to gain visibility, share expertise, and grow their business. The application provides a clean, visual-first interface where businesses can discover clients through content creation, connect with suppliers, and build their brand. The platform follows Pinterest's proven design principles with a masonry grid layout, subtle interactions, and a focus on visual content.
+
+**Platform Positioning:**
+- Primary Customers: Beauty businesses and entrepreneurs in the DFW area
+- Vendor Marketplace: A feature that SERVES businesses by connecting them with suppliers (equipment, products, supplies)
+- Core Value Proposition: FREE visibility through content sharing, with paid tiers for enhanced features
 
 **Monetization Strategy:**
 The platform implements a three-tier subscription model (Free, Pro $29/mo, Premium $99/mo) that preserves the core promise of FREE visibility through content creation. Revenue streams include:
-- Subscription tiers with enhanced features and reduced marketplace commissions
+- Subscription tiers with enhanced features for businesses
 - Sponsored content placements for premium visibility in the feed
-- Vendor marketplace with commission-based revenue (20% free, 15% pro, 10% premium)
+- Vendor marketplace connecting businesses with suppliers (20% commission free tier, 15% pro, 10% premium)
 
 ## User Preferences
 

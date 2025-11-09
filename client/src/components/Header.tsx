@@ -23,7 +23,7 @@ export function Header() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input 
               type="search"
-              placeholder="Search health, beauty & aesthetics services..."
+              placeholder="Find beauty businesses, tips, and suppliers..."
               className="pl-10 h-12 rounded-full border-2 border-border bg-card/80 focus:bg-card focus:border-primary transition-colors"
               data-testid="input-header-search"
             />
