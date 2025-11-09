@@ -305,13 +305,13 @@ export default function Home() {
                 </div>
                 
                 <div className="flex-[0_0_100%] min-w-0 px-2">
-                  <div className="flex flex-col items-center justify-center gap-1 md:gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-vendor-marketplace">
+                  <div className="flex flex-col items-center justify-center gap-1 md:gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-find-your-beauty">
                     <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
-                      <MapPin className="h-5 w-5 md:h-8 md:w-8 text-white" />
+                      <Sparkles className="h-5 w-5 md:h-8 md:w-8 text-white" />
                     </div>
-                    <h3 className="text-xl md:text-4xl font-extrabold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Connect With Suppliers</h3>
+                    <h3 className="text-xl md:text-4xl font-extrabold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Find Your Beauty in DFW</h3>
                     <p className="text-[10px] md:text-sm text-center max-w-lg leading-tight md:leading-snug text-foreground/70 px-4">
-                      Find equipment, products & supplies for your business
+                      Discover the best health, beauty & aesthetics businesses in Dallas-Fort Worth
                     </p>
                   </div>
                 </div>
