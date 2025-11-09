@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
 import { 
   insertBusinessSchema, 
   insertArticleSchema, 
@@ -11,6 +11,7 @@ import {
   insertPostSchema
 } from "@shared/schema";
 import { z } from "zod";
+import { createAdminRouter } from "./routes/admin";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -484,6 +485,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to seed database" });
     }
   });
+
+  // ============ ADMIN PANEL ============
+  const adminRouter = createAdminRouter(storage);
+  app.use("/api/admin", isAuthenticated, isAdmin, adminRouter);
 
   const httpServer = createServer(app);
   return httpServer;
