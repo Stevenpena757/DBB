@@ -20,17 +20,17 @@ export function Hero() {
         <div className="space-y-6 max-w-4xl">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center glow-primary">
-              <span className="text-white font-bold text-3xl" style={{ fontFamily: 'var(--font-accent)' }}>G</span>
+              <span className="text-white font-bold text-3xl" style={{ fontFamily: 'var(--font-accent)' }}>D</span>
             </div>
           </div>
           <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
-            GENESIS
+            DallasBeautyBook
           </h1>
           <p className="text-xl md:text-3xl font-semibold text-white drop-shadow-md" style={{ fontFamily: 'var(--font-display)' }}>
-            The Future of DFW Health & Beauty Discovery
+            Where DFW Beauty Meets Community
           </p>
           <p className="text-base md:text-lg max-w-2xl mx-auto text-gray-200">
-            AI-powered directory connecting you with top Health, Beauty & Aesthetics services—driven by innovation, community, and excellence
+            Your trusted directory for Health, Beauty & Aesthetics services—powered by local businesses, experts, and community insights
           </p>
         </div>
       </div>

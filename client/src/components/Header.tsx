@@ -10,10 +10,10 @@ export function Header() {
         <a href="/" className="flex items-center gap-2" data-testid="link-logo">
           <div className="flex items-center gap-1">
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded flex items-center justify-center">
-              <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-accent)' }}>G</span>
+              <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-accent)' }}>D</span>
             </div>
             <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>
-              GENESIS
+              DallasBeautyBook
             </span>
           </div>
         </a>
