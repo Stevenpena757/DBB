@@ -118,7 +118,7 @@ export default function Home() {
 
     const intervalId = setInterval(() => {
       emblaApi.scrollNext();
-    }, 3000); // Change slide every 3 seconds
+    }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(intervalId);
   }, [emblaApi]);
@@ -138,42 +138,42 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-br from-background via-card to-muted">
       <Header />
       <main className="flex-1">
-        <section className="py-5 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 border-b border-primary/20 overflow-hidden">
+        <section className="py-8 md:py-10 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 border-b-2 border-primary/30 overflow-hidden">
           <div className="container mx-auto px-4">
-            <div className="overflow-hidden" ref={emblaRef}>
+            <div className="overflow-hidden max-w-2xl mx-auto" ref={emblaRef}>
               <div className="flex">
-                <div className="flex-[0_0_100%] min-w-0">
-                  <div className="flex flex-col items-center gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-share-content">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg animate-pulse">
-                      <FileText className="h-6 w-6 text-white" />
+                <div className="flex-[0_0_100%] min-w-0 px-4">
+                  <div className="flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in duration-700" data-testid="section-share-content">
+                    <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
+                      <FileText className="h-8 w-8 md:h-10 md:w-10 text-white" />
                     </div>
-                    <h3 className="text-base font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Share & Grow</h3>
-                    <p className="text-xs text-muted-foreground text-center max-w-md leading-tight">
-                      Earn <span className="font-semibold text-foreground">FREE visibility</span> by sharing content
+                    <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>Share & Grow</h3>
+                    <p className="text-sm md:text-base text-center max-w-lg leading-relaxed text-foreground/80">
+                      Businesses earn <span className="font-bold text-primary">FREE visibility</span> by contributing articles, how-tos, and engaging with the community
                     </p>
                   </div>
                 </div>
                 
-                <div className="flex-[0_0_100%] min-w-0">
-                  <div className="flex flex-col items-center gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-vendor-marketplace">
-                    <div className="w-12 h-12 bg-gradient-to-br from-accent to-secondary rounded-xl flex items-center justify-center shadow-lg animate-pulse">
-                      <MapPin className="h-6 w-6 text-white" />
+                <div className="flex-[0_0_100%] min-w-0 px-4">
+                  <div className="flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in duration-700" data-testid="section-vendor-marketplace">
+                    <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
+                      <MapPin className="h-8 w-8 md:h-10 md:w-10 text-white" />
                     </div>
-                    <h3 className="text-base font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">Vendor Marketplace</h3>
-                    <p className="text-xs text-muted-foreground text-center max-w-md leading-tight">
-                      Suppliers connect with beauty businesses
+                    <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>Vendor Marketplace</h3>
+                    <p className="text-sm md:text-base text-center max-w-lg leading-relaxed text-foreground/80">
+                      Suppliers and vendors connect directly with beauty businesses, offering specialized products and services
                     </p>
                   </div>
                 </div>
                 
-                <div className="flex-[0_0_100%] min-w-0">
-                  <div className="flex flex-col items-center gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-community-recognition">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl flex items-center justify-center shadow-lg animate-pulse">
-                      <Heart className="h-6 w-6 text-white" />
+                <div className="flex-[0_0_100%] min-w-0 px-4">
+                  <div className="flex flex-col items-center justify-center gap-3 animate-in fade-in zoom-in duration-700" data-testid="section-community-recognition">
+                    <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary via-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
+                      <Heart className="h-8 w-8 md:h-10 md:w-10 text-white" />
                     </div>
-                    <h3 className="text-base font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">Rise to the Top</h3>
-                    <p className="text-xs text-muted-foreground text-center max-w-md leading-tight">
-                      Most active & upvoted businesses featured
+                    <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>Rise to the Top</h3>
+                    <p className="text-sm md:text-base text-center max-w-lg leading-relaxed text-foreground/80">
+                      The most active, rated, and upvoted businesses are prominently featured—rewarding quality and engagement
                     </p>
                   </div>
                 </div>
