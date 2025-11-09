@@ -664,6 +664,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const replyId = parseInt(req.params.id);
       const { postId } = req.body;
       
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const post = await storage.getForumPostById(postId);
+      
+      if (!post) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+      
+      if (post.userId !== user.id) {
+        return res.status(403).json({ error: "You can only accept answers on your own questions" });
+      }
+      
       await storage.acceptAnswer(replyId, postId);
       res.status(200).json({ success: true });
     } catch (error) {
