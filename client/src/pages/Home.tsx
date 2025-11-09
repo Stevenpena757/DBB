@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import type { Business, Article, HowTo } from "@shared/schema";
 import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import useEmblaCarousel from "embla-carousel-react";
 
 type FeedItem = Business | Article | HowTo;
 
@@ -25,6 +26,7 @@ function isHowTo(item: FeedItem): item is HowTo {
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedLocation, setSelectedLocation] = useState<string>("all");
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 40 });
   
   // Build query params
   const buildBusinessQuery = () => {
@@ -110,6 +112,17 @@ export default function Home() {
     setSelectedCategory(category);
   };
 
+  // Auto-play carousel
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const intervalId = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(intervalId);
+  }, [emblaApi]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -125,37 +138,45 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-br from-background via-card to-muted">
       <Header />
       <main className="flex-1">
-        <section className="py-4 bg-muted/30 border-b border-border/50">
+        <section className="py-5 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 border-b border-primary/20 overflow-hidden">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto text-center">
-              <div className="flex flex-col items-center gap-1.5" data-testid="section-share-content">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-                  <FileText className="h-5 w-5 text-white" />
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                <div className="flex-[0_0_100%] min-w-0">
+                  <div className="flex flex-col items-center gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-share-content">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg animate-pulse">
+                      <FileText className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-base font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Share & Grow</h3>
+                    <p className="text-xs text-muted-foreground text-center max-w-md leading-tight">
+                      Earn <span className="font-semibold text-foreground">FREE visibility</span> by sharing content
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-sm font-semibold">Share & Grow</h3>
-                <p className="text-xs text-muted-foreground leading-tight">
-                  Earn <span className="font-medium text-foreground">FREE visibility</span> by sharing content
-                </p>
-              </div>
-              
-              <div className="flex flex-col items-center gap-1.5" data-testid="section-vendor-marketplace">
-                <div className="w-10 h-10 bg-gradient-to-br from-accent to-secondary rounded-xl flex items-center justify-center">
-                  <MapPin className="h-5 w-5 text-white" />
+                
+                <div className="flex-[0_0_100%] min-w-0">
+                  <div className="flex flex-col items-center gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-vendor-marketplace">
+                    <div className="w-12 h-12 bg-gradient-to-br from-accent to-secondary rounded-xl flex items-center justify-center shadow-lg animate-pulse">
+                      <MapPin className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-base font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">Vendor Marketplace</h3>
+                    <p className="text-xs text-muted-foreground text-center max-w-md leading-tight">
+                      Suppliers connect with beauty businesses
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-sm font-semibold">Vendor Marketplace</h3>
-                <p className="text-xs text-muted-foreground leading-tight">
-                  Suppliers connect with beauty businesses
-                </p>
-              </div>
-              
-              <div className="flex flex-col items-center gap-1.5" data-testid="section-community-recognition">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl flex items-center justify-center">
-                  <Heart className="h-5 w-5 text-white" />
+                
+                <div className="flex-[0_0_100%] min-w-0">
+                  <div className="flex flex-col items-center gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-community-recognition">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl flex items-center justify-center shadow-lg animate-pulse">
+                      <Heart className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-base font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">Rise to the Top</h3>
+                    <p className="text-xs text-muted-foreground text-center max-w-md leading-tight">
+                      Most active & upvoted businesses featured
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-sm font-semibold">Rise to the Top</h3>
-                <p className="text-xs text-muted-foreground leading-tight">
-                  Most active & upvoted businesses featured
-                </p>
               </div>
             </div>
           </div>
