@@ -78,6 +78,23 @@ export interface IStorage {
   upvoteBusiness(id: number): Promise<Business | undefined>;
   upvoteArticle(id: number): Promise<Article | undefined>;
   upvoteHowTo(id: number): Promise<HowTo | undefined>;
+  
+  // Admin Methods
+  getAllUsers(): Promise<User[]>;
+  updateUserRole(id: number, role: string): Promise<User | undefined>;
+  getAllClaimRequests(): Promise<ClaimRequest[]>;
+  getPlatformStats(): Promise<{
+    totalUsers: number;
+    totalBusinesses: number;
+    totalArticles: number;
+    totalHowTos: number;
+    totalVendors: number;
+    claimedBusinesses: number;
+    pendingClaims: number;
+    freeBusinesses: number;
+    proBusinesses: number;
+    premiumBusinesses: number;
+  }>;
 }
 
 export class MemStorage implements IStorage {

@@ -298,4 +298,66 @@ export class DbStorage implements IStorage {
     }
     return undefined;
   }
+
+  // ============ ADMIN METHODS ============
+  async getAllUsers(): Promise<User[]> {
+    return db.select().from(users).orderBy(desc(users.createdAt));
+  }
+
+  async updateUserRole(id: number, role: string): Promise<User | undefined> {
+    const result = await db.update(users).set({ role }).where(eq(users.id, id)).returning();
+    return result[0];
+  }
+
+  async getAllClaimRequests(): Promise<ClaimRequest[]> {
+    return db.select().from(claimRequests).orderBy(desc(claimRequests.createdAt));
+  }
+
+  async getPlatformStats(): Promise<{
+    totalUsers: number;
+    totalBusinesses: number;
+    totalArticles: number;
+    totalHowTos: number;
+    totalVendors: number;
+    claimedBusinesses: number;
+    pendingClaims: number;
+    freeBusinesses: number;
+    proBusinesses: number;
+    premiumBusinesses: number;
+  }> {
+    const [
+      allUsers,
+      allBusinesses,
+      allArticles,
+      allHowTos,
+      allVendors,
+      allClaims
+    ] = await Promise.all([
+      db.select().from(users),
+      db.select().from(businesses),
+      db.select().from(articles),
+      db.select().from(howTos),
+      db.select().from(vendors),
+      db.select().from(claimRequests)
+    ]);
+
+    const claimedBusinesses = allBusinesses.filter(b => b.isClaimed).length;
+    const pendingClaims = allClaims.filter(c => c.status === "pending").length;
+    const freeBusinesses = allBusinesses.filter(b => b.subscriptionTier === "free").length;
+    const proBusinesses = allBusinesses.filter(b => b.subscriptionTier === "pro").length;
+    const premiumBusinesses = allBusinesses.filter(b => b.subscriptionTier === "premium").length;
+
+    return {
+      totalUsers: allUsers.length,
+      totalBusinesses: allBusinesses.length,
+      totalArticles: allArticles.length,
+      totalHowTos: allHowTos.length,
+      totalVendors: allVendors.length,
+      claimedBusinesses,
+      pendingClaims,
+      freeBusinesses,
+      proBusinesses,
+      premiumBusinesses
+    };
+  }
 }
