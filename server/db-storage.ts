@@ -2,6 +2,7 @@ import { db } from "./db";
 import { eq, and, desc } from "drizzle-orm";
 import {
   users, businesses, posts, articles, howTos, vendors, vendorProducts, claimRequests, saves,
+  forumPosts, forumReplies,
   type User, type InsertUser,
   type Business, type InsertBusiness,
   type Post, type InsertPost,
@@ -10,7 +11,9 @@ import {
   type Vendor, type InsertVendor,
   type VendorProduct, type InsertVendorProduct,
   type ClaimRequest, type InsertClaimRequest,
-  type Save, type InsertSave
+  type Save, type InsertSave,
+  type ForumPost, type InsertForumPost,
+  type ForumReply, type InsertForumReply
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -359,5 +362,83 @@ export class DbStorage implements IStorage {
       proBusinesses,
       premiumBusinesses
     };
+  }
+
+  // ============ FORUM METHODS ============
+  async getAllForumPosts(type?: string, category?: string): Promise<ForumPost[]> {
+    let query = db.select().from(forumPosts);
+    
+    if (type && category) {
+      query = query.where(and(eq(forumPosts.type, type), eq(forumPosts.category, category))) as any;
+    } else if (type) {
+      query = query.where(eq(forumPosts.type, type)) as any;
+    } else if (category) {
+      query = query.where(eq(forumPosts.category, category)) as any;
+    }
+    
+    return query.orderBy(desc(forumPosts.createdAt)) as any;
+  }
+
+  async getForumPostById(id: number): Promise<ForumPost | undefined> {
+    const result = await db.select().from(forumPosts).where(eq(forumPosts.id, id)).limit(1);
+    return result[0];
+  }
+
+  async createForumPost(post: InsertForumPost): Promise<ForumPost> {
+    const result = await db.insert(forumPosts).values(post).returning();
+    return result[0];
+  }
+
+  async updateForumPost(id: number, updates: Partial<InsertForumPost>): Promise<ForumPost | undefined> {
+    const result = await db.update(forumPosts).set(updates).where(eq(forumPosts.id, id)).returning();
+    return result[0];
+  }
+
+  async upvoteForumPost(id: number): Promise<ForumPost | undefined> {
+    const post = await this.getForumPostById(id);
+    if (post) {
+      const result = await db.update(forumPosts).set({ upvotes: post.upvotes + 1 }).where(eq(forumPosts.id, id)).returning();
+      return result[0];
+    }
+    return undefined;
+  }
+
+  async incrementForumPostViews(id: number): Promise<void> {
+    const post = await this.getForumPostById(id);
+    if (post) {
+      await db.update(forumPosts).set({ viewCount: post.viewCount + 1 }).where(eq(forumPosts.id, id));
+    }
+  }
+
+  async getRepliesByPostId(postId: number): Promise<ForumReply[]> {
+    return db.select().from(forumReplies).where(eq(forumReplies.postId, postId)).orderBy(desc(forumReplies.createdAt));
+  }
+
+  async createForumReply(reply: InsertForumReply): Promise<ForumReply> {
+    const result = await db.insert(forumReplies).values(reply).returning();
+    
+    const post = await this.getForumPostById(reply.postId);
+    if (post) {
+      await db.update(forumPosts).set({ replyCount: post.replyCount + 1 }).where(eq(forumPosts.id, reply.postId));
+    }
+    
+    return result[0];
+  }
+
+  async upvoteForumReply(id: number): Promise<ForumReply | undefined> {
+    const reply = await db.select().from(forumReplies).where(eq(forumReplies.id, id)).limit(1);
+    if (reply[0]) {
+      const result = await db.update(forumReplies).set({ upvotes: reply[0].upvotes + 1 }).where(eq(forumReplies.id, id)).returning();
+      return result[0];
+    }
+    return undefined;
+  }
+
+  async acceptAnswer(replyId: number, postId: number): Promise<void> {
+    await db.update(forumReplies).set({ isAcceptedAnswer: false }).where(eq(forumReplies.postId, postId));
+    
+    await db.update(forumReplies).set({ isAcceptedAnswer: true }).where(eq(forumReplies.id, replyId));
+    
+    await db.update(forumPosts).set({ hasAcceptedAnswer: true }).where(eq(forumPosts.id, postId));
   }
 }

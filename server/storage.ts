@@ -7,7 +7,9 @@ import {
   type Vendor, type InsertVendor,
   type VendorProduct, type InsertVendorProduct,
   type ClaimRequest, type InsertClaimRequest,
-  type Save, type InsertSave
+  type Save, type InsertSave,
+  type ForumPost, type InsertForumPost,
+  type ForumReply, type InsertForumReply
 } from "@shared/schema";
 
 export interface IStorage {
@@ -95,6 +97,19 @@ export interface IStorage {
     proBusinesses: number;
     premiumBusinesses: number;
   }>;
+  
+  // Forum Methods
+  getAllForumPosts(type?: string, category?: string): Promise<ForumPost[]>;
+  getForumPostById(id: number): Promise<ForumPost | undefined>;
+  createForumPost(post: InsertForumPost): Promise<ForumPost>;
+  updateForumPost(id: number, post: Partial<InsertForumPost>): Promise<ForumPost | undefined>;
+  upvoteForumPost(id: number): Promise<ForumPost | undefined>;
+  incrementForumPostViews(id: number): Promise<void>;
+  
+  getRepliesByPostId(postId: number): Promise<ForumReply[]>;
+  createForumReply(reply: InsertForumReply): Promise<ForumReply>;
+  upvoteForumReply(id: number): Promise<ForumReply | undefined>;
+  acceptAnswer(replyId: number, postId: number): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
