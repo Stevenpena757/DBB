@@ -182,3 +182,25 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
     return;
   }
 };
+
+export const isAdmin: RequestHandler = async (req, res, next) => {
+  const user = req.user as any;
+
+  if (!req.isAuthenticated() || !user.expires_at) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const replitId = user.claims.sub.toString();
+    const dbUser = await storage.getUserByReplitId(replitId);
+    
+    if (!dbUser || dbUser.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden: Admin access required" });
+    }
+
+    return next();
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+    return;
+  }
+};
