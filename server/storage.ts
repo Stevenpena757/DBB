@@ -317,11 +317,36 @@ export class MemStorage implements IStorage {
         sponsoredUntil = futureDate;
       }
       
+      // Mock reviews and ratings (rating stored as 0-50, representing 0.0-5.0 stars)
+      const reviewCount = Math.floor(Math.random() * 100) + 10;
+      const rating = Math.floor(Math.random() * 15) + 35; // 3.5 to 5.0 stars
+      
+      // Mock services based on business category
+      const serviceSets: Record<string, string[]> = {
+        "Med Spa": ["Botox & Fillers", "Laser Hair Removal", "Chemical Peels", "Microneedling", "IV Therapy"],
+        "Dermatology": ["Acne Treatment", "Skin Cancer Screening", "Cosmetic Dermatology", "Laser Treatments"],
+        "Plastic Surgery": ["Rhinoplasty", "Breast Augmentation", "Liposuction", "Facelift", "Body Contouring"],
+        "Lashes": ["Classic Lashes", "Volume Lashes", "Lash Lift & Tint", "Brow Shaping"],
+        "Nail Salon": ["Manicures", "Pedicures", "Gel Nails", "Nail Art", "Spa Treatments"],
+        "Laser Hair Removal": ["Full Body", "Face", "Legs", "Brazilian", "Underarms"],
+        "Cosmetic Dentistry": ["Teeth Whitening", "Veneers", "Invisalign", "Smile Makeover"],
+        "Teeth Whitening": ["In-Office Whitening", "Take-Home Kits", "Maintenance Plans"],
+        "Aesthetics Spa": ["Facials", "Lash Extensions", "Waxing", "Teeth Whitening", "Body Treatments"],
+      };
+      
+      const services = serviceSets[business.category as keyof typeof serviceSets] || ["Consultation", "Treatments"];
+      
+      // Add additional images for carousel
+      const additionalImages = [
+        `https://images.unsplash.com/photo-${1500000000000 + index * 1000000}-0?w=800`,
+        `https://images.unsplash.com/photo-${1510000000000 + index * 1000000}-0?w=800`,
+        `https://images.unsplash.com/photo-${1520000000000 + index * 1000000}-0?w=800`,
+      ];
+      
       this.businesses.set(id, { 
         address: null,
         phone: null,
         website: null,
-        additionalImages: null,
         claimedBy: null,
         instagramHandle: null,
         tiktokHandle: null,
@@ -330,7 +355,11 @@ export class MemStorage implements IStorage {
         featured: false,
         ...business, 
         id, 
-        upvotes, 
+        upvotes,
+        rating,
+        reviewCount,
+        services,
+        additionalImages,
         subscriptionTier,
         isSponsored,
         sponsoredUntil,
@@ -474,6 +503,7 @@ export class MemStorage implements IStorage {
       phone: null,
       website: null,
       additionalImages: null,
+      services: null,
       claimedBy: null,
       instagramHandle: null,
       tiktokHandle: null,
@@ -486,6 +516,8 @@ export class MemStorage implements IStorage {
       ...insertBusiness, 
       id,
       upvotes: 0,
+      rating: 0,
+      reviewCount: 0,
       createdAt: new Date() 
     };
     this.businesses.set(id, business);

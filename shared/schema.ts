@@ -55,6 +55,9 @@ export const businesses = pgTable("businesses", {
   website: text("website"),
   imageUrl: text("image_url").notNull(),
   additionalImages: text("additional_images").array(),
+  services: text("services").array(), // List of services offered
+  rating: integer("rating").default(0).notNull(), // Average rating (0-5 scale, store as 0-50 for decimal precision)
+  reviewCount: integer("review_count").default(0).notNull(),
   isClaimed: boolean("is_claimed").default(false).notNull(),
   claimedBy: integer("claimed_by"),
   instagramHandle: text("instagram_handle"),
@@ -73,6 +76,8 @@ export type Business = typeof businesses.$inferSelect;
 export const insertBusinessSchema = createInsertSchema(businesses).omit({
   id: true,
   upvotes: true,
+  rating: true,
+  reviewCount: true,
   subscriptionTier: true,
   isSponsored: true,
   sponsoredUntil: true,

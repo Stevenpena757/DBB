@@ -4,8 +4,9 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import type { Business, Article, HowTo } from "@shared/schema";
-import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles } from "lucide-react";
+import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import useEmblaCarousel from "embla-carousel-react";
 
@@ -21,6 +22,155 @@ function isArticle(item: FeedItem): item is Article {
 
 function isHowTo(item: FeedItem): item is HowTo {
   return 'steps' in item && !('excerpt' in item);
+}
+
+interface BusinessCardProps {
+  business: Business;
+  images: string[];
+  rating: string;
+  contributionCount: number;
+  isSponsored: boolean;
+  isPro: boolean;
+  isPremium: boolean;
+  aspectRatio: string;
+  onUpvote: (e: React.MouseEvent) => void;
+}
+
+function BusinessCard({ business, images, rating, contributionCount, isSponsored, isPro, isPremium, aspectRatio, onUpvote }: BusinessCardProps) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  return (
+    <a 
+      href={`/business/${business.id}`}
+      className={`mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer block group relative ${
+        isPremium ? 'ring-2 ring-secondary/30' : ''
+      } ${isSponsored ? 'ring-2 ring-accent/50' : ''}`}
+      data-testid={`pin-business-${business.id}`}
+    >
+      {isSponsored && (
+        <div className="absolute top-2 left-2 z-10 bg-gradient-to-r from-accent to-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+          <Sparkles className="h-2.5 w-2.5" />
+          SPONSORED
+        </div>
+      )}
+      
+      <div className={`${aspectRatio} overflow-hidden relative`}>
+        <img src={images[currentImageIndex]} alt={business.name} className="w-full h-full object-cover" />
+        
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover-elevate active-elevate-2"
+              data-testid={`button-prev-image-${business.id}`}
+            >
+              <ChevronLeft className="h-3 w-3" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity hover-elevate active-elevate-2"
+              data-testid={`button-next-image-${business.id}`}
+            >
+              <ChevronRight className="h-3 w-3" />
+            </button>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+              {images.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`w-1 h-1 rounded-full ${idx === currentImageIndex ? 'bg-white' : 'bg-white/40'}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+        
+        {isPremium && (
+          <div className="absolute top-2 right-2 bg-gradient-to-br from-secondary to-accent rounded-full p-1.5">
+            <Crown className="h-3 w-3 text-white" />
+          </div>
+        )}
+        {isPro && !isPremium && (
+          <div className="absolute top-2 right-2 bg-gradient-to-br from-primary to-accent rounded-full p-1.5">
+            <BadgeCheck className="h-3 w-3 text-white" />
+          </div>
+        )}
+      </div>
+      
+      <div className="p-3">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <div className="flex-1">
+            <h3 className="font-bold text-base flex items-center gap-1.5 mb-1">
+              {business.name}
+              {isPremium && (
+                <Crown className="h-3.5 w-3.5 text-secondary flex-shrink-0" />
+              )}
+              {isPro && !isPremium && (
+                <BadgeCheck className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+              )}
+            </h3>
+            <div className="flex items-center gap-2 text-xs">
+              <div className="flex items-center gap-0.5">
+                <Star className="h-3 w-3 fill-accent text-accent" />
+                <span className="font-semibold">{rating}</span>
+                <span className="text-muted-foreground">({business.reviewCount})</span>
+              </div>
+              {contributionCount > 0 && (
+                <>
+                  <span className="text-muted-foreground">•</span>
+                  <span className="text-primary font-medium">{contributionCount} posts</span>
+                </>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={onUpvote}
+            className="flex items-center gap-1 px-2 py-1 rounded-full hover-elevate active-elevate-2 text-xs font-medium"
+            data-testid={`button-upvote-business-${business.id}`}
+          >
+            <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
+            <span className="text-primary">{business.upvotes}</span>
+          </button>
+        </div>
+        
+        {business.services && business.services.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {business.services.slice(0, 3).map((service) => (
+              <Badge key={service} variant="secondary" className="text-[10px] px-1.5 py-0 h-4">
+                {service}
+              </Badge>
+            ))}
+            {business.services.length > 3 && (
+              <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-4">
+                +{business.services.length - 3}
+              </Badge>
+            )}
+          </div>
+        )}
+        
+        <div className="space-y-1">
+          <p className="text-xs text-muted-foreground flex items-center gap-1">
+            <MapPin className="h-3 w-3 flex-shrink-0" />
+            <span className="truncate">{business.location}</span>
+          </p>
+          {business.phone && (
+            <p className="text-xs font-medium text-primary">{business.phone}</p>
+          )}
+        </div>
+      </div>
+    </a>
+  );
 }
 
 export default function Home() {
@@ -279,74 +429,26 @@ export default function Home() {
                 const key = `${itemType}-${item.id}`;
                 
                 if (isBusiness(item)) {
-                  const isSponsored = item.isSponsored && item.sponsoredUntil && new Date(item.sponsoredUntil) > new Date();
+                  const isSponsored = !!(item.isSponsored && item.sponsoredUntil && new Date(item.sponsoredUntil) > new Date());
                   const isPro = item.subscriptionTier === "pro";
                   const isPremium = item.subscriptionTier === "premium";
+                  const allImages = [item.imageUrl, ...(item.additionalImages || [])];
+                  const rating = item.rating ? (item.rating / 10).toFixed(1) : "0.0";
+                  const contributionCount = (articles.filter(a => a.businessId === item.id).length + howTos.filter(h => h.businessId === item.id).length);
                   
                   return (
-                    <a 
-                      href={`/business/${item.id}`}
+                    <BusinessCard
                       key={key}
-                      className={`mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer block group relative ${
-                        isPremium ? 'ring-2 ring-secondary/30' : ''
-                      } ${isSponsored ? 'ring-2 ring-accent/50' : ''}`}
-                      data-testid={`pin-business-${item.id}`}
-                    >
-                      {isSponsored && (
-                        <div className="absolute top-2 left-2 z-10 bg-gradient-to-r from-accent to-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                          <Sparkles className="h-2.5 w-2.5" />
-                          SPONSORED
-                        </div>
-                      )}
-                      <div className={`${aspectRatio} overflow-hidden relative`}>
-                        <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
-                        {isPremium && (
-                          <div className="absolute top-2 right-2 bg-gradient-to-br from-secondary to-accent rounded-full p-1.5">
-                            <Crown className="h-3 w-3 text-white" />
-                          </div>
-                        )}
-                        {isPro && !isPremium && (
-                          <div className="absolute top-2 right-2 bg-gradient-to-br from-primary to-accent rounded-full p-1.5">
-                            <BadgeCheck className="h-3 w-3 text-white" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-3">
-                        <div className="flex items-start justify-between gap-2 mb-2">
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-sm flex items-center gap-1.5">
-                              {item.name}
-                              {isPremium && (
-                                <Crown className="h-3.5 w-3.5 text-secondary flex-shrink-0" />
-                              )}
-                              {isPro && !isPremium && (
-                                <BadgeCheck className="h-3.5 w-3.5 text-primary flex-shrink-0" />
-                              )}
-                            </h3>
-                          </div>
-                          <button
-                            onClick={(e) => handleUpvote(e, item)}
-                            className="flex items-center gap-1 px-2 py-1 rounded-full hover-elevate active-elevate-2 text-xs font-medium"
-                            data-testid={`button-upvote-business-${item.id}`}
-                          >
-                            <Heart className="h-3.5 w-3.5 fill-primary text-primary" />
-                            <span className="text-primary">{item.upvotes}</span>
-                          </button>
-                        </div>
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground flex items-center gap-1">
-                            <MapPin className="h-3 w-3 flex-shrink-0" />
-                            <span className="truncate">{item.location}</span>
-                          </p>
-                          {item.phone && (
-                            <p className="text-xs font-medium text-primary">{item.phone}</p>
-                          )}
-                          {item.address && (
-                            <p className="text-xs text-muted-foreground line-clamp-1">{item.address}</p>
-                          )}
-                        </div>
-                      </div>
-                    </a>
+                      business={item}
+                      images={allImages}
+                      rating={rating}
+                      contributionCount={contributionCount}
+                      isSponsored={isSponsored}
+                      isPro={isPro}
+                      isPremium={isPremium}
+                      aspectRatio={aspectRatio}
+                      onUpvote={(e) => handleUpvote(e, item)}
+                    />
                   );
                 }
                 
