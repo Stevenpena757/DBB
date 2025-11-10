@@ -46,16 +46,16 @@ GENESIS embodies a "Copper Radiance" aesthetic—warm, sophisticated, and luxuri
 ## Typography
 
 ### Font Stack
-- **Headings**: Montserrat ExtraBold (800) - powerful, sophisticated
-- **Logo/Accent**: Space Grotesk (500-700) - modern elegance
-- **Body/UI**: Inter (400-600) - optimal readability
+- **Headings**: Cormorant Garamond (500-700) - elegant, sophisticated serif
+- **Logo/Accent**: Outfit (500-700) - soft, modern, rounded
+- **Body/UI**: DM Sans (300-600) - clean, elegant readability
 
 ### Hierarchy
-- **H1**: 48px/56px (mobile: 32px/40px) - Montserrat ExtraBold
-- **H2**: 36px/44px (mobile: 24px/32px) - Montserrat ExtraBold
-- **H3**: 24px/32px (mobile: 20px/28px) - Space Grotesk Bold
-- **Body**: 16px/24px - Inter Regular
-- **Small**: 14px/20px - Inter Regular
+- **H1**: 48px/56px (mobile: 32px/40px) - Cormorant Garamond Semibold (letter-spacing: -0.02em)
+- **H2**: 36px/44px (mobile: 24px/32px) - Cormorant Garamond Semibold (letter-spacing: -0.01em)
+- **H3**: 24px/32px (mobile: 20px/28px) - Outfit Medium
+- **Body**: 16px/24px - DM Sans Regular
+- **Small**: 14px/20px - DM Sans Regular
 
 ## Layout System
 
@@ -81,12 +81,12 @@ GENESIS embodies a "Copper Radiance" aesthetic—warm, sophisticated, and luxuri
 - Full-width with large lifestyle image (60vh height)
 - Copper-to-gold gradient overlay (opacity 40%)
 - Search bar with blur backdrop (backdrop-blur-lg bg-white/20 in light, bg-black/20 in dark)
-- Large Montserrat headline + Space Grotesk subheading in white
+- Large Cormorant Garamond headline + Outfit subheading in white
 - CTA buttons with blurred backgrounds, no hover blur effects
 
 ### Navigation
 - Sticky header with blur backdrop (backdrop-blur-md)
-- Logo: Space Grotesk with copper gradient text
+- Logo: Outfit with copper gradient text
 - Dark/light toggle with copper accent
 - Search with warm glow on focus
 - Mobile: Bottom nav with 5 icons (Home, Explore, Post, Marketplace, Profile)
@@ -94,7 +94,7 @@ GENESIS embodies a "Copper Radiance" aesthetic—warm, sophisticated, and luxuri
 ### Business Listing Cards
 - Rounded-xl with warm copper shadow
 - Featured image (16:9)
-- Business name: Space Grotesk Bold
+- Business name: Outfit Semibold
 - Category tags with peach gradient backgrounds
 - Upvote counter with Peach Nude accent
 - Hover: Lift with copper glow shadow
@@ -115,13 +115,13 @@ GENESIS embodies a "Copper Radiance" aesthetic—warm, sophisticated, and luxuri
 
 ### Forms & Inputs
 - Rounded-lg with warm copper focus glow
-- Floating labels (Space Grotesk)
+- Floating labels (DM Sans Medium)
 - Error states in warm red, success in Peach Nude
 - Submit buttons with copper-gold gradient
 
 ### Badges & Tags
 - Rounded-full pills with copper/gold gradients
-- Small Inter Medium text
+- Small DM Sans Medium text
 - Category badges use secondary color
 
 ## Interactive Elements
