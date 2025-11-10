@@ -41,7 +41,7 @@ function DallasSkyline() {
 
 export function Hero() {
   return (
-    <section className="relative h-[400px] md:h-[500px] overflow-hidden bg-muted">
+    <section className="relative h-[250px] md:h-[320px] overflow-hidden bg-muted">
       <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
@@ -55,19 +55,19 @@ export function Hero() {
         }}
       />
       <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-        <div className="space-y-3 md:space-y-6 max-w-4xl">
+        <div className="space-y-2 md:space-y-3 max-w-4xl">
           <div className="relative inline-block">
-            <h1 className="text-3xl md:text-8xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
+            <h1 className="text-2xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
               DallasBeautyBook
             </h1>
-            <div className="absolute -bottom-2 md:-bottom-3 left-0 right-0 h-5 md:h-10 text-primary/40 opacity-60">
+            <div className="absolute -bottom-1 md:-bottom-2 left-0 right-0 h-3 md:h-6 text-primary/40 opacity-60">
               <DallasSkyline />
             </div>
           </div>
-          <p className="text-base md:text-3xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
+          <p className="text-sm md:text-xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-2xl" style={{ fontFamily: 'var(--font-display)' }}>
             DFW Featured Beauty Listings
           </p>
-          <p className="text-xs md:text-xl max-w-2xl mx-auto text-white font-medium leading-relaxed">
+          <p className="text-[10px] md:text-base max-w-2xl mx-auto text-white font-medium leading-relaxed">
             Gain <span className="font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">FREE visibility</span> by sharing your expertise. Get <span className="font-bold text-accent">discovered</span> by the most <span className="font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent">active</span> community in Dallas
           </p>
         </div>

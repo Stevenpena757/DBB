@@ -296,41 +296,41 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-br from-background via-card to-muted">
       <Header />
       <main className="flex-1">
-        <section className="py-2 md:py-5 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 border-b-2 border-primary/30 overflow-hidden">
+        <section className="py-1.5 md:py-3 bg-gradient-to-r from-primary/10 via-accent/10 to-secondary/10 border-b-2 border-primary/30 overflow-hidden">
           <div className="container mx-auto px-4">
             <div className="overflow-hidden max-w-3xl mx-auto" ref={emblaRef}>
               <div className="flex">
                 <div className="flex-[0_0_100%] min-w-0 px-2">
-                  <div className="flex flex-col items-center justify-center gap-1 md:gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-share-content">
-                    <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
-                      <FileText className="h-5 w-5 md:h-8 md:w-8 text-white" />
+                  <div className="flex flex-col items-center justify-center gap-0.5 md:gap-1 animate-in fade-in zoom-in duration-700" data-testid="section-share-content">
+                    <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
+                      <FileText className="h-4 w-4 md:h-6 md:w-6 text-white" />
                     </div>
-                    <h3 className="text-xl md:text-4xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Share & Grow</h3>
-                    <p className="text-[10px] md:text-sm text-center max-w-lg leading-tight md:leading-snug text-foreground/70 px-4">
-                      Earn <span className="font-extrabold text-primary text-xs md:text-base">FREE visibility</span> by contributing content
+                    <h3 className="text-base md:text-2xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Share & Grow</h3>
+                    <p className="text-[9px] md:text-xs text-center max-w-lg leading-tight text-foreground/70 px-4">
+                      Earn <span className="font-extrabold text-primary text-[10px] md:text-xs">FREE visibility</span> by contributing content
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex-[0_0_100%] min-w-0 px-2">
-                  <div className="flex flex-col items-center justify-center gap-1 md:gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-find-your-beauty">
-                    <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
-                      <Sparkles className="h-5 w-5 md:h-8 md:w-8 text-white" />
+                  <div className="flex flex-col items-center justify-center gap-0.5 md:gap-1 animate-in fade-in zoom-in duration-700" data-testid="section-find-your-beauty">
+                    <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
+                      <Sparkles className="h-4 w-4 md:h-6 md:w-6 text-white" />
                     </div>
-                    <h3 className="text-xl md:text-4xl font-extrabold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Find Your Beauty in DFW</h3>
-                    <p className="text-[10px] md:text-sm text-center max-w-lg leading-tight md:leading-snug text-foreground/70 px-4">
+                    <h3 className="text-base md:text-2xl font-extrabold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Find Your Beauty in DFW</h3>
+                    <p className="text-[9px] md:text-xs text-center max-w-lg leading-tight text-foreground/70 px-4">
                       Discover the best health, beauty & aesthetics businesses in Dallas-Fort Worth
                     </p>
                   </div>
                 </div>
                 
                 <div className="flex-[0_0_100%] min-w-0 px-2">
-                  <div className="flex flex-col items-center justify-center gap-1 md:gap-2 animate-in fade-in zoom-in duration-700" data-testid="section-community-recognition">
-                    <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-primary via-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
-                      <Heart className="h-5 w-5 md:h-8 md:w-8 text-white" />
+                  <div className="flex flex-col items-center justify-center gap-0.5 md:gap-1 animate-in fade-in zoom-in duration-700" data-testid="section-community-recognition">
+                    <div className="w-8 h-8 md:w-12 md:h-12 bg-gradient-to-br from-primary via-accent to-secondary rounded-2xl flex items-center justify-center shadow-2xl animate-pulse glow-primary">
+                      <Heart className="h-4 w-4 md:h-6 md:w-6 text-white" />
                     </div>
-                    <h3 className="text-xl md:text-4xl font-extrabold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Rise to the Top</h3>
-                    <p className="text-[10px] md:text-sm text-center max-w-lg leading-tight md:leading-snug text-foreground/70 px-4">
+                    <h3 className="text-base md:text-2xl font-extrabold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Rise to the Top</h3>
+                    <p className="text-[9px] md:text-xs text-center max-w-lg leading-tight text-foreground/70 px-4">
                       Active businesses are prominently featured
                     </p>
                   </div>
