@@ -44,18 +44,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ============ BUSINESSES ============
   app.get("/api/businesses", async (req, res) => {
     try {
-      const { category, location } = req.query;
+      const { category, location, q, sponsored } = req.query;
       
-      let businesses = await storage.getAllBusinesses();
+      let businesses: Business[];
       
-      // Apply category filter if provided
-      if (category) {
-        businesses = businesses.filter(b => b.category === category);
+      // Use database-backed search if query provided
+      if (q && typeof q === 'string') {
+        const searchTerm = q.trim();
+        businesses = await storage.searchBusinesses(
+          searchTerm,
+          category as string | undefined,
+          location as string | undefined
+        );
+      } else {
+        // Otherwise get all and filter
+        businesses = await storage.getAllBusinesses();
+        
+        // Apply category filter if provided
+        if (category) {
+          businesses = businesses.filter(b => b.category === category);
+        }
+        
+        // Apply location filter if provided
+        if (location) {
+          businesses = businesses.filter(b => b.location === location);
+        }
       }
       
-      // Apply location filter if provided
-      if (location) {
-        businesses = businesses.filter(b => b.location === location);
+      // Filter sponsored only if requested
+      if (sponsored === 'true') {
+        businesses = businesses.filter(b => b.isSponsored && b.sponsoredUntil && new Date(b.sponsoredUntil) > new Date());
       }
       
       res.json(businesses);
@@ -756,6 +774,158 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Seed error:", error);
       res.status(500).json({ error: "Failed to seed database" });
     }
+  });
+
+  // ============ RATE LIMITING ============
+  const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+  
+  const rateLimit = (maxRequests: number, windowMs: number) => {
+    return (req: any, res: any, next: any) => {
+      const ip = req.ip || req.connection.remoteAddress;
+      const now = Date.now();
+      const record = rateLimitMap.get(ip);
+      
+      if (!record || now > record.resetTime) {
+        rateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
+        return next();
+      }
+      
+      if (record.count >= maxRequests) {
+        return res.status(429).json({ error: "Too many requests. Please try again later." });
+      }
+      
+      record.count++;
+      next();
+    };
+  };
+
+  // ============ REPORT ENDPOINT ============
+  app.post("/api/report", rateLimit(5, 60000), async (req, res) => {
+    try {
+      const reportSchema = z.object({
+        type: z.enum(["business", "user", "post", "comment", "other"]),
+        targetId: z.number().optional(),
+        reason: z.string().min(10, "Reason must be at least 10 characters"),
+        details: z.string().optional()
+      });
+      
+      const data = reportSchema.parse(req.body);
+      
+      // In a real implementation, you would store this in the database
+      // For now, just log it
+      console.log("Report received:", data);
+      
+      res.json({ 
+        success: true, 
+        message: "Report submitted successfully. We'll review it shortly." 
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid report data", details: error.errors });
+      }
+      res.status(500).json({ error: "Failed to submit report" });
+    }
+  });
+
+  // ============ SEO: SITEMAPS & ROBOTS.TXT ============
+  app.get("/robots.txt", async (req, res) => {
+    res.setHeader('Content-Type', 'text/plain');
+    const robotsTxt = `User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+Sitemap: ${req.protocol}://${req.get('host')}/sitemap.xml`;
+    res.send(robotsTxt);
+  });
+
+  app.get("/sitemap.xml", async (req, res) => {
+    res.setHeader('Content-Type', 'application/xml');
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>${baseUrl}/sitemap-businesses.xml</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${baseUrl}/sitemap-cities.xml</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </sitemap>
+</sitemapindex>`;
+    res.send(sitemap);
+  });
+
+  app.get("/sitemap-businesses.xml", async (req, res) => {
+    try {
+      res.setHeader('Content-Type', 'application/xml');
+      const baseUrl = `${req.protocol}://${req.get('host')}`;
+      const businesses = await storage.getAllBusinesses();
+      
+      const urls = businesses.map(business => `  <url>
+    <loc>${baseUrl}/business/${business.id}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('\n');
+
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${baseUrl}/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/explore</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/forum</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/vendors</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+${urls}
+</urlset>`;
+      res.send(sitemap);
+    } catch (error) {
+      res.status(500).send('Error generating sitemap');
+    }
+  });
+
+  app.get("/sitemap-cities.xml", async (req, res) => {
+    res.setHeader('Content-Type', 'application/xml');
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    
+    const cities = [
+      "Dallas", "Fort Worth", "Plano", "Irving", "Garland",
+      "Arlington", "McKinney", "Frisco", "Richardson", "Grand Prairie",
+      "Denton", "Carrollton", "Allen", "Lewisville"
+    ];
+    
+    const urls = cities.map(city => `  <url>
+    <loc>${baseUrl}/explore?location=${encodeURIComponent(city)}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>`).join('\n');
+
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+    res.send(sitemap);
   });
 
   // ============ ADMIN PANEL ============

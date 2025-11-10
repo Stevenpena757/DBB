@@ -1,5 +1,5 @@
 import { db } from "./db";
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, sql } from "drizzle-orm";
 import {
   users, businesses, posts, articles, howTos, vendors, vendorProducts, claimRequests, saves,
   forumPosts, forumReplies, pendingBusinesses,
@@ -44,6 +44,43 @@ export class DbStorage implements IStorage {
   // ============ BUSINESSES ============
   async getAllBusinesses(): Promise<Business[]> {
     return db.select().from(businesses).orderBy(desc(businesses.createdAt));
+  }
+
+  async searchBusinesses(query: string, category?: string, location?: string): Promise<Business[]> {
+    // Set trigram similarity threshold for more lenient matching
+    await db.execute(sql`SET pg_trgm.similarity_threshold = 0.1`);
+    
+    // Build WHERE clause conditions
+    const conditions = sql`(${businesses.name} % ${query} OR ${businesses.description} % ${query})`;
+    
+    let whereClause = conditions;
+    if (category) {
+      whereClause = sql`${whereClause} AND ${businesses.category} = ${category}`;
+    }
+    if (location) {
+      whereClause = sql`${whereClause} AND ${businesses.location} = ${location}`;
+    }
+
+    // Execute raw SQL with trigram similarity and ranking
+    const result = await db.execute(sql`
+      SELECT *,
+        similarity(LOWER(${businesses.name}), LOWER(${query})) as name_score,
+        COALESCE(similarity(LOWER(${businesses.description}), LOWER(${query})), 0) as desc_score,
+        (
+          similarity(LOWER(${businesses.name}), LOWER(${query})) * 0.6 +
+          COALESCE(similarity(LOWER(${businesses.description}), LOWER(${query})), 0) * 0.3 +
+          CASE WHEN ${businesses.featured} THEN 0.15 ELSE 0 END +
+          CASE WHEN ${businesses.isSponsored} AND ${businesses.sponsoredUntil} > NOW() THEN 0.2 ELSE 0 END +
+          CASE WHEN ${businesses.subscriptionTier} = 'premium' THEN 0.1 ELSE 0 END +
+          CASE WHEN ${businesses.subscriptionTier} = 'pro' THEN 0.05 ELSE 0 END
+        ) as final_score
+      FROM ${businesses}
+      WHERE ${whereClause}
+      ORDER BY final_score DESC, ${businesses.upvotes} DESC
+      LIMIT 100
+    `);
+    
+    return result.rows as Business[];
   }
 
   async getBusinessById(id: number): Promise<Business | undefined> {

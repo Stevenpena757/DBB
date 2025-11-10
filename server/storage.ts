@@ -22,6 +22,7 @@ export interface IStorage {
   
   // Businesses
   getAllBusinesses(): Promise<Business[]>;
+  searchBusinesses(query: string, category?: string, location?: string): Promise<Business[]>;
   getBusinessById(id: number): Promise<Business | undefined>;
   getBusinessesByCategory(category: string): Promise<Business[]>;
   getBusinessesByLocation(location: string): Promise<Business[]>;
