@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useNavigate } from "wouter";
+import { useLocation } from "wouter";
 import { useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -65,7 +65,7 @@ const addListingSchema = z.object({
 type AddListingForm = z.infer<typeof addListingSchema>;
 
 export default function AddListing() {
-  const [, navigate] = useNavigate();
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -121,7 +121,7 @@ export default function AddListing() {
                 Thank you for submitting your business listing. Our team will review it and get back to you soon.
               </p>
               <div className="flex gap-2 justify-center pt-4">
-                <Button onClick={() => navigate("/")} data-testid="button-go-home">
+                <Button onClick={() => setLocation("/")} data-testid="button-go-home">
                   Go to Homepage
                 </Button>
                 <Button onClick={() => {setIsSubmitted(false); form.reset();}} variant="outline" data-testid="button-submit-another">

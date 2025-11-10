@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink } from "lucide-react";
-import type { User, Business, ClaimRequest } from "@shared/schema";
+import type { User, Business, ClaimRequest, PendingBusiness } from "@shared/schema";
 
 export default function Admin() {
   const { toast } = useToast();
@@ -22,6 +22,10 @@ export default function Admin() {
 
   const { data: claims, isLoading: loadingClaims } = useQuery<ClaimRequest[]>({
     queryKey: ["/api/admin/claims"]
+  });
+
+  const { data: pendingBusinesses, isLoading: loadingPendingBusinesses } = useQuery<PendingBusiness[]>({
+    queryKey: ["/api/admin/pending-businesses"]
   });
 
   const { data: stats, isLoading: loadingStats } = useQuery<{
@@ -101,6 +105,47 @@ export default function Admin() {
     }
   });
 
+  const approvePendingBusinessMutation = useMutation({
+    mutationFn: async (pendingId: number) => {
+      const response = await fetch(`/api/admin/pending-businesses/${pendingId}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include"
+      });
+      if (!response.ok) throw new Error("Failed to approve listing");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/pending-businesses"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/businesses"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      toast({ title: "Success", description: "Business listing approved and published" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to approve business listing", variant: "destructive" });
+    }
+  });
+
+  const rejectPendingBusinessMutation = useMutation({
+    mutationFn: async ({ pendingId, reason }: { pendingId: number; reason: string }) => {
+      const response = await fetch(`/api/admin/pending-businesses/${pendingId}/reject`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviewNotes: reason }),
+        credentials: "include"
+      });
+      if (!response.ok) throw new Error("Failed to reject listing");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/pending-businesses"] });
+      toast({ title: "Success", description: "Business listing rejected" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to reject business listing", variant: "destructive" });
+    }
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto p-4 md:p-6 max-w-7xl">
@@ -113,7 +158,7 @@ export default function Admin() {
         </div>
 
         <Tabs defaultValue="analytics" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid">
             <TabsTrigger value="analytics" data-testid="tab-analytics">
               <BarChart3 className="h-4 w-4 mr-2" />
               Analytics
@@ -129,6 +174,10 @@ export default function Admin() {
             <TabsTrigger value="claims" data-testid="tab-claims">
               <FileCheck className="h-4 w-4 mr-2" />
               Claims
+            </TabsTrigger>
+            <TabsTrigger value="pending" data-testid="tab-pending">
+              <Building2 className="h-4 w-4 mr-2" />
+              Pending
             </TabsTrigger>
           </TabsList>
 
@@ -440,6 +489,90 @@ export default function Admin() {
                           </div>
                         </div>
                       ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="pending" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Pending Business Listings</CardTitle>
+                <CardDescription>Review and approve or reject new business submissions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loadingPendingBusinesses ? (
+                  <div className="space-y-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="animate-pulse p-4 border rounded-lg">
+                        <div className="h-4 bg-muted rounded w-1/3 mb-2"></div>
+                        <div className="h-3 bg-muted rounded w-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : !pendingBusinesses || pendingBusinesses.length === 0 ? (
+                  <p className="text-muted-foreground text-center py-8">No pending business listings</p>
+                ) : (
+                  <div className="space-y-4">
+                    {pendingBusinesses.map((pending) => (
+                      <div key={pending.id} className="p-4 border rounded-lg space-y-3" data-testid={`pending-business-${pending.id}`}>
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-semibold text-lg" data-testid={`text-pending-name-${pending.id}`}>{pending.name}</h3>
+                              <Badge variant="outline">{pending.category}</Badge>
+                              <Badge variant="secondary">{pending.location}</Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground line-clamp-2">{pending.description}</p>
+                            <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                              {pending.phone && <span>Phone: {pending.phone}</span>}
+                              {pending.email && <span>Email: {pending.email}</span>}
+                              {pending.website && (
+                                <a href={pending.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-1">
+                                  Website <ExternalLink className="h-3 w-3" />
+                                </a>
+                              )}
+                            </div>
+                            {(pending.instagramHandle || pending.tiktokHandle || pending.facebookUrl) && (
+                              <div className="flex gap-2 text-sm">
+                                {pending.instagramHandle && <Badge variant="outline">IG: {pending.instagramHandle}</Badge>}
+                                {pending.tiktokHandle && <Badge variant="outline">TikTok: {pending.tiktokHandle}</Badge>}
+                                {pending.facebookUrl && <Badge variant="outline">Facebook</Badge>}
+                              </div>
+                            )}
+                            <div className="text-xs text-muted-foreground pt-2">
+                              Submitted: {new Date(pending.createdAt).toLocaleDateString()}
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <Button
+                              variant="default"
+                              size="sm"
+                              onClick={() => approvePendingBusinessMutation.mutate(pending.id)}
+                              disabled={approvePendingBusinessMutation.isPending || rejectPendingBusinessMutation.isPending}
+                              data-testid={`button-approve-pending-${pending.id}`}
+                            >
+                              Approve
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const reason = prompt("Reason for rejection:");
+                                if (reason) {
+                                  rejectPendingBusinessMutation.mutate({ pendingId: pending.id, reason });
+                                }
+                              }}
+                              disabled={approvePendingBusinessMutation.isPending || rejectPendingBusinessMutation.isPending}
+                              data-testid={`button-reject-pending-${pending.id}`}
+                            >
+                              Reject
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </CardContent>
