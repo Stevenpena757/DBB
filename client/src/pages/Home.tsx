@@ -184,6 +184,7 @@ function BusinessCard({ business, images, rating, contributionCount, isSponsored
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedLocation, setSelectedLocation] = useState<string>("all");
+  const [showSponsoredOnly, setShowSponsoredOnly] = useState<boolean>(false);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 40 });
   
   // Build query params
@@ -253,7 +254,12 @@ export default function Home() {
   };
   
   const feedItems: FeedItem[] = [
-    ...businesses,
+    ...businesses.filter(b => {
+      if (showSponsoredOnly) {
+        return b.isSponsored && b.sponsoredUntil && new Date(b.sponsoredUntil) > new Date();
+      }
+      return true;
+    }),
     ...(selectedCategory === "all" || selectedCategory === "explore" ? articles : []),
     ...(selectedCategory === "all" || selectedCategory === "explore" ? howTos : [])
   ].sort(() => Math.random() - 0.5);
@@ -268,6 +274,10 @@ export default function Home() {
   
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
+  };
+
+  const handleLocationClick = (location: string) => {
+    setSelectedLocation(location);
   };
 
   // Auto-play carousel
@@ -380,6 +390,80 @@ export default function Home() {
               >
                 Articles & How-Tos
               </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-2 border-b bg-muted/30">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-1 text-sm">
+                <MapPin className="h-4 w-4 text-muted-foreground" />
+                <button 
+                  onClick={() => handleLocationClick("all")}
+                  className={`px-3 py-1.5 rounded-full hover-elevate active-elevate-2 text-xs ${selectedLocation === "all" ? "bg-accent text-accent-foreground font-medium" : ""}`}
+                  data-testid="link-location-all"
+                >
+                  All Cities
+                </button>
+                <button 
+                  onClick={() => handleLocationClick("Dallas")}
+                  className={`px-3 py-1.5 rounded-full hover-elevate active-elevate-2 text-xs ${selectedLocation === "Dallas" ? "bg-accent text-accent-foreground font-medium" : ""}`}
+                  data-testid="link-location-dallas"
+                >
+                  Dallas
+                </button>
+                <button 
+                  onClick={() => handleLocationClick("Fort Worth")}
+                  className={`px-3 py-1.5 rounded-full hover-elevate active-elevate-2 text-xs ${selectedLocation === "Fort Worth" ? "bg-accent text-accent-foreground font-medium" : ""}`}
+                  data-testid="link-location-fortworth"
+                >
+                  Fort Worth
+                </button>
+                <button 
+                  onClick={() => handleLocationClick("Arlington")}
+                  className={`px-3 py-1.5 rounded-full hover-elevate active-elevate-2 text-xs ${selectedLocation === "Arlington" ? "bg-accent text-accent-foreground font-medium" : ""}`}
+                  data-testid="link-location-arlington"
+                >
+                  Arlington
+                </button>
+                <button 
+                  onClick={() => handleLocationClick("Plano")}
+                  className={`px-3 py-1.5 rounded-full hover-elevate active-elevate-2 text-xs ${selectedLocation === "Plano" ? "bg-accent text-accent-foreground font-medium" : ""}`}
+                  data-testid="link-location-plano"
+                >
+                  Plano
+                </button>
+                <button 
+                  onClick={() => handleLocationClick("Frisco")}
+                  className={`px-3 py-1.5 rounded-full hover-elevate active-elevate-2 text-xs ${selectedLocation === "Frisco" ? "bg-accent text-accent-foreground font-medium" : ""}`}
+                  data-testid="link-location-frisco"
+                >
+                  Frisco
+                </button>
+                <button 
+                  onClick={() => handleLocationClick("Irving")}
+                  className={`px-3 py-1.5 rounded-full hover-elevate active-elevate-2 text-xs ${selectedLocation === "Irving" ? "bg-accent text-accent-foreground font-medium" : ""}`}
+                  data-testid="link-location-irving"
+                >
+                  Irving
+                </button>
+              </div>
+              <div className="flex items-center justify-center gap-2">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={showSponsoredOnly}
+                    onChange={(e) => setShowSponsoredOnly(e.target.checked)}
+                    className="w-4 h-4 rounded border-2 border-accent text-accent focus:ring-accent cursor-pointer"
+                    data-testid="checkbox-sponsored-only"
+                  />
+                  <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground flex items-center gap-1">
+                    <Sparkles className="h-3 w-3 text-accent" />
+                    Show Promoted Only
+                  </span>
+                </label>
+              </div>
             </div>
           </div>
         </section>
