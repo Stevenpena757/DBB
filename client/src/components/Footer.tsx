@@ -36,7 +36,7 @@ export function Footer() {
           </a>
           <a href="/forum" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-forum">
             <MessageCircle className="h-5 w-5" />
-            <span className="text-xs font-medium">Forum</span>
+            <span className="text-xs font-medium">Community</span>
           </a>
           <a href="/saved" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-saved">
             <Heart className="h-5 w-5" />

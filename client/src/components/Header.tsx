@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search, Bell, MessageCircle, User, LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function Header() {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-border">
@@ -23,21 +25,30 @@ export function Header() {
         </a>
 
         <div className="flex-1 max-w-2xl mx-4 hidden md:block">
-          <div className="relative">
+          <form onSubmit={(e) => { e.preventDefault(); if(searchQuery.trim()) window.location.href = `/explore?search=${encodeURIComponent(searchQuery)}`; }} className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input 
               type="search"
               placeholder="Find beauty businesses, tips, and suppliers..."
-              className="pl-10 h-12 rounded-full border-2 border-border bg-card/80 focus:bg-card focus:border-primary transition-colors"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-10 h-12 rounded-full border-2 border-border bg-card/80 focus:bg-card focus:border-primary transition-colors"
               data-testid="input-header-search"
             />
-          </div>
+            <button
+              type="submit"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:text-primary/80 transition-colors"
+              data-testid="button-header-search"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+          </form>
         </div>
 
         <div className="flex items-center gap-2">
           <a href="/forum" className="hidden lg:block">
             <Button variant="ghost" size="sm" data-testid="button-forum">
-              Forum
+              Community
             </Button>
           </a>
           <a href="/claim-listing" className="hidden lg:block">

@@ -157,7 +157,7 @@ export default function Forum() {
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
                 <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  Q&A / Tips Forum
+                  Q&A / Tips Community
                 </h1>
                 <p className="text-muted-foreground mt-2">
                   Ask questions, share tips, and learn from the DFW beauty community

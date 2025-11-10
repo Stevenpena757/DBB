@@ -161,7 +161,7 @@ export default function ForumPostPage() {
         <div className="text-center">
           <h2 className="text-xl font-semibold mb-2">Post not found</h2>
           <a href="/forum">
-            <Button>Back to Forum</Button>
+            <Button>Back to Community</Button>
           </a>
         </div>
       </div>
@@ -175,7 +175,7 @@ export default function ForumPostPage() {
         <div className="container mx-auto px-4 py-6 max-w-4xl">
           <a href="/forum" className="inline-flex items-center gap-2 text-primary hover:underline mb-6" data-testid="link-back-to-forum">
             <ArrowLeft className="h-4 w-4" />
-            Back to Forum
+            Back to Community
           </a>
 
           <div className="bg-white rounded-lg p-6 shadow-md mb-6">
