@@ -118,6 +118,42 @@ export const insertBusinessSchema = createInsertSchema(businesses).omit({
 });
 export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
 
+// Pending Businesses table - for new listings awaiting approval
+export const pendingBusinesses = pgTable("pending_businesses", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  category: text("category").notNull(),
+  location: text("location").notNull(),
+  address: text("address"),
+  phone: text("phone"),
+  email: text("email"),
+  website: text("website"),
+  imageUrl: text("image_url").notNull(),
+  additionalImages: text("additional_images").array(),
+  services: text("services").array(),
+  instagramHandle: text("instagram_handle"),
+  tiktokHandle: text("tiktok_handle"),
+  facebookUrl: text("facebook_url"),
+  submittedBy: integer("submitted_by").references(() => users.id),
+  status: text("status").default("pending").notNull(), // "pending", "approved", "rejected"
+  reviewNotes: text("review_notes"), // Admin notes about approval/rejection
+  reviewedBy: integer("reviewed_by").references(() => users.id),
+  reviewedAt: timestamp("reviewed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type PendingBusiness = typeof pendingBusinesses.$inferSelect;
+export const insertPendingBusinessSchema = createInsertSchema(pendingBusinesses).omit({
+  id: true,
+  status: true,
+  reviewNotes: true,
+  reviewedBy: true,
+  reviewedAt: true,
+  createdAt: true,
+});
+export type InsertPendingBusiness = z.infer<typeof insertPendingBusinessSchema>;
+
 // Posts (social feed) table
 export const posts = pgTable("posts", {
   id: serial("id").primaryKey(),

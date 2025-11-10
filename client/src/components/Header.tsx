@@ -45,6 +45,11 @@ export function Header() {
               Claim Your Listing
             </Button>
           </a>
+          <a href="/add-listing" className="hidden lg:block">
+            <Button variant="outline" size="sm" data-testid="button-add-listing">
+              Add Listing
+            </Button>
+          </a>
           
           {isAuthenticated && user?.role === "admin" && (
             <a href="/admin" className="hidden lg:block">

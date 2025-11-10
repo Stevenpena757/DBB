@@ -10,7 +10,8 @@ import {
   insertSaveSchema,
   insertPostSchema,
   insertForumPostSchema,
-  insertForumReplySchema
+  insertForumReplySchema,
+  insertPendingBusinessSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -116,6 +117,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: error.errors });
       }
       res.status(500).json({ error: "Failed to update business" });
+    }
+  });
+
+  // ============ PENDING BUSINESS LISTINGS ============
+  app.post("/api/pending-businesses", async (req: any, res) => {
+    try {
+      let userId = null;
+      
+      // If user is authenticated, get their ID
+      if (req.user) {
+        const replitId = req.user.claims.sub.toString();
+        const user = await storage.getUserByReplitId(replitId);
+        if (user) {
+          userId = user.id;
+        }
+      }
+      
+      const validatedData = insertPendingBusinessSchema.parse({
+        ...req.body,
+        submittedBy: userId,
+      });
+      
+      const pendingBusiness = await storage.createPendingBusiness(validatedData);
+      res.status(201).json(pendingBusiness);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid input", details: error.errors });
+      }
+      console.error("Failed to create pending business:", error);
+      res.status(500).json({ error: "Failed to submit business listing" });
     }
   });
 

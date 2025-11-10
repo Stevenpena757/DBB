@@ -2,7 +2,7 @@ import { db } from "./db";
 import { eq, and, desc } from "drizzle-orm";
 import {
   users, businesses, posts, articles, howTos, vendors, vendorProducts, claimRequests, saves,
-  forumPosts, forumReplies,
+  forumPosts, forumReplies, pendingBusinesses,
   type User, type InsertUser,
   type Business, type InsertBusiness,
   type Post, type InsertPost,
@@ -13,7 +13,8 @@ import {
   type ClaimRequest, type InsertClaimRequest,
   type Save, type InsertSave,
   type ForumPost, type InsertForumPost,
-  type ForumReply, type InsertForumReply
+  type ForumReply, type InsertForumReply,
+  type PendingBusiness, type InsertPendingBusiness
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -444,5 +445,93 @@ export class DbStorage implements IStorage {
     await db.update(forumReplies).set({ isAcceptedAnswer: true }).where(eq(forumReplies.id, replyId));
     
     await db.update(forumPosts).set({ hasAcceptedAnswer: true }).where(eq(forumPosts.id, postId));
+  }
+  
+  // Pending Businesses
+  async getAllPendingBusinesses(): Promise<PendingBusiness[]> {
+    return await db.select().from(pendingBusinesses)
+      .where(eq(pendingBusinesses.status, 'pending'))
+      .orderBy(desc(pendingBusinesses.createdAt));
+  }
+  
+  async getPendingBusinessById(id: number): Promise<PendingBusiness | undefined> {
+    const results = await db.select().from(pendingBusinesses).where(eq(pendingBusinesses.id, id)).limit(1);
+    return results[0];
+  }
+  
+  async createPendingBusiness(business: InsertPendingBusiness): Promise<PendingBusiness> {
+    const results = await db.insert(pendingBusinesses).values(business).returning();
+    return results[0];
+  }
+  
+  async approvePendingBusiness(id: number, reviewedBy: number, reviewNotes?: string): Promise<Business> {
+    const pending = await this.getPendingBusinessById(id);
+    if (!pending) {
+      throw new Error('Pending business not found');
+    }
+    
+    // Check if already processed
+    if (pending.status !== 'pending') {
+      throw new Error(`Cannot approve: listing is already ${pending.status}`);
+    }
+    
+    // Create the business from pending data
+    const newBusiness: InsertBusiness = {
+      name: pending.name,
+      description: pending.description,
+      category: pending.category,
+      location: pending.location,
+      address: pending.address,
+      phone: pending.phone,
+      website: pending.website,
+      imageUrl: pending.imageUrl,
+      additionalImages: pending.additionalImages,
+      services: pending.services,
+      instagramHandle: pending.instagramHandle,
+      tiktokHandle: pending.tiktokHandle,
+      facebookUrl: pending.facebookUrl,
+      isClaimed: pending.submittedBy ? true : false,
+      claimedBy: pending.submittedBy,
+      featured: false,
+    };
+    
+    const businessResults = await db.insert(businesses).values(newBusiness).returning();
+    const newBusinessRecord = businessResults[0];
+    
+    // Update pending business status
+    await db.update(pendingBusinesses)
+      .set({
+        status: 'approved',
+        reviewedBy,
+        reviewedAt: new Date(),
+        reviewNotes: reviewNotes || null,
+      })
+      .where(eq(pendingBusinesses.id, id));
+    
+    return newBusinessRecord;
+  }
+  
+  async rejectPendingBusiness(id: number, reviewedBy: number, reviewNotes: string): Promise<PendingBusiness | undefined> {
+    const pending = await this.getPendingBusinessById(id);
+    if (!pending) {
+      throw new Error('Pending business not found');
+    }
+    
+    // Check if already processed
+    if (pending.status !== 'pending') {
+      throw new Error(`Cannot reject: listing is already ${pending.status}`);
+    }
+    
+    const results = await db.update(pendingBusinesses)
+      .set({
+        status: 'rejected',
+        reviewedBy,
+        reviewedAt: new Date(),
+        reviewNotes,
+      })
+      .where(eq(pendingBusinesses.id, id))
+      .returning();
+    
+    return results[0];
   }
 }

@@ -123,5 +123,56 @@ export function createAdminRouter(storage: IStorage) {
     }
   });
 
+  // Pending Business Listings
+  router.get("/pending-businesses", async (req, res) => {
+    try {
+      const pendingBusinesses = await storage.getAllPendingBusinesses();
+      res.json(pendingBusinesses);
+    } catch (error) {
+      console.error("Failed to get pending businesses:", error);
+      res.status(500).json({ error: "Failed to fetch pending businesses" });
+    }
+  });
+
+  router.post("/pending-businesses/:id/approve", async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const reviewedBy = req.user.id; // Get admin user ID from session
+      const reviewNotes = req.body.reviewNotes || "";
+      
+      const newBusiness = await storage.approvePendingBusiness(id, reviewedBy, reviewNotes);
+      res.json({ success: true, business: newBusiness });
+    } catch (error) {
+      console.error("Failed to approve pending business:", error);
+      res.status(500).json({ error: "Failed to approve business listing" });
+    }
+  });
+
+  router.post("/pending-businesses/:id/reject", async (req: any, res) => {
+    try {
+      const rejectSchema = z.object({
+        reviewNotes: z.string().min(1, "Please provide a reason for rejection")
+      });
+      
+      const { reviewNotes } = rejectSchema.parse(req.body);
+      const id = parseInt(req.params.id);
+      const reviewedBy = req.user.id; // Get admin user ID from session
+      
+      const rejectedBusiness = await storage.rejectPendingBusiness(id, reviewedBy, reviewNotes);
+      
+      if (!rejectedBusiness) {
+        return res.status(404).json({ error: "Pending business not found" });
+      }
+      
+      res.json({ success: true, business: rejectedBusiness });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid input", details: error.errors });
+      }
+      console.error("Failed to reject pending business:", error);
+      res.status(500).json({ error: "Failed to reject business listing" });
+    }
+  });
+
   return router;
 }

@@ -9,7 +9,8 @@ import {
   type ClaimRequest, type InsertClaimRequest,
   type Save, type InsertSave,
   type ForumPost, type InsertForumPost,
-  type ForumReply, type InsertForumReply
+  type ForumReply, type InsertForumReply,
+  type PendingBusiness, type InsertPendingBusiness
 } from "@shared/schema";
 
 export interface IStorage {
@@ -111,6 +112,13 @@ export interface IStorage {
   createForumReply(reply: InsertForumReply): Promise<ForumReply>;
   upvoteForumReply(id: number): Promise<ForumReply | undefined>;
   acceptAnswer(replyId: number, postId: number): Promise<void>;
+  
+  // Pending Businesses
+  getAllPendingBusinesses(): Promise<PendingBusiness[]>;
+  getPendingBusinessById(id: number): Promise<PendingBusiness | undefined>;
+  createPendingBusiness(business: InsertPendingBusiness): Promise<PendingBusiness>;
+  approvePendingBusiness(id: number, reviewedBy: number, reviewNotes?: string): Promise<Business>;
+  rejectPendingBusiness(id: number, reviewedBy: number, reviewNotes: string): Promise<PendingBusiness | undefined>;
 }
 
 export class MemStorage implements IStorage {
