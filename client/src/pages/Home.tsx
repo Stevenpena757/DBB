@@ -42,7 +42,7 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero Section with Integrated CTA */}
         <section 
           className="relative py-24 md:py-32 overflow-hidden"
           style={{ background: 'var(--gradient-brand)' }}
@@ -65,7 +65,63 @@ export default function Home() {
               >
                 The premier platform connecting DFW's health, beauty, and aesthetics community
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              
+              {/* Integrated Claim CTA */}
+              <div className="mt-12 p-6 md:p-8 rounded-3xl bg-gradient-to-b from-[#2c1810]/85 via-[#3d2218]/75 to-[#2c1810]/85 border border-white/20 max-w-3xl mx-auto" data-testid="section-claim-cta">
+                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+                  {/* Left: Message */}
+                  <div className="flex-1 text-center md:text-left">
+                    <Badge className="bg-[#3d2218]/90 text-white border-white/40 text-xs px-4 py-1 mb-3 inline-block">
+                      100% Free
+                    </Badge>
+                    <h2 
+                      className="text-xl md:text-2xl font-bold mb-2 leading-tight text-white"
+                      style={{ fontFamily: 'var(--font-display)' }}
+                    >
+                      Claim Your Listing FREE
+                    </h2>
+                    <p className="text-sm text-white/95 mb-3">
+                      Share content, connect socials, get featured
+                    </p>
+                    <div className="flex flex-wrap gap-3 justify-center md:justify-start text-xs">
+                      <div className="flex items-center gap-1.5 text-white">
+                        <div className="w-6 h-6 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
+                          <PenTool className="h-3 w-3" />
+                        </div>
+                        <span>Content</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-white">
+                        <div className="w-6 h-6 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
+                          <Share2 className="h-3 w-3" />
+                        </div>
+                        <span>Socials</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-white">
+                        <div className="w-6 h-6 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
+                          <Sparkles className="h-3 w-3" />
+                        </div>
+                        <span>Featured</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Right: CTA Button */}
+                  <div className="flex-shrink-0">
+                    <a href="/claim">
+                      <Button 
+                        size="lg" 
+                        className="bg-white text-[#2c1810] hover:bg-white/90 text-base px-8 py-6 rounded-2xl shadow-2xl font-semibold"
+                        data-testid="button-claim-listing"
+                      >
+                        Claim Now
+                        <ArrowRight className="h-5 w-5 ml-2" />
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
                 <a href="/explore">
                   <Button size="lg" className="text-base px-8 py-6 rounded-2xl shadow-lg" data-testid="button-explore">
                     <Search className="h-5 w-5 mr-2" />
@@ -78,71 +134,6 @@ export default function Home() {
                     <ArrowRight className="h-5 w-5 ml-2" />
                   </Button>
                 </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Claim Your Listing CTA - Condensed */}
-        <section 
-          className="relative py-8 md:py-12 overflow-hidden border-y"
-          style={{ background: 'var(--gradient-brand)' }}
-          data-testid="section-claim-cta"
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-[#2c1810]/85 via-[#3d2218]/75 to-[#2c1810]/85 z-0"></div>
-          
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-6xl mx-auto">
-              <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-                {/* Left: Message */}
-                <div className="flex-1 text-center md:text-left">
-                  <Badge className="bg-[#3d2218]/90 text-white border-white/40 text-xs px-4 py-1 mb-3 inline-block">
-                    100% Free
-                  </Badge>
-                  <h2 
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 leading-tight"
-                    style={{ fontFamily: 'var(--font-display)' }}
-                  >
-                    Claim Your Listing for FREE
-                  </h2>
-                  <p className="text-base text-white/95 mb-4">
-                    Share content, connect socials, and get featured—no cost, maximum visibility.
-                  </p>
-                  <div className="flex flex-wrap gap-3 justify-center md:justify-start text-sm">
-                    <div className="flex items-center gap-2 text-white">
-                      <div className="w-8 h-8 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
-                        <PenTool className="h-4 w-4" />
-                      </div>
-                      <span>Create Content</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white">
-                      <div className="w-8 h-8 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
-                        <Share2 className="h-4 w-4" />
-                      </div>
-                      <span>Link Socials</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-white">
-                      <div className="w-8 h-8 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
-                        <Sparkles className="h-4 w-4" />
-                      </div>
-                      <span>Get Featured</span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Right: CTA Button */}
-                <div className="flex-shrink-0">
-                  <a href="/claim">
-                    <Button 
-                      size="lg" 
-                      className="bg-white text-[#2c1810] hover:bg-white/90 text-base px-8 py-6 rounded-2xl shadow-2xl font-semibold"
-                      data-testid="button-claim-listing"
-                    >
-                      Claim Now
-                      <ArrowRight className="h-5 w-5 ml-2" />
-                    </Button>
-                  </a>
-                </div>
               </div>
             </div>
           </div>
