@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Business, Article, HowTo, Vendor } from "@shared/schema";
-import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles, Star, ChevronRight, Search, ArrowRight, MessageCircle } from "lucide-react";
+import { FileText, Lightbulb, MapPin, Heart, BadgeCheck, Crown, Sparkles, Star, ChevronRight, Search, ArrowRight, MessageCircle, Share2, Camera, PenTool } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 
 export default function Home() {
@@ -212,6 +212,101 @@ export default function Home() {
                   <ChevronRight className="h-5 w-5 ml-2" />
                 </Button>
               </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Claim Your Listing CTA */}
+        <section 
+          className="relative py-20 md:py-28 overflow-hidden"
+          style={{ background: 'var(--gradient-brand)' }}
+          data-testid="section-claim-cta"
+        >
+          {/* Dark overlay for WCAG AA contrast compliance */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#2c1810]/85 via-[#3d2218]/75 to-[#2c1810]/85 z-0"></div>
+          
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <div className="inline-block mb-6">
+                  <Badge className="bg-[#3d2218]/90 text-white border-white/40 text-sm px-6 py-2 backdrop-blur-sm">
+                    100% Free to Claim
+                  </Badge>
+                </div>
+                <h2 
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                  style={{ fontFamily: 'var(--font-display)' }}
+                >
+                  Add Content & Social Media to{" "}
+                  <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                    Claim Your Listing for FREE
+                  </span>
+                </h2>
+                <p 
+                  className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed"
+                  style={{ fontFamily: 'var(--font-sans)' }}
+                >
+                  Build your presence, engage with the community, and grow your business.
+                  Share your expertise through articles, how-tos, and social posts—all at no cost.
+                </p>
+              </div>
+
+              {/* Feature Icons */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div className="text-center p-6 bg-[#1f120d]/75 backdrop-blur-md rounded-2xl border border-white/40">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
+                    <PenTool className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="font-bold text-lg text-white mb-2">Create Content</h3>
+                  <p className="text-sm text-white">
+                    Share articles, how-tos, and tips with the community
+                  </p>
+                </div>
+                
+                <div className="text-center p-6 bg-[#1f120d]/75 backdrop-blur-md rounded-2xl border border-white/40">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
+                    <Share2 className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="font-bold text-lg text-white mb-2">Connect Socials</h3>
+                  <p className="text-sm text-white">
+                    Link your Instagram, TikTok, and Facebook profiles
+                  </p>
+                </div>
+                
+                <div className="text-center p-6 bg-[#1f120d]/75 backdrop-blur-md rounded-2xl border border-white/40">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
+                    <Sparkles className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="font-bold text-lg text-white mb-2">Get Featured</h3>
+                  <p className="text-sm text-white">
+                    Active contributors get priority visibility
+                  </p>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="/claim">
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-[#2c1810] hover:bg-white/90 text-base px-10 py-6 rounded-2xl shadow-2xl font-semibold"
+                    data-testid="button-claim-listing"
+                  >
+                    Claim Your Listing
+                    <ArrowRight className="h-5 w-5 ml-2" />
+                  </Button>
+                </a>
+                <a href="/how-it-works">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="border-white/40 text-white hover:bg-white/10 text-base px-10 py-6 rounded-2xl backdrop-blur-sm"
+                    data-testid="button-learn-more"
+                  >
+                    Learn How It Works
+                  </Button>
+                </a>
+              </div>
             </div>
           </div>
         </section>
