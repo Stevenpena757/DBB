@@ -1,6 +1,7 @@
 import { Router } from "express";
 import type { IStorage } from "../storage";
 import { z } from "zod";
+import { businessAdminUpdateSchema } from "@shared/schema";
 
 export function createAdminRouter(storage: IStorage) {
   const router = Router();
@@ -52,17 +53,10 @@ export function createAdminRouter(storage: IStorage) {
 
   router.patch("/businesses/:id", async (req, res) => {
     try {
-      const updateBusinessSchema = z.object({
-        subscriptionTier: z.enum(["free", "pro", "premium"]).optional(),
-        featured: z.boolean().optional(),
-        isSponsored: z.boolean().optional(),
-        sponsoredUntil: z.string().optional()
-      });
-      
-      const updates = updateBusinessSchema.parse(req.body);
+      const updates = businessAdminUpdateSchema.parse(req.body);
       const businessId = parseInt(req.params.id);
       
-      const updatedBusiness = await storage.updateBusiness(businessId, updates);
+      const updatedBusiness = await storage.updateBusinessAdmin(businessId, updates);
       
       if (!updatedBusiness) {
         return res.status(404).json({ error: "Business not found" });

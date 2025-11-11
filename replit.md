@@ -106,6 +106,12 @@ Preferred communication style: Simple, everyday language.
 - Posts: Social media-style updates from businesses
 - Claim Requests: Business ownership verification workflow
 - Sessions: PostgreSQL session storage for authentication (managed by express-session)
+- Subscriptions: Stripe subscription tracking for Pro/Premium tiers with billing period and status
+- Abuse Reports: User-submitted reports for spam, harassment, fake listings, inappropriate content
+- User Bans: Track banned/suspended users with reason, duration, and expiration
+- Admin Activity Logs: Audit trail for admin actions (approvals, bans, subscription updates)
+- Security Events: Track failed logins, rate limit violations, suspicious activity
+- AI Moderation Queue: AI-flagged content awaiting manual review with confidence scores
 
 ### Storage Architecture
 
@@ -164,3 +170,31 @@ Preferred communication style: Simple, everyday language.
 - date-fns: Date manipulation and formatting
 - nanoid: Unique ID generation
 - ws: WebSocket implementation for database connections
+
+**Payment Processing:**
+- Stripe: Payment processing and subscription management for Pro/Premium tiers
+- Webhook integration for subscription lifecycle events (created, updated, canceled, payment_failed)
+- Customer portal for businesses to manage their subscriptions and billing
+
+## Recent Changes
+
+### Admin Management & Payment Processing (November 2025)
+- **Stripe Integration**: Complete payment processing with security-first implementation:
+  - Webhook signature verification using rawBody from express.json verify function
+  - Authentication and business ownership validation on checkout/portal routes
+  - Idempotent webhook handlers to prevent duplicate subscriptions on retries
+  - Full subscription lifecycle: checkout.session.completed, customer.subscription.updated, customer.subscription.deleted, invoice.payment_failed
+- **New Database Tables**: Added 6 new tables for admin management:
+  - `subscriptions`: Track Stripe subscriptions with billing periods and status
+  - `abuseReports`: User-submitted content/behavior reports with review workflow
+  - `userBans`: Ban/suspension system with duration and expiration tracking
+  - `adminActivityLogs`: Audit trail for all admin actions
+  - `securityEvents`: Security monitoring (failed logins, rate limits, suspicious activity)
+  - `aiModerationQueue`: AI-flagged content pending manual review
+- **Storage Layer**: Added dedicated methods for subscription, abuse, ban, audit, security, and AI moderation management
+- **Business Admin Updates**: Created `businessAdminUpdateSchema` for secure admin-only field updates (subscriptionTier, featured, isSponsored, sponsoredUntil) separate from regular business updates
+- **API Routes**: 
+  - `/api/stripe/webhook`: Public endpoint with Stripe signature verification
+  - `/api/stripe/create-checkout-session`: Protected endpoint requiring auth + business ownership
+  - `/api/stripe/create-portal-session`: Protected endpoint requiring auth + business ownership
+  - Storage interface extended with 14 new methods for admin management features

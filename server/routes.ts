@@ -15,6 +15,7 @@ import {
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
+import { createStripeRouter } from "./routes/stripe";
 import multer from "multer";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
@@ -927,6 +928,12 @@ ${urls}
 </urlset>`;
     res.send(sitemap);
   });
+
+  // ============ STRIPE PAYMENTS ============
+  // Webhook must be publicly accessible for Stripe's servers
+  // Other routes need authentication and ownership validation
+  const stripeRouter = createStripeRouter(storage, isAuthenticated);
+  app.use("/api/stripe", stripeRouter);
 
   // ============ ADMIN PANEL ============
   const adminRouter = createAdminRouter(storage);

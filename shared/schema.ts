@@ -118,6 +118,15 @@ export const insertBusinessSchema = createInsertSchema(businesses).omit({
 });
 export type InsertBusiness = z.infer<typeof insertBusinessSchema>;
 
+// Admin-only business update schema (for subscription tiers, sponsored status, etc.)
+export const businessAdminUpdateSchema = createInsertSchema(businesses).pick({
+  subscriptionTier: true,
+  featured: true,
+  isSponsored: true,
+  sponsoredUntil: true,
+}).partial();
+export type BusinessAdminUpdate = z.infer<typeof businessAdminUpdateSchema>;
+
 // Pending Businesses table - for new listings awaiting approval
 export const pendingBusinesses = pgTable("pending_businesses", {
   id: serial("id").primaryKey(),
@@ -355,3 +364,142 @@ export const insertForumReplySchema = createInsertSchema(forumReplies).omit({
   createdAt: true,
 });
 export type InsertForumReply = z.infer<typeof insertForumReplySchema>;
+
+// Stripe Subscriptions - track payment status for businesses
+export const subscriptions = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id").notNull().references(() => businesses.id),
+  stripeCustomerId: text("stripe_customer_id").notNull(),
+  stripeSubscriptionId: text("stripe_subscription_id").notNull(),
+  stripePriceId: text("stripe_price_id").notNull(),
+  tier: text("tier").notNull(), // "pro", "premium"
+  status: text("status").notNull(), // "active", "canceled", "past_due", "incomplete"
+  currentPeriodStart: timestamp("current_period_start").notNull(),
+  currentPeriodEnd: timestamp("current_period_end").notNull(),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export type Subscription = typeof subscriptions.$inferSelect;
+export const insertSubscriptionSchema = createInsertSchema(subscriptions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
+
+// Abuse Reports - for reporting spam, inappropriate content, fake listings
+export const abuseReports = pgTable("abuse_reports", {
+  id: serial("id").primaryKey(),
+  reportedBy: integer("reported_by").notNull().references(() => users.id),
+  itemType: text("item_type").notNull(), // "business", "article", "how_to", "post", "forum_post", "forum_reply", "user"
+  itemId: integer("item_id").notNull(),
+  category: text("category").notNull(), // "spam", "harassment", "fake_listing", "inappropriate_content", "copyright", "other"
+  description: text("description").notNull(),
+  status: text("status").default("pending").notNull(), // "pending", "reviewing", "resolved", "dismissed"
+  reviewedBy: integer("reviewed_by").references(() => users.id),
+  reviewNotes: text("review_notes"),
+  resolution: text("resolution"), // "content_removed", "user_warned", "user_banned", "no_action", "other"
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  resolvedAt: timestamp("resolved_at"),
+});
+
+export type AbuseReport = typeof abuseReports.$inferSelect;
+export const insertAbuseReportSchema = createInsertSchema(abuseReports).omit({
+  id: true,
+  status: true,
+  reviewedBy: true,
+  reviewNotes: true,
+  resolution: true,
+  createdAt: true,
+  resolvedAt: true,
+});
+export type InsertAbuseReport = z.infer<typeof insertAbuseReportSchema>;
+
+// User Bans/Suspensions - track banned and suspended users
+export const userBans = pgTable("user_bans", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  bannedBy: integer("banned_by").notNull().references(() => users.id),
+  type: text("type").notNull(), // "ban", "suspend"
+  reason: text("reason").notNull(),
+  duration: integer("duration"), // Duration in days (null = permanent ban)
+  expiresAt: timestamp("expires_at"), // null for permanent bans
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type UserBan = typeof userBans.$inferSelect;
+export const insertUserBanSchema = createInsertSchema(userBans).omit({
+  id: true,
+  isActive: true,
+  createdAt: true,
+});
+export type InsertUserBan = z.infer<typeof insertUserBanSchema>;
+
+// Admin Activity Log - audit trail for compliance
+export const adminActivityLogs = pgTable("admin_activity_logs", {
+  id: serial("id").primaryKey(),
+  adminId: integer("admin_id").notNull().references(() => users.id),
+  action: text("action").notNull(), // "approve_business", "reject_business", "ban_user", "update_subscription", etc.
+  targetType: text("target_type"), // "business", "user", "subscription", "abuse_report", etc.
+  targetId: integer("target_id"),
+  details: jsonb("details"), // Additional context (old values, new values, etc.)
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type AdminActivityLog = typeof adminActivityLogs.$inferSelect;
+export const insertAdminActivityLogSchema = createInsertSchema(adminActivityLogs).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertAdminActivityLog = z.infer<typeof insertAdminActivityLogSchema>;
+
+// Security Events - track login failures, rate limit violations, suspicious activity
+export const securityEvents = pgTable("security_events", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id), // null if user not authenticated
+  eventType: text("event_type").notNull(), // "failed_login", "rate_limit_exceeded", "suspicious_activity", "account_locked"
+  severity: text("severity").notNull(), // "low", "medium", "high", "critical"
+  description: text("description").notNull(),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  metadata: jsonb("metadata"), // Additional event data
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type SecurityEvent = typeof securityEvents.$inferSelect;
+export const insertSecurityEventSchema = createInsertSchema(securityEvents).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertSecurityEvent = z.infer<typeof insertSecurityEventSchema>;
+
+// AI Moderation Queue - track AI-flagged content for review
+export const aiModerationQueue = pgTable("ai_moderation_queue", {
+  id: serial("id").primaryKey(),
+  itemType: text("item_type").notNull(), // "business", "article", "how_to", "post", "forum_post", "forum_reply"
+  itemId: integer("item_id").notNull(),
+  flags: text("flags").array().notNull(), // Array of issues detected: ["spam", "inappropriate", "low_quality"]
+  aiScore: integer("ai_score").notNull(), // Confidence score 0-100
+  aiReasoning: text("ai_reasoning").notNull(), // AI explanation of flags
+  status: text("status").default("pending").notNull(), // "pending", "approved", "rejected", "auto_approved"
+  reviewedBy: integer("reviewed_by").references(() => users.id),
+  reviewNotes: text("review_notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  reviewedAt: timestamp("reviewed_at"),
+});
+
+export type AiModerationQueue = typeof aiModerationQueue.$inferSelect;
+export const insertAiModerationQueueSchema = createInsertSchema(aiModerationQueue).omit({
+  id: true,
+  status: true,
+  reviewedBy: true,
+  reviewNotes: true,
+  createdAt: true,
+  reviewedAt: true,
+});
+export type InsertAiModerationQueue = z.infer<typeof insertAiModerationQueueSchema>;

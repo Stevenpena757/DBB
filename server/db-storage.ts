@@ -3,8 +3,9 @@ import { eq, and, desc, sql } from "drizzle-orm";
 import {
   users, businesses, posts, articles, howTos, vendors, vendorProducts, claimRequests, saves,
   forumPosts, forumReplies, pendingBusinesses,
+  subscriptions, abuseReports, userBans, adminActivityLogs, securityEvents, aiModerationQueue,
   type User, type InsertUser,
-  type Business, type InsertBusiness,
+  type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
   type Article, type InsertArticle,
   type HowTo, type InsertHowTo,
@@ -14,7 +15,13 @@ import {
   type Save, type InsertSave,
   type ForumPost, type InsertForumPost,
   type ForumReply, type InsertForumReply,
-  type PendingBusiness, type InsertPendingBusiness
+  type PendingBusiness, type InsertPendingBusiness,
+  type Subscription, type InsertSubscription,
+  type AbuseReport, type InsertAbuseReport,
+  type UserBan, type InsertUserBan,
+  type AdminActivityLog, type InsertAdminActivityLog,
+  type SecurityEvent, type InsertSecurityEvent,
+  type AiModerationQueue, type InsertAiModerationQueue
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -110,6 +117,11 @@ export class DbStorage implements IStorage {
   }
 
   async updateBusiness(id: number, updates: Partial<InsertBusiness>): Promise<Business | undefined> {
+    const result = await db.update(businesses).set(updates).where(eq(businesses.id, id)).returning();
+    return result[0];
+  }
+
+  async updateBusinessAdmin(id: number, updates: BusinessAdminUpdate): Promise<Business | undefined> {
     const result = await db.update(businesses).set(updates).where(eq(businesses.id, id)).returning();
     return result[0];
   }
@@ -570,5 +582,164 @@ export class DbStorage implements IStorage {
       .returning();
     
     return results[0];
+  }
+
+  // ============ SUBSCRIPTIONS ============
+  async getSubscriptionByBusinessId(businessId: number): Promise<Subscription | undefined> {
+    const result = await db.select().from(subscriptions).where(eq(subscriptions.businessId, businessId)).limit(1);
+    return result[0];
+  }
+
+  async createSubscription(subscription: InsertSubscription): Promise<Subscription> {
+    const result = await db.insert(subscriptions).values(subscription).returning();
+    return result[0];
+  }
+
+  async updateSubscription(id: number, updates: Partial<InsertSubscription>): Promise<Subscription | undefined> {
+    const result = await db.update(subscriptions)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(subscriptions.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async cancelSubscription(id: number): Promise<Subscription | undefined> {
+    const result = await db.update(subscriptions)
+      .set({ cancelAtPeriodEnd: true, updatedAt: new Date() })
+      .where(eq(subscriptions.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async getAllSubscriptions(): Promise<Subscription[]> {
+    return db.select().from(subscriptions).orderBy(desc(subscriptions.createdAt));
+  }
+
+  // ============ ABUSE REPORTS ============
+  async createAbuseReport(report: InsertAbuseReport): Promise<AbuseReport> {
+    const result = await db.insert(abuseReports).values(report).returning();
+    return result[0];
+  }
+
+  async getAllAbuseReports(): Promise<AbuseReport[]> {
+    return db.select().from(abuseReports).orderBy(desc(abuseReports.createdAt));
+  }
+
+  async getAbuseReportById(id: number): Promise<AbuseReport | undefined> {
+    const result = await db.select().from(abuseReports).where(eq(abuseReports.id, id)).limit(1);
+    return result[0];
+  }
+
+  async updateAbuseReportStatus(
+    id: number, 
+    status: string, 
+    reviewedBy: number, 
+    reviewNotes?: string, 
+    resolution?: string
+  ): Promise<AbuseReport | undefined> {
+    const result = await db.update(abuseReports)
+      .set({
+        status,
+        reviewedBy,
+        reviewNotes,
+        resolution,
+        resolvedAt: status === 'resolved' ? new Date() : null,
+      })
+      .where(eq(abuseReports.id, id))
+      .returning();
+    return result[0];
+  }
+
+  // ============ USER BANS ============
+  async createUserBan(ban: InsertUserBan): Promise<UserBan> {
+    const result = await db.insert(userBans).values(ban).returning();
+    return result[0];
+  }
+
+  async getUserActiveBans(userId: number): Promise<UserBan[]> {
+    return db.select()
+      .from(userBans)
+      .where(and(
+        eq(userBans.userId, userId),
+        eq(userBans.isActive, true)
+      ))
+      .orderBy(desc(userBans.createdAt));
+  }
+
+  async deactivateUserBan(id: number): Promise<UserBan | undefined> {
+    const result = await db.update(userBans)
+      .set({ isActive: false })
+      .where(eq(userBans.id, id))
+      .returning();
+    return result[0];
+  }
+
+  // ============ ADMIN ACTIVITY LOGS ============
+  async createAdminActivityLog(log: InsertAdminActivityLog): Promise<AdminActivityLog> {
+    const result = await db.insert(adminActivityLogs).values(log).returning();
+    return result[0];
+  }
+
+  async getAdminActivityLogs(limit: number = 100): Promise<AdminActivityLog[]> {
+    return db.select()
+      .from(adminActivityLogs)
+      .orderBy(desc(adminActivityLogs.createdAt))
+      .limit(limit);
+  }
+
+  // ============ SECURITY EVENTS ============
+  async createSecurityEvent(event: InsertSecurityEvent): Promise<SecurityEvent> {
+    const result = await db.insert(securityEvents).values(event).returning();
+    return result[0];
+  }
+
+  async getSecurityEvents(limit: number = 100, severity?: string): Promise<SecurityEvent[]> {
+    if (severity) {
+      return db.select()
+        .from(securityEvents)
+        .where(eq(securityEvents.severity, severity))
+        .orderBy(desc(securityEvents.createdAt))
+        .limit(limit);
+    }
+    return db.select()
+      .from(securityEvents)
+      .orderBy(desc(securityEvents.createdAt))
+      .limit(limit);
+  }
+
+  // ============ AI MODERATION QUEUE ============
+  async createAiModerationQueueItem(item: InsertAiModerationQueue): Promise<AiModerationQueue> {
+    const result = await db.insert(aiModerationQueue).values(item).returning();
+    return result[0];
+  }
+
+  async getAllAiModerationQueueItems(status?: string): Promise<AiModerationQueue[]> {
+    if (status) {
+      return db.select()
+        .from(aiModerationQueue)
+        .where(eq(aiModerationQueue.status, status))
+        .orderBy(desc(aiModerationQueue.createdAt));
+    }
+    return db.select()
+      .from(aiModerationQueue)
+      .orderBy(desc(aiModerationQueue.createdAt));
+  }
+
+  async updateAiModerationQueueItem(
+    id: number, 
+    status: string, 
+    reviewedBy?: number, 
+    reviewNotes?: string
+  ): Promise<AiModerationQueue | undefined> {
+    const result = await db.update(aiModerationQueue)
+      .set({
+        status,
+        reviewedBy,
+        reviewNotes,
+        reviewedAt: new Date(),
+      })
+      .where(eq(aiModerationQueue.id, id))
+      .returning();
+    return result[0];
   }
 }

@@ -1,6 +1,6 @@
 import { 
   type User, type InsertUser,
-  type Business, type InsertBusiness,
+  type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
   type Article, type InsertArticle,
   type HowTo, type InsertHowTo,
@@ -10,7 +10,13 @@ import {
   type Save, type InsertSave,
   type ForumPost, type InsertForumPost,
   type ForumReply, type InsertForumReply,
-  type PendingBusiness, type InsertPendingBusiness
+  type PendingBusiness, type InsertPendingBusiness,
+  type Subscription, type InsertSubscription,
+  type AbuseReport, type InsertAbuseReport,
+  type UserBan, type InsertUserBan,
+  type AdminActivityLog, type InsertAdminActivityLog,
+  type SecurityEvent, type InsertSecurityEvent,
+  type AiModerationQueue, type InsertAiModerationQueue
 } from "@shared/schema";
 
 export interface IStorage {
@@ -30,6 +36,7 @@ export interface IStorage {
   getBusinessesClaimedByUser(userId: number): Promise<Pick<Business, 'id' | 'name'>[]>;
   createBusiness(business: InsertBusiness): Promise<Business>;
   updateBusiness(id: number, business: Partial<InsertBusiness>): Promise<Business | undefined>;
+  updateBusinessAdmin(id: number, updates: BusinessAdminUpdate): Promise<Business | undefined>;
   
   // Posts
   getAllPosts(): Promise<Post[]>;
@@ -120,6 +127,37 @@ export interface IStorage {
   createPendingBusiness(business: InsertPendingBusiness): Promise<PendingBusiness>;
   approvePendingBusiness(id: number, reviewedBy: number, reviewNotes?: string): Promise<Business>;
   rejectPendingBusiness(id: number, reviewedBy: number, reviewNotes: string): Promise<PendingBusiness | undefined>;
+  
+  // Subscriptions (Stripe)
+  getSubscriptionByBusinessId(businessId: number): Promise<Subscription | undefined>;
+  createSubscription(subscription: InsertSubscription): Promise<Subscription>;
+  updateSubscription(id: number, subscription: Partial<InsertSubscription>): Promise<Subscription | undefined>;
+  cancelSubscription(id: number): Promise<Subscription | undefined>;
+  getAllSubscriptions(): Promise<Subscription[]>;
+  
+  // Abuse Reports
+  createAbuseReport(report: InsertAbuseReport): Promise<AbuseReport>;
+  getAllAbuseReports(): Promise<AbuseReport[]>;
+  getAbuseReportById(id: number): Promise<AbuseReport | undefined>;
+  updateAbuseReportStatus(id: number, status: string, reviewedBy: number, reviewNotes?: string, resolution?: string): Promise<AbuseReport | undefined>;
+  
+  // User Bans
+  createUserBan(ban: InsertUserBan): Promise<UserBan>;
+  getUserActiveBans(userId: number): Promise<UserBan[]>;
+  deactivateUserBan(id: number): Promise<UserBan | undefined>;
+  
+  // Admin Activity Logs
+  createAdminActivityLog(log: InsertAdminActivityLog): Promise<AdminActivityLog>;
+  getAdminActivityLogs(limit?: number): Promise<AdminActivityLog[]>;
+  
+  // Security Events
+  createSecurityEvent(event: InsertSecurityEvent): Promise<SecurityEvent>;
+  getSecurityEvents(limit?: number, severity?: string): Promise<SecurityEvent[]>;
+  
+  // AI Moderation Queue
+  createAiModerationQueueItem(item: InsertAiModerationQueue): Promise<AiModerationQueue>;
+  getAllAiModerationQueueItems(status?: string): Promise<AiModerationQueue[]>;
+  updateAiModerationQueueItem(id: number, status: string, reviewedBy?: number, reviewNotes?: string): Promise<AiModerationQueue | undefined>;
 }
 
 export class MemStorage implements IStorage {
