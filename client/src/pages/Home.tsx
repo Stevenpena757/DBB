@@ -282,9 +282,15 @@ export default function Home() {
               >
                 Community Q&A & Tips
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
                 Learn from experts and share your knowledge
               </p>
+              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
+                <Star className="h-5 w-5 text-primary fill-primary" />
+                <p className="text-sm font-medium text-foreground">
+                  Become a top rated expert to unlock all our features and benefits for free
+                </p>
+              </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
