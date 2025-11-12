@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard } from "lucide-react";
-import type { User, Business, ClaimRequest, PendingBusiness, Subscription } from "@shared/schema";
+import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
+import type { User, Business, ClaimRequest, PendingBusiness, Subscription, AiModerationQueue } from "@shared/schema";
 import { format } from "date-fns";
 
 export default function Admin() {
@@ -31,6 +31,17 @@ export default function Admin() {
 
   const { data: subscriptionsData, isLoading: loadingSubscriptions } = useQuery<Array<{ subscription: Subscription; business: Business }>>({
     queryKey: ["/api/admin/subscriptions"]
+  });
+
+  const { data: moderationQueue, isLoading: loadingModerationQueue } = useQuery<AiModerationQueue[]>({
+    queryKey: ["/api/admin/moderation-queue"],
+    queryFn: async () => {
+      const response = await fetch("/api/admin/moderation-queue?status=pending", {
+        credentials: "include"
+      });
+      if (!response.ok) throw new Error("Failed to fetch moderation queue");
+      return response.json();
+    }
   });
 
   const { data: stats, isLoading: loadingStats } = useQuery<{
@@ -174,6 +185,46 @@ export default function Admin() {
     }
   });
 
+  const approveModerationItemMutation = useMutation({
+    mutationFn: async ({ itemId, notes }: { itemId: number; notes?: string }) => {
+      const response = await fetch(`/api/admin/moderation-queue/${itemId}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notes }),
+        credentials: "include"
+      });
+      if (!response.ok) throw new Error("Failed to approve content");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/moderation-queue"] });
+      toast({ title: "Success", description: "Content approved successfully" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to approve content", variant: "destructive" });
+    }
+  });
+
+  const rejectModerationItemMutation = useMutation({
+    mutationFn: async ({ itemId, notes }: { itemId: number; notes?: string }) => {
+      const response = await fetch(`/api/admin/moderation-queue/${itemId}/reject`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notes }),
+        credentials: "include"
+      });
+      if (!response.ok) throw new Error("Failed to reject content");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/moderation-queue"] });
+      toast({ title: "Success", description: "Content rejected successfully" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to reject content", variant: "destructive" });
+    }
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto p-4 md:p-6 max-w-7xl">
@@ -186,10 +237,14 @@ export default function Admin() {
         </div>
 
         <Tabs defaultValue="analytics" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 lg:w-auto lg:inline-grid">
             <TabsTrigger value="analytics" data-testid="tab-analytics">
               <BarChart3 className="h-4 w-4 mr-2" />
               Analytics
+            </TabsTrigger>
+            <TabsTrigger value="moderation" data-testid="tab-moderation">
+              <AlertTriangle className="h-4 w-4 mr-2" />
+              Moderation
             </TabsTrigger>
             <TabsTrigger value="users" data-testid="tab-users">
               <Users className="h-4 w-4 mr-2" />
@@ -306,6 +361,104 @@ export default function Admin() {
                 </Card>
               </div>
             ) : null}
+          </TabsContent>
+
+          <TabsContent value="moderation" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>AI Moderation Queue</CardTitle>
+                <CardDescription>Review content flagged by AI for policy violations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loadingModerationQueue ? (
+                  <div className="space-y-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="h-32 bg-muted rounded animate-pulse"></div>
+                    ))}
+                  </div>
+                ) : moderationQueue && moderationQueue.length > 0 ? (
+                  <div className="space-y-4">
+                    {moderationQueue.map((item) => (
+                      <div
+                        key={item.id}
+                        className="border rounded-md p-4 space-y-3"
+                        data-testid={`moderation-item-${item.id}`}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <Badge variant="outline" data-testid={`item-type-${item.id}`}>
+                                {item.itemType}
+                              </Badge>
+                              <Badge variant="outline">
+                                ID: {item.itemId}
+                              </Badge>
+                              <Badge
+                                variant={item.aiScore >= 80 ? "destructive" : item.aiScore >= 70 ? "default" : "secondary"}
+                                data-testid={`ai-score-${item.id}`}
+                              >
+                                AI Score: {item.aiScore}%
+                              </Badge>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <div className="text-sm font-medium">Detected Issues:</div>
+                              <div className="flex flex-wrap gap-2">
+                                {item.flags.map((flag, idx) => (
+                                  <Badge key={idx} variant="destructive" className="text-xs">
+                                    {flag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+
+                            <div className="space-y-1">
+                              <div className="text-sm font-medium">AI Analysis:</div>
+                              <p className="text-sm text-muted-foreground" data-testid={`ai-reasoning-${item.id}`}>
+                                {item.aiReasoning}
+                              </p>
+                            </div>
+
+                            <div className="text-xs text-muted-foreground">
+                              Flagged: {item.createdAt ? format(new Date(item.createdAt), "PPp") : "N/A"}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-2 border-t">
+                          <Button
+                            size="sm"
+                            variant="default"
+                            onClick={() => approveModerationItemMutation.mutate({ itemId: item.id })}
+                            disabled={approveModerationItemMutation.isPending}
+                            data-testid={`button-approve-${item.id}`}
+                          >
+                            <CheckCircle className="h-4 w-4 mr-2" />
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => rejectModerationItemMutation.mutate({ itemId: item.id })}
+                            disabled={rejectModerationItemMutation.isPending}
+                            data-testid={`button-reject-${item.id}`}
+                          >
+                            <XCircle className="h-4 w-4 mr-2" />
+                            Reject & Remove
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground" data-testid="no-moderation-items">
+                    <AlertTriangle className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                    <p>No flagged content to review</p>
+                    <p className="text-sm mt-1">AI moderation is actively monitoring all new content</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="users" className="space-y-4">
