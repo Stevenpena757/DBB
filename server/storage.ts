@@ -145,6 +145,7 @@ export interface IStorage {
   // User Bans
   createUserBan(ban: InsertUserBan): Promise<UserBan>;
   getUserActiveBans(userId: number): Promise<UserBan[]>;
+  getAllActiveBans(): Promise<UserBan[]>;
   deactivateUserBan(id: number): Promise<UserBan | undefined>;
   
   // Admin Activity Logs

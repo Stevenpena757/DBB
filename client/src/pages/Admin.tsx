@@ -6,12 +6,22 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
-import type { User, Business, ClaimRequest, PendingBusiness, Subscription, AiModerationQueue } from "@shared/schema";
+import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard, AlertTriangle, CheckCircle, XCircle, Ban, Trash2 } from "lucide-react";
+import type { User, Business, ClaimRequest, PendingBusiness, Subscription, AiModerationQueue, UserBan } from "@shared/schema";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 import { format } from "date-fns";
 
 export default function Admin() {
   const { toast } = useToast();
+  const [banDialogOpen, setBanDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [banType, setBanType] = useState<string>("ban");
+  const [banReason, setBanReason] = useState("");
+  const [banDuration, setBanDuration] = useState<string>("");
 
   const { data: users, isLoading: loadingUsers } = useQuery<User[]>({
     queryKey: ["/api/admin/users"]
@@ -42,6 +52,10 @@ export default function Admin() {
       if (!response.ok) throw new Error("Failed to fetch moderation queue");
       return response.json();
     }
+  });
+
+  const { data: bans, isLoading: loadingBans } = useQuery<UserBan[]>({
+    queryKey: ["/api/admin/bans"]
   });
 
   const { data: stats, isLoading: loadingStats } = useQuery<{
@@ -222,6 +236,49 @@ export default function Admin() {
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to reject content", variant: "destructive" });
+    }
+  });
+
+  const banUserMutation = useMutation({
+    mutationFn: async ({ userId, type, reason, duration }: { userId: number; type: string; reason: string; duration?: number }) => {
+      const response = await fetch(`/api/admin/users/${userId}/ban`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, reason, duration }),
+        credentials: "include"
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to ban user");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/bans"] });
+      toast({ title: "Success", description: "User banned successfully" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  });
+
+  const liftBanMutation = useMutation({
+    mutationFn: async (banId: number) => {
+      const response = await fetch(`/api/admin/bans/${banId}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+      if (!response.ok) throw new Error("Failed to lift ban");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/bans"] });
+      toast({ title: "Success", description: "Ban lifted successfully" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to lift ban", variant: "destructive" });
     }
   });
 
@@ -506,6 +563,23 @@ export default function Admin() {
                               <SelectItem value="admin">Admin</SelectItem>
                             </SelectContent>
                           </Select>
+                          {user.role !== "admin" && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedUser(user);
+                                setBanReason("");
+                                setBanDuration("");
+                                setBanType("ban");
+                                setBanDialogOpen(true);
+                              }}
+                              data-testid={`button-ban-user-${user.id}`}
+                            >
+                              <Ban className="h-4 w-4 mr-2" />
+                              Ban
+                            </Button>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -872,6 +946,93 @@ export default function Admin() {
             </Card>
           </TabsContent>
         </Tabs>
+
+        <Dialog open={banDialogOpen} onOpenChange={setBanDialogOpen}>
+          <DialogContent data-testid="dialog-ban-user">
+            <DialogHeader>
+              <DialogTitle>Ban User</DialogTitle>
+              <DialogDescription>
+                Ban {selectedUser?.username}. You can choose between a temporary suspension or a permanent ban.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="ban-type">Ban Type</Label>
+                <Select value={banType} onValueChange={setBanType}>
+                  <SelectTrigger id="ban-type" data-testid="select-ban-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ban">Permanent Ban</SelectItem>
+                    <SelectItem value="suspend">Temporary Suspension</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {banType === "suspend" && (
+                <div className="space-y-2">
+                  <Label htmlFor="ban-duration">Duration (days, 1-365)</Label>
+                  <Input
+                    id="ban-duration"
+                    type="number"
+                    min="1"
+                    max="365"
+                    value={banDuration}
+                    onChange={(e) => setBanDuration(e.target.value)}
+                    placeholder="Enter number of days"
+                    data-testid="input-ban-duration"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="ban-reason">Reason (required)</Label>
+                <Textarea
+                  id="ban-reason"
+                  value={banReason}
+                  onChange={(e) => setBanReason(e.target.value)}
+                  placeholder="Enter reason for ban..."
+                  rows={3}
+                  data-testid="textarea-ban-reason"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => setBanDialogOpen(false)}
+                data-testid="button-cancel-ban"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  if (!selectedUser) return;
+                  if (!banReason.trim()) {
+                    toast({ title: "Error", description: "Reason is required", variant: "destructive" });
+                    return;
+                  }
+                  if (banType === "suspend" && (!banDuration || parseInt(banDuration) < 1)) {
+                    toast({ title: "Error", description: "Duration must be at least 1 day", variant: "destructive" });
+                    return;
+                  }
+                  banUserMutation.mutate({
+                    userId: selectedUser.id,
+                    type: banType,
+                    reason: banReason.trim(),
+                    duration: banType === "suspend" ? parseInt(banDuration) : undefined
+                  });
+                  setBanDialogOpen(false);
+                }}
+                disabled={banUserMutation.isPending}
+                data-testid="button-confirm-ban"
+              >
+                {banType === "ban" ? "Ban User" : "Suspend User"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

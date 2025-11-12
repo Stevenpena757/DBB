@@ -1,7 +1,7 @@
 import { Router } from "express";
 import type { IStorage } from "../storage";
 import { z } from "zod";
-import { businessAdminUpdateSchema } from "@shared/schema";
+import { businessAdminUpdateSchema, insertUserBanSchema } from "@shared/schema";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -345,6 +345,101 @@ export function createAdminRouter(storage: IStorage) {
     } catch (error) {
       console.error("Failed to resolve abuse report:", error);
       res.status(500).json({ error: "Failed to resolve report" });
+    }
+  });
+
+  // User Ban Management
+  router.post("/users/:userId/ban", async (req: any, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const bannedBy = req.user.id;
+      const { type, reason, duration } = req.body;
+
+      // Validate userId is a valid number
+      if (isNaN(userId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+
+      // Prevent self-ban
+      if (userId === bannedBy) {
+        return res.status(400).json({ error: "You cannot ban yourself" });
+      }
+
+      // Get the target user to check their role
+      const targetUser = await storage.getUserById(userId);
+      if (!targetUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Prevent banning admins (peer protection)
+      if (targetUser.role === "admin") {
+        return res.status(403).json({ error: "Cannot ban administrators" });
+      }
+
+      // Validate and sanitize duration
+      let validatedDuration: number | null = null;
+      if (duration !== null && duration !== undefined) {
+        const parsed = Number(duration);
+        if (!Number.isInteger(parsed) || parsed < 1) {
+          return res.status(400).json({ error: "Duration must be a positive integer (1-365 days) or omit for permanent ban" });
+        }
+        // Clamp to 1-365 days
+        validatedDuration = Math.min(Math.max(1, parsed), 365);
+      }
+
+      // Calculate expiry date
+      const expiresAt = validatedDuration ? new Date(Date.now() + validatedDuration * 24 * 60 * 60 * 1000) : null;
+
+      // Validate ban data
+      const banData = insertUserBanSchema.parse({
+        userId,
+        bannedBy,
+        type,
+        reason,
+        duration: validatedDuration,
+        expiresAt
+      });
+
+      const ban = await storage.createUserBan(banData);
+      res.json({ success: true, ban });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid ban data", details: error.errors });
+      }
+      console.error("Failed to create user ban:", error);
+      res.status(500).json({ error: "Failed to ban user" });
+    }
+  });
+
+  router.get("/bans", async (req, res) => {
+    try {
+      const bans = await storage.getAllActiveBans();
+      res.json(bans);
+    } catch (error) {
+      console.error("Failed to get bans:", error);
+      res.status(500).json({ error: "Failed to fetch bans" });
+    }
+  });
+
+  router.delete("/bans/:banId", async (req, res) => {
+    try {
+      const banId = parseInt(req.params.banId);
+
+      // Validate banId is a valid number
+      if (isNaN(banId)) {
+        return res.status(400).json({ error: "Invalid ban ID" });
+      }
+
+      const updatedBan = await storage.deactivateUserBan(banId);
+
+      if (!updatedBan) {
+        return res.status(404).json({ error: "Ban not found" });
+      }
+
+      res.json({ success: true, ban: updatedBan });
+    } catch (error) {
+      console.error("Failed to deactivate ban:", error);
+      res.status(500).json({ error: "Failed to lift ban" });
     }
   });
 

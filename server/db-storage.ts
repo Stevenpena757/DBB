@@ -679,6 +679,13 @@ export class DbStorage implements IStorage {
       .orderBy(desc(userBans.createdAt));
   }
 
+  async getAllActiveBans(): Promise<UserBan[]> {
+    return db.select()
+      .from(userBans)
+      .where(eq(userBans.isActive, true))
+      .orderBy(desc(userBans.createdAt));
+  }
+
   async deactivateUserBan(id: number): Promise<UserBan | undefined> {
     const result = await db.update(userBans)
       .set({ isActive: false })
