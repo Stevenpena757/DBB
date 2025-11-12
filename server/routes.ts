@@ -11,7 +11,8 @@ import {
   insertPostSchema,
   insertForumPostSchema,
   insertForumReplySchema,
-  insertPendingBusinessSchema
+  insertPendingBusinessSchema,
+  insertAbuseReportSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -927,6 +928,26 @@ ${urls}
 ${urls}
 </urlset>`;
     res.send(sitemap);
+  });
+
+  // ============ ABUSE REPORTING ============
+  app.post("/api/abuse-reports", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.id;
+      const reportData = insertAbuseReportSchema.parse({
+        ...req.body,
+        reportedBy: userId
+      });
+      
+      const report = await storage.createAbuseReport(reportData);
+      res.status(201).json(report);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid report data", details: error.errors });
+      }
+      console.error("Error creating abuse report:", error);
+      res.status(500).json({ message: "Failed to create abuse report" });
+    }
   });
 
   // ============ STRIPE PAYMENTS ============
