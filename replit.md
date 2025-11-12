@@ -202,6 +202,15 @@ Preferred communication style: Simple, everyday language.
 - **Abuse Reports Management** (`/api/admin/abuse-reports`):
   - GET endpoint to fetch all user-submitted abuse reports
   - POST resolve endpoint with resolution notes and status tracking
+- **User Ban Management System** (`/api/admin/users/:userId/ban`, `/api/admin/bans`):
+  - POST /api/admin/users/:userId/ban: Create temporary suspensions (1-365 days) or permanent bans
+  - GET /api/admin/bans: Fetch all active bans with user details and expiry dates
+  - DELETE /api/admin/bans/:banId: Lift bans and restore user access
+  - Security hardening: Self-ban prevention, admin protection (cannot ban other admins), NaN duration bug fix
+  - Duration validation: Number.isInteger() check with 1-365 day clamping for suspensions
+  - Admin UI: Ban dialog in Users tab with ban type selection, duration input, and required reason field
+  - Frontend validation: Client-side checks before submission with toast error messages
+  - Query invalidation: Mutations invalidate both /api/admin/users and /api/admin/bans for UI consistency
 - **Subscription Management UI**: 
   - New Subscriptions tab in admin dashboard displaying all active/inactive subscriptions
   - Business name, location, tier, status, billing periods, and Stripe IDs
