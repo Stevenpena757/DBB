@@ -176,7 +176,37 @@ Preferred communication style: Simple, everyday language.
 - Webhook integration for subscription lifecycle events (created, updated, canceled, payment_failed)
 - Customer portal for businesses to manage their subscriptions and billing
 
+**AI and Automation:**
+- OpenAI Integration: Uses Replit AI Integrations for OpenAI-compatible API access (gpt-5 model)
+- p-limit and p-retry: Rate limiting and retry logic for reliable AI API calls
+- Automatic content moderation with confidence scoring (70% threshold for flagging)
+- Business listing validation for legitimacy and completeness
+
 ## Recent Changes
+
+### AI-Powered Content Moderation & Automation (November 2025)
+- **OpenAI Integration**: Set up Replit AI Integrations providing OpenAI-compatible API access without requiring personal API keys (charges billed to Replit credits)
+- **AI Content Moderation System** (`server/lib/moderation.ts`):
+  - Automatically scans articles, how-tos, and posts for policy violations (spam, harassment, misinformation, inappropriate content, fraud)
+  - Uses gpt-5 model with structured JSON responses
+  - Confidence scoring (0-100) with 70% threshold for flagging content
+  - Categories tracked: spam, harassment, misinformation, inappropriate, fraud
+- **AI Business Validation** (`server/lib/openai.ts`):
+  - Validates pending business listings for completeness, legitimacy, relevance to beauty/aesthetics, DFW location compliance
+  - Returns validation issues and improvement suggestions
+  - Automatically flags suspicious or incomplete listings
+- **Admin Moderation Queue Routes** (`/api/admin/moderation-queue`):
+  - GET endpoint to fetch flagged content filtered by status (pending/approved/rejected)
+  - POST approve/reject endpoints with admin notes tracking
+  - Integrates with aiModerationQueue table for review workflow
+- **Abuse Reports Management** (`/api/admin/abuse-reports`):
+  - GET endpoint to fetch all user-submitted abuse reports
+  - POST resolve endpoint with resolution notes and status tracking
+- **Subscription Management UI**: 
+  - New Subscriptions tab in admin dashboard displaying all active/inactive subscriptions
+  - Business name, location, tier, status, billing periods, and Stripe IDs
+  - Direct Stripe dashboard links and refund processing with confirmation dialogs
+  - Refund API endpoint using Stripe invoice.charge approach with proper error handling
 
 ### Admin Management & Payment Processing (November 2025)
 - **Stripe Integration**: Complete payment processing with security-first implementation:

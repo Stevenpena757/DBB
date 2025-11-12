@@ -252,5 +252,101 @@ export function createAdminRouter(storage: IStorage) {
     }
   });
 
+  // AI Moderation Queue Management
+  router.get("/moderation-queue", async (req, res) => {
+    try {
+      const status = req.query.status as string | undefined;
+      const queueItems = await storage.getAllAiModerationQueueItems(status);
+      res.json(queueItems);
+    } catch (error) {
+      console.error("Failed to get moderation queue:", error);
+      res.status(500).json({ error: "Failed to fetch moderation queue" });
+    }
+  });
+
+  router.post("/moderation-queue/:id/approve", async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const reviewedBy = req.user.id;
+      const { notes } = req.body;
+
+      const updatedItem = await storage.updateAiModerationQueueItem(
+        id,
+        "approved",
+        reviewedBy,
+        notes
+      );
+
+      if (!updatedItem) {
+        return res.status(404).json({ error: "Moderation queue item not found" });
+      }
+
+      res.json({ success: true, item: updatedItem });
+    } catch (error) {
+      console.error("Failed to approve moderation item:", error);
+      res.status(500).json({ error: "Failed to approve item" });
+    }
+  });
+
+  router.post("/moderation-queue/:id/reject", async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const reviewedBy = req.user.id;
+      const { notes } = req.body;
+
+      const updatedItem = await storage.updateAiModerationQueueItem(
+        id,
+        "rejected",
+        reviewedBy,
+        notes
+      );
+
+      if (!updatedItem) {
+        return res.status(404).json({ error: "Moderation queue item not found" });
+      }
+
+      res.json({ success: true, item: updatedItem });
+    } catch (error) {
+      console.error("Failed to reject moderation item:", error);
+      res.status(500).json({ error: "Failed to reject item" });
+    }
+  });
+
+  // Abuse Reports Management
+  router.get("/abuse-reports", async (req, res) => {
+    try {
+      const reports = await storage.getAllAbuseReports();
+      res.json(reports);
+    } catch (error) {
+      console.error("Failed to get abuse reports:", error);
+      res.status(500).json({ error: "Failed to fetch abuse reports" });
+    }
+  });
+
+  router.post("/abuse-reports/:id/resolve", async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const reviewedBy = req.user.id;
+      const { notes, resolution } = req.body;
+
+      const updatedReport = await storage.updateAbuseReportStatus(
+        id,
+        "resolved",
+        reviewedBy,
+        notes,
+        resolution
+      );
+
+      if (!updatedReport) {
+        return res.status(404).json({ error: "Abuse report not found" });
+      }
+
+      res.json({ success: true, report: updatedReport });
+    } catch (error) {
+      console.error("Failed to resolve abuse report:", error);
+      res.status(500).json({ error: "Failed to resolve report" });
+    }
+  });
+
   return router;
 }
