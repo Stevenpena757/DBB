@@ -2,6 +2,11 @@ import { Router } from "express";
 import type { IStorage } from "../storage";
 import { z } from "zod";
 import { businessAdminUpdateSchema } from "@shared/schema";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: "2025-10-29.clover",
+});
 
 export function createAdminRouter(storage: IStorage) {
   const router = Router();
@@ -165,6 +170,85 @@ export function createAdminRouter(storage: IStorage) {
       }
       console.error("Failed to reject pending business:", error);
       res.status(500).json({ error: "Failed to reject business listing" });
+    }
+  });
+
+  // Subscriptions Management
+  router.get("/subscriptions", async (req, res) => {
+    try {
+      const subscriptionsWithBusiness = await storage.getAllSubscriptionsWithBusiness();
+      res.json(subscriptionsWithBusiness);
+    } catch (error) {
+      console.error("Failed to get subscriptions:", error);
+      res.status(500).json({ error: "Failed to fetch subscriptions" });
+    }
+  });
+
+  router.post("/subscriptions/:id/refund", async (req, res) => {
+    try {
+      const refundSchema = z.object({
+        reason: z.string().optional(),
+        amount: z.number().positive().optional(), // Amount in cents, optional for full refund
+      });
+
+      const { reason, amount } = refundSchema.parse(req.body);
+      const subscriptionId = parseInt(req.params.id);
+
+      // Get subscription to find the latest invoice
+      const subscriptions = await storage.getAllSubscriptions();
+      const subscription = subscriptions.find(sub => sub.id === subscriptionId);
+
+      if (!subscription) {
+        return res.status(404).json({ error: "Subscription not found" });
+      }
+
+      // Retrieve the Stripe subscription to get the latest invoice
+      const stripeSubscription = await stripe.subscriptions.retrieve(subscription.stripeSubscriptionId);
+      
+      if (!stripeSubscription.latest_invoice) {
+        return res.status(400).json({ error: "No invoice found for this subscription" });
+      }
+
+      // Get the invoice and charge
+      const invoice = await stripe.invoices.retrieve(stripeSubscription.latest_invoice as string);
+      
+      const chargeId = typeof invoice.charge === 'string' ? invoice.charge : invoice.charge?.id;
+      
+      if (!chargeId) {
+        return res.status(400).json({ error: "No charge found for this invoice" });
+      }
+
+      // Create the refund
+      const refundParams: Stripe.RefundCreateParams = {
+        charge: chargeId,
+        reason: reason as any || 'requested_by_customer',
+      };
+
+      if (amount) {
+        refundParams.amount = amount;
+      }
+
+      const refund = await stripe.refunds.create(refundParams);
+
+      res.json({ 
+        success: true, 
+        refund: {
+          id: refund.id,
+          amount: refund.amount,
+          status: refund.status,
+          currency: refund.currency,
+        }
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid refund request", details: error.errors });
+      }
+      if (error instanceof Stripe.errors.StripeError) {
+        console.error("Stripe refund error:", error.message);
+        return res.status(400).json({ error: error.message });
+      }
+      console.error("Failed to process refund:", error);
+      res.status(500).json({ error: "Failed to process refund" });
     }
   });
 

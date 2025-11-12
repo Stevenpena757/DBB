@@ -615,6 +615,19 @@ export class DbStorage implements IStorage {
     return db.select().from(subscriptions).orderBy(desc(subscriptions.createdAt));
   }
 
+  async getAllSubscriptionsWithBusiness(): Promise<Array<{ subscription: Subscription; business: Business }>> {
+    const results = await db
+      .select({
+        subscription: subscriptions,
+        business: businesses,
+      })
+      .from(subscriptions)
+      .innerJoin(businesses, eq(subscriptions.businessId, businesses.id))
+      .orderBy(desc(subscriptions.createdAt));
+
+    return results as Array<{ subscription: Subscription; business: Business }>;
+  }
+
   // ============ ABUSE REPORTS ============
   async createAbuseReport(report: InsertAbuseReport): Promise<AbuseReport> {
     const result = await db.insert(abuseReports).values(report).returning();

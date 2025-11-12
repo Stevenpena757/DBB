@@ -6,8 +6,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink } from "lucide-react";
-import type { User, Business, ClaimRequest, PendingBusiness } from "@shared/schema";
+import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard } from "lucide-react";
+import type { User, Business, ClaimRequest, PendingBusiness, Subscription } from "@shared/schema";
+import { format } from "date-fns";
 
 export default function Admin() {
   const { toast } = useToast();
@@ -26,6 +27,10 @@ export default function Admin() {
 
   const { data: pendingBusinesses, isLoading: loadingPendingBusinesses } = useQuery<PendingBusiness[]>({
     queryKey: ["/api/admin/pending-businesses"]
+  });
+
+  const { data: subscriptionsData, isLoading: loadingSubscriptions } = useQuery<Array<{ subscription: Subscription; business: Business }>>({
+    queryKey: ["/api/admin/subscriptions"]
   });
 
   const { data: stats, isLoading: loadingStats } = useQuery<{
@@ -146,6 +151,29 @@ export default function Admin() {
     }
   });
 
+  const refundSubscriptionMutation = useMutation({
+    mutationFn: async ({ subscriptionId, amount, reason }: { subscriptionId: number; amount?: number; reason?: string }) => {
+      const response = await fetch(`/api/admin/subscriptions/${subscriptionId}/refund`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount, reason }),
+        credentials: "include"
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to process refund");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/subscriptions"] });
+      toast({ title: "Success", description: "Refund processed successfully" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto p-4 md:p-6 max-w-7xl">
@@ -158,7 +186,7 @@ export default function Admin() {
         </div>
 
         <Tabs defaultValue="analytics" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:inline-grid">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 lg:w-auto lg:inline-grid">
             <TabsTrigger value="analytics" data-testid="tab-analytics">
               <BarChart3 className="h-4 w-4 mr-2" />
               Analytics
@@ -170,6 +198,10 @@ export default function Admin() {
             <TabsTrigger value="businesses" data-testid="tab-businesses">
               <Building2 className="h-4 w-4 mr-2" />
               Businesses
+            </TabsTrigger>
+            <TabsTrigger value="subscriptions" data-testid="tab-subscriptions">
+              <CreditCard className="h-4 w-4 mr-2" />
+              Subscriptions
             </TabsTrigger>
             <TabsTrigger value="claims" data-testid="tab-claims">
               <FileCheck className="h-4 w-4 mr-2" />
@@ -405,6 +437,114 @@ export default function Admin() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="subscriptions" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Subscription Management</CardTitle>
+                <CardDescription>View and manage all active subscriptions and process refunds</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {loadingSubscriptions ? (
+                  <div className="space-y-4">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="h-24 bg-muted rounded animate-pulse"></div>
+                    ))}
+                  </div>
+                ) : subscriptionsData && subscriptionsData.length > 0 ? (
+                  <div className="space-y-4">
+                    {subscriptionsData.map(({ subscription, business }) => (
+                      <div
+                        key={subscription.id}
+                        className="flex flex-col gap-4 p-4 border rounded-md"
+                        data-testid={`subscription-item-${subscription.id}`}
+                      >
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          <div>
+                            <div className="text-sm text-muted-foreground">Business</div>
+                            <div className="font-medium" data-testid={`subscription-business-${subscription.id}`}>
+                              {business.name}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              {business.location}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-sm text-muted-foreground">Subscription</div>
+                            <div className="flex items-center gap-2">
+                              <Badge 
+                                variant={subscription.tier === "premium" ? "default" : "secondary"}
+                                data-testid={`subscription-tier-${subscription.id}`}
+                              >
+                                {subscription.tier.toUpperCase()}
+                              </Badge>
+                              <Badge 
+                                variant={
+                                  subscription.status === "active" ? "default" : 
+                                  subscription.status === "past_due" ? "destructive" : 
+                                  "secondary"
+                                }
+                                data-testid={`subscription-status-${subscription.id}`}
+                              >
+                                {subscription.status}
+                              </Badge>
+                              {subscription.cancelAtPeriodEnd && (
+                                <Badge variant="outline">Canceling</Badge>
+                              )}
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-sm text-muted-foreground">Billing Period</div>
+                            <div className="text-sm">
+                              {format(new Date(subscription.currentPeriodStart), "MMM d, yyyy")}
+                              {" - "}
+                              {format(new Date(subscription.currentPeriodEnd), "MMM d, yyyy")}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <div>Customer ID: {subscription.stripeCustomerId}</div>
+                          <div>•</div>
+                          <div>Subscription ID: {subscription.stripeSubscriptionId}</div>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => window.open(`https://dashboard.stripe.com/subscriptions/${subscription.stripeSubscriptionId}`, '_blank')}
+                            data-testid={`button-view-stripe-${subscription.id}`}
+                          >
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            View in Stripe
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => {
+                              if (window.confirm("Are you sure you want to issue a full refund for this subscription? This action cannot be undone.")) {
+                                refundSubscriptionMutation.mutate({ 
+                                  subscriptionId: subscription.id,
+                                  reason: "requested_by_customer"
+                                });
+                              }
+                            }}
+                            disabled={refundSubscriptionMutation.isPending || subscription.status !== "active"}
+                            data-testid={`button-refund-${subscription.id}`}
+                          >
+                            Issue Refund
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No active subscriptions found
                   </div>
                 )}
               </CardContent>

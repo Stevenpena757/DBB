@@ -134,6 +134,7 @@ export interface IStorage {
   updateSubscription(id: number, subscription: Partial<InsertSubscription>): Promise<Subscription | undefined>;
   cancelSubscription(id: number): Promise<Subscription | undefined>;
   getAllSubscriptions(): Promise<Subscription[]>;
+  getAllSubscriptionsWithBusiness(): Promise<Array<{ subscription: Subscription; business: Business }>>;
   
   // Abuse Reports
   createAbuseReport(report: InsertAbuseReport): Promise<AbuseReport>;
