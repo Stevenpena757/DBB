@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard, AlertTriangle, CheckCircle, XCircle, Ban, Trash2 } from "lucide-react";
+import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard, AlertTriangle, CheckCircle, XCircle, Ban, Trash2, Lock } from "lucide-react";
 import type { User, Business, ClaimRequest, PendingBusiness, Subscription, AiModerationQueue, UserBan } from "@shared/schema";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
@@ -14,8 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { format } from "date-fns";
+import { useAuth } from "@/hooks/useAuth";
+import { Link } from "wouter";
 
 export default function Admin() {
+  const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const { toast } = useToast();
   const [banDialogOpen, setBanDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -281,6 +284,60 @@ export default function Admin() {
       toast({ title: "Error", description: "Failed to lift ban", variant: "destructive" });
     }
   });
+
+  // SECURITY: Check authentication and admin role
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <ShieldCheck className="h-16 w-16 mx-auto text-primary animate-pulse" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="max-w-md w-full mx-4">
+          <CardHeader className="text-center">
+            <Lock className="h-16 w-16 mx-auto text-destructive mb-4" />
+            <CardTitle className="text-2xl">Access Denied</CardTitle>
+            <CardDescription>
+              You must be logged in to access the admin dashboard.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center">
+            <Button asChild data-testid="button-login">
+              <Link href="/">Go to Login</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (user?.role !== "admin") {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="max-w-md w-full mx-4">
+          <CardHeader className="text-center">
+            <Lock className="h-16 w-16 mx-auto text-destructive mb-4" />
+            <CardTitle className="text-2xl">Unauthorized</CardTitle>
+            <CardDescription>
+              You do not have permission to access the admin dashboard. This area is restricted to administrators only.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center">
+            <Button asChild variant="outline" data-testid="button-go-home">
+              <Link href="/">Go to Home</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
