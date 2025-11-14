@@ -73,21 +73,23 @@ async function upsertUser(claims: any) {
       profileImage,
     });
   } else {
-    // BOOTSTRAP: Check if this is the very first user - make them admin
+    // BOOTSTRAP: Only promote to admin if database is completely empty (first ever user)
+    // This narrows the race condition window and is safer than checking for admins
     const allUsers = await storage.getAllUsers();
-    const hasAdmins = allUsers.some(u => u.role === "admin");
+    const isFirstUser = allUsers.length === 0;
     
-    // Create new user - if no admins exist, promote first user to admin
+    // Create new user - only the very first user in an empty DB gets admin
+    const role = isFirstUser ? "admin" : "user";
     await storage.createUser({
       replitId,
       username,
       email,
       profileImage,
-      role: hasAdmins ? "user" : "admin",
+      role,
     });
     
-    if (!hasAdmins) {
-      console.log(`🔐 BOOTSTRAP: First user "${username}" promoted to admin`);
+    if (isFirstUser) {
+      console.log(`🔐 BOOTSTRAP: First user "${username}" (${replitId}) promoted to admin on empty database`);
     }
   }
 }
