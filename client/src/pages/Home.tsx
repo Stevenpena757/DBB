@@ -50,16 +50,13 @@ export default function Home() {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center space-y-6">
               <h1 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight"
+                className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
-                Discover Beauty in{" "}
-                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  Dallas-Fort Worth
-                </span>
+                Discover Beauty in Dallas-Fort Worth
               </h1>
               <p 
-                className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+                className="text-sm md:text-base text-foreground/80 max-w-2xl mx-auto leading-relaxed"
                 style={{ fontFamily: 'var(--font-sans)' }}
               >
                 The premier platform connecting DFW's health, beauty, and aesthetics community
