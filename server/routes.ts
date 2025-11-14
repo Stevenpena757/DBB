@@ -26,7 +26,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // ============ HEALTH CHECK ============
   // Simple health check endpoint for deployment health checks
-  app.get("/", (_req, res) => {
+  app.get("/health", (_req, res) => {
     res.status(200).json({ status: "ok", service: "Dallas Beauty Book API" });
   });
   
