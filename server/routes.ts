@@ -759,8 +759,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Admin endpoint to seed production database (one-time use)
-  app.post("/api/admin/seed", async (req, res) => {
+  // PROTECTED: Admin endpoint to seed production database (one-time use, requires admin auth)
+  app.post("/api/admin/seed", isAuthenticated, isAdmin, async (req, res) => {
     try {
       // Check if already seeded
       const existingBusinesses = await storage.getAllBusinesses();

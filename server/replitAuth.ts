@@ -73,14 +73,22 @@ async function upsertUser(claims: any) {
       profileImage,
     });
   } else {
-    // Create new user
+    // BOOTSTRAP: Check if this is the very first user - make them admin
+    const allUsers = await storage.getAllUsers();
+    const hasAdmins = allUsers.some(u => u.role === "admin");
+    
+    // Create new user - if no admins exist, promote first user to admin
     await storage.createUser({
       replitId,
       username,
       email,
       profileImage,
-      role: "user",
+      role: hasAdmins ? "user" : "admin",
     });
+    
+    if (!hasAdmins) {
+      console.log(`🔐 BOOTSTRAP: First user "${username}" promoted to admin`);
+    }
   }
 }
 
