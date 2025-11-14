@@ -31,7 +31,7 @@ function Router() {
       <Route path="/vendors" component={Vendors} />
       <Route path="/submit-content" component={SubmitContent} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/admin" component={Admin} />
+      <Route path="/dbb-management-x7k" component={Admin} />
       <Route path="/forum" component={Forum} />
       <Route path="/forum/:id" component={ForumPost} />
       <Route path="/claim-listing" component={ClaimListing} />

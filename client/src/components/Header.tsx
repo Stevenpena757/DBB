@@ -63,7 +63,7 @@ export function Header() {
           </a>
           
           {isAuthenticated && user?.role === "admin" && (
-            <a href="/admin" className="hidden lg:block">
+            <a href="/dbb-management-x7k" className="hidden lg:block">
               <Button variant="ghost" size="sm" data-testid="button-admin">
                 <ShieldCheck className="h-4 w-4 mr-2" />
                 Admin
