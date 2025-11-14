@@ -41,11 +41,10 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16 md:pb-0">
       <Header />
       
-      <main className="flex-1">
+      <main className="flex-1" style={{ background: 'var(--gradient-brand)' }}>
         {/* Hero Section with Integrated CTA */}
         <section 
           className="relative py-12 md:py-16 overflow-hidden"
-          style={{ background: 'var(--gradient-brand)' }}
           data-testid="section-hero"
         >
           <div className="container mx-auto px-4 relative z-10">
@@ -120,7 +119,7 @@ export default function Home() {
         </section>
 
         {/* Categories Section */}
-        <section className="py-12 md:py-16 bg-background" data-testid="section-categories">
+        <section className="py-8 md:py-10" data-testid="section-categories">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 
@@ -153,7 +152,7 @@ export default function Home() {
         </section>
 
         {/* Discover Featured Businesses */}
-        <section className="py-12 md:py-16 bg-muted/30" data-testid="section-featured-businesses">
+        <section className="py-8 md:py-10" data-testid="section-featured-businesses">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 
@@ -253,7 +252,7 @@ export default function Home() {
         </section>
 
         {/* Community Highlights */}
-        <section className="py-12 md:py-16 bg-background" data-testid="section-community">
+        <section className="py-8 md:py-10" data-testid="section-community">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 
@@ -323,7 +322,7 @@ export default function Home() {
         </section>
 
         {/* Supplier Directory */}
-        <section className="py-12 md:py-16 bg-muted/30" data-testid="section-suppliers">
+        <section className="py-8 md:py-10" data-testid="section-suppliers">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 
