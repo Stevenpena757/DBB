@@ -44,14 +44,14 @@ export default function Home() {
       <main className="flex-1">
         {/* Hero Section with Integrated CTA */}
         <section 
-          className="relative py-24 md:py-32 overflow-hidden"
+          className="relative py-12 md:py-16 overflow-hidden"
           style={{ background: 'var(--gradient-brand)' }}
           data-testid="section-hero"
         >
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
               <h1 
-                className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight"
+                className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight"
                 style={{ fontFamily: 'var(--font-display)' }}
               >
                 Discover Beauty in{" "}
@@ -60,78 +60,58 @@ export default function Home() {
                 </span>
               </h1>
               <p 
-                className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+                className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed"
                 style={{ fontFamily: 'var(--font-sans)' }}
               >
                 The premier platform connecting DFW's health, beauty, and aesthetics community
               </p>
               
               {/* Integrated Claim CTA */}
-              <div className="mt-12 p-6 md:p-8 rounded-3xl bg-gradient-to-b from-[#2c1810]/85 via-[#3d2218]/75 to-[#2c1810]/85 border border-white/20 max-w-3xl mx-auto" data-testid="section-claim-cta">
-                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+              <div className="mt-6 p-4 md:p-5 rounded-2xl bg-gradient-to-b from-[#2c1810]/85 via-[#3d2218]/75 to-[#2c1810]/85 border border-white/20 max-w-2xl mx-auto" data-testid="section-claim-cta">
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-5">
                   {/* Left: Message */}
                   <div className="flex-1 text-center md:text-left">
-                    <Badge className="bg-[#3d2218]/90 text-white border-white/40 text-xs px-4 py-1 mb-3 inline-block">
+                    <Badge className="bg-[#3d2218]/90 text-white border-white/40 text-xs px-3 py-0.5 mb-2 inline-block">
                       100% Free
                     </Badge>
                     <h2 
-                      className="text-xl md:text-2xl font-bold mb-2 leading-tight text-white"
+                      className="text-lg md:text-xl font-bold mb-1.5 leading-tight text-white"
                       style={{ fontFamily: 'var(--font-display)' }}
                     >
                       Claim Your Listing FREE
                     </h2>
-                    <p className="text-sm text-white/95 mb-3">
+                    <p className="text-xs text-white/95 mb-2">
                       Share content, connect socials, get featured
                     </p>
-                    <div className="flex flex-wrap gap-3 justify-center md:justify-start text-xs">
-                      <div className="flex items-center gap-1.5 text-white">
-                        <div className="w-6 h-6 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
-                          <PenTool className="h-3 w-3" />
-                        </div>
-                        <span>Content</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-white">
-                        <div className="w-6 h-6 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
-                          <Share2 className="h-3 w-3" />
-                        </div>
-                        <span>Socials</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-white">
-                        <div className="w-6 h-6 rounded-full bg-[#3d2218]/90 flex items-center justify-center">
-                          <Sparkles className="h-3 w-3" />
-                        </div>
-                        <span>Featured</span>
-                      </div>
-                    </div>
                   </div>
                   
                   {/* Right: CTA Button */}
                   <div className="flex-shrink-0">
                     <a href="/claim">
                       <Button 
-                        size="lg" 
-                        className="bg-white text-[#2c1810] hover:bg-white/90 text-base px-8 py-6 rounded-2xl shadow-2xl font-semibold"
+                        size="default" 
+                        className="bg-white text-[#2c1810] hover:bg-white/90 text-sm px-6 rounded-xl shadow-lg font-semibold"
                         data-testid="button-claim-listing"
                       >
                         Claim Now
-                        <ArrowRight className="h-5 w-5 ml-2" />
+                        <ArrowRight className="h-4 w-4 ml-2" />
                       </Button>
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mt-5">
                 <a href="/explore">
-                  <Button size="lg" className="text-base px-8 py-6 rounded-2xl shadow-lg" data-testid="button-explore">
-                    <Search className="h-5 w-5 mr-2" />
+                  <Button size="default" className="text-sm px-6 rounded-xl shadow-lg" data-testid="button-explore">
+                    <Search className="h-4 w-4 mr-2" />
                     Explore Businesses
                   </Button>
                 </a>
                 <a href="/add-listing">
-                  <Button variant="outline" size="lg" className="text-base px-8 py-6 rounded-2xl" data-testid="button-add-listing">
+                  <Button variant="outline" size="default" className="text-sm px-6 rounded-xl" data-testid="button-add-listing">
                     Add Your Business
-                    <ArrowRight className="h-5 w-5 ml-2" />
+                    <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
                 </a>
               </div>
