@@ -48,7 +48,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { category, location, q, sponsored } = req.query;
       
-      let businesses: Business[];
+      let businesses;
       
       // Use database-backed search if query provided
       if (q && typeof q === 'string') {

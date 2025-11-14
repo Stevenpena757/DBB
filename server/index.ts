@@ -49,6 +49,17 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
+  // Auto-seed database in production if empty
+  if (app.get("env") === "production") {
+    try {
+      const seed = (await import("./seed")).default;
+      await seed();
+      log("Database initialization check complete");
+    } catch (error: any) {
+      log("Note: Database already seeded or seed failed: " + (error?.message || String(error)));
+    }
+  }
+
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
