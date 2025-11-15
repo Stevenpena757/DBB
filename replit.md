@@ -22,6 +22,41 @@ The platform includes comprehensive SEO optimization:
 - **Canonical URLs**: All pages include canonical link tags to prevent duplicate content
 - **Meta Tags**: Dynamic title, description, and Open Graph tags for social sharing
 
+## Brand Identity - Vibrant Miami Glow
+
+Dallas Beauty Book features a bold, energetic, and modern brand aesthetic inspired by Miami's vibrant energy.
+
+### Color Palette
+- **Primary (Vibrant Peach)**: #FF7E5F - Bold, energetic, warm
+- **Secondary (Sunset Pink)**: #FD3A84 - Vibrant, eye-catching, feminine
+- **Accent (Mint Aqua)**: #2EDFD0 - Fresh, modern, exciting
+- **Navy (Ocean Navy)**: #102646 - Professional, trustworthy, grounding
+- **Background (Peach Mist)**: #FFF1ED - Soft, warm, inviting
+
+### Typography System
+- **Headings**: Montserrat (600-800 weight) - Bold, modern, geometric, confident
+- **Body Text**: Hind Madurai (400-600 weight) - Clean, readable, international appeal
+- **UI Elements**: Poppins (500-600 weight) - Friendly, modern, versatile
+
+### CSS Variables
+- `--font-heading`: 'Montserrat', sans-serif
+- `--font-body`: 'Hind Madurai', sans-serif
+- `--font-ui`: 'Poppins', sans-serif
+
+### Brand Characteristics
+- Vibrant gradients (sunset gradient from pink to peach)
+- Pill-shaped buttons with shadows and hover effects
+- Card hover lifts with smooth transitions
+- Mint aqua accents for calls-to-action
+- Focus outlines using Mint Aqua for accessibility
+
+### Components Updated
+- Homepage: Vibrant gradient hero with sunset overlay, bold white headings
+- Explore: Pill-shaped filter chips, vibrant cards
+- Forum: Gradient heading, bold CTA button
+- Header: Gradient logo, vibrant primary buttons
+- Footer: Clean white background, UI font
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
