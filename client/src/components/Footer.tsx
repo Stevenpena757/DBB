@@ -5,9 +5,9 @@ import { SiTiktok } from "react-icons/si";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-white">
+    <footer className="border-t bg-card">
       <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-ui)' }}>
           <a href="#" className="hover:text-foreground">About</a>
           <a href="#" className="hover:text-foreground">Business</a>
           <a href="#" className="hover:text-foreground">Blog</a>
@@ -15,7 +15,7 @@ export function Footer() {
           <a href="#" className="hover:text-foreground">Terms</a>
           <a href="#" className="hover:text-foreground">Privacy</a>
         </div>
-        <div className="text-center text-xs text-muted-foreground mt-4">
+        <div className="text-center text-xs text-muted-foreground mt-4" style={{ fontFamily: 'var(--font-ui)' }}>
           &copy; 2025 Dallas Beauty Book
         </div>
       </div>

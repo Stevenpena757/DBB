@@ -156,10 +156,10 @@ export default function Forum() {
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-heading)' }}>
                   Q&A / Tips Community
                 </h1>
-                <p className="text-muted-foreground mt-2">
+                <p className="text-muted-foreground mt-2" style={{ fontFamily: 'var(--font-body)' }}>
                   Ask questions, share tips, and learn from the DFW beauty community
                 </p>
               </div>
