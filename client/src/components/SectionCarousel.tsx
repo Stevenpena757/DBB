@@ -95,15 +95,18 @@ export function SectionCarousel() {
                   {section.subtitle}
                 </p>
 
-                <a
-                  href={section.href}
+                <button
+                  type="button"
                   data-testid={`carousel-cta-${section.id}`}
                   className="inline-flex mt-6 rounded-full bg-white/95 text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all"
                   style={{ fontFamily: 'var(--font-ui)' }}
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.location.href = section.href;
+                  }}
                 >
                   {section.ctaLabel} ↗
-                </a>
+                </button>
               </button>
             );
           })}
