@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { SeoHead, ItemListJsonLd, BreadcrumbListJsonLd } from '@/components/seo';
+import { useEffect } from 'react';
+import { SeoHead, BreadcrumbListJsonLd } from '@/components/seo';
 import { BusinessCard } from '@/components/BusinessCard';
 import { Link, useParams } from 'wouter';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,7 @@ import { SEO_LANDING_PAGES } from '@/data/seoLandingPages';
 import { MapPin, Sparkles, ArrowRight, Filter } from 'lucide-react';
 import type { Business } from '@shared/schema';
 import NotFound from './not-found';
+import { itemListJsonLd, injectJsonLd, removeJsonLd } from '@/lib/schema';
 
 export function LandingPage() {
   const { slug } = useParams();
@@ -34,12 +36,28 @@ export function LandingPage() {
 
   const metaDescription = `Discover the ${landing.title.toLowerCase()} - curated list of top-rated health, beauty, and aesthetics businesses. Reviews, photos, and contact info.`;
 
-  const itemListData = rankedBusinesses.map((b, idx) => ({
-    name: b.name,
-    url: `https://dallasbeautybook.com/business/${b.id}`,
-    description: b.description || undefined,
-    position: idx + 1
-  }));
+  useEffect(() => {
+    if (rankedBusinesses.length > 0) {
+      const itemListData = rankedBusinesses.map((b, idx) => ({
+        name: b.name,
+        url: `https://dallasbeautybook.com/business/${b.id}`,
+        description: b.description || undefined,
+        position: idx + 1
+      }));
+
+      const schema = itemListJsonLd({
+        title: landing.title,
+        url: `https://dallasbeautybook.com/${landing.slug}`,
+        items: itemListData
+      });
+
+      injectJsonLd(schema, 'item-list-jsonld');
+    }
+
+    return () => {
+      removeJsonLd('item-list-jsonld');
+    };
+  }, [rankedBusinesses, landing.title, landing.slug]);
 
   const relatedPages = SEO_LANDING_PAGES
     .filter(p => 
@@ -71,7 +89,6 @@ export function LandingPage() {
         type="website"
       />
       
-      <ItemListJsonLd items={itemListData} listName={landing.title} />
       <BreadcrumbListJsonLd items={breadcrumbItems} />
 
       <div className="container mx-auto px-4 py-12 max-w-7xl">

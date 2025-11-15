@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, Globe, MapPin, Instagram, Facebook, Bookmark, Share2, CheckCircle, Upload, FileCheck } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
 import type { Business, Article, HowTo } from "@shared/schema";
+import { localBusinessJsonLd, injectJsonLd, removeJsonLd } from "@/lib/schema";
 
 const claimFormSchema = z.object({
   claimantName: z.string().min(2, "Name required"),
@@ -121,6 +122,16 @@ export default function BusinessProfile() {
   if (!business) {
     return <div className="min-h-screen flex items-center justify-center">Business not found</div>;
   }
+
+  useEffect(() => {
+    if (business) {
+      const schema = localBusinessJsonLd(business);
+      injectJsonLd(schema, 'local-business-jsonld');
+    }
+    return () => {
+      removeJsonLd('local-business-jsonld');
+    };
+  }, [business]);
 
   return (
     <div className="min-h-screen bg-white">
