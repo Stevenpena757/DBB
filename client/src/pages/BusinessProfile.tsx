@@ -115,14 +115,6 @@ export default function BusinessProfile() {
     }
   };
 
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  }
-
-  if (!business) {
-    return <div className="min-h-screen flex items-center justify-center">Business not found</div>;
-  }
-
   useEffect(() => {
     if (business) {
       const schema = localBusinessJsonLd(business);
@@ -132,6 +124,14 @@ export default function BusinessProfile() {
       removeJsonLd('local-business-jsonld');
     };
   }, [business]);
+
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (!business) {
+    return <div className="min-h-screen flex items-center justify-center">Business not found</div>;
+  }
 
   return (
     <div className="min-h-screen bg-white">
