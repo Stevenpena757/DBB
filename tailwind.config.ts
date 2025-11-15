@@ -51,22 +51,22 @@ export default {
           foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
           border: "var(--destructive-border)",
         },
-        // Brand colors for direct use
-        emerald: {
-          DEFAULT: "#2A5D4E",
+        // Brand colors for direct use - Vibrant Miami Glow
+        peach: {
+          DEFAULT: "#FF7E5F",
           foreground: "#FFFFFF",
         },
-        rose: {
-          DEFAULT: "#C99DA5",
+        sunset: {
+          DEFAULT: "#FD3A84",
           foreground: "#FFFFFF",
         },
-        champagne: {
-          DEFAULT: "#E8D3C6",
-          foreground: "#2B2D33",
+        mint: {
+          DEFAULT: "#2EDFD0",
+          foreground: "#102646",
         },
-        blush: {
-          DEFAULT: "#F4ECE9",
-          foreground: "#2B2D33",
+        navy: {
+          DEFAULT: "#102646",
+          foreground: "#FFFFFF",
         },
         ring: "hsl(var(--ring) / <alpha-value>)",
         chart: {
