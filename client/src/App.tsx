@@ -38,7 +38,13 @@ function Router() {
       <Route path="/claim-listing" component={ClaimListing} />
       <Route path="/add-listing" component={AddListing} />
       <Route path="/business/:id" component={BusinessProfile} />
+      
+      {/* IMPORTANT: SEO Landing Page catch-all route.
+          This route MUST be declared after all other specific routes.
+          It dynamically renders 50+ SEO landing pages from SEO_LANDING_PAGES.
+          Adding new routes below this line will break them - always add above. */}
       <Route path="/:slug" component={LandingPage} />
+      
       <Route component={NotFound} />
     </Switch>
   );
