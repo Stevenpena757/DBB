@@ -35,22 +35,20 @@ export function LandingPage() {
   const rankedBusinesses = filteredBusinesses.slice(0, 20);
 
   useEffect(() => {
-    if (rankedBusinesses.length > 0) {
-      const itemListData = rankedBusinesses.map((b, idx) => ({
-        name: b.name,
-        url: `https://dallasbeautybook.com/business/${b.id}`,
-        description: b.description || undefined,
-        position: idx + 1
-      }));
+    const itemListData = rankedBusinesses.map((b, idx) => ({
+      name: b.name,
+      url: `https://dallasbeautybook.com/business/${b.id}`,
+      description: b.description || undefined,
+      position: idx + 1
+    }));
 
-      const schema = itemListJsonLd({
-        title: landing.title,
-        url: `https://dallasbeautybook.com/${landing.slug}`,
-        items: itemListData
-      });
+    const schema = itemListJsonLd({
+      title: landing.title,
+      url: `https://dallasbeautybook.com/${landing.slug}`,
+      items: itemListData
+    });
 
-      injectJsonLd(schema, 'item-list-jsonld');
-    }
+    injectJsonLd(schema, 'item-list-jsonld');
 
     return () => {
       removeJsonLd('item-list-jsonld');
@@ -231,10 +229,10 @@ export function LandingPage() {
                   <div className="space-y-2">
                     {categoriesInCity.map(page => (
                       <Link key={page.slug} href={`/${page.slug}`}>
-                        <div className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
+                        <a href={`/${page.slug}`} className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
                           <ArrowRight className="h-4 w-4 text-primary" />
                           <span className="text-sm font-medium">{page.title}</span>
-                        </div>
+                        </a>
                       </Link>
                     ))}
                   </div>
@@ -249,10 +247,10 @@ export function LandingPage() {
                   <div className="space-y-2">
                     {citiesInCategory.map(page => (
                       <Link key={page.slug} href={`/${page.slug}`}>
-                        <div className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
+                        <a href={`/${page.slug}`} className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
                           <MapPin className="h-4 w-4 text-secondary" />
                           <span className="text-sm font-medium">{page.title}</span>
-                        </div>
+                        </a>
                       </Link>
                     ))}
                   </div>
