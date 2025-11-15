@@ -1,18 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { SeoHead, ItemListJsonLd, BreadcrumbListJsonLd } from '@/components/seo';
 import { BusinessCard } from '@/components/BusinessCard';
-import { Link } from 'wouter';
+import { Link, useParams } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { SEO_LANDING_PAGES, type LandingDef } from '@/data/seoLandingPages';
-import { MapPin, Sparkles, ArrowRight } from 'lucide-react';
+import { SEO_LANDING_PAGES } from '@/data/seoLandingPages';
+import { MapPin, Sparkles, ArrowRight, Filter } from 'lucide-react';
 import type { Business } from '@shared/schema';
+import NotFound from './not-found';
 
-interface LandingPageProps {
-  landing: LandingDef;
-}
+export function LandingPage() {
+  const { slug } = useParams();
+  const landing = SEO_LANDING_PAGES.find(p => p.slug === slug);
 
-export function LandingPage({ landing }: LandingPageProps) {
+  if (!landing) {
+    return <NotFound />;
+  }
   const { data: businesses = [], isLoading } = useQuery<Business[]>({
     queryKey: ['/api/businesses']
   });
@@ -105,6 +108,40 @@ export function LandingPage({ landing }: LandingPageProps) {
               <>Your complete guide to Dallas-Fort Worth's premier health, beauty, and aesthetics businesses. Discover, compare, and connect with local professionals.</>
             )}
           </p>
+
+          <div className="bg-muted/50 rounded-lg p-4 mb-6 border">
+            <div className="flex items-center gap-2 mb-3">
+              <Filter className="h-4 w-4 text-primary" />
+              <span className="text-sm font-semibold">How We Select Businesses</span>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              All listings are hand-curated based on verified credentials, community reviews, service quality, and professionalism. Use the filters below to refine your search by location and service type.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Link href={`/explore${landing.city ? `?city=${encodeURIComponent(landing.city)}` : ''}${landing.category ? `${landing.city ? '&' : '?'}category=${encodeURIComponent(landing.category)}` : ''}`}>
+                <Button variant="outline" size="sm" data-testid="button-filter-explore">
+                  <Filter className="h-3 w-3 mr-1" />
+                  Explore All Filters
+                </Button>
+              </Link>
+              {landing.city && (
+                <Link href={`/explore?city=${encodeURIComponent(landing.city)}`}>
+                  <Button variant="outline" size="sm" data-testid="button-filter-city">
+                    <MapPin className="h-3 w-3 mr-1" />
+                    All Services in {landing.city}
+                  </Button>
+                </Link>
+              )}
+              {landing.category && (
+                <Link href={`/explore?category=${encodeURIComponent(landing.category)}`}>
+                  <Button variant="outline" size="sm" data-testid="button-filter-category">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    {landing.category} Across DFW
+                  </Button>
+                </Link>
+              )}
+            </div>
+          </div>
 
           <div className="flex flex-wrap gap-3">
             {landing.city && (
