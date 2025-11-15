@@ -1,0 +1,46 @@
+You are my implementation agent for DallasBeautyBook.com. Apply the "DallasBeautyBook Full SEO Blueprint" and generate the "Top 50 Landing Page Titles" as SEO landing pages. Follow these rules:
+
+1) BRAND/THEMING
+- Create src/styles/tokens.css using these variables:
+  :root{
+    --color-primary:#D67A59; --color-secondary:#E3A28D; --color-ivory:#F7E9D8;
+    --color-cream:#FFF9F5; --color-taupe:#B99E8A; --color-gold:#F2C97D; --color-text:#3D2B1F;
+    --shadow-soft:0 8px 24px rgba(61,43,31,.08);
+    --gradient-brand:linear-gradient(135deg,#EFC6B3 0%,#F5DFC9 40%,#FFF9F5 100%);
+  }
+- Import tokens.css globally and use variables in buttons/cards/backgrounds.
+
+2) SEO INFRA (ESSENTIAL)
+- Add a reusable <SeoHead /> component with standard meta + OpenGraph + optional JSON-LD injection.
+- Implement JSON-LD helpers for LocalBusiness and List/QAPage.
+- Create Express routes:
+  /sitemap.xml (index)
+  /sitemap-businesses.xml
+  /sitemap-cities.xml
+  /sitemap-categories.xml
+  /sitemap-community.xml
+- Add /static/robots.txt with:
+  User-agent: *
+  Allow: /
+  Disallow: /admin
+  Sitemap: https://dallasbeautybook.com/sitemap.xml
+
+3) LANDING PAGES (TOP 50)
+- Create a static data file src/data/seoLandingPages.ts exporting an array with {slug,title,city,category,variant}.
+- Generate a file-based route (or a dynamic route component) to render all 50 landing pages, using the title as H1, brief intro copy, filter controls (city/category), and a ranked list (placeholder API calls are fine).
+- Each page must:
+  - Render <SeoHead> with title + meta description stub.
+  - Include internal links to related pages (city pages ↔ category pages).
+  - Provide schema.org JSON-LD (ItemList/List with listItem for the businesses list).
+
+4) SEARCH + FILTER URLS
+- Use clean slugs like /best-med-spas-dallas, /best-botox-clinics-plano, etc.
+- Ensure /explore?q=&city=&category= accepts query params and links are added from landing pages.
+
+5) ACCEPTANCE CRITERIA
+- 50 routes built (one per landing page), indexed in sitemap-categories/cities accordingly.
+- Each page has valid <title>, <meta name="description">, OG tags, and JSON-LD.
+- Lighthouse SEO score ≥ 90 on at least one sample landing page.
+- Internal linking block appears at bottom of every landing page.
+
+Start by confirming folder structure, then create the SEO components/helpers, sitemaps, robots, the 50 landing page data file, and the route(s). When done, list all generated routes and the files changed.
