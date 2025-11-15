@@ -8,6 +8,20 @@ The platform's primary customers are DFW beauty businesses and entrepreneurs. It
 
 Monetization is achieved through a three-tier subscription model (Free, Pro, Premium) that offers enhanced features while maintaining free content creation. Additional revenue streams include sponsored content placements and commissions from supplier listings.
 
+## SEO Infrastructure
+
+The platform includes comprehensive SEO optimization:
+- **50 Landing Pages**: Dynamic SEO landing pages for DFW cities and beauty categories (defined in `shared/seo.ts`)
+- **JSON-LD Schemas**: LocalBusiness schema for business profiles, ItemList schema for landing pages, BreadcrumbList for navigation
+- **Sitemaps**: XML sitemap index at `/sitemap.xml` with 4 sub-sitemaps:
+  - `/sitemap-categories.xml` - All category landing pages
+  - `/sitemap-cities.xml` - All city landing pages
+  - `/sitemap-businesses.xml` - All business profiles
+  - `/sitemap-community.xml` - Homepage, explore, forum + recent posts
+- **robots.txt**: Served at `/robots.txt` with proper crawl directives
+- **Canonical URLs**: All pages include canonical link tags to prevent duplicate content
+- **Meta Tags**: Dynamic title, description, and Open Graph tags for social sharing
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
