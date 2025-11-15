@@ -1,0 +1,217 @@
+REPLIT AGENT INSTRUCTIONS — DALLASBEAUTYBOOK
+STACKED CAROUSEL HERO + VIBRANT MIAMI GLOW BRAND
+=================================================
+
+Paste this entire file into the Replit agent to implement the new homepage hero
+and apply the Vibrant Miami Glow branding system.
+
+-------------------------------------------------
+SECTION 1 — GOAL
+-------------------------------------------------
+Create a new homepage hero using a stacked, animated card carousel UI.  
+Each card represents a section of the DallasBeautyBook platform:
+
+1. Discover Businesses
+2. Community Q&A
+3. For Business Owners
+4. Supplier Marketplace
+
+Cards overlap like a deck, animate forward when clicked, and display unique
+gradients, text, and CTA buttons.
+
+This must replace the current homepage hero section.
+
+-------------------------------------------------
+SECTION 2 — BRAND TOKENS (VIBRANT MIAMI GLOW)
+-------------------------------------------------
+Update or create: src/styles/tokens.css
+
+:root {
+  --color-bg: #FFF1ED;            
+  --color-primary: #FF7E5F;       
+  --color-secondary: #FD3A84;     
+  --color-accent: #2EDFD0;        
+  --color-navy: #102646;          
+  --color-text: #1F2433;          
+  --color-white: #FFFFFF;
+  --color-shadow: rgba(16, 38, 70, 0.15);
+
+  --gradient-sunset: linear-gradient(135deg, #FD3A84 0%, #FF7E5F 100%);
+  --gradient-mint: linear-gradient(135deg, #2EDFD0 0%, #B3FFF7 100%);
+  --gradient-sunset-overlay: radial-gradient(circle at top, rgba(253,58,132,0.55), transparent 60%);
+
+  --radius-card: 30px;
+  --radius-pill: 999px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Hind Madurai', sans-serif;
+}
+
+-------------------------------------------------
+SECTION 3 — REQUIRED FONTS
+-------------------------------------------------
+Add this import to global CSS:
+
+@import url('https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600&family=Montserrat:wght@600;700;800&family=Poppins:wght@500;600&display=swap');
+
+Use:
+- Montserrat → Headings
+- Hind Madurai → Body
+- Poppins → UI labels
+
+-------------------------------------------------
+SECTION 4 — CREATE CAROUSEL COMPONENT
+-------------------------------------------------
+Create file: src/components/SectionCarousel.tsx
+
+Paste FULL component below:
+
+-------------------------------------------------
+BEGIN COMPONENT
+-------------------------------------------------
+
+import React, { useState } from "react";
+
+type SectionCard = {
+  id: string;
+  title: string;
+  subtitle: string;
+  ctaLabel: string;
+  href: string;
+  gradient: string;
+};
+
+const SECTIONS: SectionCard[] = [
+  {
+    id: "discover",
+    title: "Discover DFW Beauty",
+    subtitle:
+      "Explore top med spas, lash artists, salons, and skincare studios across Dallas–Fort Worth.",
+    ctaLabel: "Explore Businesses",
+    href: "/explore",
+    gradient: "linear-gradient(135deg,#FD3A84,#FF7E5F)",
+  },
+  {
+    id: "community",
+    title: "Join the Community",
+    subtitle:
+      "Ask questions, share tips, and get real recommendations from locals and professionals.",
+    ctaLabel: "Visit Community",
+    href: "/community",
+    gradient: "linear-gradient(135deg,#2EDFD0,#B3FFF7)",
+  },
+  {
+    id: "owners",
+    title: "For Business Owners",
+    subtitle:
+      "Claim your listing, post updates, and grow your bookings with zero upfront cost.",
+    ctaLabel: "Claim Your Listing",
+    href: "/claim",
+    gradient:
+      "linear-gradient(135deg,#FF7E5F,#FD3A84,#102646)",
+  },
+  {
+    id: "suppliers",
+    title: "Supplier Marketplace",
+    subtitle:
+      "Connect with brands and vendors for products, equipment, and wholesale deals.",
+    ctaLabel: "Browse Suppliers",
+    href: "/vendors",
+    gradient: "linear-gradient(135deg,#102646,#364A8A,#2EDFD0)",
+  },
+];
+
+export const SectionCarousel: React.FC = () => {
+  const [activeId, setActiveId] = useState(SECTIONS[0].id);
+
+  return (
+    <section className="relative min-h-[80vh] bg-[#FFF1ED] flex items-center justify-center overflow-hidden px-4">
+      <div className="relative flex w-full max-w-6xl flex-col lg:flex-row gap-8 items-center z-10">
+        <div className="relative flex-1 h-[420px] flex items-center justify-center">
+          {SECTIONS.map((section, index) => {
+            const isActive = section.id === activeId;
+            const activeIndex = SECTIONS.findIndex(s => s.id === activeId);
+            const offset = index - activeIndex;
+
+            return (
+              <button
+                key={section.id}
+                onClick={() => setActiveId(section.id)}
+                className="absolute inset-0 max-w-xl rounded-[30px] p-8 text-left text-white shadow-2xl transition-all duration-300"
+                style={{
+                  backgroundImage: section.gradient,
+                  transform: `
+                    translateX(${offset * 24}px)
+                    translateY(${offset * 18}px)
+                    scale(${isActive ? 1 : 0.92 - Math.abs(offset) * 0.03})
+                    rotate(${offset * 2}deg)
+                  `,
+                  opacity: isActive ? 1 : 0.8 - Math.abs(offset) * 0.1,
+                  zIndex: 20 - Math.abs(offset),
+                }}
+              >
+                <h2 className="text-3xl font-extrabold md:text-4xl">{section.title}</h2>
+                <p className="mt-3 text-white/90">{section.subtitle}</p>
+
+                <a
+                  href={section.href}
+                  className="inline-flex mt-6 rounded-full bg-white/90 text-[#102646] px-5 py-2.5 font-semibold shadow-lg"
+                >
+                  {section.ctaLabel} ↗
+                </a>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex-1 max-w-md">
+          <h1 className="text-4xl font-extrabold text-[#102646]">
+            One platform. Every corner of DFW beauty.
+          </h1>
+          <p className="mt-4 text-[#434960]">
+            Tap through each card to preview every part of the platform—from discovery
+            and reviews to the marketplace and community Q&A.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+-------------------------------------------------
+END COMPONENT
+-------------------------------------------------
+
+-------------------------------------------------
+SECTION 5 — MOUNT COMPONENT ON HOMEPAGE
+-------------------------------------------------
+
+Open homepage file (e.g. src/pages/HomePage.tsx or src/App.tsx)
+Add:
+
+import { SectionCarousel } from "@/components/SectionCarousel";
+
+Place it at top of the homepage:
+
+export default function HomePage() {
+  return (
+    <>
+      <SectionCarousel />
+      {/* existing content */}
+    </>
+  );
+}
+
+-------------------------------------------------
+SECTION 6 — COMPLETION REQUIREMENTS
+-------------------------------------------------
+
+The Replit agent must return:
+
+1. Files created/modified  
+2. Confirmation that the component builds successfully  
+3. Screenshot of updated homepage hero  
+4. Confirmation that the card stacking interaction works  
