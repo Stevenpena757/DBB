@@ -51,6 +51,23 @@ export default {
           foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
           border: "var(--destructive-border)",
         },
+        // Brand colors for direct use
+        emerald: {
+          DEFAULT: "#2A5D4E",
+          foreground: "#FFFFFF",
+        },
+        rose: {
+          DEFAULT: "#C99DA5",
+          foreground: "#FFFFFF",
+        },
+        champagne: {
+          DEFAULT: "#E8D3C6",
+          foreground: "#2B2D33",
+        },
+        blush: {
+          DEFAULT: "#F4ECE9",
+          foreground: "#2B2D33",
+        },
         ring: "hsl(var(--ring) / <alpha-value>)",
         chart: {
           "1": "hsl(var(--chart-1) / <alpha-value>)",

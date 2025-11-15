@@ -41,7 +41,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16 md:pb-0">
       <Header />
       
-      <main className="flex-1" style={{ background: 'var(--gradient-brand)' }}>
+      <main className="flex-1" style={{ background: 'var(--gradient-botanical)' }}>
         {/* Hero Section with Integrated CTA */}
         <section 
           className="relative py-12 md:py-16 overflow-hidden"
@@ -51,32 +51,32 @@ export default function Home() {
             <div className="max-w-4xl mx-auto text-center space-y-6">
               <h1 
                 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground"
-                style={{ fontFamily: 'var(--font-display)' }}
+                style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Discover Beauty in Dallas-Fort Worth
               </h1>
               <p 
                 className="text-sm md:text-base text-foreground/80 max-w-2xl mx-auto leading-relaxed"
-                style={{ fontFamily: 'var(--font-sans)' }}
+                style={{ fontFamily: 'var(--font-body)' }}
               >
                 The premier platform connecting DFW's health, beauty, and aesthetics community
               </p>
               
               {/* Integrated Claim CTA */}
-              <div className="mt-6 p-4 md:p-5 rounded-2xl bg-gradient-to-b from-[#2c1810]/85 via-[#3d2218]/75 to-[#2c1810]/85 border border-white/20 max-w-2xl mx-auto" data-testid="section-claim-cta">
+              <div className="mt-6 p-4 md:p-5 rounded-2xl bg-gradient-to-b from-emerald/85 via-emerald/75 to-emerald/85 border border-white/20 max-w-2xl mx-auto" data-testid="section-claim-cta">
                 <div className="flex flex-col md:flex-row items-center gap-4 md:gap-5">
                   {/* Left: Message */}
                   <div className="flex-1 text-center md:text-left">
-                    <Badge className="bg-[#3d2218]/90 text-white border-white/40 text-xs px-3 py-0.5 mb-2 inline-block">
+                    <Badge className="bg-secondary text-white border-white/40 text-xs px-3 py-0.5 mb-2 inline-block">
                       100% Free
                     </Badge>
                     <h2 
                       className="text-lg md:text-xl font-bold mb-1.5 leading-tight text-white"
-                      style={{ fontFamily: 'var(--font-display)' }}
+                      style={{ fontFamily: 'var(--font-heading)' }}
                     >
                       Claim Your Listing FREE
                     </h2>
-                    <p className="text-xs text-white/95 mb-2">
+                    <p className="text-xs text-white/95 mb-2" style={{ fontFamily: 'var(--font-body)' }}>
                       Share content, connect socials, get featured
                     </p>
                   </div>
@@ -86,7 +86,8 @@ export default function Home() {
                     <a href="/claim">
                       <Button 
                         size="default" 
-                        className="bg-white text-[#2c1810] hover:bg-white/90 text-sm px-6 rounded-xl shadow-lg font-semibold"
+                        className="bg-white text-primary hover:bg-white/90 text-sm px-6 rounded-xl shadow-lg font-semibold"
+                        style={{ fontFamily: 'var(--font-ui)' }}
                         data-testid="button-claim-listing"
                       >
                         Claim Now
@@ -121,11 +122,11 @@ export default function Home() {
             <div className="text-center mb-12">
               <h2 
                 className="text-3xl md:text-4xl font-bold mb-4" 
-                style={{ fontFamily: 'var(--font-display)' }}
+                style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Browse by Category
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
                 Find exactly what you're looking for
               </p>
             </div>
@@ -154,11 +155,11 @@ export default function Home() {
             <div className="text-center mb-12">
               <h2 
                 className="text-3xl md:text-4xl font-bold mb-4" 
-                style={{ fontFamily: 'var(--font-display)' }}
+                style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Featured Businesses
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
                 Discover the best beauty and aesthetics professionals in DFW
               </p>
             </div>
@@ -254,11 +255,11 @@ export default function Home() {
             <div className="text-center mb-12">
               <h2 
                 className="text-3xl md:text-4xl font-bold mb-4" 
-                style={{ fontFamily: 'var(--font-display)' }}
+                style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Community Q&A & Tips
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+              <p className="text-muted-foreground max-w-2xl mx-auto mb-4" style={{ fontFamily: 'var(--font-body)' }}>
                 Learn from experts and share your knowledge
               </p>
               <div className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
@@ -324,11 +325,11 @@ export default function Home() {
             <div className="text-center mb-12">
               <h2 
                 className="text-3xl md:text-4xl font-bold mb-4" 
-                style={{ fontFamily: 'var(--font-display)' }}
+                style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Supplier Directory
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
                 Connect with trusted vendors for all your business needs
               </p>
             </div>
