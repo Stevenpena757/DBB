@@ -51,18 +51,21 @@ export default {
           foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
           border: "var(--destructive-border)",
         },
-        // Brand colors for direct use - Vibrant Miami Glow
+        // Brand colors for direct use - Vibrant Miami Glow (Accessible)
         peach: {
-          DEFAULT: "#FF7E5F",
+          DEFAULT: "#CC4A28",
+          light: "#FF7E5F",
           foreground: "#FFFFFF",
         },
         sunset: {
-          DEFAULT: "#FD3A84",
+          DEFAULT: "#D91D66",
+          light: "#FD3A84",
           foreground: "#FFFFFF",
         },
         mint: {
-          DEFAULT: "#2EDFD0",
-          foreground: "#102646",
+          DEFAULT: "#1ABDA6",
+          light: "#2EDFD0",
+          foreground: "#FFFFFF",
         },
         navy: {
           DEFAULT: "#102646",

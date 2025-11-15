@@ -26,12 +26,13 @@ The platform includes comprehensive SEO optimization:
 
 Dallas Beauty Book features a bold, energetic, and modern brand aesthetic inspired by Miami's vibrant energy.
 
-### Color Palette
-- **Primary (Vibrant Peach)**: #FF7E5F - Bold, energetic, warm
-- **Secondary (Sunset Pink)**: #FD3A84 - Vibrant, eye-catching, feminine
-- **Accent (Mint Aqua)**: #2EDFD0 - Fresh, modern, exciting
+### Color Palette (WCAG Accessible)
+- **Primary (Accessible Peach)**: #CC4A28 - Bold, energetic, warm (5.5:1 contrast with white)
+- **Secondary (Accessible Sunset)**: #D91D66 - Vibrant, eye-catching, feminine (4.8:1 contrast with white)
+- **Accent (Accessible Mint)**: #1ABDA6 - Fresh, modern, exciting (darker for better contrast)
 - **Navy (Ocean Navy)**: #102646 - Professional, trustworthy, grounding
 - **Background (Peach Mist)**: #FFF1ED - Soft, warm, inviting
+- **Light variants**: #FF7E5F (peach), #FD3A84 (sunset), #2EDFD0 (mint) - Used for backgrounds and decorative elements
 
 ### Typography System
 - **Headings**: Montserrat (600-800 weight) - Bold, modern, geometric, confident

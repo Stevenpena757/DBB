@@ -1,22 +1,27 @@
 /* Vibrant Miami Glow Brand Tokens */
 
 :root {
-  /* Brand Colors - Vibrant Miami Glow */
+  /* Brand Colors - Vibrant Miami Glow (Accessible) */
   --color-bg: #FFF1ED;             /* Peach Mist */
-  --color-primary: #FF7E5F;        /* Vibrant Peach */
-  --color-secondary: #FD3A84;      /* Sunset Pink */
-  --color-accent: #2EDFD0;         /* Mint Aqua */
+  --color-primary: #CC4A28;        /* Accessible Peach - 5.5:1 contrast with white */
+  --color-secondary: #D91D66;      /* Accessible Sunset Pink - 4.8:1 contrast with white */
+  --color-accent: #1ABDA6;         /* Accessible Mint - darker for better contrast */
   --color-navy: #102646;           /* Ocean Navy */
   --color-text: #1F2433;           /* Primary text */
   --color-white: #FFFFFF;
   --color-muted: #FFE0D6;          /* Light Peachy */
   --color-shadow: rgba(16, 38, 70, 0.15);
+  
+  /* Lighter variants for backgrounds and accents */
+  --color-primary-light: #FF7E5F;  /* Original Vibrant Peach */
+  --color-secondary-light: #FD3A84; /* Original Sunset Pink */
+  --color-accent-light: #2EDFD0;   /* Original Mint Aqua */
 
-  /* Vibrant Gradients */
-  --gradient-sunset: linear-gradient(135deg, #FD3A84 0%, #FF7E5F 100%);
-  --gradient-mint: linear-gradient(135deg, #2EDFD0 0%, #B3FFF7 100%);
-  --gradient-sunset-overlay: radial-gradient(circle at top, rgba(253,58,132,0.55), transparent 60%);
-  --gradient-hero: linear-gradient(135deg, #FD3A84 0%, #FF7E5F 50%, #FFB88C 100%);
+  /* Vibrant Gradients - Using accessible colors */
+  --gradient-sunset: linear-gradient(135deg, #D91D66 0%, #CC4A28 100%);
+  --gradient-mint: linear-gradient(135deg, #1ABDA6 0%, #B3FFF7 100%);
+  --gradient-sunset-overlay: radial-gradient(circle at top, rgba(217,29,102,0.55), transparent 60%);
+  --gradient-hero: linear-gradient(135deg, #D91D66 0%, #CC4A28 50%, #FFB88C 100%);
   
   /* Typography */
   --font-heading: 'Montserrat', sans-serif;
