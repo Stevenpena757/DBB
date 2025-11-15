@@ -228,12 +228,10 @@ export function LandingPage() {
                   </h3>
                   <div className="space-y-2">
                     {categoriesInCity.map(page => (
-                      <Link key={page.slug} href={`/${page.slug}`}>
-                        <a href={`/${page.slug}`} className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
-                          <ArrowRight className="h-4 w-4 text-primary" />
-                          <span className="text-sm font-medium">{page.title}</span>
-                        </a>
-                      </Link>
+                      <a key={page.slug} href={`/${page.slug}`} className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
+                        <ArrowRight className="h-4 w-4 text-primary" />
+                        <span className="text-sm font-medium">{page.title}</span>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -246,12 +244,10 @@ export function LandingPage() {
                   </h3>
                   <div className="space-y-2">
                     {citiesInCategory.map(page => (
-                      <Link key={page.slug} href={`/${page.slug}`}>
-                        <a href={`/${page.slug}`} className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
-                          <MapPin className="h-4 w-4 text-secondary" />
-                          <span className="text-sm font-medium">{page.title}</span>
-                        </a>
-                      </Link>
+                      <a key={page.slug} href={`/${page.slug}`} className="flex items-center gap-2 p-3 rounded-lg hover-elevate active-elevate-2 cursor-pointer border" data-testid={`link-related-${page.slug}`}>
+                        <MapPin className="h-4 w-4 text-secondary" />
+                        <span className="text-sm font-medium">{page.title}</span>
+                      </a>
                     ))}
                   </div>
                 </div>
