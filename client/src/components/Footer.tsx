@@ -5,15 +5,15 @@ import { SiTiktok } from "react-icons/si";
 
 export function Footer() {
   return (
-    <footer className="border-t bg-card">
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-ui)' }}>
-          <a href="#" className="hover:text-foreground">About</a>
-          <a href="#" className="hover:text-foreground">Business</a>
-          <a href="#" className="hover:text-foreground">Blog</a>
-          <a href="#" className="hover:text-foreground">Help</a>
-          <a href="#" className="hover:text-foreground">Terms</a>
-          <a href="#" className="hover:text-foreground">Privacy</a>
+    <footer className="border-t bg-white">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground font-medium" style={{ fontFamily: 'var(--font-ui)' }}>
+          <a href="#" className="hover:text-primary transition-colors">About</a>
+          <a href="#" className="hover:text-primary transition-colors">Business</a>
+          <a href="#" className="hover:text-primary transition-colors">Blog</a>
+          <a href="#" className="hover:text-primary transition-colors">Help</a>
+          <a href="#" className="hover:text-primary transition-colors">Terms</a>
+          <a href="#" className="hover:text-primary transition-colors">Privacy</a>
         </div>
         <div className="text-center text-xs text-muted-foreground mt-4" style={{ fontFamily: 'var(--font-ui)' }}>
           &copy; 2025 Dallas Beauty Book

@@ -41,42 +41,54 @@ export default function Home() {
     <div className="min-h-screen flex flex-col pb-16 md:pb-0">
       <Header />
       
-      <main className="flex-1" style={{ background: 'var(--gradient-botanical)' }}>
-        {/* Hero Section with Integrated CTA */}
+      <main className="flex-1 bg-background">
+        {/* Hero Section with Vibrant Gradient Overlay */}
         <section 
-          className="relative py-12 md:py-16 overflow-hidden"
+          className="relative py-16 md:py-24 overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #FD3A84 0%, #FF7E5F 100%)',
+            position: 'relative'
+          }}
           data-testid="section-hero"
         >
+          {/* Gradient Overlay */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle at top, rgba(253,58,132,0.55), transparent 60%)'
+            }}
+          />
+          
           <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-4xl mx-auto text-center space-y-6">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
               <h1 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-foreground"
+                className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white drop-shadow-lg"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
                 Discover Beauty in Dallas-Fort Worth
               </h1>
               <p 
-                className="text-sm md:text-base text-foreground/80 max-w-2xl mx-auto leading-relaxed"
+                className="text-base md:text-lg text-white/95 max-w-2xl mx-auto leading-relaxed drop-shadow"
                 style={{ fontFamily: 'var(--font-body)' }}
               >
                 The premier platform connecting DFW's health, beauty, and aesthetics community
               </p>
               
-              {/* Integrated Claim CTA */}
-              <div className="mt-6 p-4 md:p-5 rounded-2xl bg-gradient-to-b from-emerald/85 via-emerald/75 to-emerald/85 border border-white/20 max-w-2xl mx-auto" data-testid="section-claim-cta">
-                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-5">
+              {/* Vibrant CTA Section */}
+              <div className="mt-8 p-6 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/30 max-w-2xl mx-auto" data-testid="section-claim-cta">
+                <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                   {/* Left: Message */}
                   <div className="flex-1 text-center md:text-left">
-                    <Badge className="bg-secondary text-white border-white/40 text-xs px-3 py-0.5 mb-2 inline-block">
+                    <Badge className="bg-mint text-navy border-0 text-xs px-4 py-1 mb-3 inline-block font-semibold">
                       100% Free
                     </Badge>
                     <h2 
-                      className="text-lg md:text-xl font-bold mb-1.5 leading-tight text-white"
+                      className="text-xl md:text-2xl font-extrabold mb-2 leading-tight text-white"
                       style={{ fontFamily: 'var(--font-heading)' }}
                     >
                       Claim Your Listing FREE
                     </h2>
-                    <p className="text-xs text-white/95 mb-2" style={{ fontFamily: 'var(--font-body)' }}>
+                    <p className="text-sm text-white/95" style={{ fontFamily: 'var(--font-body)' }}>
                       Share content, connect socials, get featured
                     </p>
                   </div>
@@ -85,30 +97,30 @@ export default function Home() {
                   <div className="flex-shrink-0">
                     <a href="/claim">
                       <Button 
-                        size="default" 
-                        className="bg-white text-primary hover:bg-white/90 text-sm px-6 rounded-xl shadow-lg font-semibold"
+                        size="lg" 
+                        className="bg-white text-sunset hover:bg-white/95 text-base px-8 rounded-full shadow-2xl font-bold transition-all hover:scale-105"
                         style={{ fontFamily: 'var(--font-ui)' }}
                         data-testid="button-claim-listing"
                       >
                         Claim Now
-                        <ArrowRight className="h-4 w-4 ml-2" />
+                        <ArrowRight className="h-5 w-5 ml-2" />
                       </Button>
                     </a>
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mt-5">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
                 <a href="/explore">
-                  <Button size="default" className="text-sm px-6 rounded-xl shadow-lg" data-testid="button-explore">
-                    <Search className="h-4 w-4 mr-2" />
+                  <Button size="lg" className="text-base px-8 rounded-full shadow-xl backdrop-blur-sm bg-white/20 border-2 border-white/40 text-white hover:bg-white/30 font-semibold transition-all hover:scale-105" data-testid="button-explore" style={{ fontFamily: 'var(--font-ui)' }}>
+                    <Search className="h-5 w-5 mr-2" />
                     Explore Businesses
                   </Button>
                 </a>
                 <a href="/add-listing">
-                  <Button variant="outline" size="default" className="text-sm px-6 rounded-xl" data-testid="button-add-listing">
+                  <Button size="lg" className="text-base px-8 rounded-full shadow-xl bg-navy border-2 border-navy text-white hover:bg-navy/90 font-semibold transition-all hover:scale-105" data-testid="button-add-listing" style={{ fontFamily: 'var(--font-ui)' }}>
                     Add Your Business
-                    <ArrowRight className="h-4 w-4 ml-2" />
+                    <ArrowRight className="h-5 w-5 ml-2" />
                   </Button>
                 </a>
               </div>

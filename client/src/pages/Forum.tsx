@@ -149,17 +149,17 @@ export default function Forum() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-gradient-to-br from-background via-card to-muted">
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-background">
       <Header />
       <main className="flex-1">
-        <section className="py-8 border-b bg-card">
+        <section className="py-10 border-b bg-white shadow-sm">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-heading)' }}>
+                <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-sunset to-peach bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-heading)' }}>
                   Q&A / Tips Community
                 </h1>
-                <p className="text-muted-foreground mt-2" style={{ fontFamily: 'var(--font-body)' }}>
+                <p className="text-muted-foreground mt-3 text-lg" style={{ fontFamily: 'var(--font-body)' }}>
                   Ask questions, share tips, and learn from the DFW beauty community
                 </p>
               </div>
@@ -167,7 +167,8 @@ export default function Forum() {
                 <DialogTrigger asChild>
                   <Button
                     size="lg"
-                    className="font-semibold bg-gradient-to-r from-primary to-secondary"
+                    className="font-bold bg-gradient-to-r from-sunset to-peach hover:scale-105 transition-all rounded-full shadow-lg"
+                    style={{ fontFamily: 'var(--font-ui)' }}
                     data-testid="button-create-post"
                   >
                     <Plus className="h-5 w-5 mr-2" />

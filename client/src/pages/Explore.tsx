@@ -36,14 +36,16 @@ export default function Explore() {
   };
 
   return (
-    <div className="min-h-screen pb-20 md:pb-6">
-      <div className="sticky top-0 bg-background border-b z-10 py-4">
+    <div className="min-h-screen pb-20 md:pb-6 bg-background">
+      <div className="sticky top-0 bg-background/95 backdrop-blur-md border-b z-10 py-4">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--font-heading)' }}>Explore</h1>
-          <div className="flex gap-2 overflow-x-auto">
+          <h1 className="text-3xl font-extrabold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-heading)' }}>Explore</h1>
+          <div className="flex gap-2 overflow-x-auto pb-2">
             <Button 
               variant={filter === "all" ? "default" : "outline"}
               onClick={() => setFilter("all")}
+              className={`rounded-full px-5 font-semibold transition-all ${filter === "all" ? "shadow-md" : ""}`}
+              style={{ fontFamily: 'var(--font-ui)' }}
               data-testid="button-filter-all"
             >
               All
@@ -51,6 +53,8 @@ export default function Explore() {
             <Button 
               variant={filter === "businesses" ? "default" : "outline"}
               onClick={() => setFilter("businesses")}
+              className={`rounded-full px-5 font-semibold transition-all ${filter === "businesses" ? "shadow-md" : ""}`}
+              style={{ fontFamily: 'var(--font-ui)' }}
               data-testid="button-filter-businesses"
             >
               <Building2 className="h-4 w-4 mr-2" />
@@ -59,6 +63,8 @@ export default function Explore() {
             <Button 
               variant={filter === "articles" ? "default" : "outline"}
               onClick={() => setFilter("articles")}
+              className={`rounded-full px-5 font-semibold transition-all ${filter === "articles" ? "shadow-md" : ""}`}
+              style={{ fontFamily: 'var(--font-ui)' }}
               data-testid="button-filter-articles"
             >
               <FileText className="h-4 w-4 mr-2" />
@@ -67,6 +73,8 @@ export default function Explore() {
             <Button 
               variant={filter === "how-tos" ? "default" : "outline"}
               onClick={() => setFilter("how-tos")}
+              className={`rounded-full px-5 font-semibold transition-all ${filter === "how-tos" ? "shadow-md" : ""}`}
+              style={{ fontFamily: 'var(--font-ui)' }}
               data-testid="button-filter-howtos"
             >
               <Lightbulb className="h-4 w-4 mr-2" />
