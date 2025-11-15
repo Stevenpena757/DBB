@@ -124,7 +124,7 @@ export function SectionCarousel() {
             className="text-4xl md:text-5xl font-extrabold text-navy leading-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            One platform. Every corner of DFW beauty.
+            Every corner of DFW beauty.
           </h1>
           <p 
             className="mt-6 text-lg text-muted-foreground leading-relaxed"
