@@ -11,14 +11,14 @@ export function Header() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-border">
+    <header className="sticky top-0 z-50 w-full bg-card border-b border-border">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-4">
         <a href="/" className="flex items-center gap-2" data-testid="link-logo">
           <div className="flex items-center gap-1">
             <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded flex items-center justify-center">
-              <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-accent)' }}>D</span>
+              <span className="text-white font-bold text-lg" style={{ fontFamily: 'var(--font-ui)' }}>D</span>
             </div>
-            <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-display)' }}>
+            <span className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-heading)' }}>
               DallasBeautyBook
             </span>
           </div>
@@ -82,7 +82,7 @@ export function Header() {
           {isAuthenticated && (
             <>
               <a href={user?.claimedBusinesses?.[0] ? `/business/${user.claimedBusinesses[0].id}` : "/submit-content"} className="hidden md:block" title="Share content and grow your business for FREE">
-                <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity">
+                <Button variant="default" size="sm" data-testid="button-submit-content" className="font-semibold bg-gradient-to-r from-primary to-secondary hover:opacity-90 transition-opacity" style={{ fontFamily: 'var(--font-ui)' }}>
                   Share & Get Noticed
                 </Button>
               </a>

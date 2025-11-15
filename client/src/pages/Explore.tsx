@@ -36,10 +36,10 @@ export default function Explore() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20 md:pb-6">
-      <div className="sticky top-0 bg-white border-b z-10 py-4">
+    <div className="min-h-screen pb-20 md:pb-6">
+      <div className="sticky top-0 bg-background border-b z-10 py-4">
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-4">Explore</h1>
+          <h1 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--font-heading)' }}>Explore</h1>
           <div className="flex gap-2 overflow-x-auto">
             <Button 
               variant={filter === "all" ? "default" : "outline"}
@@ -84,7 +84,7 @@ export default function Explore() {
             {filteredContent().map((item) => {
               const cardContent = (
                 <div 
-                  className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                  className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-card shadow-sm hover:shadow-md transition-shadow cursor-pointer hover-elevate"
                   data-testid={item.type === "business" ? `card-business-${item.id}` : `pin-${item.type}-${item.id}`}
                 >
                   <div className="aspect-[3/4] overflow-hidden">
