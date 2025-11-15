@@ -178,8 +178,7 @@ export function FeaturedHeroCarousel() {
             className="mt-6 text-lg text-muted-foreground leading-relaxed"
             style={{ fontFamily: 'var(--font-body)' }}
           >
-            Featured listings from across Dallas–Fort Worth. These businesses
-            stand out for their quality, service, and community reputation.
+            Beauty Starts Here — Discover, Review, Engage with Dallas
           </p>
           
           <div className="mt-8 flex gap-3">
