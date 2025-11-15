@@ -21,7 +21,7 @@ import multer from "multer";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { existsSync } from "fs";
-import { SEO_LANDING_PAGES } from "../client/src/data/seoLandingPages";
+import { SEO_LANDING_PAGES } from "@shared/seo";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -48,19 +48,15 @@ Sitemap: https://dallasbeautybook.com/sitemap.xml`);
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://dallasbeautybook.com/sitemap-categories.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://dallasbeautybook.com/sitemap-cities.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://dallasbeautybook.com/sitemap-businesses.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://dallasbeautybook.com/sitemap-community.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
   </sitemap>
 </sitemapindex>`);
   });
@@ -73,7 +69,6 @@ Sitemap: https://dallasbeautybook.com/sitemap.xml`);
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${categoryPages.map(page => `  <url>
     <loc>https://dallasbeautybook.com/${page.slug}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`).join('\n')}
@@ -88,7 +83,6 @@ ${categoryPages.map(page => `  <url>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${cityPages.map(page => `  <url>
     <loc>https://dallasbeautybook.com/${page.slug}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`).join('\n')}
@@ -104,7 +98,6 @@ ${cityPages.map(page => `  <url>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${businesses.map(business => `  <url>
     <loc>https://dallasbeautybook.com/business/${business.id}</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>`).join('\n')}
@@ -118,7 +111,8 @@ ${businesses.map(business => `  <url>
     try {
       const posts = await storage.getAllForumPosts();
       const recentPosts = posts
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .filter(post => post.createdAt !== null)
+        .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime())
         .slice(0, 500);
       
       res.type('application/xml');
@@ -126,25 +120,21 @@ ${businesses.map(business => `  <url>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dallasbeautybook.com/</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://dallasbeautybook.com/explore</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://dallasbeautybook.com/forum</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
 ${recentPosts.map(post => `  <url>
     <loc>https://dallasbeautybook.com/forum/${post.id}</loc>
-    <lastmod>${new Date(post.createdAt).toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>`).join('\n')}
