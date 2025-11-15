@@ -43,9 +43,6 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
-        {/* Featured Business Hero Carousel */}
-        <FeaturedHeroCarousel />
-
         {/* Categories Section */}
         <section className="py-8 md:py-10" data-testid="section-categories">
           <div className="container mx-auto px-4">
@@ -78,6 +75,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Featured Business Hero Carousel */}
+        <FeaturedHeroCarousel />
 
         {/* Discover Featured Businesses */}
         <section className="py-8 md:py-10" data-testid="section-featured-businesses">
