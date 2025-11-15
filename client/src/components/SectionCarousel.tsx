@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 
 type SectionCard = {
   id: string;
@@ -26,7 +27,7 @@ const SECTIONS: SectionCard[] = [
       "Ask questions, share tips, and get real recommendations from locals and professionals.",
     ctaLabel: "Visit Community",
     href: "/forum",
-    gradient: "linear-gradient(135deg, #1ABDA6, #B3FFF7)",
+    gradient: "linear-gradient(135deg, #102646, #1ABDA6)",
   },
   {
     id: "owners",
@@ -64,11 +65,11 @@ export function SectionCarousel() {
             const offset = index - activeIndex;
 
             return (
-              <button
+              <article
                 key={section.id}
-                onClick={() => setActiveId(section.id)}
                 data-testid={`carousel-card-${section.id}`}
-                className="absolute inset-0 max-w-xl rounded-[30px] p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out hover:scale-[1.02]"
+                onClick={() => setActiveId(section.id)}
+                className="absolute inset-0 max-w-xl rounded-[30px] p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer"
                 style={{
                   backgroundImage: section.gradient,
                   transform: `
@@ -79,7 +80,16 @@ export function SectionCarousel() {
                   `,
                   opacity: isActive ? 1 : 0.8 - Math.abs(offset) * 0.1,
                   zIndex: 20 - Math.abs(offset),
-                  pointerEvents: isActive ? 'auto' : 'all',
+                  pointerEvents: 'all',
+                }}
+                tabIndex={isActive ? 0 : -1}
+                role="button"
+                aria-label={`View ${section.title}`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveId(section.id);
+                  }
                 }}
               >
                 <h2 
@@ -95,19 +105,16 @@ export function SectionCarousel() {
                   {section.subtitle}
                 </p>
 
-                <button
-                  type="button"
+                <Link 
+                  href={section.href}
                   data-testid={`carousel-cta-${section.id}`}
-                  className="inline-flex mt-6 rounded-full bg-white/95 text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all"
+                  className="inline-flex mt-6 rounded-full bg-white/95 text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all min-h-[44px] min-w-[44px] items-center"
                   style={{ fontFamily: 'var(--font-ui)' }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.location.href = section.href;
-                  }}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {section.ctaLabel} ↗
-                </button>
-              </button>
+                </Link>
+              </article>
             );
           })}
         </div>
@@ -127,19 +134,27 @@ export function SectionCarousel() {
             and reviews to the marketplace and community Q&A.
           </p>
           
-          <div className="mt-8 flex gap-2">
+          <div className="mt-8 flex gap-3">
             {SECTIONS.map((section) => (
               <button
                 key={section.id}
                 onClick={() => setActiveId(section.id)}
                 data-testid={`carousel-dot-${section.id}`}
-                className={`h-2 rounded-full transition-all ${
+                className={`min-h-[44px] min-w-[44px] rounded-full transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 ${
                   section.id === activeId 
-                    ? 'w-8 bg-primary' 
-                    : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                    ? 'bg-primary' 
+                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
                 }`}
                 aria-label={`View ${section.title}`}
-              />
+                aria-pressed={section.id === activeId}
+              >
+                <span 
+                  className={`h-3 rounded-full transition-all ${
+                    section.id === activeId ? 'w-6 bg-white' : 'w-3 bg-white/60'
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
             ))}
           </div>
         </div>
