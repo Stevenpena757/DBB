@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { SectionCarousel } from "@/components/SectionCarousel";
+import { FeaturedHeroCarousel } from "@/components/FeaturedHeroCarousel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -43,8 +43,8 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
-        {/* Stacked Carousel Hero */}
-        <SectionCarousel />
+        {/* Featured Business Hero Carousel */}
+        <FeaturedHeroCarousel />
 
         {/* Categories Section */}
         <section className="py-8 md:py-10" data-testid="section-categories">

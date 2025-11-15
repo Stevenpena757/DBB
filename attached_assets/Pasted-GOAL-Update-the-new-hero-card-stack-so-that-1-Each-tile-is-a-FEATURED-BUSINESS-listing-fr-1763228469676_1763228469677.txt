@@ -1,0 +1,214 @@
+GOAL
+----
+Update the new hero card stack so that:
+1) Each tile is a FEATURED BUSINESS listing (from the database).
+2) The active tile auto-advances every 3 seconds.
+3) Users can still click dots/cards to jump manually.
+
+IMPLEMENTATION PLAN
+-------------------
+
+1) Create a dedicated hero component for featured businesses:
+
+File: src/components/FeaturedHeroCarousel.tsx
+
+Use React + TypeScript + TanStack Query.
+
+Behavior:
+- Fetch 3–5 featured businesses.
+- Map them into hero cards.
+- Auto rotate every 3000ms.
+- Pausing auto-rotate for ~8–10s after a manual interaction is a nice-to-have.
+
+Example implementation (adjust imports/paths as needed):
+
+--------------------------------------------------
+BEGIN FILE: src/components/FeaturedHeroCarousel.tsx
+--------------------------------------------------
+import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+type FeaturedBusiness = {
+  id: string;
+  name: string;
+  shortDescription?: string;
+  category?: string;
+  city?: string;
+  heroImageUrl?: string;
+  slug?: string;
+};
+
+async function fetchFeaturedBusinesses(): Promise<FeaturedBusiness[]> {
+  const res = await fetch("/api/businesses?featured=true&limit=5");
+  if (!res.ok) throw new Error("Failed to load featured businesses");
+  const data = await res.json();
+  // If API returns more fields, map them here; keep only what we need.
+  return data.businesses ?? data;
+}
+
+export const FeaturedHeroCarousel: React.FC = () => {
+  const { data: businesses = [], isLoading } = useQuery({
+    queryKey: ["featuredBusinesses"],
+    queryFn: fetchFeaturedBusinesses,
+  });
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+
+  // Auto-advance every 3 seconds
+  useEffect(() => {
+    if (businesses.length === 0) return;
+    if (isUserInteracting) return;
+
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % businesses.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [businesses.length, isUserInteracting]);
+
+  // When user clicks card or dot, move immediately and pause auto-rotate for 8s
+  const goTo = (index: number) => {
+    setActiveIndex(index);
+    setIsUserInteracting(true);
+    window.setTimeout(() => setIsUserInteracting(false), 8000);
+  };
+
+  if (isLoading || businesses.length === 0) {
+    return null; // or a simple skeleton
+  }
+
+  return (
+    <section className="relative flex items-center justify-center bg-[#FFF1ED] px-4 pt-10 pb-16">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-10 lg:flex-row">
+        {/* LEFT: STACKED FEATURED CARDS */}
+        <div className="relative flex-1 h-[360px] md:h-[400px] flex items-center justify-center">
+          {businesses.map((biz, index) => {
+            const isActive = index === activeIndex;
+            const offset = index - activeIndex;
+
+            const translateX = isActive ? 0 : offset * 26;
+            const translateY = isActive ? 0 : offset * 20;
+            const scale = isActive ? 1 : 0.92 - Math.abs(offset) * 0.03;
+            const opacity = isActive ? 1 : 0.78 - Math.abs(offset) * 0.1;
+            const rotate = isActive ? 0 : offset * 2;
+
+            return (
+              <button
+                key={biz.id}
+                type="button"
+                onClick={() => goTo(index)}
+                className="absolute inset-0 max-w-xl rounded-[30px] p-8 text-left text-white shadow-2xl transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-white/70"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(135deg,#FD3A84 0%,#FF7E5F 50%,#2EDFD0 100%)",
+                  transform: `translateX(${translateX}px) translateY(${translateY}px) scale(${scale}) rotate(${rotate}deg)`,
+                  opacity,
+                  zIndex: 30 - Math.abs(offset),
+                }}
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
+                  Featured Listing
+                </p>
+                <h2 className="mt-2 text-3xl font-extrabold md:text-4xl">
+                  {biz.name}
+                </h2>
+                {biz.shortDescription && (
+                  <p className="mt-3 text-sm md:text-base text-white/90 line-clamp-3">
+                    {biz.shortDescription}
+                  </p>
+                )}
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/90">
+                  {biz.category && (
+                    <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">
+                      {biz.category}
+                    </span>
+                  )}
+                  {biz.city && (
+                    <span className="rounded-full bg-black/20 px-3 py-1 backdrop-blur">
+                      {biz.city}
+                    </span>
+                  )}
+                </div>
+
+                <a
+                  href={biz.slug ? `/business/${biz.slug}` : `/businesses/${biz.id}`}
+                  className="mt-6 inline-flex items-center justify-center rounded-full bg-white/90 px-5 py-2.5 text-sm font-semibold text-[#102646] shadow-lg shadow-black/15 transition hover:bg-white"
+                >
+                  View Profile
+                  <span className="ml-2 text-xs">↗</span>
+                </a>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* RIGHT: STATIC COPY + DOT CONTROLS */}
+        <div className="flex-1 max-w-md text-center lg:text-left">
+          <h1 className="text-3xl font-extrabold text-[#102646] md:text-4xl">
+            Standout beauty. Front and center.
+          </h1>
+          <p className="mt-4 text-sm md:text-base text-[#434960]">
+            These are live featured listings from across Dallas–Fort Worth. Every
+            few seconds, we spotlight another business so visitors discover more of
+            what DFW beauty has to offer.
+          </p>
+
+          <div className="mt-6 flex items-center justify-center gap-3 lg:justify-start">
+            {businesses.map((biz, index) => (
+              <button
+                key={biz.id}
+                type="button"
+                onClick={() => goTo(index)}
+                className={`h-3 w-3 rounded-full transition ${
+                  index === activeIndex
+                    ? "bg-[#FF7E5F]"
+                    : "bg-[#D5D1CF] hover:bg-[#FFB39A]"
+                }`}
+                aria-label={`Show featured business ${biz.name}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+--------------------------------------------------
+END FILE
+--------------------------------------------------
+
+2) Mount the new component on the homepage:
+
+- In the main homepage file (e.g. src/pages/HomePage.tsx or src/App.tsx),
+  import and render <FeaturedHeroCarousel /> in place of the current hero
+  stack/card section.
+
+Example:
+
+import { FeaturedHeroCarousel } from "@/components/FeaturedHeroCarousel";
+
+export default function HomePage() {
+  return (
+    <>
+      <FeaturedHeroCarousel />
+      {/* rest of homepage */}
+    </>
+  );
+}
+
+3) Ensure the /api/businesses?featured=true&limit=5 backend works.
+
+If this query param is not yet supported:
+- Update the Express handler for GET /api/businesses to accept a
+  "featured=true" query param and filter businesses where `featured` (or
+  `isFeatured`) is true, limiting to 5.
+
+4) Acceptance criteria:
+
+- Hero tiles show REAL featured businesses (not hard-coded dummy text).
+- Tiles auto-advance every 3 seconds.
+- Clicking a tile or a dot immediately selects that business and temporarily
+  pauses the auto-rotation.
+- The layout matches current hero styling (rounded cards, gradient, etc.).
+- No console errors.
