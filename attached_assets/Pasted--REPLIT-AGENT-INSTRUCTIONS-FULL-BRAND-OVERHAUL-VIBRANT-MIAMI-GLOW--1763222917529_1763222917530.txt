@@ -1,0 +1,226 @@
+
+REPLIT AGENT INSTRUCTIONS — FULL BRAND OVERHAUL (VIBRANT MIAMI GLOW)
+====================================================================
+
+APPLY THIS BRAND IDENTITY ACROSS THE ENTIRE SITE.
+
+====================================================
+STEP 1 — CREATE/UPDATE GLOBAL BRAND TOKENS (tokens.css)
+====================================================
+
+Create or update: src/styles/tokens.css
+
+----------------------------------------------------
+COLOR SYSTEM — VIBRANT MIAMI GLOW
+----------------------------------------------------
+:root {
+  --color-bg: #FFF1ED;             /* Peach Mist */
+  --color-primary: #FF7E5F;        /* Vibrant Peach */
+  --color-secondary: #FD3A84;      /* Sunset Pink */
+  --color-accent: #2EDFD0;         /* Mint Aqua */
+  --color-navy: #102646;           /* Ocean Navy */
+  --color-text: #1F2433;           /* Primary text */
+  --color-white: #FFFFFF;
+  --color-shadow: rgba(16, 38, 70, 0.15);
+
+  --gradient-sunset: linear-gradient(135deg, #FD3A84 0%, #FF7E5F 100%);
+  --gradient-mint: linear-gradient(135deg, #2EDFD0 0%, #B3FFF7 100%);
+  --gradient-sunset-overlay: radial-gradient(circle at top, rgba(253,58,132,0.55), transparent 60%);
+
+  --radius-card: 18px;
+  --radius-pill: 999px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Hind Madurai', sans-serif;
+}
+
+----------------------------------------------------
+BUTTONS
+----------------------------------------------------
+.btn-primary {
+  background: var(--gradient-sunset);
+  color: var(--color-white);
+  border-radius: var(--radius-pill);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px var(--color-shadow);
+  border: none;
+  transition: transform 140ms ease-out, box-shadow 140ms ease-out, filter 140ms ease-out;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 40px var(--color-shadow);
+}
+
+.btn-secondary {
+  background: var(--color-white);
+  color: var(--color-navy);
+  border-radius: var(--radius-pill);
+  padding: 0.7rem 1.4rem;
+  font-weight: 600;
+  border: 1px solid rgba(16, 38, 70, 0.12);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+  transition: all 140ms ease-out;
+}
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+----------------------------------------------------
+CARDS
+----------------------------------------------------
+.card {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.06);
+  border: none;
+}
+
+----------------------------------------------------
+CHIPS / FILTER TAGS
+----------------------------------------------------
+.chip {
+  border-radius: var(--radius-pill);
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(16, 38, 70, 0.03);
+  color: var(--color-navy);
+  border: 1px solid rgba(16, 38, 70, 0.04);
+}
+.chip--active {
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+====================================================
+STEP 2 — FONTS (GOOGLE FONTS)
+====================================================
+
+Load these fonts:
+
+- Montserrat (Bold, ExtraBold) — for headings  
+- Hind Madurai (Regular, Medium) — for body  
+- Poppins (Medium) — for UI labels  
+
+Add to global CSS or index.html:
+
+@import url('https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@400;500;600&family=Montserrat:wght@600;700;800&family=Poppins:wght@500;600&display=swap');
+
+:root {
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Hind Madurai', sans-serif;
+  --font-ui: 'Poppins', sans-serif;
+}
+
+h1,h2,h3 {
+  font-family: var(--font-heading);
+}
+body,p {
+  font-family: var(--font-body);
+}
+.ui-label, .chip, .badge {
+  font-family: var(--font-ui);
+}
+
+====================================================
+STEP 3 — APPLY BRANDING TO HOMEPAGE
+====================================================
+
+HOMEPAGE HERO:
+- Background: var(--gradient-sunset) + var(--gradient-sunset-overlay)
+- Headline: Montserrat ExtraBold, white or near-white
+- Subheadline: Hind Madurai
+- Primary CTA: .btn-primary
+- Secondary CTA: .btn-secondary
+- Add glowing abstract gradient shapes (Sunset + Mint)
+
+CATEGORIES:
+- Use .chip components
+- Active chip: .chip--active
+
+====================================================
+STEP 4 — APPLY BRANDING TO EXPLORE PAGE
+====================================================
+
+- Background: Peach Mist (var(--color-bg))
+- Filters: .chip
+- Cards: .card with strong drop shadow
+- Titles: Montserrat Bold
+
+====================================================
+STEP 5 — BUSINESS PAGE
+====================================================
+
+- Main card: .card
+- Business name: Montserrat ExtraBold
+- Buttons: .btn-primary + .btn-secondary
+- Chips for categories: .chip
+
+====================================================
+STEP 6 — TAILWIND/SHADCN MAPPING
+====================================================
+
+Map Tailwind theme:
+
+primary: #FF7E5F  
+secondary: #FD3A84  
+accent: #2EDFD0  
+background: #FFF1ED  
+foreground: #1F2433  
+muted: #FFE0D6  
+
+Fonts:
+sans → Hind Madurai  
+headings → Montserrat  
+ui → Poppins  
+
+Update shadcn components (Button, Card, Badge, Tabs) to match these colors & radii.
+
+====================================================
+STEP 7 — REMOVE OLD BRAND COLORS & FONTS
+====================================================
+
+Remove:
+- Copper palette  
+- Earth tones  
+- Muted browns  
+- Dusty pinks  
+- Outdated serif fonts  
+- All old color hex values  
+
+====================================================
+STEP 8 — MICRO INTERACTION UPGRADE
+====================================================
+
+Add:
+- Card hover lift
+- Button brightness pop on hover
+- Focus outlines using Mint Aqua (#2EDFD0)
+- Gradient blobs on hero sections
+
+====================================================
+STEP 9 — FINAL QA
+====================================================
+
+CONFIRM:
+- No old colors/fonts remain
+- Homepage now vibrant and bold
+- Explore cards use new palette
+- Business detail uses new buttons/typography
+- Brand looks Miami, modern, energetic, exciting
+
+====================================================
+OUTPUT REQUIRED FROM AGENT
+====================================================
+
+Provide:
+- List of files changed
+- Summary of applied brand updates
+- 3 screenshots: Homepage, Explore, Business Page
+- Confirmation full brand conversion is complete
