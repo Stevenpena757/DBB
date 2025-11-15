@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /dbb-management-x7k
+Disallow: /api/
+Disallow: /dashboard
+
+Sitemap: https://dallasbeautybook.com/sitemap.xml

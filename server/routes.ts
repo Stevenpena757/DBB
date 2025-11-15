@@ -29,6 +29,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/health", (_req, res) => {
     res.status(200).json({ status: "ok", service: "Dallas Beauty Book API" });
   });
+
+  // ============ ROBOTS.TXT ============
+  app.get("/robots.txt", (_req, res) => {
+    res.type('text/plain');
+    res.send(`User-agent: *
+Allow: /
+Disallow: /dbb-management-x7k
+Disallow: /api/
+Disallow: /dashboard
+
+Sitemap: https://dallasbeautybook.com/sitemap.xml`);
+  });
   
   // ============ AUTHENTICATION SETUP ============
   await setupAuth(app);
@@ -953,6 +965,148 @@ ${urls}
       }
       console.error("Error creating abuse report:", error);
       res.status(500).json({ message: "Failed to create abuse report" });
+    }
+  });
+
+  // ============ SEO SITEMAPS ============
+  app.get("/sitemap.xml", async (_req, res) => {
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-businesses.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-cities.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-categories.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-community.xml</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+  </sitemap>
+</sitemapindex>`;
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+  });
+
+  app.get("/sitemap-businesses.xml", async (_req, res) => {
+    try {
+      const businesses = await storage.getAllBusinesses();
+      const urls = businesses.map(b => `  <url>
+    <loc>https://dallasbeautybook.com/business/${b.id}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('\n');
+      
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://dallasbeautybook.com/</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+${urls}
+</urlset>`;
+      res.header('Content-Type', 'application/xml');
+      res.send(sitemap);
+    } catch (error) {
+      console.error("Error generating businesses sitemap:", error);
+      res.status(500).send("Error generating sitemap");
+    }
+  });
+
+  app.get("/sitemap-cities.xml", async (_req, res) => {
+    const cities = ['Dallas', 'Plano', 'Frisco', 'Fort Worth', 'Arlington', 'Irving', 'McKinney', 'Allen'];
+    const urls = cities.map(city => `  <url>
+    <loc>https://dallasbeautybook.com/best-beauty-${city.toLowerCase()}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n');
+    
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+  });
+
+  app.get("/sitemap-categories.xml", async (_req, res) => {
+    const landingPages = [
+      'best-med-spas-dallas', 'best-med-spas-plano', 'best-med-spas-frisco', 'best-med-spas-fort-worth',
+      'best-med-spas-arlington', 'best-med-spas-irving', 'best-med-spas-mckinney', 'best-med-spas-allen',
+      'best-botox-clinics-dallas', 'best-botox-clinics-plano', 'best-botox-clinics-frisco', 'best-botox-clinics-fort-worth',
+      'best-lip-filler-specialists-dallas', 'best-lip-filler-specialists-plano', 'best-lip-filler-specialists-frisco',
+      'best-lash-extensions-dallas', 'best-lash-extensions-plano', 'best-lash-extensions-frisco', 'best-lash-extensions-arlington',
+      'best-lash-lifts-dallas', 'best-facial-treatments-dallas', 'best-facial-treatments-plano', 'best-facial-treatments-frisco',
+      'best-microneedling-dallas', 'best-chemical-peels-dallas', 'best-acne-facials-dallas',
+      'best-laser-hair-removal-dallas', 'best-laser-hair-removal-plano', 'best-laser-hair-removal-frisco', 'best-brazilian-laser-dallas',
+      'best-nail-salons-dallas', 'best-nail-salons-plano', 'best-nail-salons-frisco', 'best-mani-pedi-dallas',
+      'best-brow-lamination-dallas', 'best-brow-threading-dallas',
+      'best-teeth-whitening-dallas', 'best-cosmetic-dentists-dallas', 'best-veneers-dallas',
+      'top-beauty-aesthetics-dallas', 'best-aesthetic-clinics-dallas', 'best-wellness-beauty-centers-dallas',
+      'best-womens-beauty-services-dallas', 'best-mens-grooming-aesthetics-dallas',
+      'best-non-surgical-lifts-dallas', 'best-anti-aging-treatments-dallas', 'best-skin-tightening-dallas',
+      'best-ethnic-skincare-dallas', 'best-korean-skincare-facials-dallas', 'best-iv-vitamin-therapy-dallas'
+    ];
+    
+    const urls = landingPages.map(slug => `  <url>
+    <loc>https://dallasbeautybook.com/${slug}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>`).join('\n');
+    
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+  });
+
+  app.get("/sitemap-community.xml", async (_req, res) => {
+    try {
+      const posts = await storage.getAllPosts();
+      const forumPosts = await storage.getAllForumPosts();
+      
+      const postUrls = posts.slice(0, 100).map(p => `  <url>
+    <loc>https://dallasbeautybook.com/post/${p.id}</loc>
+    <lastmod>${new Date(p.createdAt).toISOString()}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>`).join('\n');
+      
+      const forumUrls = forumPosts.slice(0, 100).map(f => `  <url>
+    <loc>https://dallasbeautybook.com/forum/${f.id}</loc>
+    <lastmod>${new Date(f.createdAt).toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>`).join('\n');
+      
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://dallasbeautybook.com/forum</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+${postUrls}
+${forumUrls}
+</urlset>`;
+      res.header('Content-Type', 'application/xml');
+      res.send(sitemap);
+    } catch (error) {
+      console.error("Error generating community sitemap:", error);
+      res.status(500).send("Error generating sitemap");
     }
   });
 

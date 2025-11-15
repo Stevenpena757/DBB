@@ -133,3 +133,53 @@ export function QAPageJsonLd({
 
   return null;
 }
+
+interface ItemListItem {
+  name: string;
+  url?: string;
+  description?: string;
+  position: number;
+}
+
+interface ItemListJsonLdProps {
+  items: ItemListItem[];
+  listName: string;
+}
+
+export function ItemListJsonLd({ items, listName }: ItemListJsonLdProps) {
+  useEffect(() => {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": listName,
+      "itemListElement": items.map(item => ({
+        "@type": "ListItem",
+        "position": item.position,
+        "name": item.name,
+        ...(item.url && { "url": item.url }),
+        ...(item.description && { "description": item.description })
+      }))
+    };
+
+    const scriptId = 'json-ld-item-list';
+    let script = document.getElementById(scriptId) as HTMLScriptElement;
+    
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    
+    script.textContent = JSON.stringify(schema);
+
+    return () => {
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [items, listName]);
+
+  return null;
+}

@@ -18,6 +18,8 @@ import Forum from "@/pages/Forum";
 import ForumPost from "@/pages/ForumPost";
 import ClaimListing from "@/pages/ClaimListing";
 import AddListing from "@/pages/AddListing";
+import { LandingPage } from "@/pages/LandingPage";
+import { SEO_LANDING_PAGES } from "@/data/seoLandingPages";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -37,6 +39,15 @@ function Router() {
       <Route path="/claim-listing" component={ClaimListing} />
       <Route path="/add-listing" component={AddListing} />
       <Route path="/business/:id" component={BusinessProfile} />
+      
+      {SEO_LANDING_PAGES.map(landing => (
+        <Route 
+          key={landing.slug} 
+          path={`/${landing.slug}`} 
+          component={() => <LandingPage landing={landing} />} 
+        />
+      ))}
+      
       <Route component={NotFound} />
     </Switch>
   );

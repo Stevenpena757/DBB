@@ -1,2 +1,2 @@
 export { SeoHead } from './SeoHead';
-export { LocalBusinessJsonLd, QAPageJsonLd } from './JsonLd';
+export { LocalBusinessJsonLd, QAPageJsonLd, ItemListJsonLd } from './JsonLd';
