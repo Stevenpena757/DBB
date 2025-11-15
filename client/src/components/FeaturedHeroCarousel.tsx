@@ -172,7 +172,7 @@ export function FeaturedHeroCarousel() {
             className="text-4xl md:text-5xl font-extrabold text-navy leading-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Every corner of Dallas beauty.
+            Beauty Starts Here — Discover, Review, Engage with Dallas.
           </h1>
           <p 
             className="mt-6 text-lg text-muted-foreground leading-relaxed"
