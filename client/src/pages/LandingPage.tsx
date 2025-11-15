@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { SeoHead, ItemListJsonLd } from '@/components/seo';
+import { SeoHead, ItemListJsonLd, BreadcrumbListJsonLd } from '@/components/seo';
 import { BusinessCard } from '@/components/BusinessCard';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
@@ -53,6 +53,12 @@ export function LandingPage({ landing }: LandingPageProps) {
     ? SEO_LANDING_PAGES.filter(p => p.city === landing.city && p.category !== landing.category).slice(0, 4)
     : [];
 
+  const breadcrumbItems = [
+    { name: 'Home', url: 'https://dallasbeautybook.com/', position: 1 },
+    ...(landing.city ? [{ name: landing.city, url: `https://dallasbeautybook.com/explore?city=${landing.city}`, position: 2 }] : []),
+    { name: landing.category || 'All Services', url: `https://dallasbeautybook.com/${landing.slug}`, position: landing.city ? 3 : 2 }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#FFF9F5] to-white">
       <SeoHead
@@ -63,6 +69,7 @@ export function LandingPage({ landing }: LandingPageProps) {
       />
       
       <ItemListJsonLd items={itemListData} listName={landing.title} />
+      <BreadcrumbListJsonLd items={breadcrumbItems} />
 
       <div className="container mx-auto px-4 py-12 max-w-7xl">
         <div className="mb-8">

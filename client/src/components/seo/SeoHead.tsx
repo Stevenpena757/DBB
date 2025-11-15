@@ -45,6 +45,14 @@ export function SeoHead({
     
     if (url) {
       updateMeta('og:url', url, true);
+      
+      let linkElement = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+      if (!linkElement) {
+        linkElement = document.createElement('link');
+        linkElement.setAttribute('rel', 'canonical');
+        document.head.appendChild(linkElement);
+      }
+      linkElement.setAttribute('href', url);
     }
     
     if (image) {

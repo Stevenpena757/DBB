@@ -183,3 +183,49 @@ export function ItemListJsonLd({ items, listName }: ItemListJsonLdProps) {
 
   return null;
 }
+
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+  position: number;
+}
+
+interface BreadcrumbListJsonLdProps {
+  items: BreadcrumbItem[];
+}
+
+export function BreadcrumbListJsonLd({ items }: BreadcrumbListJsonLdProps) {
+  useEffect(() => {
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": items.map(item => ({
+        "@type": "ListItem",
+        "position": item.position,
+        "name": item.name,
+        "item": item.url
+      }))
+    };
+
+    const scriptId = 'json-ld-breadcrumb';
+    let script = document.getElementById(scriptId) as HTMLScriptElement;
+    
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
+    }
+    
+    script.textContent = JSON.stringify(schema);
+
+    return () => {
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, [items]);
+
+  return null;
+}
