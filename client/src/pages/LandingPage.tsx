@@ -34,8 +34,6 @@ export function LandingPage() {
 
   const rankedBusinesses = filteredBusinesses.slice(0, 20);
 
-  const metaDescription = `Discover the ${landing.title.toLowerCase()} - curated list of top-rated health, beauty, and aesthetics businesses. Reviews, photos, and contact info.`;
-
   useEffect(() => {
     if (rankedBusinesses.length > 0) {
       const itemListData = rankedBusinesses.map((b, idx) => ({
@@ -84,7 +82,8 @@ export function LandingPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#FFF9F5] to-white">
       <SeoHead
         title={`${landing.title} | Dallas Beauty Book`}
-        description={metaDescription}
+        description={landing.metaDescription}
+        image={landing.ogImage}
         url={`https://dallasbeautybook.com/${landing.slug}`}
         type="website"
       />
