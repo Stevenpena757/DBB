@@ -1,65 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
 @import './styles/tokens.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Soft Copper Radiance 2.0 - Elegant, Warm Beauty Aesthetic */
+/* Modern Botanical Jewel - Elegant, Refined Beauty Aesthetic */
 :root {
-  --button-outline: rgba(61,43,31, .10);
-  --badge-outline: rgba(61,43,31, .05);
+  --button-outline: rgba(42,93,78, .10);
+  --badge-outline: rgba(42,93,78, .05);
   --opaque-button-border-intensity: -8;
-  --elevate-1: rgba(223,165,138, .08);
-  --elevate-2: rgba(223,165,138, .15);
-  --background: 30 100% 98%;
-  --foreground: 24 33% 18%;
-  --border: 34 56% 90%;
+  --elevate-1: rgba(42,93,78, .08);
+  --elevate-2: rgba(42,93,78, .15);
+  --background: 22 38% 94%;
+  --foreground: 210 20% 18%;
+  --border: 22 25% 88%;
   --card: 0 0% 100%;
-  --card-foreground: 24 33% 18%;
-  --card-border: 34 56% 90%;
-  --sidebar: 30 100% 98%;
-  --sidebar-foreground: 24 33% 18%;
-  --sidebar-border: 34 56% 90%;
-  --sidebar-primary: 20 57% 72%;
+  --card-foreground: 210 20% 18%;
+  --card-border: 22 20% 92%;
+  --sidebar: 22 38% 94%;
+  --sidebar-foreground: 210 20% 18%;
+  --sidebar-border: 22 25% 88%;
+  --sidebar-primary: 164 37% 26%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 20 50% 82%;
-  --sidebar-accent-foreground: 24 33% 18%;
-  --sidebar-ring: 20 57% 72%;
+  --sidebar-accent: 347 25% 72%;
+  --sidebar-accent-foreground: 210 20% 18%;
+  --sidebar-ring: 164 37% 26%;
   --popover: 0 0% 100%;
-  --popover-foreground: 24 33% 18%;
-  --popover-border: 34 56% 90%;
-  --primary: 20 57% 72%;
+  --popover-foreground: 210 20% 18%;
+  --popover-border: 22 25% 88%;
+  --primary: 164 37% 26%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 20 50% 82%;
-  --secondary-foreground: 24 33% 18%;
-  --muted: 34 56% 90%;
-  --muted-foreground: 26 23% 64%;
-  --accent: 42 81% 72%;
-  --accent-foreground: 24 33% 18%;
+  --secondary: 347 25% 72%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 22 25% 88%;
+  --muted-foreground: 210 13% 50%;
+  --accent: 24 41% 84%;
+  --accent-foreground: 210 20% 18%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --input: 34 56% 85%;
-  --ring: 20 57% 72%;
-  --chart-1: 20 57% 72%;
-  --chart-2: 20 50% 82%;
-  --chart-3: 42 81% 72%;
-  --chart-4: 34 56% 90%;
-  --chart-5: 26 23% 64%;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-accent: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --input: 22 25% 88%;
+  --ring: 164 37% 26%;
+  --chart-1: 164 37% 26%;
+  --chart-2: 347 25% 72%;
+  --chart-3: 24 41% 84%;
+  --chart-4: 22 25% 88%;
+  --chart-5: 210 13% 50%;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Source Sans Pro', sans-serif;
+  --font-ui: 'Work Sans', sans-serif;
+  --font-sans: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: 'Montserrat', Georgia, serif;
   --font-mono: Menlo, monospace;
   --radius: .5rem;
-  --shadow-2xs: 0px 1px 2px 0px rgba(61, 43, 31, 0.08);
-  --shadow-xs: 0px 1px 3px 0px rgba(61, 43, 31, 0.08);
-  --shadow-sm: 0px 2px 4px 0px rgba(61, 43, 31, 0.08);
-  --shadow: 0px 4px 6px -1px rgba(61, 43, 31, 0.08);
-  --shadow-md: 0px 6px 12px -2px rgba(61, 43, 31, 0.08);
-  --shadow-lg: 0px 10px 20px -4px rgba(61, 43, 31, 0.08);
-  --shadow-xl: 0px 20px 25px -5px rgba(61, 43, 31, 0.08);
-  --shadow-2xl: 0px 25px 50px -12px rgba(61, 43, 31, 0.08);
+  --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+  --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0px 2px 4px 0px rgba(0, 0, 0, 0.06);
+  --shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0px 6px 12px -2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0px 10px 20px -4px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0px 20px 25px -5px rgba(0, 0, 0, 0.06);
+  --shadow-2xl: 0px 25px 50px -12px rgba(0, 0, 0, 0.06);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 
@@ -96,42 +96,42 @@
   --button-outline: rgba(255,255,255, .10);
   --badge-outline: rgba(255,255,255, .05);
   --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(223,165,138, .12);
-  --elevate-2: rgba(223,165,138, .20);
-  --background: 24 33% 12%;
-  --foreground: 30 100% 98%;
-  --border: 34 20% 25%;
-  --card: 24 25% 16%;
-  --card-foreground: 30 100% 98%;
-  --card-border: 34 20% 22%;
-  --sidebar: 24 30% 14%;
-  --sidebar-foreground: 30 100% 98%;
-  --sidebar-border: 34 20% 20%;
-  --sidebar-primary: 20 57% 72%;
+  --elevate-1: rgba(42,93,78, .12);
+  --elevate-2: rgba(42,93,78, .20);
+  --background: 210 20% 12%;
+  --foreground: 22 38% 94%;
+  --border: 210 15% 25%;
+  --card: 210 18% 16%;
+  --card-foreground: 22 38% 94%;
+  --card-border: 210 15% 22%;
+  --sidebar: 210 20% 14%;
+  --sidebar-foreground: 22 38% 94%;
+  --sidebar-border: 210 15% 20%;
+  --sidebar-primary: 164 37% 35%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 24 25% 20%;
-  --sidebar-accent-foreground: 30 100% 98%;
-  --sidebar-ring: 20 57% 72%;
-  --popover: 24 28% 18%;
-  --popover-foreground: 30 100% 98%;
-  --popover-border: 34 20% 25%;
-  --primary: 20 57% 72%;
+  --sidebar-accent: 210 18% 20%;
+  --sidebar-accent-foreground: 22 38% 94%;
+  --sidebar-ring: 164 37% 35%;
+  --popover: 210 20% 18%;
+  --popover-foreground: 22 38% 94%;
+  --popover-border: 210 15% 25%;
+  --primary: 164 37% 35%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 20 50% 82%;
-  --secondary-foreground: 24 33% 12%;
-  --muted: 34 20% 30%;
-  --muted-foreground: 26 23% 64%;
-  --accent: 42 81% 72%;
-  --accent-foreground: 24 33% 12%;
+  --secondary: 347 25% 65%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 210 15% 30%;
+  --muted-foreground: 210 13% 64%;
+  --accent: 24 35% 75%;
+  --accent-foreground: 210 20% 12%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --input: 34 20% 35%;
-  --ring: 20 57% 72%;
-  --chart-1: 20 57% 72%;
-  --chart-2: 20 50% 82%;
-  --chart-3: 42 81% 78%;
-  --chart-4: 34 56% 85%;
-  --chart-5: 26 23% 80%;
+  --input: 210 15% 35%;
+  --ring: 164 37% 35%;
+  --chart-1: 164 37% 35%;
+  --chart-2: 347 25% 65%;
+  --chart-3: 24 35% 75%;
+  --chart-4: 22 25% 85%;
+  --chart-5: 210 13% 80%;
   --shadow-2xs: 0px 2px 0px 0px hsl(24 33% 12% / 0.00);
   --shadow-xs: 0px 2px 0px 0px hsl(24 33% 12% / 0.00);
   --shadow-sm: 0px 2px 0px 0px hsl(24 33% 12% / 0.00), 0px 1px 2px -1px hsl(24 33% 12% / 0.00);
@@ -177,12 +177,20 @@
 
   body {
     @apply antialiased bg-background text-foreground;
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
+  h1, h2, h3, h4, h5, h6, .heading {
+    font-family: var(--font-heading);
     font-weight: 700;
+  }
+
+  p {
+    font-family: var(--font-body);
+  }
+
+  .ui-label, .chip, .nav-item {
+    font-family: var(--font-ui);
   }
 }
 
@@ -297,16 +305,25 @@
     inset: -1px;
   }
 
-  /* Glow effects for Copper Radiance */
+  /* Glow effects for Botanical Jewel */
   .glow-primary {
-    box-shadow: 0 0 20px rgba(214, 122, 89, 0.3);
+    box-shadow: 0 0 20px rgba(42, 93, 78, 0.3);
   }
 
   .glow-secondary {
-    box-shadow: 0 0 20px rgba(227, 162, 141, 0.3);
+    box-shadow: 0 0 20px rgba(201, 157, 165, 0.3);
   }
 
   .glow-accent {
-    box-shadow: 0 0 20px rgba(242, 201, 125, 0.3);
+    box-shadow: 0 0 20px rgba(232, 211, 198, 0.3);
+  }
+
+  /* Botanical gradients */
+  .gradient-botanical {
+    background: linear-gradient(120deg, #C99DA5 0%, #F4ECE9 100%);
+  }
+
+  .gradient-emerald-rose {
+    background: linear-gradient(135deg, #2A5D4E 0%, #C99DA5 80%);
   }
 }

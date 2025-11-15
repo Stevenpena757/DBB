@@ -1,0 +1,189 @@
+
+Replit Agent Instructions to Apply Modern Botanical Jewel Identity to DallasBeautyBook
+====================================================================
+
+STEP 1 — Apply Modern Botanical Jewel Brand System
+--------------------------------------------------
+
+1) Create or update global brand tokens file (src/styles/tokens.css):
+
+:root {
+  --color-bg: #F4ECE9;
+  --color-emerald: #2A5D4E;
+  --color-rose: #C99DA5;
+  --color-champagne: #E8D3C6;
+  --color-slate: #2B2D33;
+  --color-white: #FFFFFF;
+  --color-shadow: rgba(0,0,0,0.06);
+
+  --gradient-botanical: linear-gradient(120deg, #C99DA5 0%, #F4ECE9 100%);
+  --gradient-emerald-rose: linear-gradient(135deg, #2A5D4E 0%, #C99DA5 80%);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-slate);
+  font-family: 'Source Sans Pro', system-ui, sans-serif;
+}
+
+.btn-primary {
+  background: var(--color-emerald);
+  color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px var(--color-shadow);
+  transition: all 150ms ease-out;
+}
+.btn-primary:hover {
+  background: #367766;
+}
+
+.btn-secondary {
+  background: var(--color-rose);
+  color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px var(--color-shadow);
+}
+
+.card {
+  background: var(--color-white);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px var(--color-shadow);
+}
+
+
+STEP 2 — Fonts
+--------------
+
+Use Google Fonts:
+- Headings: Montserrat
+- Body: Source Sans Pro
+- UI / Labels: Work Sans
+
+Add the following to global CSS:
+
+:root {
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Source Sans Pro', sans-serif;
+  --font-ui: 'Work Sans', sans-serif;
+}
+
+h1, h2, h3, .heading {
+  font-family: var(--font-heading);
+}
+body, p {
+  font-family: var(--font-body);
+}
+.ui-label, .chip, .nav-item {
+  font-family: var(--font-ui);
+}
+
+
+STEP 3 — UI Component Styling Rules
+-----------------------------------
+
+Apply these UI rules across the site:
+
+- Cards:
+  - Rounded 18px
+  - Soft shadows
+  - Ivory/white backgrounds
+
+- Buttons:
+  - Primary uses Emerald
+  - Secondary uses Dusty Rose / Champagne
+  - Rounded 12px
+  - Soft drop shadows
+
+- Background:
+  - Use Blush Base (#F4ECE9)
+  - Avoid pure white for full-page backgrounds
+
+- Gradients:
+  - Use botanical gradients sparingly:
+    --gradient-botanical
+    --gradient-emerald-rose
+
+- Icons:
+  - Outline style
+  - Rounded corners
+  - Stroke 1.5px
+
+
+STEP 4 — Pages to Update (Full Visual Rework)
+---------------------------------------------
+
+1. Homepage
+2. Explore / Directory Page
+3. Business Detail Page
+4. Community Page
+
+Homepage Rules:
+- Hero uses botanical gradient
+- Montserrat for headings
+- Soft rose or champagne chips
+- Search bar: pill-shaped, soft shadow
+
+Explore Page:
+- Filters use Work Sans
+- Selected filter = Emerald pill
+
+Business Page:
+- Business hero card uses .card style
+- Action buttons use Emerald / Rose
+- Clean section layout with blush backgrounds
+
+
+STEP 5 — Tailwind + shadcn Integration
+--------------------------------------
+
+- Map Tailwind theme colors:
+  primary → #2A5D4E
+  secondary → #C99DA5
+  background → #F4ECE9
+  foreground → #2B2D33
+
+- Set Tailwind default sans font → Source Sans Pro
+- Configure headings to use Montserrat
+- Update shadcn Button, Card, Input, Badge, Tabs to use new theme colors
+
+
+STEP 6 — Remove Old Identity
+-----------------------------
+
+Remove all instances of:
+- Copper colors
+- Brown-heavy gradients
+- Old fonts (Cormorant, Outfit, DM Sans)
+- Deprecated custom shadows
+- Hardcoded hex values
+
+
+STEP 7 — Visual QA Checklist
+----------------------------
+
+Verify:
+- No old palette colors remain
+- All headings use Montserrat
+- Buttons are consistent in shape + color
+- Shadows are soft botanical shadows
+- Backgrounds feel blush, soft, modern
+- Spacing and proportions are consistent
+- All screens updated on mobile + desktop
+
+
+STEP 8 — Micro-Polish Enhancements
+----------------------------------
+
+- Add card hover lift (slight transform + shadow)
+- Add Emerald or Rose focus outlines
+- Section separators: soft botanical line or gradient
+- Tint icons with Emerald/Silver based on state
+
+
+OUTPUT REQUIRED FROM AGENT
+--------------------------
+
+When complete:
+- List of all files changed
+- Confirmation that no old colors/fonts remain
+- Screenshots of updated key pages (homepage, explore, business detail)
