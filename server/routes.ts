@@ -21,6 +21,7 @@ import multer from "multer";
 import { writeFile, mkdir } from "fs/promises";
 import { join } from "path";
 import { existsSync } from "fs";
+import { SEO_LANDING_PAGES } from "../client/src/data/seoLandingPages";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -36,10 +37,121 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.send(`User-agent: *
 Allow: /
 Disallow: /dbb-management-x7k
-Disallow: /api/
-Disallow: /dashboard
 
 Sitemap: https://dallasbeautybook.com/sitemap.xml`);
+  });
+
+  // ============ SITEMAPS ============
+  app.get("/sitemap.xml", (_req, res) => {
+    res.type('application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-categories.xml</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-cities.xml</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-businesses.xml</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://dallasbeautybook.com/sitemap-community.xml</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+  </sitemap>
+</sitemapindex>`);
+  });
+
+  app.get("/sitemap-categories.xml", (_req, res) => {
+    const categoryPages = SEO_LANDING_PAGES.filter(page => page.category);
+    
+    res.type('application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${categoryPages.map(page => `  <url>
+    <loc>https://dallasbeautybook.com/${page.slug}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('\n')}
+</urlset>`);
+  });
+
+  app.get("/sitemap-cities.xml", (_req, res) => {
+    const cityPages = SEO_LANDING_PAGES.filter(page => page.city);
+    
+    res.type('application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${cityPages.map(page => `  <url>
+    <loc>https://dallasbeautybook.com/${page.slug}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('\n')}
+</urlset>`);
+  });
+
+  app.get("/sitemap-businesses.xml", async (_req, res) => {
+    try {
+      const businesses = await storage.getAllBusinesses();
+      
+      res.type('application/xml');
+      res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${businesses.map(business => `  <url>
+    <loc>https://dallasbeautybook.com/business/${business.id}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>`).join('\n')}
+</urlset>`);
+    } catch (error) {
+      res.status(500).send('Error generating sitemap');
+    }
+  });
+
+  app.get("/sitemap-community.xml", async (_req, res) => {
+    try {
+      const posts = await storage.getAllForumPosts();
+      const recentPosts = posts
+        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+        .slice(0, 500);
+      
+      res.type('application/xml');
+      res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://dallasbeautybook.com/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://dallasbeautybook.com/explore</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://dallasbeautybook.com/forum</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
+  </url>
+${recentPosts.map(post => `  <url>
+    <loc>https://dallasbeautybook.com/forum/${post.id}</loc>
+    <lastmod>${new Date(post.createdAt).toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>`).join('\n')}
+</urlset>`);
+    } catch (error) {
+      res.status(500).send('Error generating sitemap');
+    }
   });
   
   // ============ AUTHENTICATION SETUP ============
