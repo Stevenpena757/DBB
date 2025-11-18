@@ -1,19 +1,27 @@
 import { useState } from "react";
+import { useLocation, Link } from "wouter";
 import { Input } from "@/components/ui/input";
-import { Search, Bell, MessageCircle, User, LogOut, ShieldCheck } from "lucide-react";
+import { Search, Bell, MessageCircle, User, LogOut, ShieldCheck, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { useAuth } from "@/hooks/useAuth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Header() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
+  const [, setLocation] = useLocation();
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-border shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-4">
-        <a href="/" className="flex items-center gap-2" data-testid="link-logo">
+        <Link href="/" className="flex items-center gap-2" data-testid="link-logo">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 bg-gradient-to-br from-sunset to-peach rounded-lg flex items-center justify-center shadow-md">
               <span className="text-white font-extrabold text-xl" style={{ fontFamily: 'var(--font-heading)' }}>D</span>
@@ -22,10 +30,10 @@ export function Header() {
               DallasBeautyBook
             </span>
           </div>
-        </a>
+        </Link>
 
         <div className="flex-1 max-w-2xl mx-4 hidden md:block">
-          <form onSubmit={(e) => { e.preventDefault(); if(searchQuery.trim()) window.location.href = `/explore?search=${encodeURIComponent(searchQuery)}`; }} className="relative">
+          <form onSubmit={(e) => { e.preventDefault(); if(searchQuery.trim()) setLocation(`/explore?search=${encodeURIComponent(searchQuery)}`); }} className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input 
               type="search"
@@ -46,29 +54,44 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a href="/forum" className="hidden lg:block">
+          <Link href="/explore" className="hidden lg:block">
+            <Button variant="ghost" size="sm" data-testid="button-explore">
+              Explore Businesses
+            </Button>
+          </Link>
+          <Link href="/forum" className="hidden lg:block">
             <Button variant="ghost" size="sm" data-testid="button-forum">
-              Community
+              Ask the Community
             </Button>
-          </a>
-          <a href="/claim-listing" className="hidden lg:block">
-            <Button variant="ghost" size="sm" data-testid="button-claim-listing">
-              Claim Your Listing
-            </Button>
-          </a>
-          <a href="/add-listing" className="hidden lg:block">
-            <Button variant="outline" size="sm" data-testid="button-add-listing">
-              Add Listing
-            </Button>
-          </a>
+          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="hidden lg:flex">
+              <Button variant="ghost" size="sm" data-testid="button-for-professionals">
+                For Professionals
+                <ChevronDown className="ml-1 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem asChild>
+                <Link href="/claim-listing" className="cursor-pointer" data-testid="menu-item-claim">
+                  Claim Your Listing
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/add-listing" className="cursor-pointer" data-testid="menu-item-add">
+                  Add Listing
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           
           {isAuthenticated && user?.role === "admin" && (
-            <a href="/dbb-management-x7k" className="hidden lg:block">
+            <Link href="/dbb-management-x7k" className="hidden lg:block">
               <Button variant="ghost" size="sm" data-testid="button-admin">
                 <ShieldCheck className="h-4 w-4 mr-2" />
                 Admin
               </Button>
-            </a>
+            </Link>
           )}
           
           {!isLoading && !isAuthenticated && (
@@ -81,11 +104,11 @@ export function Header() {
 
           {isAuthenticated && (
             <>
-              <a href={user?.claimedBusinesses?.[0] ? `/business/${user.claimedBusinesses[0].id}` : "/submit-content"} className="hidden md:block" title="Share content and grow your business for FREE">
+              <Link href={user?.claimedBusinesses?.[0] ? `/business/${user.claimedBusinesses[0].id}` : "/submit-content"} className="hidden md:block" title="Share content and grow your business for FREE">
                 <Button variant="default" size="sm" data-testid="button-submit-content" className="font-bold bg-gradient-to-r from-sunset to-peach hover:opacity-90 transition-all hover:scale-105 rounded-full shadow-md" style={{ fontFamily: 'var(--font-ui)' }}>
                   Share & Get Noticed
                 </Button>
-              </a>
+              </Link>
               <Button variant="ghost" size="icon" className="hidden md:flex rounded-full" data-testid="button-notifications">
                 <Bell className="h-5 w-5" />
               </Button>
@@ -99,12 +122,12 @@ export function Header() {
           
           {isAuthenticated && user && (
             <>
-              <a href="/dashboard">
+              <Link href="/dashboard">
                 <Avatar className="h-8 w-8 hover-elevate cursor-pointer" data-testid="avatar-user" title="View Dashboard">
                   <AvatarImage src={user.profileImage || undefined} alt={user.username} />
                   <AvatarFallback>{user.username[0]?.toUpperCase()}</AvatarFallback>
                 </Avatar>
-              </a>
+              </Link>
               <a href="/api/logout">
                 <Button variant="ghost" size="icon" className="rounded-full" data-testid="button-logout" title="Log out">
                   <LogOut className="h-5 w-5" />

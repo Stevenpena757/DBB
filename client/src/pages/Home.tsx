@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useLocation, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FeaturedHeroCarousel } from "@/components/FeaturedHeroCarousel";
+import { WelcomeModal } from "@/components/WelcomeModal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,6 +14,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [, setLocation] = useLocation();
   
   const { data: businesses = [], isLoading: businessesLoading } = useQuery<Business[]>({
     queryKey: ['/api/businesses'],
@@ -26,7 +29,7 @@ export default function Home() {
   });
 
   const featuredBusinesses = businesses.filter(b => b.featured || b.isSponsored).slice(0, 6);
-  const topCommunityPosts = forumPosts.slice(0, 4);
+  const topCommunityPosts = forumPosts.slice(0, 3);
   const topVendors = vendors.slice(0, 4);
 
   const categories = [
@@ -40,6 +43,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col pb-16 md:pb-0">
+      <WelcomeModal />
       <Header />
       
       <main className="flex-1">
@@ -61,7 +65,10 @@ export default function Home() {
               {categories.map((cat) => (
                 <button
                   key={cat.id}
-                  onClick={() => { setSelectedCategory(cat.id); window.location.href = `/explore?category=${cat.id !== 'all' ? cat.id : ''}`; }}
+                  onClick={() => { 
+                    setSelectedCategory(cat.id); 
+                    setLocation(`/explore?category=${cat.id !== 'all' ? cat.id : ''}`); 
+                  }}
                   className={`px-6 py-3 rounded-2xl font-medium transition-all hover-elevate active-elevate-2 ${
                     selectedCategory === cat.id 
                       ? 'bg-primary text-primary-foreground shadow-md' 
@@ -78,6 +85,187 @@ export default function Home() {
 
         {/* Featured Business Hero Carousel */}
         <FeaturedHeroCarousel />
+
+        {/* How DallasBeautyBook Works */}
+        <section className="py-12 md:py-16 bg-gradient-to-br from-peach-mist to-white" data-testid="section-how-it-works">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 
+                className="text-3xl md:text-4xl font-bold mb-4" 
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                How DallasBeautyBook Works
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
+                Three simple steps to connect with DFW's best beauty professionals
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <div className="text-center" data-testid="step-discover">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center shadow-lg">
+                  <Search className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                  1. Discover
+                </h3>
+                <p className="text-muted-foreground leading-relaxed" style={{ fontFamily: 'var(--font-body)' }}>
+                  Browse verified beauty pros across Dallas-Fort Worth. Filter by specialty, location, and ratings.
+                </p>
+              </div>
+
+              <div className="text-center" data-testid="step-share">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center shadow-lg">
+                  <Share2 className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                  2. Share
+                </h3>
+                <p className="text-muted-foreground leading-relaxed" style={{ fontFamily: 'var(--font-body)' }}>
+                  Leave reviews, ask questions in the community, and share your beauty journey with others.
+                </p>
+              </div>
+
+              <div className="text-center" data-testid="step-support">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center shadow-lg">
+                  <Heart className="h-10 w-10 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                  3. Support Local Pros
+                </h3>
+                <p className="text-muted-foreground leading-relaxed" style={{ fontFamily: 'var(--font-body)' }}>
+                  Help local beauty businesses grow by sharing your experiences and recommendations.
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center mt-12">
+              <Link href="/start-here">
+                <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80" data-testid="link-start-here">
+                  New here? Start with a quick tour <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Popular in DFW Right Now */}
+        <section className="py-12 md:py-16" data-testid="section-popular-now">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 
+                className="text-3xl md:text-4xl font-bold mb-4" 
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Popular in DFW Right Now
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
+                Trending beauty treatments and services in Dallas-Fort Worth
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap gap-3 justify-center max-w-4xl mx-auto">
+              {[
+                'Botox',
+                'Lip filler specialists',
+                'Lash extensions',
+                'Hydrafacial',
+                'Skincare',
+                'Body contouring',
+                'Teeth whitening',
+                'Brow lamination'
+              ].map((trend) => (
+                <Link 
+                  key={trend}
+                  href={`/explore?search=${encodeURIComponent(trend)}`}
+                  data-testid={`chip-trend-${trend.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  <Badge 
+                    variant="outline"
+                    className="px-6 py-3 text-base rounded-full border-2 hover-elevate active-elevate-2 cursor-pointer font-medium"
+                    style={{ fontFamily: 'var(--font-ui)' }}
+                  >
+                    {trend}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Why Contribute */}
+        <section className="py-12 md:py-16 bg-gradient-to-br from-white to-mint/5" data-testid="section-why-contribute">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 
+                className="text-3xl md:text-4xl font-bold mb-4" 
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Why Contribute to DallasBeautyBook?
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
+                Your voice matters in our community
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <Card className="rounded-2xl hover-elevate" data-testid="card-contribute-help">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Lightbulb className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                    Help Others Choose Wisely
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed" style={{ fontFamily: 'var(--font-body)' }}>
+                    Your reviews and tips guide fellow beauty enthusiasts to make informed decisions.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl hover-elevate" data-testid="card-contribute-recognition">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-secondary/10 flex items-center justify-center">
+                    <BadgeCheck className="h-8 w-8 text-secondary" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                    Earn Recognition & Perks
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed" style={{ fontFamily: 'var(--font-body)' }}>
+                    Top contributors unlock exclusive badges, priority support, and special offers.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl hover-elevate" data-testid="card-contribute-support">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-accent/10 flex items-center justify-center">
+                    <Heart className="h-8 w-8 text-accent" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                    Support Local Professionals
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed" style={{ fontFamily: 'var(--font-body)' }}>
+                    Your feedback helps local beauty businesses grow and improve their services.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="text-center mt-12">
+              <Link href="/forum">
+                <Button 
+                  size="lg" 
+                  className="rounded-full font-bold bg-gradient-to-r from-sunset to-peach hover:opacity-90 transition-all hover:scale-105 shadow-md" 
+                  style={{ fontFamily: 'var(--font-ui)' }}
+                  data-testid="button-join-community"
+                >
+                  Join the Community
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </section>
 
         {/* Discover Featured Businesses */}
         <section className="py-8 md:py-10" data-testid="section-featured-businesses">
@@ -169,38 +357,32 @@ export default function Home() {
             )}
             
             <div className="text-center mt-12">
-              <a href="/explore">
+              <Link href="/explore">
                 <Button size="lg" variant="outline" className="rounded-2xl" data-testid="button-view-all-businesses">
                   View All Businesses
                   <ChevronRight className="h-5 w-5 ml-2" />
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Community Highlights */}
-        <section className="py-8 md:py-10" data-testid="section-community">
+        {/* From the Community */}
+        <section className="py-8 md:py-10 bg-gradient-to-br from-white to-peach-mist" data-testid="section-community">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 
                 className="text-3xl md:text-4xl font-bold mb-4" 
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
-                Community Q&A & Tips
+                From the Community
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto mb-4" style={{ fontFamily: 'var(--font-body)' }}>
-                Learn from experts and share your knowledge
+              <p className="text-muted-foreground max-w-2xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
+                Real questions, expert answers, and helpful tips from the DFW beauty community
               </p>
-              <div className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
-                <Star className="h-5 w-5 text-primary fill-primary" />
-                <p className="text-sm font-medium text-foreground">
-                  Become a top rated expert to unlock all our features and benefits for free
-                </p>
-              </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {topCommunityPosts.map((post) => (
                 <a 
                   key={post.id} 
@@ -239,12 +421,12 @@ export default function Home() {
             </div>
             
             <div className="text-center mt-12">
-              <a href="/forum">
+              <Link href="/forum">
                 <Button size="lg" variant="outline" className="rounded-2xl" data-testid="button-view-community">
                   Visit Community
                   <ChevronRight className="h-5 w-5 ml-2" />
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -291,12 +473,12 @@ export default function Home() {
             </div>
             
             <div className="text-center mt-12">
-              <a href="/vendors">
+              <Link href="/vendors">
                 <Button size="lg" variant="outline" className="rounded-2xl" data-testid="button-view-all-vendors">
                   View All Suppliers
                   <ChevronRight className="h-5 w-5 ml-2" />
                 </Button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>

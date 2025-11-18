@@ -1,0 +1,140 @@
+REPLIT AGENT INSTRUCTIONS — FULL DALLASBEAUTYBOOK UX OVERHAUL
+=================================================================
+
+GOAL
+----
+Improve clarity, purpose, navigation, onboarding, homepage messaging, and user experience
+so first‑time visitors instantly understand what DallasBeautyBook is, who it’s for, and
+how to use it. Apply all UX upgrades, new sections, new labels, and new components.
+
+=================================================================
+1. UPDATE TOP NAVIGATION LABELS
+=================================================================
+
+File: src/components/layout/Header.tsx (or equivalent)
+
+Replace labels for clarity:
+
+- "Community" → "Ask the Community"
+- "Claim Your Listing" → "For Professionals"
+- Add Listing remains, but can be grouped under a dropdown.
+
+Final nav structure:
+
+- Explore Businesses → /explore
+- Ask the Community → /community
+- For Professionals (dropdown)
+  - Claim Your Listing → /claim
+  - Add Listing → /add-listing
+
+Update aria-labels accordingly.
+
+=================================================================
+2. UPDATE HERO TEXT TO EXPLAIN PLATFORM PURPOSE
+=================================================================
+
+File: Homepage hero component.
+
+Replace right-side text with:
+
+One platform for DFW beauty, health & aesthetics.
+Discover local beauty pros, share real experiences, and join a community built around
+med spas, injectors, lashes, hair, nails, skincare and more across Dallas–Fort Worth.
+
+Add two user-path buttons:
+
+- I’m looking for beauty services → /explore
+- I’m a beauty professional → /claim
+
+=================================================================
+3. ADD “HOW DALLASBEAUTYBOOK WORKS” EXPLANATION STRIP
+=================================================================
+
+Add below hero: 3 steps (Discover, Share, Support Local Pros)
+
+=================================================================
+4. ADD “POPULAR IN DFW RIGHT NOW” SEARCH-INTENT SECTION
+=================================================================
+
+Add trending categories as clickable chips:
+- Botox
+- Lip filler specialists
+- Lash extensions
+- Hydrafacial
+- Skincare
+- Body contouring
+- Teeth whitening
+- Brow lamination
+
+=================================================================
+5. ADD “WHY CONTRIBUTE” INCENTIVES SECTION
+=================================================================
+
+Add 3 value props:
+- Help others choose wisely
+- Earn recognition & perks
+- Support local beauty professionals
+
+=================================================================
+6. ADD “FROM THE COMMUNITY” PREVIEW FEED
+=================================================================
+
+Use API: GET /api/forum?limit=3  
+Shows recent community questions/tips.
+
+=================================================================
+7. ADD NEW ROUTE: /start-here
+=================================================================
+
+Explain:
+- What the site is
+- Who it’s for
+- How to use it
+- Quick actions (Explore, Ask, Claim)
+
+Add link under hero:
+“New here? Start with a quick tour →”
+
+=================================================================
+8. ADD FIRST-TIME WELCOME MODAL
+=================================================================
+
+Shows once using localStorage.
+Buttons:
+- Explore Businesses
+- Ask the Community
+
+=================================================================
+9. OPTIONAL: ACTIVITY FEED
+=================================================================
+
+API: /api/activity  
+Shows new listings, new reviews, new posts.
+
+=================================================================
+10. MICROCOPY CLEANUP PASS
+=================================================================
+
+Ensure all wording clearly explains:
+- Directory purpose
+- Community function
+- Business claim benefits
+
+=================================================================
+11. ACCEPTANCE CRITERIA
+=================================================================
+
+The UX refresh is complete when:
+
+- Users instantly understand what the site is
+- Homepage includes all new sections
+- Navigation updated
+- New /start-here route exists
+- Welcome modal works
+- Community preview visible
+- No TypeScript or responsive issues
+- Entire experience feels guided, clear, and purposeful
+
+=================================================================
+END OF INSTRUCTIONS
+=================================================================

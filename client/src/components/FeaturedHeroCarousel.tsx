@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import type { Business } from "@shared/schema";
+import { Button } from "@/components/ui/button";
 
 async function fetchFeaturedBusinesses(): Promise<Business[]> {
   const res = await fetch("/api/businesses/featured");
@@ -227,16 +228,41 @@ export function FeaturedHeroCarousel() {
           <h1 
             className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-navy leading-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
+            data-testid="hero-heading"
           >
-            Beauty Starts Here — Discover, Review, Engage with Dallas.
+            One platform for DFW beauty, health & aesthetics.
           </h1>
           <p 
             className="mt-6 text-lg text-muted-foreground leading-relaxed"
             style={{ fontFamily: 'var(--font-body)' }}
+            data-testid="hero-description"
           >
-            Featured listings from across Dallas–Fort Worth. These businesses
-            stand out for their quality, service, and community reputation.
+            Discover local beauty pros, share real experiences, and join a community built around med spas, injectors, lashes, hair, nails, skincare and more across Dallas–Fort Worth.
           </p>
+          
+          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <Link href="/explore" className="flex-1 sm:flex-initial">
+              <Button 
+                size="lg" 
+                className="w-full font-bold bg-gradient-to-r from-sunset to-peach hover:opacity-90 transition-all hover:scale-105 rounded-full shadow-md" 
+                style={{ fontFamily: 'var(--font-ui)' }}
+                data-testid="button-hero-explore"
+              >
+                I'm looking for beauty services
+              </Button>
+            </Link>
+            <Link href="/claim-listing" className="flex-1 sm:flex-initial">
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="w-full font-semibold rounded-full border-2" 
+                style={{ fontFamily: 'var(--font-ui)' }}
+                data-testid="button-hero-claim"
+              >
+                I'm a beauty professional
+              </Button>
+            </Link>
+          </div>
           
           <div className="mt-8 flex gap-3">
             {businesses.map((business, index) => (
