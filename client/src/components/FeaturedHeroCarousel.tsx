@@ -78,11 +78,11 @@ export function FeaturedHeroCarousel() {
 
   return (
     <section 
-      className="relative min-h-[80vh] bg-background flex items-center justify-center overflow-hidden px-4 py-16"
+      className="relative min-h-[60vh] lg:min-h-[80vh] bg-background flex items-center justify-center overflow-hidden px-4 py-8 md:py-16"
       data-testid="featured-hero-carousel"
     >
-      <div className="relative flex w-full max-w-6xl flex-col lg:flex-row gap-12 items-center z-10">
-        <div className="relative flex-1 h-[420px] flex items-center justify-center w-full">
+      <div className="relative flex w-full max-w-6xl flex-col-reverse lg:flex-row gap-8 lg:gap-12 items-center z-10">
+        <div className="relative flex-1 h-[380px] md:h-[420px] flex items-center justify-center w-full">
           {businesses.map((business, index) => {
             const isActive = index === activeIndex;
             const offset = index - activeIndex;
@@ -92,7 +92,7 @@ export function FeaturedHeroCarousel() {
                 key={business.id}
                 data-testid={`featured-card-${business.id}`}
                 onClick={() => goTo(index)}
-                className="absolute inset-0 max-w-xl rounded-[30px] p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer"
+                className="absolute inset-0 max-w-xl rounded-[30px] p-6 md:p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer"
                 style={{
                   backgroundImage: "linear-gradient(135deg, #D91D66, #CC4A28)",
                   transform: `
@@ -167,9 +167,9 @@ export function FeaturedHeroCarousel() {
           })}
         </div>
 
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 max-w-md text-center lg:text-left">
           <h1 
-            className="text-4xl md:text-5xl font-extrabold text-navy leading-tight"
+            className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-navy leading-tight"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
             Beauty Starts Here — Discover, Review, Engage with Dallas.
