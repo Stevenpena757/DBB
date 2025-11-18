@@ -87,6 +87,69 @@ export function FeaturedHeroCarousel() {
             const isActive = index === activeIndex;
             const offset = index - activeIndex;
 
+            if (!isActive) {
+              return (
+                <article
+                  key={business.id}
+                  data-testid={`featured-card-${business.id}`}
+                  onClick={() => goTo(index)}
+                  className="absolute inset-0 max-w-xl rounded-[30px] p-6 md:p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer hidden lg:block"
+                  style={{
+                    backgroundImage: "linear-gradient(135deg, #D91D66, #CC4A28)",
+                    transform: `
+                      translateX(${offset * 24}px)
+                      translateY(${offset * 18}px)
+                      scale(${0.92 - Math.abs(offset) * 0.03})
+                      rotate(${offset * 2}deg)
+                    `,
+                    opacity: 0.8 - Math.abs(offset) * 0.1,
+                    zIndex: 20 - Math.abs(offset),
+                    pointerEvents: 'all',
+                  }}
+                  tabIndex={-1}
+                  role="button"
+                  aria-label={`View ${business.name}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      goTo(index);
+                    }
+                  }}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/80" style={{ fontFamily: 'var(--font-ui)' }}>
+                    Featured Listing
+                  </p>
+                  <h2 className="mt-2 text-3xl font-extrabold md:text-4xl mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                    {business.name}
+                  </h2>
+                  <p className="text-white/95 text-base md:text-lg leading-relaxed line-clamp-3" style={{ fontFamily: 'var(--font-body)' }}>
+                    {business.description}
+                  </p>
+                  <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/90">
+                    {business.category && (
+                      <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur" style={{ fontFamily: 'var(--font-ui)' }}>
+                        {business.category}
+                      </span>
+                    )}
+                    {business.location && (
+                      <span className="rounded-full bg-black/20 px-3 py-1 backdrop-blur" style={{ fontFamily: 'var(--font-ui)' }}>
+                        {business.location}
+                      </span>
+                    )}
+                  </div>
+                  <Link 
+                    href={`/business/${business.id}`}
+                    data-testid={`featured-cta-${business.id}`}
+                    className="inline-flex mt-6 rounded-full bg-white/95 text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all min-h-[44px] min-w-[44px] items-center"
+                    style={{ fontFamily: 'var(--font-ui)' }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    View Profile ↗
+                  </Link>
+                </article>
+              );
+            }
+
             return (
               <article
                 key={business.id}
@@ -95,17 +158,10 @@ export function FeaturedHeroCarousel() {
                 className="absolute inset-0 max-w-xl rounded-[30px] p-6 md:p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer"
                 style={{
                   backgroundImage: "linear-gradient(135deg, #D91D66, #CC4A28)",
-                  transform: `
-                    translateX(${offset * 24}px)
-                    translateY(${offset * 18}px)
-                    scale(${isActive ? 1 : 0.92 - Math.abs(offset) * 0.03})
-                    rotate(${offset * 2}deg)
-                  `,
-                  opacity: isActive ? 1 : 0.8 - Math.abs(offset) * 0.1,
-                  zIndex: 20 - Math.abs(offset),
+                  zIndex: 20,
                   pointerEvents: 'all',
                 }}
-                tabIndex={isActive ? 0 : -1}
+                tabIndex={0}
                 role="button"
                 aria-label={`View ${business.name}`}
                 onKeyDown={(e) => {
