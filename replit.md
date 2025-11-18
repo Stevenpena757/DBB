@@ -62,6 +62,33 @@ Dallas Beauty Book features a bold, energetic, and modern brand aesthetic inspir
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (November 2025)
+
+### Comprehensive UX Overhaul
+A major update to improve first-time visitor clarity and engagement:
+
+**Navigation Updates:**
+- Updated header navigation: "Explore Businesses", "Ask the Community"
+- Changed "Claim Your Listing" to "For Professionals" dropdown menu (Claim Listing, Add Listing)
+- All internal navigation uses wouter Link components/setLocation (SPA navigation preserved)
+
+**Homepage Enhancements:**
+- **Hero Section:** New messaging "One platform for DFW beauty, health & aesthetics" with two user-path CTAs (I'm looking for beauty services / I'm a beauty professional)
+- **Quick Tour Link:** Added "New here? Start with a quick tour →" link to /start-here
+- **How DallasBeautyBook Works:** 3-step explanation section (Discover, Share, Support Local Pros)
+- **Popular in DFW Right Now:** 8 trending treatment chips (Botox, Lip Filler, Lash Extensions, etc.)
+- **Why Contribute:** 3 value propositions (Help Others, Earn Recognition, Support Local Pros)
+- **From the Community:** Preview of 3 recent forum posts with engagement metrics
+
+**New Features:**
+- `/start-here` onboarding route: Comprehensive guide explaining platform purpose, target audience, and how to use each feature
+- First-time welcome modal: Shows on first visit, uses localStorage tracking (key: "dbb-welcome-modal-shown"), provides two action buttons (Explore Businesses / Ask the Community)
+
+**Technical Improvements:**
+- Full SPA navigation implementation using wouter throughout Header, Hero, Home, and WelcomeModal
+- No window.location.href or plain <a href> for internal routes
+- Improved code quality and maintainability
+
 ## System Architecture
 
 ### Frontend Architecture
