@@ -297,7 +297,7 @@ export default function Home() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {featuredBusinesses.map((business) => (
-                  <a 
+                  <Link 
                     key={business.id} 
                     href={`/business/${business.id}`}
                     className="block group"
@@ -351,7 +351,7 @@ export default function Home() {
                         )}
                       </CardContent>
                     </Card>
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}
@@ -384,7 +384,7 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {topCommunityPosts.map((post) => (
-                <a 
+                <Link 
                   key={post.id} 
                   href={`/forum/${post.id}`}
                   className="block"
@@ -416,7 +416,7 @@ export default function Home() {
                       </div>
                     </CardContent>
                   </Card>
-                </a>
+                </Link>
               ))}
             </div>
             

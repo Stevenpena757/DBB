@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, type FocusEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import type { Business } from "@shared/schema";
@@ -17,12 +17,41 @@ export function FeaturedHeroCarousel() {
   });
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isPausedRef = useRef(false);
 
+  // Subscribe to prefers-reduced-motion changes
   useEffect(() => {
-    if (businesses.length === 0) return;
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mediaQuery.matches);
+
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  // Update isPausedRef when hover/focus state changes
+  useEffect(() => {
+    const shouldPause = isHovered || isFocused;
+    isPausedRef.current = shouldPause;
+    
+    // Clear the goTo timeout if we're manually pausing
+    if (shouldPause && pauseTimeoutRef.current) {
+      clearTimeout(pauseTimeoutRef.current);
+      pauseTimeoutRef.current = null;
+    }
+  }, [isHovered, isFocused]);
+
+  // Auto-rotation effect
+  useEffect(() => {
+    if (businesses.length === 0 || reducedMotion) return;
 
     const startRotation = () => {
       if (timerRef.current) {
@@ -48,7 +77,7 @@ export function FeaturedHeroCarousel() {
         pauseTimeoutRef.current = null;
       }
     };
-  }, [businesses.length]);
+  }, [businesses.length, reducedMotion]);
 
   const goTo = (index: number) => {
     setActiveIndex(index);
@@ -62,6 +91,29 @@ export function FeaturedHeroCarousel() {
       isPausedRef.current = false;
       pauseTimeoutRef.current = null;
     }, 8000);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleFocus = (e: FocusEvent) => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = (e: FocusEvent) => {
+    // Only resume if focus is leaving the carousel entirely
+    const currentTarget = e.currentTarget as HTMLElement;
+    const relatedTarget = e.relatedTarget as HTMLElement | null;
+    
+    // If relatedTarget is null or not contained, focus has left the carousel
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      setIsFocused(false);
+    }
   };
 
   if (isLoading || businesses.length === 0) {
@@ -81,6 +133,13 @@ export function FeaturedHeroCarousel() {
     <section 
       className="relative min-h-[60vh] lg:min-h-[80vh] bg-background flex items-center justify-center overflow-hidden px-4 py-8 md:py-16"
       data-testid="featured-hero-carousel"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Featured DallasBeautyBook businesses"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
     >
       <div className="relative flex w-full max-w-6xl flex-col-reverse lg:flex-row gap-8 lg:gap-12 items-center z-10">
         <div className="relative flex-1 h-[380px] md:h-[420px] flex items-center justify-center w-full">
@@ -94,7 +153,7 @@ export function FeaturedHeroCarousel() {
                   key={business.id}
                   data-testid={`featured-card-${business.id}`}
                   onClick={() => goTo(index)}
-                  className="absolute inset-0 max-w-xl rounded-[30px] p-6 md:p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer hidden lg:block"
+                  className="absolute inset-0 max-w-xl rounded-[30px] p-6 md:p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer hidden lg:block focus:outline-none focus:ring-4 focus:ring-accent focus:ring-offset-2"
                   style={{
                     backgroundImage: "linear-gradient(135deg, #D91D66, #CC4A28)",
                     transform: `
@@ -109,7 +168,9 @@ export function FeaturedHeroCarousel() {
                   }}
                   tabIndex={-1}
                   role="button"
-                  aria-label={`View ${business.name}`}
+                  aria-label={`View ${business.name} featured listing`}
+                  aria-pressed={false}
+                  aria-hidden="true"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
@@ -117,16 +178,16 @@ export function FeaturedHeroCarousel() {
                     }
                   }}
                 >
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/80" style={{ fontFamily: 'var(--font-ui)' }}>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white drop-shadow-lg" style={{ fontFamily: 'var(--font-ui)' }}>
                     Featured Listing
                   </p>
-                  <h2 className="mt-2 text-3xl font-extrabold md:text-4xl mb-3" style={{ fontFamily: 'var(--font-heading)' }}>
+                  <h2 className="mt-2 text-3xl font-extrabold md:text-4xl mb-3 drop-shadow-md" style={{ fontFamily: 'var(--font-heading)' }}>
                     {business.name}
                   </h2>
-                  <p className="text-white/95 text-base md:text-lg leading-relaxed line-clamp-3" style={{ fontFamily: 'var(--font-body)' }}>
+                  <p className="text-white text-base md:text-lg leading-relaxed line-clamp-3 drop-shadow-md" style={{ fontFamily: 'var(--font-body)' }}>
                     {business.description}
                   </p>
-                  <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/90">
+                  <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white">
                     {business.category && (
                       <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur" style={{ fontFamily: 'var(--font-ui)' }}>
                         {business.category}
@@ -141,9 +202,10 @@ export function FeaturedHeroCarousel() {
                   <Link 
                     href={`/business/${business.id}`}
                     data-testid={`featured-cta-${business.id}`}
-                    className="inline-flex mt-6 rounded-full bg-white/95 text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all min-h-[44px] min-w-[44px] items-center"
+                    className="inline-flex mt-6 rounded-full bg-white text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all min-h-[44px] min-w-[44px] items-center"
                     style={{ fontFamily: 'var(--font-ui)' }}
                     onClick={(e) => e.stopPropagation()}
+                    tabIndex={-1}
                   >
                     View Profile ↗
                   </Link>
@@ -156,7 +218,7 @@ export function FeaturedHeroCarousel() {
                 key={business.id}
                 data-testid={`featured-card-${business.id}`}
                 onClick={() => goTo(index)}
-                className="absolute inset-0 max-w-xl rounded-[30px] p-6 md:p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer"
+                className="absolute inset-0 max-w-xl rounded-[30px] p-6 md:p-8 text-left text-white shadow-2xl transition-all duration-500 ease-out cursor-pointer focus:outline-none focus:ring-4 focus:ring-accent focus:ring-offset-2"
                 style={{
                   backgroundImage: "linear-gradient(135deg, #D91D66, #CC4A28)",
                   zIndex: 20,
@@ -164,7 +226,8 @@ export function FeaturedHeroCarousel() {
                 }}
                 tabIndex={0}
                 role="button"
-                aria-label={`View ${business.name}`}
+                aria-label={`View ${business.name} featured listing (active)`}
+                aria-pressed={true}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -173,25 +236,25 @@ export function FeaturedHeroCarousel() {
                 }}
               >
                 <p 
-                  className="text-xs font-semibold uppercase tracking-[0.2em] text-white/80"
+                  className="text-xs font-semibold uppercase tracking-[0.2em] text-white drop-shadow-lg"
                   style={{ fontFamily: 'var(--font-ui)' }}
                 >
                   Featured Listing
                 </p>
                 <h2 
-                  className="mt-2 text-3xl font-extrabold md:text-4xl mb-3"
+                  className="mt-2 text-3xl font-extrabold md:text-4xl mb-3 drop-shadow-md"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   {business.name}
                 </h2>
                 <p 
-                  className="text-white/95 text-base md:text-lg leading-relaxed line-clamp-3"
+                  className="text-white text-base md:text-lg leading-relaxed line-clamp-3 drop-shadow-md"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
                   {business.description}
                 </p>
 
-                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white/90">
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-white">
                   {business.category && (
                     <span 
                       className="rounded-full bg-white/20 px-3 py-1 backdrop-blur"
@@ -213,9 +276,10 @@ export function FeaturedHeroCarousel() {
                 <Link 
                   href={`/business/${business.id}`}
                   data-testid={`featured-cta-${business.id}`}
-                  className="inline-flex mt-6 rounded-full bg-white/95 text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all min-h-[44px] min-w-[44px] items-center"
+                  className="inline-flex mt-6 rounded-full bg-white text-navy px-6 py-3 font-semibold shadow-lg hover:bg-white hover:scale-105 transition-all min-h-[44px] min-w-[44px] items-center"
                   style={{ fontFamily: 'var(--font-ui)' }}
                   onClick={(e) => e.stopPropagation()}
+                  tabIndex={0}
                 >
                   View Profile ↗
                 </Link>

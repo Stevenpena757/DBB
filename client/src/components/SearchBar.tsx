@@ -37,6 +37,7 @@ export function SearchBar({ onSearch, variant = "header" }: SearchBarProps) {
               onKeyPress={handleKeyPress}
               className="pl-10 h-12 text-base"
               data-testid="input-search-query"
+              aria-label="Search for beauty businesses, services, or treatments"
             />
           </div>
           <div className="flex gap-4">
@@ -50,6 +51,7 @@ export function SearchBar({ onSearch, variant = "header" }: SearchBarProps) {
                 onKeyPress={handleKeyPress}
                 className="pl-10 h-12 text-base"
                 data-testid="input-search-location"
+                aria-label="Filter search by city or location in DFW area"
               />
             </div>
             <Button 
@@ -77,6 +79,7 @@ export function SearchBar({ onSearch, variant = "header" }: SearchBarProps) {
         onKeyPress={handleKeyPress}
         className="pl-9"
         data-testid="input-search-header"
+        aria-label="Search for beauty businesses"
       />
     </div>
   );

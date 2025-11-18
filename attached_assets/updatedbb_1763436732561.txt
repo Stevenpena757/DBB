@@ -1,0 +1,336 @@
+DALLASBEAUTYBOOK — UX & ACCESSIBILITY IMPROVEMENT REPORT
+========================================================
+
+Site: dallasbeautybook.com
+Goal: Make it instantly clear what the site is, who it’s for, what users should do next,
+      and ensure the experience is accessible, fast, and engaging on desktop and mobile.
+
+This report is written as IMPLEMENTATION INSTRUCTIONS for the Replit agent.
+
+========================================================
+1. HIGH-LEVEL GOALS
+========================================================
+
+1) Clarity:
+   - A first-time visitor should understand in 5 seconds:
+     • What is DallasBeautyBook?
+     • Who is it for? (customers + beauty professionals)
+     • What can I do here right now?
+
+2) Guidance:
+   - The homepage should clearly suggest 1–3 recommended next steps.
+   - The site should show HOW other users use it (examples, community posts, popular searches).
+
+3) Accessibility:
+   - Meet or move toward WCAG AA where reasonable:
+     • Sufficient contrast
+     • Keyboard navigability
+     • Clear focus states
+     • Reasonable motion/auto-advance behavior
+
+4) Performance:
+   - Gradients, shadows, and animations should not significantly harm mobile performance.
+
+========================================================
+2. PRIORITY TASKS (DO THESE FIRST)
+========================================================
+
+--------------------------------------------------------
+TASK 1 — Verify & Fix Text Contrast
+--------------------------------------------------------
+
+Goal: Ensure all text is readable on gradients and colored backgrounds.
+
+Steps:
+- Identify all components where text is placed over:
+  • Gradients (sunset, mint, hero cards)
+  • Colored backgrounds (peach, pink, navy, etc.)
+
+- For each such section:
+  • Use a contrast checker (WCAG AA) for:
+    - Body text: minimum 4.5:1
+    - Large headings: minimum 3:1
+
+- Where contrast is insufficient:
+  • Darken the text color (e.g., use #102646 on light backgrounds).
+  • Lighten the overlay behind the text, or add a semi-transparent overlay on the gradient.
+  • For text on very strong gradients, prefer white text with a subtle text-shadow or
+    additional dark overlay behind the text to improve legibility.
+
+Deliverable:
+- All hero, section headings, and body text on colored/gradient backgrounds meet
+  reasonable contrast levels (or have an overlay to improve legibility).
+- No obviously low-contrast text (e.g., light gray on peach, pale text on mint).
+
+--------------------------------------------------------
+TASK 2 — Improve First-Time User Clarity (Onboarding Nudge)
+--------------------------------------------------------
+
+Goal: First-time visitors understand quickly what to do next.
+
+Implementation:
+
+A) Add a small “Quick Start” line under the hero buttons:
+
+- Under the two primary hero CTAs (customer vs professional), add:
+
+  Text example:
+  "Not sure where to start? Explore businesses, ask the community, or learn how it works."
+
+  Implementation:
+  - Simple paragraph with subtle styling:
+    • Font size: small
+    • Color: medium gray
+    • Positioned just below the buttons.
+
+B) Add a “New here? Start with a quick tour” link:
+
+- Place a link under that line:
+
+  "New here? Start with a quick tour →" → /start-here
+
+- Make this link styled as:
+  • Small, underlined or underline-on-hover
+  • Clear enough to be visible, but not heavier than primary CTAs.
+
+(If /start-here already exists, just link to it. If not, create it later in this file.)
+
+--------------------------------------------------------
+TASK 3 — Add / Improve Welcome Modal for First-Time Visitors
+--------------------------------------------------------
+
+Goal: One-time welcome explanation for brand-new users.
+
+Implementation:
+
+- Component: src/components/WelcomeModal.tsx (or equivalent)
+- Logic:
+  • On initial load of the homepage:
+    - Check localStorage key: "dbb_seen_welcome_v1"
+    - If not set, show the modal.
+  • On close or on clicking any primary action:
+    - localStorage.setItem("dbb_seen_welcome_v1", "true")
+
+- Content suggestion:
+
+  Title:
+  "Welcome to DallasBeautyBook 👋"
+
+  Body:
+  "We’re a community-powered guide to DFW beauty, health and aesthetics.
+   Discover local beauty pros, read and share real experiences, and join the DFW beauty community."
+
+  Buttons:
+  • Primary: "Explore businesses" → /explore
+  • Secondary: "Ask the community" → /community
+
+- Use shadcn/ui Dialog or your existing modal system.
+
+--------------------------------------------------------
+TASK 4 — Ensure Hero Card Carousel is Keyboard Accessible
+--------------------------------------------------------
+
+Goal: The stacked hero cards/featured tiles must work well with keyboard and screen readers.
+
+Implementation:
+
+- For each card in the hero stack:
+  • Make it a <button> (or an element with role="button" and tabIndex=0).
+  • Ensure that:
+    - It can be focused via Tab.
+    - It has a visible focus style (e.g., outline, ring).
+    - It announces which section/business it is.
+
+- Add ARIA attributes:
+  • For the active card:
+    - aria-pressed="true" (if you treat them as toggle-like)
+  • For others:
+    - aria-pressed="false"
+
+- For the card container:
+  • Optionally add:
+    - role="region"
+    - aria-roledescription="carousel"
+    - aria-label="Featured DallasBeautyBook sections" or "Featured listings"
+
+- For any dots/pagination beneath the cards:
+  • Each dot should be a button:
+    - aria-label="Show featured listing [Name]" or "Go to card 2 of 4"
+    - Visible focus state.
+
+- Confirm:
+  • You can reach the carousel/title and dots with Tab.
+  • You can change the active card with keyboard only (Enter/Space on buttons).
+  • There is a visible focus ring.
+
+--------------------------------------------------------
+TASK 5 — Auto-Advance Behavior and Motion Sensitivity
+--------------------------------------------------------
+
+Goal: Auto-rotation should not confuse or bother users sensitive to motion.
+
+Implementation:
+
+- Current behavior: cards auto-shuffle every 3 seconds.
+- Improve behavior:
+
+  • If the user interacts (clicks a card or dot):
+    - Pause auto-rotation for at least 8–10 seconds.
+  • Optionally, detect prefers-reduced-motion:
+
+    In React:
+    - Use CSS @media (prefers-reduced-motion: reduce)
+      to:
+      • Disable animation transforms/transition, OR
+      • Disable auto-rotation entirely for those users.
+
+- Ensure there is no extremely fast or aggressive motion.
+
+========================================================
+3. UX ENHANCEMENTS (MEDIUM PRIORITY)
+========================================================
+
+--------------------------------------------------------
+TASK 6 — Strengthen “For Professionals” Onboarding
+--------------------------------------------------------
+
+Goal: Make it easy for beauty professionals to understand what they gain and how to start.
+
+Implementation:
+
+- On /claim or /for-professionals page:
+
+  Add a short module at the top:
+
+  Heading:
+  "For DFW beauty professionals"
+
+  Subtext:
+  "Claim your listing, share updates, and reach more local clients through the DallasBeautyBook community."
+
+  Steps:
+  1) Search for your business and claim it
+  2) Complete your profile and add services
+  3) Share posts, deals and updates to stay top-of-mind
+
+  (Optional) Add a small stat or example: "Businesses with complete profiles get X% more views."
+
+--------------------------------------------------------
+TASK 7 — Make Community Activity Feel Alive
+--------------------------------------------------------
+
+Goal: Show that the community is active.
+
+Implementation:
+
+- On the homepage “From the community” section:
+  • Ensure you are fetching the most recent posts (order by createdAt DESC).
+  • Display relative timestamps:
+    - e.g., "3 hours ago", "Yesterday", "2 days ago".
+
+- Add a small line:
+  "X new questions this week" (if you can compute count for the last 7 days).
+
+- Community cards should show:
+  • Category (e.g., Injectables, Skin, Lashes)
+  • Title (question/tip)
+  • Short content snippet
+  • Timestamp
+
+This reduces the "is this site dead?" feeling for new visitors.
+
+--------------------------------------------------------
+TASK 8 — Sticky / Persistent CTA (Optional, Nice-to-Have)
+--------------------------------------------------------
+
+Goal: Give users a clear action at all times.
+
+Implementation:
+
+- On desktop and/or mobile, add a small sticky bar or floating action button that appears after scrolling:
+
+  Examples:
+  • "Find a beauty professional →" (links to /explore)
+  • Or for logged-in business owners: "Claim your listing →"
+
+- Keep it small and non-intrusive.
+
+========================================================
+4. ACCESSIBILITY CHECKLIST
+========================================================
+
+Have the agent systematically verify:
+
+- Contrast:
+  • All text on colored backgrounds passes or is visually strong.
+  • If not, adjust color/overlay.
+
+- Keyboard navigation:
+  • All links, buttons, cards, and nav items are reachable via Tab.
+  • Focus order is logical (follows visual layout).
+  • Focus styles are always visible (no outline: none on focusable elements).
+
+- ARIA roles:
+  • Modal has role="dialog" or uses shadcn Dialog properly.
+  • Carousel/hero region has meaningful labels and roles.
+  • Icons with semantic meaning have appropriate text/aria-labels.
+
+- Images:
+  • Any image that conveys information (e.g., business photo, hero image) has an alt text.
+  • Purely decorative background images can use empty alt or CSS backgrounds.
+
+- Responsiveness:
+  • Test at 320px width, 375px, 768px, 1024px, and large desktop.
+  • Ensure no horizontal scroll on mobile.
+  • Cards stack properly, text does not overflow off screen.
+
+========================================================
+5. PERFORMANCE NOTES
+========================================================
+
+- Optimize gradients and shadows:
+  • Avoid excessively large box-shadows on many elements.
+  • Use them on fewer, key elements (hero cards, primary CTAs).
+
+- Optimize images:
+  • Compress hero images.
+  • Lazy-load images that appear below the fold.
+
+- Test:
+  • Run a performance check (Lighthouse or equivalent) and ensure:
+    - Good First Contentful Paint on mobile
+    - No large blocking scripts for basic UI
+
+========================================================
+6. ACCEPTANCE CRITERIA
+========================================================
+
+The UX/accessibility improvements are considered COMPLETE when:
+
+1) First-time users:
+   - Understand what DallasBeautyBook is within seconds.
+   - See obvious next steps (Explore, Ask, Claim).
+   - Have the option to see a brief intro (/start-here or welcome modal).
+
+2) Hero carousel:
+   - Accessible via keyboard.
+   - Has visible focus.
+   - Automatically rotates but respects user interaction and prefers-reduced-motion.
+
+3) Homepage:
+   - Clearly explains how the site works.
+   - Shows popular, DFW-specific searches.
+   - Previews live community content with timestamps.
+
+4) Accessibility:
+   - No obviously low-contrast text.
+   - No major keyboard traps or inaccessible primary features.
+   - Reasonable ARIA support for modals and hero.
+
+5) Code:
+   - No TypeScript errors.
+   - No console errors related to the new features.
+   - Layout remains responsive on mobile and desktop.
+
+END OF REPORT
+========================================================

@@ -89,6 +89,34 @@ A major update to improve first-time visitor clarity and engagement:
 - No window.location.href or plain <a href> for internal routes
 - Improved code quality and maintainability
 
+### Accessibility Improvements (WCAG AA Compliant)
+
+**Hero Carousel Accessibility:**
+- Fixed text contrast: Solid white text with drop shadows on gradient backgrounds (replaced semi-transparent text)
+- Full keyboard navigation: Inactive cards excluded from tab order (tabIndex={-1}, aria-hidden="true")
+- Visible focus states: 4px accent ring (focus:ring-4 focus:ring-accent) on all focusable elements
+- Auto-rotation pause on focus/hover: Prevents focus traps by pausing when user interacts with carousel
+- Auto-rotation resume: Resumes smoothly when focus/hover leaves carousel
+- Prefers-reduced-motion support: Auto-rotation disabled when user prefers reduced motion
+- WCAG 2.2.2 compliance: Carousel meets "Pause, Stop, Hide" requirement
+
+**ARIA Attributes:**
+- Carousel: role="region", aria-roledescription="carousel", aria-label="Featured DallasBeautyBook businesses"
+- Cards: aria-label with business names, aria-pressed states (true for active, false for inactive)
+- Carousel dots: aria-label with position info, aria-pressed states
+- Search inputs: Descriptive aria-labels for screen readers
+
+**Navigation Improvements:**
+- Footer mobile navigation: Uses wouter Link components for SPA preservation
+- All internal links: Converted from <a href> to Link components throughout site
+- Focus management: Proper blur detection using currentTarget.contains(relatedTarget)
+
+**Technical Implementation:**
+- State-based pause control using isHovered and isFocused states
+- useEffect hook for prefers-reduced-motion with mediaQuery listener and cleanup
+- Comprehensive focus/blur handlers that detect when focus leaves carousel entirely
+- Verified through e2e testing with Playwright
+
 ## System Architecture
 
 ### Frontend Architecture

@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Facebook, Instagram, Twitter, Building2, Sparkles, ShoppingCart, Heart, MessageCircle } from "lucide-react";
@@ -22,26 +23,26 @@ export function Footer() {
 
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t md:hidden z-50 pb-safe">
         <div className="grid grid-cols-5 h-16">
-          <a href="/" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-home">
+          <Link href="/" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-home">
             <Building2 className="h-5 w-5" />
             <span className="text-xs font-medium">Home</span>
-          </a>
-          <a href="/explore" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-explore">
+          </Link>
+          <Link href="/explore" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-explore">
             <Sparkles className="h-5 w-5" />
             <span className="text-xs font-medium">Explore</span>
-          </a>
-          <a href="/shop" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-vendors">
+          </Link>
+          <Link href="/shop" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-vendors">
             <ShoppingCart className="h-5 w-5" />
             <span className="text-xs font-medium">Shop</span>
-          </a>
-          <a href="/forum" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-forum">
+          </Link>
+          <Link href="/forum" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-forum">
             <MessageCircle className="h-5 w-5" />
             <span className="text-xs font-medium">Community</span>
-          </a>
-          <a href="/saved" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-saved">
+          </Link>
+          <Link href="/saved" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-saved">
             <Heart className="h-5 w-5" />
             <span className="text-xs font-medium">Saved</span>
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
