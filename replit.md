@@ -20,11 +20,17 @@ The backend is built with Express.js and Node.js, using TypeScript. It provides 
 
 ### Storage Architecture
 
-The database schema uses serial IDs, text fields, JSONB for structured data, boolean flags, and enums for various categories. Timestamps track creation and expiration. Data access is managed through a storage interface abstraction layer supporting CRUD operations, filtered queries, and analytics.
+The database schema uses serial IDs, text fields, JSONB for structured data, boolean flags, and enums for various categories. Timestamps track creation and expiration. Data access is managed through a storage interface abstraction layer supporting CRUD operations, filtered queries, and analytics. Foreign key constraints utilize CASCADE or SET NULL for data integrity.
 
 ### AI and Automation
 
 The system integrates OpenAI via Replit AI Integrations (using gpt-5) for content moderation, business listing validation, and managing an admin moderation queue for AI-flagged content.
+
+### Key Features
+
+- **Personalized Discovery Flow:** A 5-step flow capturing user preferences for tailored business recommendations.
+- **Dynamic Content & Layouts:** Homepage reorganization with dynamic business listings and community content, utilizing AI-generated category images.
+- **Admin Delete Functionality:** Comprehensive delete capabilities in the admin console for users and businesses with CASCADE deletion and confirmation dialogs.
 
 ## External Dependencies
 
@@ -70,147 +76,3 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 **AI and Automation:**
 - OpenAI Integration (via Replit AI Integrations)
 - p-limit, p-retry
-
-## Recent Features (November 2025)
-
-### Landing Page Images Implementation (November 19, 2025)
-
-Added engaging, on-brand imagery throughout the landing page with NO FACES requirement.
-
-**Images Generated:**
-- 11 AI-generated images (1.1-1.7M each) using OpenAI
-- Soft Editorial aesthetic: warm cream, beige, eucalyptus green tones
-- Service and ambiance-focused (no people/faces)
-- Stored in: `client/public/images/dallasbeautybook/` (served via Vite)
-
-**Images:**
-1. `hero-tools-and-textures.jpg` - Homepage hero (right column)
-2-8. `cat-*.jpg` (7 category images) - Business card defaults (medspa, injectables, lashes, brows, hair, nails, skin)
-9. `quiz-notebook-brush.jpg` - Quiz page and quiz card
-10. `pro-dashboard-abstract.jpg` - For Professionals section
-11. `community-background.jpg` - Optional community background (not used yet)
-
-**Technical Implementation:**
-- Created `client/src/lib/categoryImages.ts` utility with category → image mapping
-- Updated `BusinessCard` component to use `getBusinessImage()` with fallback logic
-- Homepage uses category defaults for all business cards via `getBusinessImage()`
-- Explore page uses category defaults for all business cards via `getBusinessImage()`
-- Created `/quiz` page with quiz image displayed alongside form (desktop only)
-- All images have proper alt text and loading attributes
-- Hero image uses loading="eager", others use loading="lazy"
-- Mobile responsive: grids stack, quiz image hidden on mobile
-
-**Homepage Updates:**
-- Hero section: Grid layout with text on left, image on right
-- Quiz card: Replaced gradient with actual quiz image
-- For Professionals: Replaced gradient/icon with pro dashboard image
-
-**Files Modified:**
-- `client/src/pages/Home.tsx` - Added hero, quiz, and pro images
-- `client/src/pages/Explore.tsx` - Uses getBusinessImage for business cards
-- `client/src/pages/Quiz.tsx` - New quiz page with image
-- `client/src/components/BusinessCard.tsx` - Updated to use Dbb components and getBusinessImage
-- `client/src/lib/categoryImages.ts` - New category image mapping utility
-- `client/src/App.tsx` - Added /quiz route
-
-### Homepage Reorganization with Dynamic Content (November 19, 2025)
-
-Reorganized homepage layout and added dynamic business listings and community submissions to Trending Categories section.
-
-**Layout Changes:**
-- Moved "Trending Categories" section to top of page (directly after Hero)
-- Moved "For Professionals" callout after Trending Categories
-- Feature Cards (Community/Quiz) moved to bottom
-- New order: Hero → Trending Categories → For Professionals → Feature Cards
-
-**Trending Categories Section:**
-- Added category filter buttons (All, Hair Salon, Med Spa, Skincare, Medical Aesthetics)
-- Filter buttons use forest green for selected state, sand for unselected state
-- Each category button includes circular thumbnail image (24x24px)
-- Dynamic business listings grid (max 4 businesses displayed)
-- Business cards show image, name, location, and category tag
-- Dynamic community submissions grid (max 3 recent forum posts)
-- Post cards show category/type tags, title, content preview, and interaction stats
-
-**Technical Implementation:**
-- Fetches businesses from `/api/businesses` using TanStack Query
-- Fetches forum posts from `/api/forum` using TanStack Query
-- Client-side filtering based on selected category
-- Responsive grid layouts (1-2-4 cols for businesses, 1-3 cols for posts)
-- Maintains Soft Editorial aesthetic with DbbCard, DbbTag components
-
-**Bug Fixes:**
-- Fixed "Learn More" link to point to `/claim-listing` (was `/claim`)
-- Fixed forum post links to `/forum/:id` (was `/community/post/:id`)
-- Fixed "Post a Question" link to `/forum` (was `/community`)
-
-### AI-Generated Category Images (November 19, 2025)
-
-Replaced text-only and icon-based category displays with AI-generated product photography that matches the Soft Editorial aesthetic.
-
-**Implementation:**
-- Generated 8 custom AI images for beauty categories using OpenAI image generation
-- Categories with images: Hair Salon, Nail Salon, Med Spa, Medical Aesthetics, Skincare, Makeup Artist, Lash & Brow, Massage & Wellness
-- Image style: Product-focused photography with warm cream backgrounds, forest green accents, professional editorial aesthetic (no people/faces)
-- Images stored in: `attached_assets/generated_images/`
-
-**Homepage Updates:**
-- Renamed section: "Trending Categories" → "Popular Categories"
-- Replaced simple tag-based display with elegant image cards
-- Grid layout: 2 columns on mobile, 4 on desktop
-- Each card features: Square AI-generated image, hover scale effect (105%), category name in serif font
-- Cards link to `/explore` with category filter applied
-
-**Explore Page Updates:**
-- Added small circular thumbnail images (6x6 pixels) to category filter buttons
-- Thumbnails appear to the left of category text
-- Maintains existing selection states (forest green for selected, sand for unselected)
-- "All" button correctly displays without image
-
-**Technical Details:**
-- Images imported using `@assets` alias for optimal Vite bundling
-- No runtime image loading - all assets bundled at build time
-- Responsive design with smooth hover transitions (300ms)
-- Dark mode compatible
-- Maintains SPA navigation using wouter Link components
-
-### Admin Delete Functionality (November 19, 2025)
-
-Implemented comprehensive delete capabilities in the admin console for managing users and businesses with CASCADE deletion and confirmation dialogs.
-
-**Backend Implementation:**
-- Added DELETE `/api/admin/users/:id` endpoint with validation (prevents self-deletion, admin deletion)
-- Added DELETE `/api/admin/businesses/:id` endpoint with ID and existence validation
-- Implemented `deleteUser()` and `deleteBusiness()` methods in storage interface and DbStorage
-- Updated all foreign key constraints in schema to use CASCADE or SET NULL:
-  - CASCADE: subscriptions, reviews, claim requests, saved items, analytics, reports
-  - SET NULL: businesses.claimedBy, audit trail fields (preserve history)
-
-**Frontend Implementation:**
-- Added delete buttons with Trash2 icons to Users and Businesses tabs in Admin.tsx
-- Implemented AlertDialog confirmation dialogs for both delete operations
-- Dialog shows entity name and warning about permanent deletion
-- Cancel button closes dialog without action
-- Delete mutations invalidate React Query cache and close dialog only after success
-- Success/error toasts provide user feedback
-- UI updates reactively after deletion (counts decrease)
-
-**Security & Validation:**
-- Admin role required (existing middleware)
-- Prevents admin from deleting themselves
-- Prevents deletion of other admin users
-- Validates business and user existence before deletion
-- Returns appropriate HTTP status codes (404, 403, 500)
-
-**Data Integrity:**
-- CASCADE deletion removes all related child records (subscriptions, posts, reviews, etc.)
-- SET NULL preserves audit trails and history (reviewedBy, bannedBy, etc.)
-- Businesses are unclaimed (not deleted) when owner is deleted
-- No orphaned records or foreign key violations
-
-**Files Modified:**
-- `server/routes/admin.ts` - Added DELETE endpoints
-- `server/storage.ts` - Added deleteUser/deleteBusiness interface methods
-- `server/db-storage.ts` - Implemented deletion logic
-- `client/src/pages/Admin.tsx` - Added delete buttons, dialogs, and mutations
-- `shared/schema.ts` - Updated all foreign key constraints with CASCADE/SET NULL
