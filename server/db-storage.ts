@@ -4,6 +4,7 @@ import {
   users, businesses, posts, articles, howTos, vendors, vendorProducts, claimRequests, saves,
   forumPosts, forumReplies, pendingBusinesses,
   subscriptions, abuseReports, userBans, adminActivityLogs, securityEvents, aiModerationQueue,
+  businessLeads, quizSubmissions, analyticsEvents,
   type User, type InsertUser,
   type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
@@ -21,7 +22,10 @@ import {
   type UserBan, type InsertUserBan,
   type AdminActivityLog, type InsertAdminActivityLog,
   type SecurityEvent, type InsertSecurityEvent,
-  type AiModerationQueue, type InsertAiModerationQueue
+  type AiModerationQueue, type InsertAiModerationQueue,
+  type BusinessLead, type InsertBusinessLead,
+  type QuizSubmission, type InsertQuizSubmission,
+  type AnalyticsEvent, type InsertAnalyticsEvent
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -761,5 +765,73 @@ export class DbStorage implements IStorage {
       .where(eq(aiModerationQueue.id, id))
       .returning();
     return result[0];
+  }
+
+  // ============ BUSINESS LEADS ============
+  async createBusinessLead(lead: InsertBusinessLead): Promise<BusinessLead> {
+    const result = await db.insert(businessLeads).values(lead).returning();
+    return result[0];
+  }
+
+  async getBusinessLeadsByBusinessId(businessId: number): Promise<BusinessLead[]> {
+    return db.select()
+      .from(businessLeads)
+      .where(eq(businessLeads.businessId, businessId))
+      .orderBy(desc(businessLeads.createdAt));
+  }
+
+  async getAllBusinessLeads(): Promise<BusinessLead[]> {
+    return db.select()
+      .from(businessLeads)
+      .orderBy(desc(businessLeads.createdAt));
+  }
+
+  // ============ QUIZ SUBMISSIONS ============
+  async createQuizSubmission(submission: InsertQuizSubmission): Promise<QuizSubmission> {
+    const result = await db.insert(quizSubmissions).values(submission).returning();
+    return result[0];
+  }
+
+  async getQuizSubmissionById(id: number): Promise<QuizSubmission | undefined> {
+    const result = await db.select()
+      .from(quizSubmissions)
+      .where(eq(quizSubmissions.id, id))
+      .limit(1);
+    return result[0];
+  }
+
+  async getAllQuizSubmissions(): Promise<QuizSubmission[]> {
+    return db.select()
+      .from(quizSubmissions)
+      .orderBy(desc(quizSubmissions.createdAt));
+  }
+
+  // ============ ANALYTICS EVENTS ============
+  async createAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent> {
+    const result = await db.insert(analyticsEvents).values(event).returning();
+    return result[0];
+  }
+
+  async getAnalyticsEventsByBusiness(businessId: number, eventType?: string): Promise<AnalyticsEvent[]> {
+    if (eventType) {
+      return db.select()
+        .from(analyticsEvents)
+        .where(and(
+          eq(analyticsEvents.businessId, businessId),
+          eq(analyticsEvents.eventType, eventType)
+        ))
+        .orderBy(desc(analyticsEvents.createdAt));
+    }
+    return db.select()
+      .from(analyticsEvents)
+      .where(eq(analyticsEvents.businessId, businessId))
+      .orderBy(desc(analyticsEvents.createdAt));
+  }
+
+  async getAllAnalyticsEvents(limit: number = 1000): Promise<AnalyticsEvent[]> {
+    return db.select()
+      .from(analyticsEvents)
+      .orderBy(desc(analyticsEvents.createdAt))
+      .limit(limit);
   }
 }

@@ -12,7 +12,10 @@ import {
   insertForumPostSchema,
   insertForumReplySchema,
   insertPendingBusinessSchema,
-  insertAbuseReportSchema
+  insertAbuseReportSchema,
+  insertBusinessLeadSchema,
+  insertQuizSubmissionSchema,
+  insertAnalyticsEventSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -1109,6 +1112,122 @@ ${forumUrls}
     } catch (error) {
       console.error("Error generating community sitemap:", error);
       res.status(500).send("Error generating sitemap");
+    }
+  });
+
+  // ============ BUSINESS LEADS ============
+  app.post("/api/leads", async (req: any, res) => {
+    try {
+      if (!req.body.businessId) {
+        return res.status(400).json({ error: "businessId is required" });
+      }
+      
+      const leadData = insertBusinessLeadSchema.parse(req.body);
+      const lead = await storage.createBusinessLead(leadData);
+      
+      let userId = null;
+      if (req.user?.claims?.sub) {
+        const replitId = req.user.claims.sub.toString();
+        const user = await storage.getUserByReplitId(replitId);
+        userId = user?.id || null;
+      }
+      
+      await storage.createAnalyticsEvent({
+        businessId: req.body.businessId,
+        eventType: "lead_form_submit",
+        userId,
+        sessionId: req.session?.id || null,
+        metadata: { source: req.body.source || "profile_page" },
+      });
+      
+      res.json(lead);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      console.error("Error creating business lead:", error);
+      res.status(500).json({ error: "Failed to create lead" });
+    }
+  });
+
+  app.get("/api/leads", isAuthenticated, isAdmin, async (_req, res) => {
+    try {
+      const leads = await storage.getAllBusinessLeads();
+      res.json(leads);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+      res.status(500).json({ error: "Failed to fetch leads" });
+    }
+  });
+
+  // ============ QUIZ SUBMISSIONS ============
+  app.post("/api/quiz", async (req: any, res) => {
+    try {
+      const enrichedData = {
+        ...req.body,
+        userId: req.user?.id || null,
+      };
+      
+      const quizData = insertQuizSubmissionSchema.parse(enrichedData);
+      const submission = await storage.createQuizSubmission(quizData);
+      
+      res.json({
+        submission,
+        matches: [],
+        message: "Quiz submitted successfully! We'll send your matches to your email."
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      console.error("Error creating quiz submission:", error);
+      res.status(500).json({ error: "Failed to submit quiz" });
+    }
+  });
+
+  app.get("/api/quiz", isAuthenticated, isAdmin, async (_req, res) => {
+    try {
+      const submissions = await storage.getAllQuizSubmissions();
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching quiz submissions:", error);
+      res.status(500).json({ error: "Failed to fetch quiz submissions" });
+    }
+  });
+
+  // ============ ANALYTICS EVENTS ============
+  // Note: Analytics are tracked server-side from other endpoints (leads, quiz, etc.)
+  // No public POST endpoint to prevent spam and data poisoning attacks
+  
+  app.get("/api/analytics/:businessId", isAuthenticated, async (req: any, res) => {
+    try {
+      const businessId = parseInt(req.params.businessId);
+      const { eventType } = req.query;
+      
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const business = await storage.getBusinessById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: "Business not found" });
+      }
+      
+      if (business.claimedBy !== user.id && user.role !== "admin") {
+        return res.status(403).json({ error: "Access denied" });
+      }
+      
+      const events = await storage.getAnalyticsEventsByBusiness(
+        businessId,
+        eventType as string | undefined
+      );
+      res.json(events);
+    } catch (error) {
+      console.error("Error fetching analytics events:", error);
+      res.status(500).json({ error: "Failed to fetch analytics events" });
     }
   });
 

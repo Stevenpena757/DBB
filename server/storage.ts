@@ -16,7 +16,10 @@ import {
   type UserBan, type InsertUserBan,
   type AdminActivityLog, type InsertAdminActivityLog,
   type SecurityEvent, type InsertSecurityEvent,
-  type AiModerationQueue, type InsertAiModerationQueue
+  type AiModerationQueue, type InsertAiModerationQueue,
+  type BusinessLead, type InsertBusinessLead,
+  type QuizSubmission, type InsertQuizSubmission,
+  type AnalyticsEvent, type InsertAnalyticsEvent
 } from "@shared/schema";
 
 export interface IStorage {
@@ -160,6 +163,21 @@ export interface IStorage {
   createAiModerationQueueItem(item: InsertAiModerationQueue): Promise<AiModerationQueue>;
   getAllAiModerationQueueItems(status?: string): Promise<AiModerationQueue[]>;
   updateAiModerationQueueItem(id: number, status: string, reviewedBy?: number, reviewNotes?: string): Promise<AiModerationQueue | undefined>;
+  
+  // Business Leads
+  createBusinessLead(lead: InsertBusinessLead): Promise<BusinessLead>;
+  getBusinessLeadsByBusinessId(businessId: number): Promise<BusinessLead[]>;
+  getAllBusinessLeads(): Promise<BusinessLead[]>;
+  
+  // Quiz Submissions
+  createQuizSubmission(submission: InsertQuizSubmission): Promise<QuizSubmission>;
+  getQuizSubmissionById(id: number): Promise<QuizSubmission | undefined>;
+  getAllQuizSubmissions(): Promise<QuizSubmission[]>;
+  
+  // Analytics Events
+  createAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent>;
+  getAnalyticsEventsByBusiness(businessId: number, eventType?: string): Promise<AnalyticsEvent[]>;
+  getAllAnalyticsEvents(limit?: number): Promise<AnalyticsEvent[]>;
 }
 
 export class MemStorage implements IStorage {
