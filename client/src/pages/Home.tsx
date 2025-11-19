@@ -97,8 +97,8 @@ export default function Home() {
                 onClick={() => setSelectedCategory('all')}
                 className="rounded-full"
                 style={{
-                  backgroundColor: selectedCategory === 'all' ? 'hsl(var(--forestLight))' : 'hsl(var(--sand))',
-                  color: selectedCategory === 'all' ? 'white' : 'hsl(var(--charcoal))',
+                  backgroundColor: selectedCategory === 'all' ? 'hsl(var(--dbb-forest))' : 'hsl(var(--dbb-sand))',
+                  color: selectedCategory === 'all' ? 'white' : 'hsl(var(--dbb-charcoal))',
                   borderColor: 'transparent',
                 }}
                 data-testid="button-category-all"
@@ -112,8 +112,8 @@ export default function Home() {
                   onClick={() => setSelectedCategory(category.link)}
                   className="rounded-full flex items-center gap-2"
                   style={{
-                    backgroundColor: selectedCategory === category.link ? 'hsl(var(--forestLight))' : 'hsl(var(--sand))',
-                    color: selectedCategory === category.link ? 'white' : 'hsl(var(--charcoal))',
+                    backgroundColor: selectedCategory === category.link ? 'hsl(var(--dbb-forest))' : 'hsl(var(--dbb-sand))',
+                    color: selectedCategory === category.link ? 'white' : 'hsl(var(--dbb-charcoal))',
                     borderColor: 'transparent',
                   }}
                   data-testid={`button-category-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
