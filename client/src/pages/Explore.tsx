@@ -82,13 +82,13 @@ export default function Explore() {
           {/* Search Bar */}
           <div className="mb-8">
             <div className="relative max-w-2xl">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-dbb-charcoalSoft" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-dbb-charcoalSoft" />
               <Input
                 type="search"
                 placeholder="Search by name, service, or specialty..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-12 h-12 rounded-full border-dbb-borderSoft bg-dbb-surface"
+                className="pl-12 border-dbb-sand dark:border-border bg-card focus:border-dbb-forest dark:focus:border-primary"
                 data-testid="input-search"
               />
             </div>
@@ -112,7 +112,7 @@ export default function Explore() {
                   onClick={() => setSelectedCategory(category)}
                   className={`px-4 py-2 rounded-full transition-all ${
                     selectedCategory === category
-                      ? 'bg-dbb-eucalyptus text-dbb-charcoal'
+                      ? 'bg-dbb-forestLight text-dbb-charcoal dark:bg-dbb-forest dark:text-white'
                       : 'bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80'
                   }`}
                   style={{ fontFamily: 'var(--font-body)' }}
@@ -142,7 +142,7 @@ export default function Explore() {
                   onClick={() => setSelectedLocation(loc)}
                   className={`px-4 py-2 rounded-full transition-all ${
                     selectedLocation === loc
-                      ? 'bg-dbb-rose text-dbb-charcoal'
+                      ? 'bg-dbb-rose text-dbb-charcoal dark:bg-dbb-rose dark:text-dbb-charcoal'
                       : 'bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80'
                   }`}
                   style={{ fontFamily: 'var(--font-body)' }}
@@ -193,7 +193,6 @@ export default function Explore() {
                   setSelectedCategory('All');
                   setSelectedLocation('All Locations');
                 }}
-                className="rounded-full"
                 variant="outline"
                 data-testid="button-clear-filters"
               >
@@ -243,7 +242,7 @@ export default function Explore() {
                         </p>
                       )}
                       <Button 
-                        className="w-full rounded-full"
+                        className="w-full"
                         variant="outline"
                         data-testid={`button-view-${business.id}`}
                       >
