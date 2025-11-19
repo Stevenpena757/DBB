@@ -81,7 +81,7 @@ Added engaging, on-brand imagery throughout the landing page with NO FACES requi
 - 11 AI-generated images (1.1-1.7M each) using OpenAI
 - Soft Editorial aesthetic: warm cream, beige, eucalyptus green tones
 - Service and ambiance-focused (no people/faces)
-- Stored in: `public/images/dallasbeautybook/`
+- Stored in: `client/public/images/dallasbeautybook/` (served via Vite)
 
 **Images:**
 1. `hero-tools-and-textures.jpg` - Homepage hero (right column)
