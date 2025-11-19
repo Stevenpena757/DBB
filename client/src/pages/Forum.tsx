@@ -195,7 +195,7 @@ export default function Forum() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-dbb-eucalyptus border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-dbb-forest border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-dbb-charcoalSoft">Loading community...</p>
         </div>
       </div>
@@ -361,7 +361,7 @@ export default function Forum() {
                 onClick={() => setSelectedType("all")}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedType === "all" 
-                    ? "bg-dbb-eucalyptus text-dbb-charcoal shadow-sm" 
+                    ? "bg-dbb-forestLight dark:bg-dbb-forest text-dbb-charcoal shadow-sm" 
                     : "bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80"
                 }`}
                 data-testid="button-filter-all"
@@ -372,7 +372,7 @@ export default function Forum() {
                 onClick={() => setSelectedType("question")}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedType === "question" 
-                    ? "bg-dbb-eucalyptus text-dbb-charcoal shadow-sm" 
+                    ? "bg-dbb-forestLight dark:bg-dbb-forest text-dbb-charcoal shadow-sm" 
                     : "bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80"
                 }`}
                 data-testid="button-filter-questions"
@@ -383,7 +383,7 @@ export default function Forum() {
                 onClick={() => setSelectedType("tip")}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedType === "tip" 
-                    ? "bg-dbb-eucalyptus text-dbb-charcoal shadow-sm" 
+                    ? "bg-dbb-forestLight dark:bg-dbb-forest text-dbb-charcoal shadow-sm" 
                     : "bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80"
                 }`}
                 data-testid="button-filter-tips"
@@ -452,7 +452,7 @@ export default function Forum() {
                                 className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover-elevate active-elevate-2 transition-all"
                                 data-testid={`button-upvote-${post.id}`}
                               >
-                                <ThumbsUp className="h-5 w-5 text-dbb-eucalyptus" />
+                                <ThumbsUp className="h-5 w-5 text-dbb-forest" />
                                 <span className="text-sm font-semibold text-dbb-charcoal">{post.upvotes}</span>
                               </button>
                             </div>
@@ -469,7 +469,7 @@ export default function Forum() {
                                   <>
                                     <span className="text-dbb-charcoalSoft">•</span>
                                     <span 
-                                      className="flex items-center gap-1 text-sm text-dbb-eucalyptus font-medium"
+                                      className="flex items-center gap-1 text-sm text-dbb-forest font-medium"
                                       data-testid={`badge-answered-${post.id}`}
                                     >
                                       <CheckCircle className="h-3 w-3" />
@@ -514,9 +514,9 @@ export default function Forum() {
 
               <aside className="lg:col-span-1">
                 <div className="sticky top-6 space-y-6">
-                  <DbbCard className="p-6 bg-gradient-to-br from-dbb-eucalyptus/10 to-dbb-rose/10">
+                  <DbbCard className="p-6 bg-gradient-to-br from-dbb-forestLight/10 to-dbb-rose/10">
                     <div className="text-center mb-5">
-                      <Sparkles className="h-10 w-10 mx-auto mb-3 text-dbb-eucalyptus" />
+                      <Sparkles className="h-10 w-10 mx-auto mb-3 text-dbb-forest" />
                       <h3 
                         className="text-xl mb-2 text-dbb-charcoal"
                         style={{ fontFamily: 'var(--font-heading)' }}
@@ -628,19 +628,19 @@ export default function Forum() {
                     </h3>
                     <ul className="space-y-3 text-sm text-dbb-charcoalSoft leading-relaxed">
                       <li className="flex gap-2">
-                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span className="text-dbb-forest mt-0.5">•</span>
                         <span>Be respectful and professional</span>
                       </li>
                       <li className="flex gap-2">
-                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span className="text-dbb-forest mt-0.5">•</span>
                         <span>Share accurate information</span>
                       </li>
                       <li className="flex gap-2">
-                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span className="text-dbb-forest mt-0.5">•</span>
                         <span>Help fellow professionals grow</span>
                       </li>
                       <li className="flex gap-2">
-                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span className="text-dbb-forest mt-0.5">•</span>
                         <span>No spam or self-promotion</span>
                       </li>
                     </ul>

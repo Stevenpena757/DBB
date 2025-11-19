@@ -14,7 +14,7 @@ export const DbbCard = ({ className = "", ...props }: React.HTMLAttributes<HTMLD
 export const DbbButtonPrimary = ({ className = "", ...props }: ButtonProps) => (
   <Button
     className={cn(
-      "rounded-full bg-dbb-eucalyptus text-dbb-charcoal hover:bg-dbb-eucalyptus/90 font-medium",
+      "rounded-full bg-dbb-forest text-white hover:bg-dbb-forest/90 font-medium",
       className
     )}
     {...props}

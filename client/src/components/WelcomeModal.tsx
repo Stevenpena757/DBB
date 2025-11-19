@@ -52,9 +52,9 @@ export function WelcomeModal() {
         className="sm:max-w-2xl rounded-3xl p-0 overflow-hidden"
         data-testid="modal-welcome"
       >
-        <div className="bg-gradient-to-br from-peach-mist to-white p-8 md:p-10">
+        <div className="bg-gradient-to-br from-dbb-surface to-background p-8 md:p-10">
           <DialogHeader className="space-y-4 text-center">
-            <div className="mx-auto w-20 h-20 bg-gradient-to-br from-sunset to-peach rounded-2xl flex items-center justify-center shadow-lg mb-4">
+            <div className="mx-auto w-20 h-20 bg-dbb-forest rounded-2xl flex items-center justify-center shadow-lg mb-4">
               <Sparkles className="h-10 w-10 text-white" />
             </div>
             
@@ -86,7 +86,7 @@ export function WelcomeModal() {
               <Button
                 size="lg"
                 onClick={handleExplore}
-                className="w-full rounded-2xl font-bold bg-gradient-to-r from-sunset to-peach hover:opacity-90 transition-all hover:scale-105 shadow-md h-16"
+                className="w-full rounded-2xl font-bold bg-dbb-forest hover:bg-dbb-forest/90 text-white shadow-md h-16"
                 style={{ fontFamily: 'var(--font-ui)' }}
                 data-testid="button-modal-explore"
               >

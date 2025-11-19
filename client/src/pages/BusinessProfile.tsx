@@ -184,7 +184,7 @@ export default function BusinessProfile() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-dbb-eucalyptus border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-dbb-forest border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-dbb-charcoalSoft">Loading...</p>
         </div>
       </div>
@@ -243,7 +243,7 @@ export default function BusinessProfile() {
                   {business.name}
                 </h1>
                 {business.isClaimed && (
-                  <CheckCircle className="h-7 w-7 text-dbb-eucalyptus" data-testid="icon-claimed" />
+                  <CheckCircle className="h-7 w-7 text-dbb-forest" data-testid="icon-claimed" />
                 )}
               </div>
               <p className="text-dbb-charcoalSoft text-lg mb-4 leading-relaxed">{business.description}</p>
@@ -446,7 +446,7 @@ export default function BusinessProfile() {
                             >
                               {proofDocument ? (
                                 <>
-                                  <FileCheck className="h-8 w-8 text-dbb-eucalyptus" />
+                                  <FileCheck className="h-8 w-8 text-dbb-forest" />
                                   <span className="text-sm font-medium text-dbb-charcoal">{proofDocument.name}</span>
                                   <span className="text-xs text-dbb-charcoalSoft">
                                     {(proofDocument.size / 1024 / 1024).toFixed(2)} MB
@@ -595,7 +595,7 @@ export default function BusinessProfile() {
                 {business.phone && (
                   <a 
                     href={`tel:${business.phone}`} 
-                    className="flex items-center gap-3 text-sm hover:text-dbb-eucalyptus transition-colors"
+                    className="flex items-center gap-3 text-sm hover:text-dbb-forest transition-colors"
                   >
                     <Phone className="h-4 w-4 text-dbb-charcoalSoft" />
                     <span className="text-dbb-charcoal">{business.phone}</span>
@@ -606,7 +606,7 @@ export default function BusinessProfile() {
                     href={business.website} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="flex items-center gap-3 text-sm hover:text-dbb-eucalyptus transition-colors"
+                    className="flex items-center gap-3 text-sm hover:text-dbb-forest transition-colors"
                   >
                     <Globe className="h-4 w-4 text-dbb-charcoalSoft" />
                     <span className="text-dbb-charcoal">Visit Website</span>

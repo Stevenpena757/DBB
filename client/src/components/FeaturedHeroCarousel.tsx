@@ -308,7 +308,7 @@ export function FeaturedHeroCarousel() {
             <Link href="/explore" className="flex-1 sm:flex-initial">
               <Button 
                 size="lg" 
-                className="w-full font-bold bg-gradient-to-r from-sunset to-peach hover:opacity-90 transition-all hover:scale-105 rounded-full shadow-md" 
+                className="w-full font-bold bg-dbb-forest hover:bg-dbb-forest/90 text-white rounded-full shadow-md" 
                 style={{ fontFamily: 'var(--font-ui)' }}
                 data-testid="button-hero-explore"
               >

@@ -12,7 +12,7 @@ export default function StartHere() {
       
       <main className="flex-1">
         {/* Hero */}
-        <section className="py-16 md:py-24 bg-gradient-to-br from-peach-mist to-white" data-testid="section-hero">
+        <section className="py-16 md:py-24 bg-gradient-to-br from-dbb-surface to-background" data-testid="section-hero">
           <div className="container mx-auto px-4 max-w-4xl text-center">
             <Badge 
               variant="outline" 
@@ -113,7 +113,7 @@ export default function StartHere() {
         </section>
 
         {/* Who It's For */}
-        <section className="py-12 md:py-16 bg-gradient-to-br from-white to-mint/5" data-testid="section-who-for">
+        <section className="py-12 md:py-16 bg-gradient-to-br from-background to-dbb-forestLight/5" data-testid="section-who-for">
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="text-center mb-12">
               <h2 
@@ -126,7 +126,7 @@ export default function StartHere() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="text-center md:text-left" data-testid="for-clients">
-                <div className="w-16 h-16 mx-auto md:mx-0 mb-6 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center shadow-lg">
+                <div className="w-16 h-16 mx-auto md:mx-0 mb-6 rounded-full bg-dbb-forest flex items-center justify-center shadow-lg">
                   <Users className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -153,7 +153,7 @@ export default function StartHere() {
               </div>
 
               <div className="text-center md:text-left" data-testid="for-professionals">
-                <div className="w-16 h-16 mx-auto md:mx-0 mb-6 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center shadow-lg">
+                <div className="w-16 h-16 mx-auto md:mx-0 mb-6 rounded-full bg-dbb-forest flex items-center justify-center shadow-lg">
                   <Sparkles className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'var(--font-heading)' }}>
@@ -205,7 +205,7 @@ export default function StartHere() {
               <Card className="rounded-2xl hover-elevate" data-testid="step-1">
                 <CardContent className="p-6 md:p-8">
                   <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center text-white font-bold text-xl">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-dbb-forest flex items-center justify-center text-white font-bold text-xl">
                       1
                     </div>
                     <div className="flex-1">
@@ -228,7 +228,7 @@ export default function StartHere() {
               <Card className="rounded-2xl hover-elevate" data-testid="step-2">
                 <CardContent className="p-6 md:p-8">
                   <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center text-white font-bold text-xl">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-dbb-forest flex items-center justify-center text-white font-bold text-xl">
                       2
                     </div>
                     <div className="flex-1">
@@ -251,7 +251,7 @@ export default function StartHere() {
               <Card className="rounded-2xl hover-elevate" data-testid="step-3">
                 <CardContent className="p-6 md:p-8">
                   <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-sunset to-peach flex items-center justify-center text-white font-bold text-xl">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-dbb-forest flex items-center justify-center text-white font-bold text-xl">
                       3
                     </div>
                     <div className="flex-1">
@@ -275,7 +275,7 @@ export default function StartHere() {
         </section>
 
         {/* Quick Actions */}
-        <section className="py-12 md:py-16 bg-gradient-to-br from-peach-mist to-white" data-testid="section-quick-actions">
+        <section className="py-12 md:py-16 bg-gradient-to-br from-dbb-surface to-background" data-testid="section-quick-actions">
           <div className="container mx-auto px-4 max-w-4xl text-center">
             <h2 
               className="text-3xl md:text-4xl font-bold mb-8" 
@@ -338,7 +338,7 @@ export default function StartHere() {
               <a href="/">
                 <Button 
                   size="lg" 
-                  className="rounded-full font-bold bg-gradient-to-r from-sunset to-peach hover:opacity-90 transition-all hover:scale-105 shadow-md" 
+                  className="rounded-full font-bold bg-dbb-forest hover:bg-dbb-forest/90 text-white shadow-md" 
                   style={{ fontFamily: 'var(--font-ui)' }}
                   data-testid="button-back-home"
                 >
