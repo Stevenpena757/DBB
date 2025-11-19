@@ -245,10 +245,10 @@ export default function Home() {
           </DbbContainer>
         </section>
 
-        {/* Feature Cards - Ask Community + Beauty Match Quiz + Beauty Book */}
+        {/* Feature Cards - Ask Community + Beauty Book */}
         <section className="py-12" data-testid="section-features">
           <DbbContainer className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Ask the Community Card */}
               <DbbCard className="overflow-hidden" data-testid="card-community">
                 <div className="aspect-[4/3] bg-gradient-to-br from-dbb-rose to-dbb-sand flex items-center justify-center">
@@ -276,41 +276,6 @@ export default function Home() {
                       data-testid="button-post-question"
                     >
                       Post a Question
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </DbbCard>
-
-              {/* Beauty Match Quiz Card */}
-              <DbbCard className="overflow-hidden" data-testid="card-quiz">
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
-                    alt="Notebook and beauty tools arranged neatly on a soft background"
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="p-8">
-                  <h2 
-                    className="text-2xl md:text-3xl mb-3 text-dbb-charcoal"
-                    style={{ fontFamily: 'var(--font-heading)' }}
-                  >
-                    Take the Beauty Match Quiz
-                  </h2>
-                  <p 
-                    className="text-dbb-charcoalSoft mb-6"
-                    style={{ fontFamily: 'var(--font-body)' }}
-                  >
-                    Not sure where to go? Answer a few questions and we'll suggest DFW beauty pros.
-                  </p>
-                  <Link href="/quiz">
-                    <Button 
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
-                      data-testid="button-get-started"
-                    >
-                      Get Started
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
