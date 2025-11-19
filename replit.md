@@ -73,6 +73,37 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 
 ## Recent Features (November 2025)
 
+### Homepage Reorganization with Dynamic Content (November 19, 2025)
+
+Reorganized homepage layout and added dynamic business listings and community submissions to Trending Categories section.
+
+**Layout Changes:**
+- Moved "Trending Categories" section to top of page (directly after Hero)
+- Moved "For Professionals" callout after Trending Categories
+- Feature Cards (Community/Quiz) moved to bottom
+- New order: Hero → Trending Categories → For Professionals → Feature Cards
+
+**Trending Categories Section:**
+- Added category filter buttons (All, Hair Salon, Med Spa, Skincare, Medical Aesthetics)
+- Filter buttons use forest green for selected state, sand for unselected state
+- Each category button includes circular thumbnail image (24x24px)
+- Dynamic business listings grid (max 4 businesses displayed)
+- Business cards show image, name, location, and category tag
+- Dynamic community submissions grid (max 3 recent forum posts)
+- Post cards show category/type tags, title, content preview, and interaction stats
+
+**Technical Implementation:**
+- Fetches businesses from `/api/businesses` using TanStack Query
+- Fetches forum posts from `/api/forum` using TanStack Query
+- Client-side filtering based on selected category
+- Responsive grid layouts (1-2-4 cols for businesses, 1-3 cols for posts)
+- Maintains Soft Editorial aesthetic with DbbCard, DbbTag components
+
+**Bug Fixes:**
+- Fixed "Learn More" link to point to `/claim-listing` (was `/claim`)
+- Fixed forum post links to `/forum/:id` (was `/community/post/:id`)
+- Fixed "Post a Question" link to `/forum` (was `/community`)
+
 ### AI-Generated Category Images (November 19, 2025)
 
 Replaced text-only and icon-based category displays with AI-generated product photography that matches the Soft Editorial aesthetic.
