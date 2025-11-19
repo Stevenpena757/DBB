@@ -593,8 +593,65 @@ export const beautyBooks = pgTable("beauty_books", {
 });
 
 export type BeautyBook = typeof beautyBooks.$inferSelect;
+
+// Define constants for validation
+export const ENHANCE_AREAS = [
+  "Skin glow & complexion",
+  "Lashes",
+  "Brows",
+  "Nails",
+  "Hair care & styling",
+  "Injectable enhancements",
+  "Sculpting & body contour",
+  "Wellness & recovery",
+  "Anti-aging optimization",
+  "I'm exploring",
+] as const;
+
+export const VIBE_OPTIONS = [
+  "Natural & minimal",
+  "Clean clinical",
+  "Luxury spa",
+  "Trendy & glam",
+  "Quiet & private",
+  "Budget-friendly",
+  "First-timer friendly",
+] as const;
+
+export const FREQUENCY_OPTIONS = [
+  "Monthly maintenance",
+  "Seasonal refresh",
+  "Special occasions",
+  "Treating myself",
+  "Exploring",
+] as const;
+
+export const DFW_CITIES = [
+  "Dallas",
+  "Plano",
+  "Frisco",
+  "Arlington",
+  "Irving",
+  "Fort Worth",
+  "McKinney",
+  "Allen",
+  "Richardson",
+  "Garland",
+] as const;
+
 export const insertBeautyBookSchema = createInsertSchema(beautyBooks).omit({
   id: true,
   createdAt: true,
+}).extend({
+  email: z.string().email("Please enter a valid email address"),
+  enhanceAreas: z.array(z.enum(ENHANCE_AREAS)).min(1, "Please select at least one area of interest"),
+  vibe: z.array(z.enum(VIBE_OPTIONS)).min(1, "Please select at least one vibe"),
+  city: z.enum(DFW_CITIES, { required_error: "Please select a city" }),
+  frequency: z.enum(FREQUENCY_OPTIONS, { required_error: "Please select your beauty routine frequency" }),
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  userId: z.number().optional().nullable(),
+  preferences: z.any().optional(),
+  consentMarketing: z.boolean().default(false),
 });
 export type InsertBeautyBook = z.infer<typeof insertBeautyBookSchema>;
