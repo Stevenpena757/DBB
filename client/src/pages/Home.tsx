@@ -176,7 +176,7 @@ export default function Home() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {recentForumPosts.map((post) => (
-                  <Link key={post.id} href={`/community/post/${post.id}`}>
+                  <Link key={post.id} href={`/forum/${post.id}`}>
                     <DbbCard className="hover-elevate active-elevate-2 cursor-pointer p-6">
                       <div className="flex items-center gap-2 mb-3">
                         <DbbTag>{post.category}</DbbTag>
@@ -221,7 +221,7 @@ export default function Home() {
                   <br />
                   Grow Your Business
                 </h2>
-                <Link href="/claim">
+                <Link href="/claim-listing">
                   <Button 
                     variant="ghost" 
                     className="p-0 h-auto text-dbb-charcoal hover:text-dbb-charcoalSoft text-base underline"
@@ -260,7 +260,7 @@ export default function Home() {
                   >
                     Get advice & recommendations
                   </p>
-                  <Link href="/community">
+                  <Link href="/forum">
                     <Button 
                       variant="ghost" 
                       className="p-0 h-auto text-dbb-charcoal hover:text-dbb-charcoalSoft underline"
