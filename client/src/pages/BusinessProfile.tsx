@@ -17,6 +17,7 @@ import { SiTiktok } from "react-icons/si";
 import type { Business, Article, HowTo } from "@shared/schema";
 import { localBusinessJsonLd, injectJsonLd, removeJsonLd } from "@/lib/schema";
 import { DbbCard, DbbButtonPrimary, DbbTag } from "@/components/dbb/DbbComponents";
+import { FollowButton } from "@/components/FollowButton";
 
 const claimFormSchema = z.object({
   claimantName: z.string().min(2, "Name required"),
@@ -256,6 +257,7 @@ export default function BusinessProfile() {
             </div>
 
             <div className="flex gap-3">
+              <FollowButton businessId={business.id} className="rounded-full" />
               <Button variant="outline" size="icon" className="rounded-full" data-testid="button-save">
                 <Bookmark className="h-4 w-4" />
               </Button>

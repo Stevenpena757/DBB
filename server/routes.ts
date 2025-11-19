@@ -16,7 +16,8 @@ import {
   insertBusinessLeadSchema,
   insertQuizSubmissionSchema,
   insertAnalyticsEventSchema,
-  insertBeautyBookSchema
+  insertBeautyBookSchema,
+  insertUserGoalSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -1257,6 +1258,254 @@ ${forumUrls}
     } catch (error) {
       console.error("Error fetching analytics events:", error);
       res.status(500).json({ error: "Failed to fetch analytics events" });
+    }
+  });
+
+  // ============ USER PROFILE & FOLLOWS ============
+  // Follow/Unfollow Business
+  app.post("/api/follows/:businessId", isAuthenticated, async (req: any, res) => {
+    try {
+      const businessId = parseInt(req.params.businessId);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const business = await storage.getBusinessById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: "Business not found" });
+      }
+      
+      const follow = await storage.followBusiness(user.id, businessId);
+      res.json(follow);
+    } catch (error) {
+      console.error("Error following business:", error);
+      res.status(500).json({ error: "Failed to follow business" });
+    }
+  });
+
+  app.delete("/api/follows/:businessId", isAuthenticated, async (req: any, res) => {
+    try {
+      const businessId = parseInt(req.params.businessId);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      await storage.unfollowBusiness(user.id, businessId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error unfollowing business:", error);
+      res.status(500).json({ error: "Failed to unfollow business" });
+    }
+  });
+
+  app.get("/api/follows/check/:businessId", isAuthenticated, async (req: any, res) => {
+    try {
+      const businessId = parseInt(req.params.businessId);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const isFollowing = await storage.isFollowing(user.id, businessId);
+      res.json({ isFollowing });
+    } catch (error) {
+      console.error("Error checking follow status:", error);
+      res.status(500).json({ error: "Failed to check follow status" });
+    }
+  });
+
+  app.get("/api/profile/follows", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const followedBusinesses = await storage.getUserFollowsWithBusinesses(user.id);
+      res.json(followedBusinesses);
+    } catch (error) {
+      console.error("Error fetching user follows:", error);
+      res.status(500).json({ error: "Failed to fetch followed businesses" });
+    }
+  });
+
+  // User Goals
+  app.get("/api/profile/goals", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const goals = await storage.getUserGoals(user.id);
+      res.json(goals);
+    } catch (error) {
+      console.error("Error fetching user goals:", error);
+      res.status(500).json({ error: "Failed to fetch goals" });
+    }
+  });
+
+  app.post("/api/profile/goals", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const goalData = insertUserGoalSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
+      
+      const goal = await storage.createUserGoal(goalData);
+      res.json(goal);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      console.error("Error creating goal:", error);
+      res.status(500).json({ error: "Failed to create goal" });
+    }
+  });
+
+  app.patch("/api/profile/goals/:id", isAuthenticated, async (req: any, res) => {
+    try {
+      const goalId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const updates = insertUserGoalSchema.partial().parse(req.body);
+      const goal = await storage.updateUserGoal(goalId, updates);
+      res.json(goal);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      console.error("Error updating goal:", error);
+      res.status(500).json({ error: "Failed to update goal" });
+    }
+  });
+
+  app.post("/api/profile/goals/:id/complete", isAuthenticated, async (req: any, res) => {
+    try {
+      const goalId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const goal = await storage.completeUserGoal(goalId);
+      res.json(goal);
+    } catch (error) {
+      console.error("Error completing goal:", error);
+      res.status(500).json({ error: "Failed to complete goal" });
+    }
+  });
+
+  app.delete("/api/profile/goals/:id", isAuthenticated, async (req: any, res) => {
+    try {
+      const goalId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      await storage.deleteUserGoal(goalId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting goal:", error);
+      res.status(500).json({ error: "Failed to delete goal" });
+    }
+  });
+
+  // User Promotions
+  app.get("/api/profile/promotions", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const activeOnly = req.query.active === "true";
+      const promotions = await storage.getUserPromotions(user.id, activeOnly);
+      res.json(promotions);
+    } catch (error) {
+      console.error("Error fetching promotions:", error);
+      res.status(500).json({ error: "Failed to fetch promotions" });
+    }
+  });
+
+  app.post("/api/profile/promotions/:id/use", isAuthenticated, async (req: any, res) => {
+    try {
+      const promoId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const promotion = await storage.markPromotionUsed(promoId);
+      res.json(promotion);
+    } catch (error) {
+      console.error("Error marking promotion as used:", error);
+      res.status(500).json({ error: "Failed to mark promotion as used" });
+    }
+  });
+
+  // User Profile Data
+  app.get("/api/profile", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const [beautyBooks, goals, promotions, followedBusinesses, forumPosts] = await Promise.all([
+        storage.getUserBeautyBooks(user.id),
+        storage.getUserGoals(user.id),
+        storage.getUserPromotions(user.id, true),
+        storage.getUserFollowsWithBusinesses(user.id),
+        storage.getForumPostsByUserId(user.id),
+      ]);
+      
+      res.json({
+        user,
+        beautyBooks,
+        goals,
+        promotions,
+        followedBusinesses,
+        forumPosts,
+      });
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+      res.status(500).json({ error: "Failed to fetch user profile" });
     }
   });
 

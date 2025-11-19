@@ -194,6 +194,7 @@ export interface IStorage {
   followBusiness(userId: number, businessId: number): Promise<UserBusinessFollow>;
   unfollowBusiness(userId: number, businessId: number): Promise<void>;
   getUserFollows(userId: number): Promise<UserBusinessFollow[]>;
+  getUserFollowsWithBusinesses(userId: number): Promise<Business[]>;
   isFollowing(userId: number, businessId: number): Promise<boolean>;
   getBusinessFollowerCount(businessId: number): Promise<number>;
   

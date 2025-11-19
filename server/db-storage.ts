@@ -892,6 +892,18 @@ export class DbStorage implements IStorage {
       .orderBy(desc(userBusinessFollows.createdAt));
   }
 
+  async getUserFollowsWithBusinesses(userId: number): Promise<Business[]> {
+    const follows = await db.select({
+      business: businesses,
+    })
+      .from(userBusinessFollows)
+      .innerJoin(businesses, eq(userBusinessFollows.businessId, businesses.id))
+      .where(eq(userBusinessFollows.userId, userId))
+      .orderBy(desc(userBusinessFollows.createdAt));
+    
+    return follows.map(f => f.business);
+  }
+
   async isFollowing(userId: number, businessId: number): Promise<boolean> {
     const result = await db.select()
       .from(userBusinessFollows)
