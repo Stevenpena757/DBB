@@ -20,9 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import type { ForumPost } from "@shared/schema";
-import { MessageCircle, ThumbsUp, Eye, CheckCircle, Plus } from "lucide-react";
+import { MessageCircle, ThumbsUp, Eye, CheckCircle, Plus, Send, Sparkles } from "lucide-react";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -37,6 +36,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { DbbCard, DbbButtonPrimary, DbbTag, DbbSection } from "@/components/dbb/DbbComponents";
 
 const createPostSchema = z.object({
   type: z.enum(["question", "tip"]),
@@ -45,20 +45,38 @@ const createPostSchema = z.object({
   content: z.string().min(20, "Content must be at least 20 characters"),
 });
 
+const leadCaptureSchema = z.object({
+  name: z.string().min(2, "Name required"),
+  email: z.string().email("Valid email required"),
+  phone: z.string().min(10, "Valid phone required"),
+  interests: z.string().min(5, "Please tell us your interests"),
+});
+
 export default function Forum() {
   const { isAuthenticated } = useAuth();
   const { toast } = useToast();
   const [selectedType, setSelectedType] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isLeadCaptureOpen, setIsLeadCaptureOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof createPostSchema>>({
+  const postForm = useForm<z.infer<typeof createPostSchema>>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
       type: "question",
       category: "",
       title: "",
       content: "",
+    },
+  });
+
+  const leadForm = useForm<z.infer<typeof leadCaptureSchema>>({
+    resolver: zodResolver(leadCaptureSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      interests: "",
     },
   });
 
@@ -89,7 +107,7 @@ export default function Forum() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/forum"] });
       setIsCreateDialogOpen(false);
-      form.reset();
+      postForm.reset();
       toast({
         title: "Success",
         description: "Your post has been created!",
@@ -99,6 +117,38 @@ export default function Forum() {
       toast({
         title: "Error",
         description: "Failed to create post. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const leadCaptureMutation = useMutation({
+    mutationFn: async (data: z.infer<typeof leadCaptureSchema>) => {
+      const response = await fetch(`/api/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          message: `Interested in: ${data.interests}`,
+          source: "forum_recommendation",
+        }),
+        credentials: "include"
+      });
+      if (!response.ok) throw new Error("Failed to submit");
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Thanks for reaching out!",
+        description: "We'll send you personalized recommendations soon.",
+      });
+      leadForm.reset();
+      setIsLeadCaptureOpen(false);
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to submit. Please try again.",
         variant: "destructive",
       });
     },
@@ -137,52 +187,62 @@ export default function Forum() {
     createPostMutation.mutate(data);
   };
 
+  const handleLeadSubmit = (data: z.infer<typeof leadCaptureSchema>) => {
+    leadCaptureMutation.mutate(data);
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-lg font-semibold mb-2">Loading...</div>
-          <p className="text-muted-foreground">Loading forum posts</p>
+          <div className="w-16 h-16 border-4 border-dbb-eucalyptus border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-dbb-charcoalSoft">Loading community...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col pb-16 md:pb-0 bg-background">
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0">
       <Header />
       <main className="flex-1">
-        <section className="py-10 border-b bg-white shadow-sm">
+        <DbbSection className="bg-dbb-surface border-b border-dbb-borderSoft">
           <div className="container mx-auto px-4">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
               <div>
-                <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-sunset to-peach bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-heading)' }}>
-                  Q&A / Tips Community
+                <h1 
+                  className="text-4xl md:text-5xl mb-3 text-dbb-charcoal"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  Community Q&A
                 </h1>
-                <p className="text-muted-foreground mt-3 text-lg" style={{ fontFamily: 'var(--font-body)' }}>
-                  Ask questions, share tips, and learn from the DFW beauty community
+                <p className="text-dbb-charcoalSoft text-lg leading-relaxed max-w-2xl">
+                  Connect with DFW beauty professionals. Ask questions, share expertise, grow together.
                 </p>
               </div>
               <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button
+                  <DbbButtonPrimary
                     size="lg"
-                    className="font-bold bg-gradient-to-r from-sunset to-peach hover:scale-105 transition-all rounded-full shadow-lg"
-                    style={{ fontFamily: 'var(--font-ui)' }}
                     data-testid="button-create-post"
                   >
                     <Plus className="h-5 w-5 mr-2" />
-                    Create Post
-                  </Button>
+                    Share Your Voice
+                  </DbbButtonPrimary>
                 </DialogTrigger>
                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle>Create a New Post</DialogTitle>
+                    <DialogTitle 
+                      className="text-dbb-charcoal text-2xl"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      Create a Post
+                    </DialogTitle>
                   </DialogHeader>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+                  <Form {...postForm}>
+                    <form onSubmit={postForm.handleSubmit(handleSubmit)} className="space-y-4">
                       <FormField
-                        control={form.control}
+                        control={postForm.control}
                         name="type"
                         render={({ field }) => (
                           <FormItem>
@@ -204,7 +264,7 @@ export default function Forum() {
                       />
 
                       <FormField
-                        control={form.control}
+                        control={postForm.control}
                         name="category"
                         render={({ field }) => (
                           <FormItem>
@@ -232,7 +292,7 @@ export default function Forum() {
                       />
 
                       <FormField
-                        control={form.control}
+                        control={postForm.control}
                         name="title"
                         render={({ field }) => (
                           <FormItem>
@@ -250,14 +310,14 @@ export default function Forum() {
                       />
 
                       <FormField
-                        control={form.control}
+                        control={postForm.control}
                         name="content"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Details</FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder="Provide more details..."
+                                placeholder="Share your thoughts..."
                                 rows={6}
                                 {...field}
                                 data-testid="textarea-content"
@@ -268,22 +328,23 @@ export default function Forum() {
                         )}
                       />
 
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-3">
                         <Button
                           type="button"
                           variant="outline"
+                          className="rounded-full"
                           onClick={() => setIsCreateDialogOpen(false)}
                           data-testid="button-cancel"
                         >
                           Cancel
                         </Button>
-                        <Button
+                        <DbbButtonPrimary
                           type="submit"
                           disabled={createPostMutation.isPending}
                           data-testid="button-submit-post"
                         >
-                          {createPostMutation.isPending ? "Creating..." : "Create Post"}
-                        </Button>
+                          {createPostMutation.isPending ? "Publishing..." : "Publish"}
+                        </DbbButtonPrimary>
                       </div>
                     </form>
                   </Form>
@@ -291,24 +352,28 @@ export default function Forum() {
               </Dialog>
             </div>
           </div>
-        </section>
+        </DbbSection>
 
-        <section className="py-4 border-b bg-card/50">
+        <section className="py-6 bg-dbb-surface border-b border-dbb-borderSoft">
           <div className="container mx-auto px-4">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={() => setSelectedType("all")}
-                className={`px-4 py-2 rounded-full hover-elevate active-elevate-2 text-sm ${
-                  selectedType === "all" ? "bg-primary text-primary-foreground font-medium" : ""
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedType === "all" 
+                    ? "bg-dbb-eucalyptus text-dbb-charcoal shadow-sm" 
+                    : "bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80"
                 }`}
                 data-testid="button-filter-all"
               >
-                All
+                All Posts
               </button>
               <button
                 onClick={() => setSelectedType("question")}
-                className={`px-4 py-2 rounded-full hover-elevate active-elevate-2 text-sm ${
-                  selectedType === "question" ? "bg-primary text-primary-foreground font-medium" : ""
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedType === "question" 
+                    ? "bg-dbb-eucalyptus text-dbb-charcoal shadow-sm" 
+                    : "bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80"
                 }`}
                 data-testid="button-filter-questions"
               >
@@ -316,18 +381,20 @@ export default function Forum() {
               </button>
               <button
                 onClick={() => setSelectedType("tip")}
-                className={`px-4 py-2 rounded-full hover-elevate active-elevate-2 text-sm ${
-                  selectedType === "tip" ? "bg-primary text-primary-foreground font-medium" : ""
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedType === "tip" 
+                    ? "bg-dbb-eucalyptus text-dbb-charcoal shadow-sm" 
+                    : "bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80"
                 }`}
                 data-testid="button-filter-tips"
               >
                 Tips
               </button>
-              <div className="border-l h-6 mx-2" />
+              <div className="h-6 w-px bg-dbb-borderSoft mx-1" />
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-2 rounded-full border bg-background text-sm"
+                className="px-5 py-2 rounded-full border border-dbb-borderSoft bg-white text-sm text-dbb-charcoal"
                 data-testid="select-category-filter"
               >
                 <option value="all">All Categories</option>
@@ -344,93 +411,245 @@ export default function Forum() {
           </div>
         </section>
 
-        <section className="py-6">
+        <DbbSection>
           <div className="container mx-auto px-4">
-            {posts.length === 0 ? (
-              <div className="text-center py-12">
-                <MessageCircle className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-                <h2 className="text-xl font-semibold mb-2">No posts yet</h2>
-                <p className="text-muted-foreground mb-4">
-                  Be the first to ask a question or share a tip!
-                </p>
-                <Button
-                  onClick={() => setIsCreateDialogOpen(true)}
-                  data-testid="button-create-first-post"
-                >
-                  Create First Post
-                </Button>
+            <div className="grid lg:grid-cols-4 gap-8">
+              <div className="lg:col-span-3">
+                {posts.length === 0 ? (
+                  <DbbCard className="p-12 text-center">
+                    <MessageCircle className="h-16 w-16 mx-auto text-dbb-charcoalSoft mb-4" />
+                    <h2 
+                      className="text-2xl mb-2 text-dbb-charcoal"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      No posts yet
+                    </h2>
+                    <p className="text-dbb-charcoalSoft mb-6">
+                      Be the first to share your knowledge with the community!
+                    </p>
+                    <DbbButtonPrimary
+                      onClick={() => setIsCreateDialogOpen(true)}
+                      data-testid="button-create-first-post"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create First Post
+                    </DbbButtonPrimary>
+                  </DbbCard>
+                ) : (
+                  <div className="space-y-4">
+                    {posts.map((post) => (
+                      <a
+                        key={post.id}
+                        href={`/forum/${post.id}`}
+                        className="block"
+                        data-testid={`post-${post.id}`}
+                      >
+                        <DbbCard className="hover-elevate cursor-pointer">
+                          <div className="p-6 flex items-start gap-5">
+                            <div className="flex flex-col items-center gap-2 min-w-[70px]">
+                              <button
+                                onClick={(e) => handleUpvote(e, post.id)}
+                                className="flex flex-col items-center gap-1 px-3 py-2 rounded-xl hover-elevate active-elevate-2 transition-all"
+                                data-testid={`button-upvote-${post.id}`}
+                              >
+                                <ThumbsUp className="h-5 w-5 text-dbb-eucalyptus" />
+                                <span className="text-sm font-semibold text-dbb-charcoal">{post.upvotes}</span>
+                              </button>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                                <DbbTag data-testid={`badge-type-${post.id}`}>
+                                  {post.type === "question" ? "Question" : "Tip"}
+                                </DbbTag>
+                                <span className="text-dbb-charcoalSoft">•</span>
+                                <span className="text-sm text-dbb-charcoalSoft" data-testid={`badge-category-${post.id}`}>
+                                  {post.category}
+                                </span>
+                                {post.hasAcceptedAnswer && (
+                                  <>
+                                    <span className="text-dbb-charcoalSoft">•</span>
+                                    <span 
+                                      className="flex items-center gap-1 text-sm text-dbb-eucalyptus font-medium"
+                                      data-testid={`badge-answered-${post.id}`}
+                                    >
+                                      <CheckCircle className="h-3 w-3" />
+                                      Answered
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                              <h3 
+                                className="text-xl mb-2 text-dbb-charcoal leading-snug"
+                                style={{ fontFamily: 'var(--font-heading)' }}
+                                data-testid={`title-${post.id}`}
+                              >
+                                {post.title}
+                              </h3>
+                              <p className="text-sm text-dbb-charcoalSoft line-clamp-2 mb-4 leading-relaxed">
+                                {post.content}
+                              </p>
+                              <div className="flex items-center gap-5 text-sm text-dbb-charcoalSoft">
+                                <div className="flex items-center gap-2">
+                                  <MessageCircle className="h-4 w-4" />
+                                  <span data-testid={`reply-count-${post.id}`}>
+                                    {post.replyCount}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Eye className="h-4 w-4" />
+                                  <span>{post.viewCount}</span>
+                                </div>
+                                <span>
+                                  {new Date(post.createdAt).toLocaleDateString()}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </DbbCard>
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
-            ) : (
-              <div className="space-y-4">
-                {posts.map((post) => (
-                  <a
-                    key={post.id}
-                    href={`/forum/${post.id}`}
-                    className="block bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow hover-elevate active-elevate-2"
-                    data-testid={`post-${post.id}`}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="flex flex-col items-center gap-1 min-w-[60px]">
-                        <button
-                          onClick={(e) => handleUpvote(e, post.id)}
-                          className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg hover-elevate active-elevate-2"
-                          data-testid={`button-upvote-${post.id}`}
-                        >
-                          <ThumbsUp className="h-5 w-5 text-primary" />
-                          <span className="text-sm font-semibold text-primary">{post.upvotes}</span>
-                        </button>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Badge
-                            variant={post.type === "question" ? "default" : "secondary"}
-                            data-testid={`badge-type-${post.id}`}
-                          >
-                            {post.type === "question" ? "Question" : "Tip"}
-                          </Badge>
-                          <Badge variant="outline" data-testid={`badge-category-${post.id}`}>
-                            {post.category}
-                          </Badge>
-                          {post.hasAcceptedAnswer && (
-                            <Badge
-                              variant="default"
-                              className="bg-green-500"
-                              data-testid={`badge-answered-${post.id}`}
-                            >
-                              <CheckCircle className="h-3 w-3 mr-1" />
-                              Answered
-                            </Badge>
-                          )}
-                        </div>
-                        <h3 className="text-lg font-semibold mb-2" data-testid={`title-${post.id}`}>
-                          {post.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                          {post.content}
-                        </p>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <MessageCircle className="h-4 w-4" />
-                            <span data-testid={`reply-count-${post.id}`}>
-                              {post.replyCount} {post.replyCount === 1 ? "reply" : "replies"}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Eye className="h-4 w-4" />
-                            <span>{post.viewCount} views</span>
-                          </div>
-                          <span>
-                            {new Date(post.createdAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
+
+              <aside className="lg:col-span-1">
+                <div className="sticky top-6 space-y-6">
+                  <DbbCard className="p-6 bg-gradient-to-br from-dbb-eucalyptus/10 to-dbb-rose/10">
+                    <div className="text-center mb-5">
+                      <Sparkles className="h-10 w-10 mx-auto mb-3 text-dbb-eucalyptus" />
+                      <h3 
+                        className="text-xl mb-2 text-dbb-charcoal"
+                        style={{ fontFamily: 'var(--font-heading)' }}
+                      >
+                        Get Expert Recommendations
+                      </h3>
+                      <p className="text-sm text-dbb-charcoalSoft leading-relaxed">
+                        Tell us what you're looking for and we'll connect you with the best professionals
+                      </p>
                     </div>
-                  </a>
-                ))}
-              </div>
-            )}
+                    <Dialog open={isLeadCaptureOpen} onOpenChange={setIsLeadCaptureOpen}>
+                      <DialogTrigger asChild>
+                        <DbbButtonPrimary 
+                          className="w-full"
+                          data-testid="button-get-recommendations"
+                        >
+                          <Send className="h-4 w-4 mr-2" />
+                          Get Started
+                        </DbbButtonPrimary>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle 
+                            className="text-dbb-charcoal text-xl"
+                            style={{ fontFamily: 'var(--font-heading)' }}
+                          >
+                            Get Personalized Recommendations
+                          </DialogTitle>
+                        </DialogHeader>
+                        <Form {...leadForm}>
+                          <form onSubmit={leadForm.handleSubmit(handleLeadSubmit)} className="space-y-4">
+                            <FormField
+                              control={leadForm.control}
+                              name="name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Your Name</FormLabel>
+                                  <FormControl>
+                                    <Input {...field} data-testid="input-lead-name" />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={leadForm.control}
+                              name="email"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Email</FormLabel>
+                                  <FormControl>
+                                    <Input type="email" {...field} data-testid="input-lead-email" />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={leadForm.control}
+                              name="phone"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Phone</FormLabel>
+                                  <FormControl>
+                                    <Input {...field} data-testid="input-lead-phone" />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={leadForm.control}
+                              name="interests"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>What are you interested in?</FormLabel>
+                                  <FormControl>
+                                    <Textarea 
+                                      placeholder="e.g., Botox, laser hair removal, facials..." 
+                                      {...field} 
+                                      data-testid="textarea-interests"
+                                      rows={3}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <DbbButtonPrimary 
+                              type="submit" 
+                              className="w-full" 
+                              data-testid="button-submit-recommendations"
+                              disabled={leadCaptureMutation.isPending}
+                            >
+                              {leadCaptureMutation.isPending ? "Sending..." : "Send Request"}
+                            </DbbButtonPrimary>
+                          </form>
+                        </Form>
+                      </DialogContent>
+                    </Dialog>
+                  </DbbCard>
+
+                  <DbbCard className="p-6">
+                    <h3 
+                      className="text-lg mb-4 text-dbb-charcoal"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      Community Guidelines
+                    </h3>
+                    <ul className="space-y-3 text-sm text-dbb-charcoalSoft leading-relaxed">
+                      <li className="flex gap-2">
+                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span>Be respectful and professional</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span>Share accurate information</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span>Help fellow professionals grow</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <span className="text-dbb-eucalyptus mt-0.5">•</span>
+                        <span>No spam or self-promotion</span>
+                      </li>
+                    </ul>
+                  </DbbCard>
+                </div>
+              </aside>
+            </div>
           </div>
-        </section>
+        </DbbSection>
       </main>
       <Footer />
     </div>
