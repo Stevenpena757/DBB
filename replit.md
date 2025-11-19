@@ -173,3 +173,44 @@ Replaced text-only and icon-based category displays with AI-generated product ph
 - Responsive design with smooth hover transitions (300ms)
 - Dark mode compatible
 - Maintains SPA navigation using wouter Link components
+
+### Admin Delete Functionality (November 19, 2025)
+
+Implemented comprehensive delete capabilities in the admin console for managing users and businesses with CASCADE deletion and confirmation dialogs.
+
+**Backend Implementation:**
+- Added DELETE `/api/admin/users/:id` endpoint with validation (prevents self-deletion, admin deletion)
+- Added DELETE `/api/admin/businesses/:id` endpoint with ID and existence validation
+- Implemented `deleteUser()` and `deleteBusiness()` methods in storage interface and DbStorage
+- Updated all foreign key constraints in schema to use CASCADE or SET NULL:
+  - CASCADE: subscriptions, reviews, claim requests, saved items, analytics, reports
+  - SET NULL: businesses.claimedBy, audit trail fields (preserve history)
+
+**Frontend Implementation:**
+- Added delete buttons with Trash2 icons to Users and Businesses tabs in Admin.tsx
+- Implemented AlertDialog confirmation dialogs for both delete operations
+- Dialog shows entity name and warning about permanent deletion
+- Cancel button closes dialog without action
+- Delete mutations invalidate React Query cache and close dialog only after success
+- Success/error toasts provide user feedback
+- UI updates reactively after deletion (counts decrease)
+
+**Security & Validation:**
+- Admin role required (existing middleware)
+- Prevents admin from deleting themselves
+- Prevents deletion of other admin users
+- Validates business and user existence before deletion
+- Returns appropriate HTTP status codes (404, 403, 500)
+
+**Data Integrity:**
+- CASCADE deletion removes all related child records (subscriptions, posts, reviews, etc.)
+- SET NULL preserves audit trails and history (reviewedBy, bannedBy, etc.)
+- Businesses are unclaimed (not deleted) when owner is deleted
+- No orphaned records or foreign key violations
+
+**Files Modified:**
+- `server/routes/admin.ts` - Added DELETE endpoints
+- `server/storage.ts` - Added deleteUser/deleteBusiness interface methods
+- `server/db-storage.ts` - Implemented deletion logic
+- `client/src/pages/Admin.tsx` - Added delete buttons, dialogs, and mutations
+- `shared/schema.ts` - Updated all foreign key constraints with CASCADE/SET NULL
