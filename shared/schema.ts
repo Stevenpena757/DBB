@@ -92,7 +92,7 @@ export const businesses = pgTable("businesses", {
   rating: integer("rating").default(0).notNull(), // Average rating (0-5 scale, store as 0-50 for decimal precision)
   reviewCount: integer("review_count").default(0).notNull(),
   isClaimed: boolean("is_claimed").default(false).notNull(),
-  claimedBy: integer("claimed_by").references(() => users.id),
+  claimedBy: integer("claimed_by").references(() => users.id, { onDelete: "set null" }),
   instagramHandle: text("instagram_handle"),
   tiktokHandle: text("tiktok_handle"),
   facebookUrl: text("facebook_url"),
@@ -144,10 +144,10 @@ export const pendingBusinesses = pgTable("pending_businesses", {
   instagramHandle: text("instagram_handle"),
   tiktokHandle: text("tiktok_handle"),
   facebookUrl: text("facebook_url"),
-  submittedBy: integer("submitted_by").references(() => users.id),
+  submittedBy: integer("submitted_by").references(() => users.id, { onDelete: "cascade" }),
   status: text("status").default("pending").notNull(), // "pending", "approved", "rejected"
   reviewNotes: text("review_notes"), // Admin notes about approval/rejection
-  reviewedBy: integer("reviewed_by").references(() => users.id),
+  reviewedBy: integer("reviewed_by").references(() => users.id, { onDelete: "set null" }),
   reviewedAt: timestamp("reviewed_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -166,8 +166,8 @@ export type InsertPendingBusiness = z.infer<typeof insertPendingBusinessSchema>;
 // Posts (social feed) table
 export const posts = pgTable("posts", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").notNull().references(() => businesses.id),
-  userId: integer("user_id").notNull().references(() => users.id),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   content: text("content").notNull(),
   imageUrl: text("image_url"),
@@ -187,8 +187,8 @@ export type InsertPost = z.infer<typeof insertPostSchema>;
 // Articles table (FREE visibility content)
 export const articles = pgTable("articles", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").notNull().references(() => businesses.id),
-  userId: integer("user_id").notNull().references(() => users.id),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   content: text("content").notNull(),
   imageUrl: text("image_url").notNull(),
@@ -211,8 +211,8 @@ export type InsertArticle = z.infer<typeof insertArticleSchema>;
 // How-tos table (step-by-step guides for FREE visibility)
 export const howTos = pgTable("how_tos", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").notNull().references(() => businesses.id),
-  userId: integer("user_id").notNull().references(() => users.id),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   description: text("description").notNull(),
   steps: jsonb("steps").notNull(), // Array of {step: number, title: string, content: string}
@@ -281,8 +281,8 @@ export type InsertVendorProduct = z.infer<typeof insertVendorProductSchema>;
 // Business claim requests
 export const claimRequests = pgTable("claim_requests", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").notNull().references(() => businesses.id),
-  userId: integer("user_id").notNull().references(() => users.id),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   claimantName: text("claimant_name").notNull(),
   claimantEmail: text("claimant_email").notNull(),
   claimantPhone: text("claimant_phone").notNull(),
@@ -303,7 +303,7 @@ export type InsertClaimRequest = z.infer<typeof insertClaimRequestSchema>;
 // User saves (saved businesses, articles, etc.)
 export const saves = pgTable("saves", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id), // Authenticated users
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }), // Authenticated users
   itemType: text("item_type").notNull(), // "business", "article", "how-to", "product"
   itemId: integer("item_id").notNull(),
   sessionId: text("session_id"), // For non-authenticated users (optional)
@@ -320,8 +320,8 @@ export type InsertSave = z.infer<typeof insertSaveSchema>;
 // Forum posts (Q&A and Tips)
 export const forumPosts = pgTable("forum_posts", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  businessId: integer("business_id").references(() => businesses.id), // Optional - if posted by a business
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
+  businessId: integer("business_id").references(() => businesses.id, { onDelete: "set null" }), // Optional - if posted by a business
   type: text("type").notNull(), // "question" or "tip"
   category: text("category").notNull(), // "Hair", "Skin", "Makeup", "Business Tips", etc.
   title: text("title").notNull(),
@@ -348,8 +348,8 @@ export type InsertForumPost = z.infer<typeof insertForumPostSchema>;
 export const forumReplies = pgTable("forum_replies", {
   id: serial("id").primaryKey(),
   postId: integer("post_id").notNull().references(() => forumPosts.id),
-  userId: integer("user_id").references(() => users.id),
-  businessId: integer("business_id").references(() => businesses.id), // Optional - if posted by a business
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
+  businessId: integer("business_id").references(() => businesses.id, { onDelete: "set null" }), // Optional - if posted by a business
   content: text("content").notNull(),
   upvotes: integer("upvotes").default(0).notNull(),
   isAcceptedAnswer: boolean("is_accepted_answer").default(false).notNull(), // For question answers
@@ -368,7 +368,7 @@ export type InsertForumReply = z.infer<typeof insertForumReplySchema>;
 // Stripe Subscriptions - track payment status for businesses
 export const subscriptions = pgTable("subscriptions", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").notNull().references(() => businesses.id),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
   stripeCustomerId: text("stripe_customer_id").notNull(),
   stripeSubscriptionId: text("stripe_subscription_id").notNull(),
   stripePriceId: text("stripe_price_id").notNull(),
@@ -392,13 +392,13 @@ export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
 // Abuse Reports - for reporting spam, inappropriate content, fake listings
 export const abuseReports = pgTable("abuse_reports", {
   id: serial("id").primaryKey(),
-  reportedBy: integer("reported_by").notNull().references(() => users.id),
+  reportedBy: integer("reported_by").notNull().references(() => users.id, { onDelete: "cascade" }),
   itemType: text("item_type").notNull(), // "business", "article", "how_to", "post", "forum_post", "forum_reply", "user"
   itemId: integer("item_id").notNull(),
   category: text("category").notNull(), // "spam", "harassment", "fake_listing", "inappropriate_content", "copyright", "other"
   description: text("description").notNull(),
   status: text("status").default("pending").notNull(), // "pending", "reviewing", "resolved", "dismissed"
-  reviewedBy: integer("reviewed_by").references(() => users.id),
+  reviewedBy: integer("reviewed_by").references(() => users.id, { onDelete: "set null" }),
   reviewNotes: text("review_notes"),
   resolution: text("resolution"), // "content_removed", "user_warned", "user_banned", "no_action", "other"
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -420,8 +420,8 @@ export type InsertAbuseReport = z.infer<typeof insertAbuseReportSchema>;
 // User Bans/Suspensions - track banned and suspended users
 export const userBans = pgTable("user_bans", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull().references(() => users.id),
-  bannedBy: integer("banned_by").notNull().references(() => users.id),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  bannedBy: integer("banned_by").notNull().references(() => users.id, { onDelete: "set null" }),
   type: text("type").notNull(), // "ban", "suspend"
   reason: text("reason").notNull(),
   duration: integer("duration"), // Duration in days (null = permanent ban)
@@ -441,7 +441,7 @@ export type InsertUserBan = z.infer<typeof insertUserBanSchema>;
 // Admin Activity Log - audit trail for compliance
 export const adminActivityLogs = pgTable("admin_activity_logs", {
   id: serial("id").primaryKey(),
-  adminId: integer("admin_id").notNull().references(() => users.id),
+  adminId: integer("admin_id").notNull().references(() => users.id, { onDelete: "set null" }),
   action: text("action").notNull(), // "approve_business", "reject_business", "ban_user", "update_subscription", etc.
   targetType: text("target_type"), // "business", "user", "subscription", "abuse_report", etc.
   targetId: integer("target_id"),
@@ -461,7 +461,7 @@ export type InsertAdminActivityLog = z.infer<typeof insertAdminActivityLogSchema
 // Security Events - track login failures, rate limit violations, suspicious activity
 export const securityEvents = pgTable("security_events", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id), // null if user not authenticated
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }), // null if user not authenticated
   eventType: text("event_type").notNull(), // "failed_login", "rate_limit_exceeded", "suspicious_activity", "account_locked"
   severity: text("severity").notNull(), // "low", "medium", "high", "critical"
   description: text("description").notNull(),
@@ -487,7 +487,7 @@ export const aiModerationQueue = pgTable("ai_moderation_queue", {
   aiScore: integer("ai_score").notNull(), // Confidence score 0-100
   aiReasoning: text("ai_reasoning").notNull(), // AI explanation of flags
   status: text("status").default("pending").notNull(), // "pending", "approved", "rejected", "auto_approved"
-  reviewedBy: integer("reviewed_by").references(() => users.id),
+  reviewedBy: integer("reviewed_by").references(() => users.id, { onDelete: "set null" }),
   reviewNotes: text("review_notes"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   reviewedAt: timestamp("reviewed_at"),
@@ -508,7 +508,7 @@ export type InsertAiModerationQueue = z.infer<typeof insertAiModerationQueueSche
 // businessId is optional to support general recommendations from forum
 export const businessLeads = pgTable("business_leads", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").references(() => businesses.id), // Optional for general forum leads
+  businessId: integer("business_id").references(() => businesses.id, { onDelete: "cascade" }), // Optional for general forum leads
   name: text("name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
@@ -537,7 +537,7 @@ export type InsertBusinessLead = z.infer<typeof insertBusinessLeadSchema>;
 // Quiz Submissions - Beauty Match Quiz responses
 export const quizSubmissions = pgTable("quiz_submissions", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id), // Optional - anonymous users allowed
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }), // Optional - anonymous users allowed
   sessionId: text("session_id"), // For tracking anonymous submissions
   responses: jsonb("responses").notNull(), // All quiz answers as JSON
   matchedBusinessIds: integer("matched_business_ids").array().notNull(), // Top matches
@@ -558,9 +558,9 @@ export type InsertQuizSubmission = z.infer<typeof insertQuizSubmissionSchema>;
 // Analytics Events - track interactions for business insights
 export const analyticsEvents = pgTable("analytics_events", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").notNull().references(() => businesses.id),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
   eventType: text("event_type").notNull(), // "profile_view", "phone_click", "website_click", "direction_click", "lead_form_view", "lead_form_submit", "quiz_match_view"
-  userId: integer("user_id").references(() => users.id), // Optional - track logged in users
+  userId: integer("user_id").references(() => users.id, { onDelete: "cascade" }), // Optional - track logged in users
   sessionId: text("session_id"), // For anonymous tracking
   metadata: jsonb("metadata"), // Additional context (referrer, device type, etc.)
   createdAt: timestamp("created_at").defaultNow().notNull(),

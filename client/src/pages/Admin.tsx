@@ -139,6 +139,8 @@ export default function Admin() {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
       queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
       toast({ title: "Success", description: "User deleted successfully" });
+      setDeleteUserDialogOpen(false);
+      setUserToDelete(null);
     },
     onError: (error: Error) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -161,6 +163,8 @@ export default function Admin() {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/businesses"] });
       queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
       toast({ title: "Success", description: "Business deleted successfully" });
+      setDeleteBusinessDialogOpen(false);
+      setBusinessToDelete(null);
     },
     onError: (error: Error) => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -1182,8 +1186,6 @@ export default function Admin() {
                 onClick={() => {
                   if (userToDelete) {
                     deleteUserMutation.mutate(userToDelete.id);
-                    setDeleteUserDialogOpen(false);
-                    setUserToDelete(null);
                   }
                 }}
                 disabled={deleteUserMutation.isPending}
@@ -1210,8 +1212,6 @@ export default function Admin() {
                 onClick={() => {
                   if (businessToDelete) {
                     deleteBusinessMutation.mutate(businessToDelete.id);
-                    setDeleteBusinessDialogOpen(false);
-                    setBusinessToDelete(null);
                   }
                 }}
                 disabled={deleteBusinessMutation.isPending}
