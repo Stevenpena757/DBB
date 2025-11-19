@@ -87,12 +87,28 @@ export default function CreateBeautyBookPage() {
     enabled: step === 6,
   }) as { data: Business[] };
 
-  const toggleSelection = (field: "enhanceAreas" | "vibe", value: string) => {
-    const currentValues = form.watch(field) as string[];
+  const toggleEnhanceArea = (value: typeof ENHANCE_AREAS[number]) => {
+    const currentValues = form.watch("enhanceAreas");
     const newValues = currentValues.includes(value)
       ? currentValues.filter((item) => item !== value)
       : [...currentValues, value];
-    form.setValue(field, newValues as any);
+    form.setValue("enhanceAreas", newValues, { 
+      shouldValidate: true, 
+      shouldDirty: true,
+      shouldTouch: true 
+    });
+  };
+
+  const toggleVibe = (value: typeof VIBE_OPTIONS[number]) => {
+    const currentValues = form.watch("vibe");
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter((item) => item !== value)
+      : [...currentValues, value];
+    form.setValue("vibe", newValues, { 
+      shouldValidate: true, 
+      shouldDirty: true,
+      shouldTouch: true 
+    });
   };
 
   const handleNext = async () => {
@@ -284,7 +300,7 @@ export default function CreateBeautyBookPage() {
                       <button
                         type="button"
                         key={area}
-                        onClick={() => toggleSelection("enhanceAreas", area)}
+                        onClick={() => toggleEnhanceArea(area)}
                         className={`px-4 py-2 rounded-full border-2 transition-colors ${
                           form.watch("enhanceAreas").includes(area)
                             ? "bg-primary border-primary text-primary-foreground"
@@ -340,7 +356,7 @@ export default function CreateBeautyBookPage() {
                       <button
                         type="button"
                         key={vibe}
-                        onClick={() => toggleSelection("vibe", vibe)}
+                        onClick={() => toggleVibe(vibe)}
                         className={`px-4 py-2 rounded-full border-2 transition-colors ${
                           form.watch("vibe").includes(vibe)
                             ? "bg-primary border-primary text-primary-foreground"

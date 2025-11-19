@@ -1160,41 +1160,6 @@ ${forumUrls}
     }
   });
 
-  // ============ QUIZ SUBMISSIONS ============
-  app.post("/api/quiz", async (req: any, res) => {
-    try {
-      const enrichedData = {
-        ...req.body,
-        userId: req.user?.id || null,
-      };
-      
-      const quizData = insertQuizSubmissionSchema.parse(enrichedData);
-      const submission = await storage.createQuizSubmission(quizData);
-      
-      res.json({
-        submission,
-        matches: [],
-        message: "Quiz submitted successfully! We'll send your matches to your email."
-      });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ error: error.errors });
-      }
-      console.error("Error creating quiz submission:", error);
-      res.status(500).json({ error: "Failed to submit quiz" });
-    }
-  });
-
-  app.get("/api/quiz", isAuthenticated, isAdmin, async (_req, res) => {
-    try {
-      const submissions = await storage.getAllQuizSubmissions();
-      res.json(submissions);
-    } catch (error) {
-      console.error("Error fetching quiz submissions:", error);
-      res.status(500).json({ error: "Failed to fetch quiz submissions" });
-    }
-  });
-
   // ============ BEAUTY BOOKS ============
   app.post("/api/beauty-book", async (req: any, res) => {
     try {
