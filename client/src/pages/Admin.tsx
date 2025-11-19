@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ShieldCheck, Users, Building2, FileCheck, BarChart3, ExternalLink, CreditCard, AlertTriangle, CheckCircle, XCircle, Ban, Trash2, Lock } from "lucide-react";
 import type { User, Business, ClaimRequest, PendingBusiness, Subscription, AiModerationQueue, UserBan } from "@shared/schema";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,6 +26,11 @@ export default function Admin() {
   const [banType, setBanType] = useState<string>("ban");
   const [banReason, setBanReason] = useState("");
   const [banDuration, setBanDuration] = useState<string>("");
+  
+  const [deleteUserDialogOpen, setDeleteUserDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [deleteBusinessDialogOpen, setDeleteBusinessDialogOpen] = useState(false);
+  const [businessToDelete, setBusinessToDelete] = useState<Business | null>(null);
 
   const { data: users, isLoading: loadingUsers } = useQuery<User[]>({
     queryKey: ["/api/admin/users"]
@@ -114,6 +120,50 @@ export default function Admin() {
     },
     onError: () => {
       toast({ title: "Error", description: "Failed to update business", variant: "destructive" });
+    }
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: number) => {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete user");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      toast({ title: "Success", description: "User deleted successfully" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  });
+
+  const deleteBusinessMutation = useMutation({
+    mutationFn: async (businessId: number) => {
+      const response = await fetch(`/api/admin/businesses/${businessId}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete business");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/businesses"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/stats"] });
+      toast({ title: "Success", description: "Business deleted successfully" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
     }
   });
 
@@ -621,21 +671,35 @@ export default function Admin() {
                             </SelectContent>
                           </Select>
                           {user.role !== "admin" && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                setSelectedUser(user);
-                                setBanReason("");
-                                setBanDuration("");
-                                setBanType("ban");
-                                setBanDialogOpen(true);
-                              }}
-                              data-testid={`button-ban-user-${user.id}`}
-                            >
-                              <Ban className="h-4 w-4 mr-2" />
-                              Ban
-                            </Button>
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setSelectedUser(user);
+                                  setBanReason("");
+                                  setBanDuration("");
+                                  setBanType("ban");
+                                  setBanDialogOpen(true);
+                                }}
+                                data-testid={`button-ban-user-${user.id}`}
+                              >
+                                <Ban className="h-4 w-4 mr-2" />
+                                Ban
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  setUserToDelete(user);
+                                  setDeleteUserDialogOpen(true);
+                                }}
+                                data-testid={`button-delete-user-${user.id}`}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </Button>
+                            </>
                           )}
                         </div>
                       </div>
@@ -717,6 +781,18 @@ export default function Admin() {
                             data-testid={`button-toggle-featured-${business.id}`}
                           >
                             {business.featured ? "Remove Featured" : "Make Featured"}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setBusinessToDelete(business);
+                              setDeleteBusinessDialogOpen(true);
+                            }}
+                            data-testid={`button-delete-business-${business.id}`}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete
                           </Button>
                         </div>
                       </div>
@@ -1090,6 +1166,62 @@ export default function Admin() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        <AlertDialog open={deleteUserDialogOpen} onOpenChange={setDeleteUserDialogOpen}>
+          <AlertDialogContent data-testid="dialog-delete-user">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete User</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete {userToDelete?.username}? This action cannot be undone. All data associated with this user will be permanently removed.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel data-testid="button-cancel-delete-user">Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                onClick={() => {
+                  if (userToDelete) {
+                    deleteUserMutation.mutate(userToDelete.id);
+                    setDeleteUserDialogOpen(false);
+                    setUserToDelete(null);
+                  }
+                }}
+                disabled={deleteUserMutation.isPending}
+                data-testid="button-confirm-delete-user"
+              >
+                Delete User
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog open={deleteBusinessDialogOpen} onOpenChange={setDeleteBusinessDialogOpen}>
+          <AlertDialogContent data-testid="dialog-delete-business">
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Business</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete {businessToDelete?.name}? This action cannot be undone. All data associated with this business will be permanently removed.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel data-testid="button-cancel-delete-business">Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                onClick={() => {
+                  if (businessToDelete) {
+                    deleteBusinessMutation.mutate(businessToDelete.id);
+                    setDeleteBusinessDialogOpen(false);
+                    setBusinessToDelete(null);
+                  }
+                }}
+                disabled={deleteBusinessMutation.isPending}
+                data-testid="button-confirm-delete-business"
+              >
+                Delete Business
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );
