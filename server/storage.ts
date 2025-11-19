@@ -97,6 +97,8 @@ export interface IStorage {
   // Admin Methods
   getAllUsers(): Promise<User[]>;
   updateUserRole(id: number, role: string): Promise<User | undefined>;
+  deleteUser(id: number): Promise<void>;
+  deleteBusiness(id: number): Promise<void>;
   getAllClaimRequests(): Promise<ClaimRequest[]>;
   getPlatformStats(): Promise<{
     totalUsers: number;

@@ -370,6 +370,14 @@ export class DbStorage implements IStorage {
     return result[0];
   }
 
+  async deleteUser(id: number): Promise<void> {
+    await db.delete(users).where(eq(users.id, id));
+  }
+
+  async deleteBusiness(id: number): Promise<void> {
+    await db.delete(businesses).where(eq(businesses.id, id));
+  }
+
   async getAllClaimRequests(): Promise<ClaimRequest[]> {
     return db.select().from(claimRequests).orderBy(desc(claimRequests.createdAt));
   }

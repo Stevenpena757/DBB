@@ -46,6 +46,38 @@ export function createAdminRouter(storage: IStorage) {
     }
   });
 
+  router.delete("/users/:id", async (req: any, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+
+      // Prevent self-deletion
+      if (userId === req.user?.id) {
+        return res.status(400).json({ error: "You cannot delete yourself" });
+      }
+
+      // Get the target user to check their role
+      const targetUser = await storage.getUserById(userId);
+      if (!targetUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Prevent deleting admins (peer protection)
+      if (targetUser.role === "admin") {
+        return res.status(403).json({ error: "Cannot delete administrators" });
+      }
+
+      await storage.deleteUser(userId);
+      res.json({ success: true, message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+      res.status(500).json({ error: "Failed to delete user" });
+    }
+  });
+
   router.get("/businesses", async (req, res) => {
     try {
       const businesses = await storage.getAllBusinesses();
@@ -74,6 +106,27 @@ export function createAdminRouter(storage: IStorage) {
       }
       console.error("Failed to update business:", error);
       res.status(500).json({ error: "Failed to update business" });
+    }
+  });
+
+  router.delete("/businesses/:id", async (req, res) => {
+    try {
+      const businessId = parseInt(req.params.id);
+
+      if (isNaN(businessId)) {
+        return res.status(400).json({ error: "Invalid business ID" });
+      }
+
+      const business = await storage.getBusinessById(businessId);
+      if (!business) {
+        return res.status(404).json({ error: "Business not found" });
+      }
+
+      await storage.deleteBusiness(businessId);
+      res.json({ success: true, message: "Business deleted successfully" });
+    } catch (error) {
+      console.error("Failed to delete business:", error);
+      res.status(500).json({ error: "Failed to delete business" });
     }
   });
 
