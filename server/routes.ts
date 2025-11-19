@@ -1118,10 +1118,6 @@ ${forumUrls}
   // ============ BUSINESS LEADS ============
   app.post("/api/leads", async (req: any, res) => {
     try {
-      if (!req.body.businessId) {
-        return res.status(400).json({ error: "businessId is required" });
-      }
-      
       const leadData = insertBusinessLeadSchema.parse(req.body);
       const lead = await storage.createBusinessLead(leadData);
       
@@ -1132,13 +1128,16 @@ ${forumUrls}
         userId = user?.id || null;
       }
       
-      await storage.createAnalyticsEvent({
-        businessId: req.body.businessId,
-        eventType: "lead_form_submit",
-        userId,
-        sessionId: req.session?.id || null,
-        metadata: { source: req.body.source || "profile_page" },
-      });
+      // Only track analytics if businessId is provided (business-specific leads)
+      if (req.body.businessId) {
+        await storage.createAnalyticsEvent({
+          businessId: req.body.businessId,
+          eventType: "lead_form_submit",
+          userId,
+          sessionId: req.session?.id || null,
+          metadata: { source: req.body.source || "profile_page" },
+        });
+      }
       
       res.json(lead);
     } catch (error) {

@@ -505,28 +505,33 @@ export const insertAiModerationQueueSchema = createInsertSchema(aiModerationQueu
 export type InsertAiModerationQueue = z.infer<typeof insertAiModerationQueueSchema>;
 
 // Business Leads - track inquiries from lead capture forms
+// businessId is optional to support general recommendations from forum
 export const businessLeads = pgTable("business_leads", {
   id: serial("id").primaryKey(),
-  businessId: integer("business_id").notNull().references(() => businesses.id),
+  businessId: integer("business_id").references(() => businesses.id), // Optional for general forum leads
   name: text("name").notNull(),
   email: text("email").notNull(),
   phone: text("phone"),
   message: text("message").notNull(),
   service: text("service"), // Specific service they're interested in
   preferredContact: text("preferred_contact"), // "email", "phone", "text"
-  source: text("source").default("profile_page").notNull(), // "profile_page", "quiz_match", "search"
+  source: text("source").default("profile_page").notNull(), // "profile_page", "quiz_match", "search", "forum"
   status: text("status").default("new").notNull(), // "new", "contacted", "converted", "not_interested"
   notes: text("notes"), // Business owner notes about this lead
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export type BusinessLead = typeof businessLeads.$inferSelect;
-export const insertBusinessLeadSchema = createInsertSchema(businessLeads).omit({
-  id: true,
-  status: true,
-  notes: true,
-  createdAt: true,
-});
+export const insertBusinessLeadSchema = createInsertSchema(businessLeads)
+  .omit({
+    id: true,
+    status: true,
+    notes: true,
+    createdAt: true,
+  })
+  .extend({
+    businessId: z.number().optional(), // Make businessId optional for general forum leads
+  });
 export type InsertBusinessLead = z.infer<typeof insertBusinessLeadSchema>;
 
 // Quiz Submissions - Beauty Match Quiz responses
