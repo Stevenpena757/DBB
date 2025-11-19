@@ -88,11 +88,11 @@ export default function CreateBeautyBookPage() {
   }) as { data: Business[] };
 
   const toggleSelection = (field: "enhanceAreas" | "vibe", value: string) => {
-    const currentValues = form.watch(field);
+    const currentValues = form.watch(field) as string[];
     const newValues = currentValues.includes(value)
       ? currentValues.filter((item) => item !== value)
       : [...currentValues, value];
-    form.setValue(field, newValues);
+    form.setValue(field, newValues as any);
   };
 
   const handleNext = async () => {
@@ -236,38 +236,41 @@ export default function CreateBeautyBookPage() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {step < 6 ? (
           <Form {...form}>
-            {/* Progress Indicator */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-2">
-                {[1, 2, 3, 4, 5].map((s) => (
-                  <div
-                    key={s}
-                    className={`flex-1 h-2 mx-1 rounded-full ${
-                      s <= step ? "bg-primary" : "bg-muted"
-                    }`}
-                  />
-                ))}
-              </div>
-              <p className="text-center text-sm text-muted-foreground">
-                Step {step} of 5
-              </p>
-            </div>
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
+              {/* Form Content - Left Column */}
+              <div>
+                {/* Progress Indicator */}
+                <div className="mb-8">
+                  <div className="flex items-center justify-between mb-2">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <div
+                        key={s}
+                        className={`flex-1 h-2 mx-1 rounded-full ${
+                          s <= step ? "bg-primary" : "bg-muted"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-center text-sm text-muted-foreground">
+                    Step {step} of 5
+                  </p>
+                </div>
 
-            {/* Hero Section */}
-            <div className="text-center mb-8">
-              <h1 className="font-serif text-4xl md:text-5xl mb-4 text-foreground">
-                Create Your Dallas Beauty Book
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Discover personalized recommendations for health, beauty, and aesthetics services in the DFW area
-              </p>
-            </div>
+                {/* Hero Section */}
+                <div className="mb-8">
+                  <h1 className="font-serif text-4xl md:text-5xl mb-4 text-foreground">
+                    Create Your Dallas Beauty Book
+                  </h1>
+                  <p className="text-lg text-muted-foreground">
+                    Discover personalized recommendations for health, beauty, and aesthetics services in the DFW area
+                  </p>
+                </div>
 
-            {/* Form Steps */}
-            <DbbCard className="p-6 md:p-8">
+                {/* Form Steps */}
+                <DbbCard className="p-6 md:p-8">
               {step === 1 && (
                 <div data-testid="step-enhance-areas">
                   <h2 className="font-serif text-2xl mb-4 text-foreground">
@@ -488,6 +491,18 @@ export default function CreateBeautyBookPage() {
                 </Button>
               </div>
             </DbbCard>
+              </div>
+
+              {/* Beauty Book Image - Right Column (Desktop Only) */}
+              <div className="hidden lg:block sticky top-24">
+                <img
+                  src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
+                  alt="Beauty consultation notes and tools on a desk"
+                  className="w-full rounded-3xl object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </Form>
         ) : (
           /* Results Screen */
