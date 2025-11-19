@@ -1,0 +1,378 @@
+DALLASBEAUTYBOOK LANDING PAGE IMAGE IMPLEMENTATION SPEC
+========================================================
+
+Purpose
+-------
+Add engaging, on-brand, high-conversion imagery to the landing page that:
+- Uses NO FACES (service- and ambience-focused only)
+- Aligns with the soft palette (white, oat, beige, eucalyptus, subtle rose)
+- Increases user engagement and click-through on key actions:
+  • Find Beauty Professionals
+  • Ask the Community
+  • Take the Beauty Match Quiz
+  • For Professionals (Claim / Grow)
+
+This spec assumes:
+- React + Vite setup
+- Static images will live under /public/images/dallasbeautybook/...
+(Adjust paths if your project uses a different convention.)
+
+========================================================
+1. IMAGE STRATEGY & FOLDER STRUCTURE
+========================================================
+
+Create a folder for all DallasBeautyBook landing imagery:
+
+public/
+  images/
+    dallasbeautybook/
+      hero-tools-and-textures.jpg
+      hero-studio-interior.jpg        (optional alt hero)
+      cat-medspa.jpg
+      cat-injectables.jpg
+      cat-lashes.jpg
+      cat-brows.jpg
+      cat-hair.jpg
+      cat-nails.jpg
+      cat-skin.jpg
+      community-background.jpg
+      quiz-notebook-brush.jpg
+      pro-dashboard-abstract.jpg
+
+IMAGE CONTENT GUIDELINES (when sourcing / generating):
+- NO FACES at all.
+- Use:
+  • Hands performing treatments (cropped to avoid faces)
+  • Skincare textures (serum drops, cream smears, masks)
+  • Lash trays, tweezers, brushes, tools on neutral backdrops
+  • Salon / med spa / studio interiors (empty or with people out of frame)
+  • Flat lays of towels, eucalyptus leaves, jade rollers, gua sha tools
+  • Soft natural light, warm tone
+  • Color grading that roughly matches the site palette
+
+========================================================
+2. HOMEPAGE HERO IMAGE
+========================================================
+
+Goal:
+- Immediately communicate “beauty, services, calm, professional” without showing a person.
+- Reinforce trust and vibe, not a specific demographic.
+
+File to use:
+- /public/images/dallasbeautybook/hero-tools-and-textures.jpg
+
+Recommended content:
+- A flat lay or close-up of:
+  • Skincare bottles, brush, jade roller, gua sha, towel, eucalyptus
+  • Soft beige/oat background
+  • No visible faces
+
+Implementation (HomePage.tsx or equivalent):
+
+Inside the hero grid, keep text on the LEFT and add this on the RIGHT:
+
+```tsx
+<div className="relative w-full h-72 md:h-80 lg:h-96 overflow-hidden rounded-3xl bg-[var(--dbb-sand)]">
+  <img
+    src="/images/dallasbeautybook/hero-tools-and-textures.jpg"
+    alt="Beauty tools, skincare products, and soft textures arranged on a neutral background"
+    className="h-full w-full object-cover"
+    loading="lazy"
+  />
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(249,246,242,0.7)] via-transparent to-transparent" />
+</div>
+```
+
+Notes:
+- Keep the hero copy + buttons in the LEFT column.
+- The image is decorative-supporting, not the main focus.
+
+========================================================
+3. DIRECTORY PREVIEW (LOCAL FAVORITES) IMAGES
+========================================================
+
+Goal:
+- Every business card should show a relevant, neutral image even if a business
+  hasn’t uploaded its own.
+- Use CATEGORY-BASED default images so the Explore page and homepage preview
+  look visually rich and clickable.
+
+Create category → image mapping:
+
+- Med Spa, Aesthetics, Skin:
+  /images/dallasbeautybook/cat-medspa.jpg
+  (Treatment bed, towels, greenery, candles — no people.)
+
+- Injectables, Medical Aesthetics:
+  /images/dallasbeautybook/cat-injectables.jpg
+  (Gloved hands near tray, syringe slightly out of focus, no faces.)
+
+- Lashes:
+  /images/dallasbeautybook/cat-lashes.jpg
+  (Lash trays, lash wands, tweezers on a neutral background.)
+
+- Brows:
+  /images/dallasbeautybook/cat-brows.jpg
+  (Brow pencils, brushes, brow mapping tools.)
+
+- Hair:
+  /images/dallasbeautybook/cat-hair.jpg
+  (Hair tools, combs, brushes, scissors, or a styled back-of-head shot with no face.)
+
+- Nails:
+  /images/dallasbeautybook/cat-nails.jpg
+  (Nail polish bottles, manicure tools, or a cropped hand-only manicure shot.)
+
+- Skin / Facials:
+  /images/dallasbeautybook/cat-skin.jpg
+  (Skincare jars, serums, towels, facial steamer, masks.)
+
+Implementation in BusinessCard component (or equivalent):
+
+```tsx
+// Example: src/components/BusinessCard.tsx
+
+const categoryImageMap: Record<string, string> = {
+  "Med Spa": "/images/dallasbeautybook/cat-medspa.jpg",
+  "Aesthetics Spa": "/images/dallasbeautybook/cat-medspa.jpg",
+  "Medical Aesthetics": "/images/dallasbeautybook/cat-injectables.jpg",
+  "Injectables": "/images/dallasbeautybook/cat-injectables.jpg",
+  "Lashes": "/images/dallasbeautybook/cat-lashes.jpg",
+  "Brows": "/images/dallasbeautybook/cat-brows.jpg",
+  "Hair Salon": "/images/dallasbeautybook/cat-hair.jpg",
+  "Nail Salon": "/images/dallasbeautybook/cat-nails.jpg",
+  "Skin": "/images/dallasbeautybook/cat-skin.jpg",
+};
+
+function getBusinessImage(biz: Business) {
+  if (biz.heroImageUrl) return biz.heroImageUrl;
+  if (biz.category && categoryImageMap[biz.category]) {
+    return categoryImageMap[biz.category];
+  }
+  return "/images/dallasbeautybook/cat-medspa.jpg";
+}
+```
+
+Then in the JSX:
+
+```tsx
+<img
+  src={getBusinessImage(business)}
+  alt={`${business.name} – ${business.category ?? "beauty service"}`}
+  className="h-40 w-full rounded-2xl object-cover"
+  loading="lazy"
+/>
+```
+
+This ensures:
+- Featured / directory cards look engaging.
+- Users see relevant imagery without businesses needing to upload assets immediately.
+
+========================================================
+4. COMMUNITY HIGHLIGHTS IMAGERY
+========================================================
+
+Section: “From the community” (homepage) and possibly background for /community.
+
+Goal:
+- Reinforce the idea of conversation, journaling, planning beauty journeys.
+- Use subtle, “cozy planning” visual.
+
+File:
+- /images/dallasbeautybook/community-background.jpg
+
+Content:
+- Notebook, pen, dried flowers, a tea/coffee cup and maybe a phone/tablet on a neutral desk.
+- Soft-focus, no on-screen text or UI that conflicts.
+
+Implementation as a soft background wash:
+
+```tsx
+<section className="relative py-12 md:py-16">
+  <div className="absolute inset-0 opacity-40 pointer-events-none">
+    <img
+      src="/images/dallasbeautybook/community-background.jpg"
+      alt=""
+      className="h-full w-full object-cover"
+      loading="lazy"
+    />
+    <div className="absolute inset-0 bg-[var(--dbb-bg)]/70" />
+  </div>
+  <div className="relative max-w-5xl mx-auto px-4">
+    {/* Community heading + cards here */}
+  </div>
+</section>
+```
+
+Note:
+- alt="" because this is decorative and not essential content.
+
+========================================================
+5. BEAUTY MATCH QUIZ IMAGE
+========================================================
+
+Section: Quiz CTA on homepage and visual on /quiz page.
+
+File:
+- /images/dallasbeautybook/quiz-notebook-brush.jpg
+
+Content:
+- A clipboard/notebook with questions/checklist, pen or makeup brush, small beauty tools.
+- Neutral table background, soft natural light.
+
+Homepage quiz teaser card example:
+
+```tsx
+<div className="flex items-center gap-4 rounded-3xl bg-[var(--dbb-surface)] border border-[var(--dbb-sand)] p-4 shadow-sm">
+  <img
+    src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
+    alt="Notebook and beauty tools arranged neatly on a soft background"
+    className="h-20 w-20 flex-none rounded-2xl object-cover"
+    loading="lazy"
+  />
+  <div className="flex-1">
+    <p className="text-xs uppercase tracking-[0.2em] text-[var(--dbb-rose)]">
+      Beauty Match Quiz
+    </p>
+    <p className="mt-1 text-sm font-semibold text-[var(--dbb-charcoal)]">
+      Not sure where to go? Answer a few questions and we’ll suggest DFW beauty pros.
+    </p>
+    <a
+      href="/quiz"
+      className="mt-2 inline-flex text-xs font-semibold text-[var(--dbb-charcoalSoft)] underline-offset-4 hover:underline"
+    >
+      Take the quiz →
+    </a>
+  </div>
+</div>
+```
+
+On /quiz page, place this image to the right of the form (on desktop):
+
+```tsx
+<div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
+  <div>
+    {/* quiz wizard form */}
+  </div>
+  <div className="hidden lg:block">
+    <img
+      src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
+      alt="Beauty consultation notes and tools on a desk"
+      className="w-full rounded-3xl object-cover"
+      loading="lazy"
+    />
+  </div>
+</div>
+```
+
+========================================================
+6. FOR PROFESSIONALS / PRO DASHBOARD IMAGERY
+========================================================
+
+Goal:
+- Show that DallasBeautyBook provides insights and business growth, without stock photos of models.
+
+File:
+- /images/dallasbeautybook/pro-dashboard-abstract.jpg
+
+Content:
+- Abstract representation: partial laptop, tablet/phone with charts, printed graphs, pen, maybe a plant.
+- Neutral palette with soft hints of eucalyptus/rose.
+
+Homepage “For Professionals” section:
+
+```tsx
+<div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center">
+  <div>
+    {/* Text headlines + bullet points + CTA */}
+  </div>
+  <div className="relative h-52 md:h-64">
+    <img
+      src="/images/dallasbeautybook/pro-dashboard-abstract.jpg"
+      alt="Abstract representation of beauty business analytics and growth tools"
+      className="h-full w-full rounded-3xl object-cover"
+      loading="lazy"
+    />
+  </div>
+</div>
+```
+
+Optional on /pro/dashboard hero:
+
+Small banner above metrics using same image (or cropped variant) to visually tie to the homepage.
+
+========================================================
+7. MOBILE OPTIMIZATION
+========================================================
+
+- All <img> must:
+  • Use className="w-full h-full object-cover" inside a fixed-height container OR
+  • Use className="max-w-full h-auto" when inline.
+
+- For mobile:
+  • Stack hero image BELOW text or move image into a smaller card below CTAs.
+  • Use loading="lazy" for all non-hero images to improve performance.
+  • Keep the largest image above the fold limited to the hero only.
+
+Example for mobile stacking:
+
+- On small screens:
+  • Show text + CTAs first.
+  • Place hero image below in a 200–240px tall container.
+
+========================================================
+8. ACCESSIBILITY & ALT TEXT
+========================================================
+
+Decorative images (backgrounds, ambient art):
+- Use alt="" so screen readers skip them.
+
+Informational images (hero, category depictions, quiz teaser):
+- Write alt text that:
+  • Describes what is in the image (tools, textures, ambience).
+  • Ties it to the page context (beauty services, planning, analytics).
+
+Examples:
+- "Beauty tools, skincare bottles and a jade roller on a neutral background"
+- "Lash trays, wands and tweezers arranged neatly on a table"
+- "Abstract layout of a laptop and charts showing business analytics"
+
+Avoid:
+- Faces
+- Gender-specific language in alt (unless explicitly needed)
+- Overly long alt text
+
+========================================================
+9. SUMMARY OF REQUIRED CODE CHANGES FOR REPLIT AGENT
+========================================================
+
+1) Add images to: /public/images/dallasbeautybook/ as listed at the top.
+
+2) Update HomePage.tsx:
+   - Add right-column hero image using hero-tools-and-textures.jpg.
+   - Add quiz-notebook-brush.jpg to quiz teaser card.
+   - Optionally add community-background.jpg as decorative background for the community section.
+   - Add pro-dashboard-abstract.jpg in the "For Professionals" section.
+
+3) Update BusinessCard (or directory card component):
+   - Implement categoryImageMap and getBusinessImage() function.
+   - Ensure an <img> is rendered for each card using that mapping as a fallback.
+
+4) Update /quiz page layout:
+   - Display quiz-notebook-brush.jpg alongside the wizard form on desktop (hidden on mobile).
+
+5) Update /pro/dashboard (if exists):
+   - Optionally show a small hero/intro image using pro-dashboard-abstract.jpg.
+
+6) Ensure all images:
+   - Use loading="lazy" for non-critical images.
+   - Have appropriate alt text or alt="" for decorative ones.
+   - Respect responsive layouts on mobile and desktop.
+
+Once these changes are implemented, the landing page will:
+- Feel visually rich and intentional without being busy.
+- Use neutral, service- and ambience-focused imagery.
+- Encourage users to click into Explore, Community, Quiz, and For Professionals.
+- Stay aligned with DallasBeautyBook’s brand, monetization goals, and target audience.
+
+END OF SPEC
