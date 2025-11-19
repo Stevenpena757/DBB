@@ -1,104 +1,61 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { DbbCard, DbbTag } from "@/components/dbb/DbbComponents";
 import { ChevronRight, ChevronLeft, Check } from "lucide-react";
-import type { Business } from "@shared/schema";
-
-const ENHANCE_AREAS = [
-  "Skin glow & complexion",
-  "Lashes",
-  "Brows",
-  "Nails",
-  "Hair care & styling",
-  "Injectable enhancements",
-  "Sculpting & body contour",
-  "Wellness & recovery",
-  "Anti-aging optimization",
-  "I'm exploring",
-];
-
-const DFW_CITIES = [
-  "Dallas",
-  "Plano",
-  "Frisco",
-  "Arlington",
-  "Irving",
-  "Fort Worth",
-  "McKinney",
-  "Allen",
-  "Richardson",
-  "Garland",
-];
-
-const VIBES = [
-  "Natural & minimal",
-  "Clean clinical",
-  "Luxury spa",
-  "Trendy & glam",
-  "Quiet & private",
-  "Budget-friendly",
-  "First-timer friendly",
-];
-
-const FREQUENCIES = [
-  "Monthly maintenance",
-  "Seasonal refresh",
-  "Special occasions",
-  "Treating myself",
-  "Exploring",
-];
-
-type BeautyBookFormData = {
-  enhanceAreas: string[];
-  city: string;
-  vibe: string[];
-  frequency: string;
-  name: string;
-  email: string;
-  phone: string;
-  consentMarketing: boolean;
-};
+import type { Business, InsertBeautyBook } from "@shared/schema";
+import {
+  insertBeautyBookSchema,
+  ENHANCE_AREAS,
+  VIBE_OPTIONS,
+  FREQUENCY_OPTIONS,
+  DFW_CITIES,
+} from "@shared/schema";
 
 export default function CreateBeautyBookPage() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<BeautyBookFormData>({
-    enhanceAreas: [],
-    city: "",
-    vibe: [],
-    frequency: "",
-    name: "",
-    email: "",
-    phone: "",
-    consentMarketing: false,
-  });
-
   const [beautyBookId, setBeautyBookId] = useState<string | null>(null);
 
+  const form = useForm<InsertBeautyBook>({
+    resolver: zodResolver(insertBeautyBookSchema),
+    defaultValues: {
+      enhanceAreas: [],
+      city: undefined,
+      vibe: [],
+      frequency: undefined,
+      name: "",
+      email: "",
+      phone: "",
+      consentMarketing: false,
+      preferences: undefined,
+      userId: undefined,
+    },
+  });
+
   const createMutation = useMutation({
-    mutationFn: async (data: BeautyBookFormData) => {
+    mutationFn: async (data: InsertBeautyBook) => {
       const response = await fetch("/api/beauty-book", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          enhanceAreas: data.enhanceAreas,
-          city: data.city,
-          vibe: data.vibe,
-          frequency: data.frequency,
-          preferences: [],
-          name: data.name || null,
-          email: data.email,
-          phone: data.phone || null,
-          consentMarketing: data.consentMarketing,
-        }),
+        body: JSON.stringify(data),
       });
       
       if (!response.ok) {
@@ -131,65 +88,77 @@ export default function CreateBeautyBookPage() {
   }) as { data: Business[] };
 
   const toggleSelection = (field: "enhanceAreas" | "vibe", value: string) => {
-    setFormData((prev) => {
-      const current = prev[field];
-      const newValue = current.includes(value)
-        ? current.filter((item) => item !== value)
-        : [...current, value];
-      return { ...prev, [field]: newValue };
-    });
+    const currentValues = form.watch(field);
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter((item) => item !== value)
+      : [...currentValues, value];
+    form.setValue(field, newValues);
   };
 
-  const handleNext = () => {
-    // Validation
-    if (step === 1 && formData.enhanceAreas.length === 0) {
-      toast({
-        title: "Selection required",
-        description: "Please select at least one enhancement area",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (step === 2 && !formData.city) {
-      toast({
-        title: "Selection required",
-        description: "Please select a city",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (step === 3 && formData.vibe.length === 0) {
-      toast({
-        title: "Selection required",
-        description: "Please select at least one vibe preference",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (step === 4 && !formData.frequency) {
-      toast({
-        title: "Selection required",
-        description: "Please select a frequency",
-        variant: "destructive",
-      });
-      return;
-    }
-    if (step === 5) {
-      // Email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!formData.email || !emailRegex.test(formData.email)) {
+  const handleNext = async () => {
+    // Validate current step fields
+    let isValid = false;
+    
+    if (step === 1) {
+      isValid = await form.trigger("enhanceAreas");
+      if (!isValid) {
         toast({
-          title: "Invalid email",
-          description: "Please enter a valid email address",
+          title: "Selection required",
+          description: "Please select at least one enhancement area",
           variant: "destructive",
         });
         return;
       }
     }
-
+    
+    if (step === 2) {
+      isValid = await form.trigger("city");
+      if (!isValid) {
+        toast({
+          title: "Selection required",
+          description: "Please select a city",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    
+    if (step === 3) {
+      isValid = await form.trigger("vibe");
+      if (!isValid) {
+        toast({
+          title: "Selection required",
+          description: "Please select at least one vibe preference",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    
+    if (step === 4) {
+      isValid = await form.trigger("frequency");
+      if (!isValid) {
+        toast({
+          title: "Selection required",
+          description: "Please select a frequency",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    
     if (step === 5) {
+      isValid = await form.trigger(["email", "name", "phone"]);
+      if (!isValid) {
+        toast({
+          title: "Invalid input",
+          description: "Please check your email and other fields",
+          variant: "destructive",
+        });
+        return;
+      }
       // Submit form
-      createMutation.mutate(formData);
+      createMutation.mutate(form.getValues());
     } else {
       setStep(step + 1);
     }
@@ -205,7 +174,8 @@ export default function CreateBeautyBookPage() {
     if (!businesses.length) return [];
 
     // Filter by city
-    let filtered = businesses.filter((b) => b.location === formData.city);
+    const city = form.watch("city");
+    let filtered = businesses.filter((b) => b.location === city);
 
     // If city filter returns nothing, show all
     if (filtered.length === 0) {
@@ -241,7 +211,7 @@ export default function CreateBeautyBookPage() {
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {step < 6 ? (
-          <>
+          <Form {...form}>
             {/* Progress Indicator */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-2">
@@ -282,14 +252,15 @@ export default function CreateBeautyBookPage() {
                   <div className="flex flex-wrap gap-3">
                     {ENHANCE_AREAS.map((area) => (
                       <button
+                        type="button"
                         key={area}
                         onClick={() => toggleSelection("enhanceAreas", area)}
                         className={`px-4 py-2 rounded-full border-2 transition-colors ${
-                          formData.enhanceAreas.includes(area)
+                          form.watch("enhanceAreas").includes(area)
                             ? "bg-primary border-primary text-primary-foreground"
                             : "bg-card border-border text-foreground hover-elevate"
                         }`}
-                        data-testid={`chip-enhance-${area.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
+                        data-testid={`chip-${area.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
                       >
                         {area}
                       </button>
@@ -309,10 +280,11 @@ export default function CreateBeautyBookPage() {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {DFW_CITIES.map((city) => (
                       <button
+                        type="button"
                         key={city}
-                        onClick={() => setFormData({ ...formData, city })}
+                        onClick={() => form.setValue("city", city)}
                         className={`px-4 py-3 rounded-lg border-2 transition-colors ${
-                          formData.city === city
+                          form.watch("city") === city
                             ? "bg-primary border-primary text-primary-foreground"
                             : "bg-card border-border text-foreground hover-elevate"
                         }`}
@@ -334,16 +306,17 @@ export default function CreateBeautyBookPage() {
                     Select all that resonate with you
                   </p>
                   <div className="flex flex-wrap gap-3">
-                    {VIBES.map((vibe) => (
+                    {VIBE_OPTIONS.map((vibe) => (
                       <button
+                        type="button"
                         key={vibe}
                         onClick={() => toggleSelection("vibe", vibe)}
                         className={`px-4 py-2 rounded-full border-2 transition-colors ${
-                          formData.vibe.includes(vibe)
+                          form.watch("vibe").includes(vibe)
                             ? "bg-primary border-primary text-primary-foreground"
                             : "bg-card border-border text-foreground hover-elevate"
                         }`}
-                        data-testid={`chip-vibe-${vibe.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
+                        data-testid={`chip-${vibe.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
                       >
                         {vibe}
                       </button>
@@ -361,12 +334,13 @@ export default function CreateBeautyBookPage() {
                     Choose what best describes you
                   </p>
                   <div className="space-y-3">
-                    {FREQUENCIES.map((freq) => (
+                    {FREQUENCY_OPTIONS.map((freq) => (
                       <button
+                        type="button"
                         key={freq}
-                        onClick={() => setFormData({ ...formData, frequency: freq })}
+                        onClick={() => form.setValue("frequency", freq)}
                         className={`w-full px-6 py-4 rounded-lg border-2 transition-colors text-left ${
-                          formData.frequency === freq
+                          form.watch("frequency") === freq
                             ? "bg-primary border-primary text-primary-foreground"
                             : "bg-card border-border text-foreground hover-elevate"
                         }`}
@@ -388,55 +362,68 @@ export default function CreateBeautyBookPage() {
                     We'll send your beauty book and matches to your email
                   </p>
                   <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="name" className="text-foreground">
-                        Name (Optional)
-                      </Label>
-                      <Input
-                        id="name"
-                        type="text"
-                        placeholder="Your name"
-                        value={formData.name}
-                        onChange={(e) =>
-                          setFormData({ ...formData, name: e.target.value })
-                        }
-                        className="mt-1"
-                        data-testid="input-name"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="email" className="text-foreground">
-                        Email <span className="text-destructive">*</span>
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="your@email.com"
-                        value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
-                        className="mt-1"
-                        required
-                        data-testid="input-email"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone" className="text-foreground">
-                        Phone (Optional)
-                      </Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder="(555) 123-4567"
-                        value={formData.phone}
-                        onChange={(e) =>
-                          setFormData({ ...formData, phone: e.target.value })
-                        }
-                        className="mt-1"
-                        data-testid="input-phone"
-                      />
-                    </div>
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground">
+                            Name (Optional)
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Your name"
+                              {...field}
+                              data-testid="input-name"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground">
+                            Email <span className="text-destructive">*</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="your@email.com"
+                              {...field}
+                              data-testid="input-email"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-foreground">
+                            Phone (Optional)
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="tel"
+                              placeholder="(555) 123-4567"
+                              {...field}
+                              data-testid="input-phone"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
               )}
@@ -444,6 +431,7 @@ export default function CreateBeautyBookPage() {
               {/* Navigation Buttons */}
               <div className="flex items-center justify-between mt-8">
                 <Button
+                  type="button"
                   variant="outline"
                   onClick={handleBack}
                   disabled={step === 1}
@@ -453,6 +441,7 @@ export default function CreateBeautyBookPage() {
                   Back
                 </Button>
                 <Button
+                  type="button"
                   onClick={handleNext}
                   disabled={createMutation.isPending}
                   data-testid="button-next"
@@ -472,7 +461,7 @@ export default function CreateBeautyBookPage() {
                 </Button>
               </div>
             </DbbCard>
-          </>
+          </Form>
         ) : (
           /* Results Screen */
           <div data-testid="results-screen">
@@ -484,7 +473,7 @@ export default function CreateBeautyBookPage() {
                 Your Beauty Book is Ready!
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Based on your preferences in {formData.city}, here are some personalized recommendations
+                Based on your preferences in {form.watch("city")}, here are some personalized recommendations
               </p>
             </div>
 
