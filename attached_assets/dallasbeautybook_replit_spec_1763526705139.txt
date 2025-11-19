@@ -1,0 +1,488 @@
+REPLIT AGENT IMPLEMENTATION SPEC  
+DallasBeautyBook – Soft Community Directory + Lead Engine  
+============================================================
+
+This file contains the FULL, EXPANDED IMPLEMENTATION INSTRUCTIONS for rebuilding
+DallasBeautyBook using the new:
+
+• Soft editorial-inspired aesthetic (no faces, neutral & service-focused imagery)  
+• Community-driven UX  
+• Monetization & lead-capture infrastructure  
+• Business intelligence / analytics features for professionals  
+• New homepage, explore, business profile, community feed  
+• Beauty Match Quiz funnel  
+• Professional Dashboard  
+
+This file is structured for the Replit agent to follow step‑by‑step.
+
+============================================================
+1. DESIGN SYSTEM UPDATE  
+============================================================
+
+1.1 COLOR TOKENS (Tailwind / Theme)
+-----------------------------------
+
+In tailwind.config.ts:
+
+Extend theme:
+
+colors: {
+  background: "#F9F6F2",   // oat
+  surface: "#FFFCFA",      // white-cream
+  sand: "#EDE2D6",         // warm beige
+  eucalyptus: "#C7D3C1",   // soft green wellness tone
+  rose: "#E8D1D5",         // subtle rose feminine accent
+  charcoal: "#4B4643",      // primary text
+  charcoalSoft: "#5C5551",
+  borderSoft: "#E3D7CA",
+  accent: "#C7D3C1",
+},
+
+Add global CSS:
+
+:root {
+  --dbb-bg: #F9F6F2;
+  --dbb-surface: #FFFCFA;
+  --dbb-sand: #EDE2D6;
+  --dbb-eucalyptus: #C7D3C1;
+  --dbb-rose: #E8D1D5;
+  --dbb-charcoal: #4B4643;
+}
+
+body {
+  background-color: var(--dbb-bg);
+  color: var(--dbb-charcoal);
+}
+
+
+1.2 TYPOGRAPHY
+--------------
+
+Add in global CSS:
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Lato:wght@300;400;600&display=swap');
+
+:root {
+  --font-heading: "Playfair Display", serif;
+  --font-subheading: "Cormorant Garamond", serif;
+  --font-body: "Lato", sans-serif;
+}
+
+Apply:
+h1,h2,h3,.font-heading { font-family: var(--font-heading); }
+h4,h5,h6,.font-subheading { font-family: var(--font-subheading); }
+p,span,body,.font-body { font-family: var(--font-body); }
+
+
+1.3 GLOBAL UI COMPONENTS
+-------------------------
+
+Implement or extend:
+
+• <DbbButtonPrimary> – rounded, soft, high contrast  
+• <DbbButtonGhost> – minimal border  
+• <DbbCard> – soft surface card  
+• <DbbTag> – rounded category tag  
+
+Example:
+
+export const DbbCard = ({ className="", ...props }) => (
+  <div className={`rounded-2xl bg-[var(--dbb-surface)] border border-[var(--dbb-sand)] shadow-sm ${className}`} {...props}/>
+);
+
+
+============================================================
+2. HOMEPAGE REBUILD  
+============================================================
+
+File: src/pages/HomePage.tsx
+
+2.1 HERO SECTION
+----------------
+
+• No faces.  
+• Use service-focused imagery (tools, textures, studios).  
+• Left = hero text.  
+• Right = Quiz + Community CTAs.
+
+Headline (Playfair):
+  “Your DFW Beauty Community & Directory”
+
+Subtext:
+  “Find local beauty professionals, read real experiences, ask questions, and connect with others.”
+
+Primary CTA:
+  “Find Beauty Professionals” → /explore
+
+Secondary CTA:
+  “Ask the Community” → /community
+
+Right Card 1 – Beauty Match Quiz:
+  - “Find your perfect beauty match”
+  - Button → /quiz
+
+Right Card 2 – Community Teaser:
+  - Recent question snippet
+  - Button → /community
+
+
+2.2 HOW IT WORKS (3 STEPS)
+--------------------------
+
+Three soft cards:
+
+1. Discover – “Find trusted DFW beauty professionals”
+2. Ask – “Get real answers from local real people”
+3. Share – “Post tips, experiences & insights”
+
+
+2.3 DIRECTORY PREVIEW
+----------------------
+
+Display 4–6 featured businesses:
+
+Card includes:
+• neutral photo  
+• name  
+• category  
+• location  
+• button: “View Profile”  
+
+
+2.4 COMMUNITY HIGHLIGHTS
+-------------------------
+
+Fetch 3 items from:
+GET /api/forum?limit=3
+
+Show:
+• label (“Question”, “Tip”)  
+• title  
+• excerpt  
+• time ago  
+
+
+2.5 BEAUTY MATCH QUIZ CTA
+--------------------------
+
+Soft eucalyptus card:
+
+Headline:
+  “Find the right beauty expert for your needs.”
+
+Button:
+  “Take the Quiz” → /quiz
+
+
+2.6 FOR PROFESSIONALS CTA
+--------------------------
+
+Soft rose background:
+
+Headline:
+  “Grow Your Beauty Business with DallasBeautyBook”
+
+Subtext:
+  “Get more visibility, leads, and insights.”
+
+Button:
+  “For Professionals” → /for-professionals
+
+
+============================================================
+3. EXPLORE (DIRECTORY) PAGE  
+============================================================
+
+Route: /explore  
+File: src/pages/ExplorePage.tsx
+
+3.1 TOP SECTION
+----------------
+
+Title:
+  “Browse Beauty Professionals in DFW”
+
+Filters:
+• Search bar  
+• Category dropdown  
+• Location dropdown  
+• Popular category chips  
+
+Query:
+useQuery(["businesses", filters]) → /api/businesses
+
+
+3.2 RESULTS GRID
+----------------
+
+Each business card:
+• neutral image (tools, interior, textures)  
+• name  
+• category  
+• city  
+• “View profile”  
+
+Pagination or Load More.
+
+
+============================================================
+4. BUSINESS PROFILE PAGE  
+============================================================
+
+Route: /business/:id  
+File: src/pages/BusinessProfilePage.tsx
+
+4.1 HERO SECTION
+----------------
+
+• Business name (Playfair)  
+• Category, city  
+• soft banner image  
+• CTAs:
+
+  - “Request Info” → opens lead form modal  
+  - “Save to Favorites”
+
+Lead form fields:
+• name  
+• email  
+• phone (optional)  
+• what service you’re interested in  
+• message  
+POST → /api/leads
+
+
+4.2 ABOUT SECTION
+------------------
+
+Short description + specialties + vibe.
+
+
+4.3 SERVICES GRID
+------------------
+
+For each service:
+• title  
+• description  
+• starting price  
+
+
+4.4 GALLERY
+------------
+
+Images: tools, ambience, textures, details.
+
+
+4.5 REVIEWS
+------------
+
+List reviews + stars.
+
+
+4.6 LOCATION & HOURS
+---------------------
+
+Map placeholder  
+hours table  
+
+
+4.7 (IF OWNER) – PRO DASHBOARD LINK
+------------------------------------
+
+Button → /pro/dashboard
+
+
+============================================================
+5. COMMUNITY FEED  
+============================================================
+
+Route: /community  
+File: src/pages/CommunityPage.tsx
+
+5.1 TOP SECTION
+----------------
+
+Title:
+  “DallasBeautyBook Community”
+
+CTA:
+  “Ask a Question” → /community/ask
+
+Filters:
+• All  
+• Questions  
+• Tips  
+• Guides  
+• Category chips
+
+
+5.2 FEED LIST
+--------------
+
+Each post:
+• type label  
+• title  
+• excerpt  
+• category  
+• replies count  
+• “x hours ago”  
+
+
+5.3 SINGLE POST PAGE
+---------------------
+
+Route: /community/:id
+
+Add right-side lead box:
+
+“Want personalized recommendations? Get matched with 3 experts.”  
+Collect:
+• email  
+• service interest  
+
+POST → /api/leads
+
+
+============================================================
+6. BEAUTY MATCH QUIZ FLOW  
+============================================================
+
+Route: /quiz  
+File: src/pages/BeautyMatchQuizPage.tsx
+
+6.1 MULTI-STEP FLOW
+--------------------
+
+Step 1: Services  
+• injectables  
+• skin  
+• lashes  
+• brows  
+• hair  
+• nails  
+• wellness  
+
+Step 2: Location  
+• Dallas  
+• Plano  
+• Frisco  
+• etc  
+
+Step 3: Vibe  
+• clinical  
+• natural  
+• glam  
+• luxury spa  
+
+Step 4: Contact  
+• email (required)  
+• name (optional)  
+
+POST → /api/quiz/submit
+
+Response:
+{ matches: Business[] }
+
+
+6.2 BACKEND MATCHING LOGIC
+---------------------------
+
+POST /api/quiz/submit
+
+Inputs:
+• services[]  
+• city  
+• vibe  
+• email  
+
+Steps:
+1. Save lead to quiz_leads  
+2. Query businesses matching category/location  
+3. Sort by tier → rating → activity  
+4. Return top matches  
+5. Save to leads table with source="quiz"
+
+
+============================================================
+7. PROFESSIONAL DASHBOARD (ANALYTICS)  
+============================================================
+
+Route: /pro/dashboard  
+File: src/pages/ProDashboardPage.tsx
+
+Metrics:
+• profile views  
+• clicks  
+• saves  
+• leads  
+
+Timeseries chart:
+• views per day  
+
+Lead table:
+• date  
+• source  
+• email  
+• services  
+
+
+7.1 BACKEND ENDPOINT
+---------------------
+
+GET /api/pro/analytics?businessId=&range=30d
+
+Returns:
+{
+  summary: { views, clicks, saves, leads },
+  timeseries: [{ date, views, clicks, leads }],
+  recentLeads: [{ id, createdAt, source, email, services, city }]
+}
+
+
+7.2 EVENT LOGGING
+------------------
+
+Increment events:
+
+On profile view → business_views  
+On click → business_clicks  
+On save → business_saves  
+On lead form → leads  
+
+
+============================================================
+8. GLOBAL IMAGE GUIDELINES  
+============================================================
+
+EVERY image must avoid faces. Use:
+
+• tools  
+• product textures  
+• interiors  
+• ambience  
+• close-ups of hair/brows/nails without identity  
+
+Absolutely no model faces anywhere.
+
+
+============================================================
+9. ACCEPTANCE CRITERIA  
+============================================================
+
+The redesign is complete when:
+
+✓ New homepage implemented with soft aesthetic  
+✓ Explore page rebuilt with new cards  
+✓ Business Profile uses lead form modal, services grid, gallery  
+✓ Community feed simplified and lead capture module added  
+✓ Beauty Match Quiz live + storing leads  
+✓ Professional Dashboard provides metrics & lead list  
+✓ All images face-free  
+✓ All typography and color tokens work  
+✓ Mobile responsive  
+✓ No TypeScript errors  
+✓ No console errors  
+
+============================================================
+END OF SPEC
+============================================================

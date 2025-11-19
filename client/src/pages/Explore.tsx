@@ -1,156 +1,264 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
+import { Link, useLocation } from "wouter";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { DbbCard, DbbButtonPrimary, DbbTag, DbbContainer } from "@/components/dbb/DbbComponents";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import type { Article, HowTo, Business } from "@shared/schema";
-import { FileText, Lightbulb, Building2, MapPin } from "lucide-react";
+import type { Business } from "@shared/schema";
+import { Search, MapPin, Filter } from "lucide-react";
+
+const CATEGORIES = [
+  "All",
+  "Hair Salon",
+  "Med Spa",
+  "Medical Aesthetics",
+  "Nail Salon",
+  "Skincare",
+  "Makeup Artist",
+  "Lash & Brow",
+  "Massage & Wellness"
+];
+
+const DFW_LOCATIONS = [
+  "All Locations",
+  "Dallas",
+  "Fort Worth",
+  "Plano",
+  "Arlington",
+  "Irving",
+  "Frisco",
+  "McKinney",
+  "Denton"
+];
 
 export default function Explore() {
-  const [filter, setFilter] = useState<"all" | "businesses" | "articles" | "how-tos">("all");
+  const [location] = useLocation();
+  const params = new URLSearchParams(location.split('?')[1] || '');
+  const [searchQuery, setSearchQuery] = useState(params.get('search') || '');
+  const [selectedCategory, setSelectedCategory] = useState(params.get('category') || 'All');
+  const [selectedLocation, setSelectedLocation] = useState('All Locations');
 
-  const { data: businesses = [], isLoading: businessesLoading } = useQuery<Business[]>({
+  const { data: businesses = [], isLoading } = useQuery<Business[]>({
     queryKey: ['/api/businesses'],
   });
 
-  const { data: articles = [], isLoading: articlesLoading } = useQuery<Article[]>({
-    queryKey: ['/api/articles'],
+  const filteredBusinesses = businesses.filter(business => {
+    const matchesSearch = !searchQuery || 
+      business.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      business.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (business.services && business.services.some(s => s.toLowerCase().includes(searchQuery.toLowerCase())));
+    
+    const matchesCategory = selectedCategory === 'All' || business.category === selectedCategory;
+    const matchesLocation = selectedLocation === 'All Locations' || business.location.includes(selectedLocation);
+    
+    return matchesSearch && matchesCategory && matchesLocation;
   });
-
-  const { data: howTos = [], isLoading: howTosLoading } = useQuery<HowTo[]>({
-    queryKey: ['/api/how-tos'],
-  });
-
-  const isLoading = businessesLoading || articlesLoading || howTosLoading;
-
-  const filteredContent = () => {
-    if (filter === "businesses") return businesses.map(b => ({ ...b, type: "business" as const }));
-    if (filter === "articles") return articles.map(a => ({ ...a, type: "article" as const }));
-    if (filter === "how-tos") return howTos.map(h => ({ ...h, type: "how-to" as const }));
-    return [
-      ...businesses.map(b => ({ ...b, type: "business" as const })),
-      ...articles.map(a => ({ ...a, type: "article" as const })),
-      ...howTos.map(h => ({ ...h, type: "how-to" as const }))
-    ].sort(() => Math.random() - 0.5);
-  };
 
   return (
-    <div className="min-h-screen pb-20 md:pb-6 bg-background">
-      <div className="sticky top-0 bg-background/95 backdrop-blur-md border-b z-10 py-4">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-extrabold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-heading)' }}>Explore</h1>
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            <Button 
-              variant={filter === "all" ? "default" : "outline"}
-              onClick={() => setFilter("all")}
-              className={`rounded-full px-5 font-semibold transition-all ${filter === "all" ? "shadow-md" : ""}`}
-              style={{ fontFamily: 'var(--font-ui)' }}
-              data-testid="button-filter-all"
+    <div className="min-h-screen flex flex-col pb-16 md:pb-0">
+      <Header />
+      
+      <main className="flex-1 py-8 md:py-12">
+        <DbbContainer>
+          {/* Page Header */}
+          <div className="mb-8">
+            <h1 
+              className="text-4xl md:text-5xl mb-4 text-dbb-charcoal"
+              style={{ fontFamily: 'var(--font-heading)' }}
+              data-testid="heading-explore"
             >
-              All
-            </Button>
-            <Button 
-              variant={filter === "businesses" ? "default" : "outline"}
-              onClick={() => setFilter("businesses")}
-              className={`rounded-full px-5 font-semibold transition-all ${filter === "businesses" ? "shadow-md" : ""}`}
-              style={{ fontFamily: 'var(--font-ui)' }}
-              data-testid="button-filter-businesses"
+              Explore Beauty Professionals
+            </h1>
+            <p 
+              className="text-lg text-dbb-charcoalSoft"
+              style={{ fontFamily: 'var(--font-body)' }}
             >
-              <Building2 className="h-4 w-4 mr-2" />
-              Businesses
-            </Button>
-            <Button 
-              variant={filter === "articles" ? "default" : "outline"}
-              onClick={() => setFilter("articles")}
-              className={`rounded-full px-5 font-semibold transition-all ${filter === "articles" ? "shadow-md" : ""}`}
-              style={{ fontFamily: 'var(--font-ui)' }}
-              data-testid="button-filter-articles"
-            >
-              <FileText className="h-4 w-4 mr-2" />
-              Articles
-            </Button>
-            <Button 
-              variant={filter === "how-tos" ? "default" : "outline"}
-              onClick={() => setFilter("how-tos")}
-              className={`rounded-full px-5 font-semibold transition-all ${filter === "how-tos" ? "shadow-md" : ""}`}
-              style={{ fontFamily: 'var(--font-ui)' }}
-              data-testid="button-filter-howtos"
-            >
-              <Lightbulb className="h-4 w-4 mr-2" />
-              How-Tos
-            </Button>
+              Discover trusted beauty experts across Dallas-Fort Worth
+            </p>
           </div>
-        </div>
-      </div>
 
-      <div className="container mx-auto px-3 py-6">
-        {isLoading ? (
-          <div className="text-center py-12">Loading content...</div>
-        ) : (
-          <div className="columns-2 md:columns-3 lg:columns-4 gap-3 md:gap-4">
-            {filteredContent().map((item) => {
-              const cardContent = (
-                <div 
-                  className="mb-3 md:mb-4 break-inside-avoid overflow-hidden rounded-2xl bg-card shadow-sm hover:shadow-md transition-shadow cursor-pointer hover-elevate"
-                  data-testid={item.type === "business" ? `card-business-${item.id}` : `pin-${item.type}-${item.id}`}
+          {/* Search Bar */}
+          <div className="mb-8">
+            <div className="relative max-w-2xl">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-dbb-charcoalSoft" />
+              <Input
+                type="search"
+                placeholder="Search by name, service, or specialty..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 h-12 rounded-full border-dbb-borderSoft bg-dbb-surface"
+                data-testid="input-search"
+              />
+            </div>
+          </div>
+
+          {/* Category Filters */}
+          <div className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Filter className="h-5 w-5 text-dbb-charcoalSoft" />
+              <span 
+                className="text-sm font-medium text-dbb-charcoalSoft"
+                style={{ fontFamily: 'var(--font-body)' }}
+              >
+                Category
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {CATEGORIES.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full transition-all ${
+                    selectedCategory === category
+                      ? 'bg-dbb-eucalyptus text-dbb-charcoal'
+                      : 'bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80'
+                  }`}
+                  style={{ fontFamily: 'var(--font-body)' }}
+                  data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, '-')}`}
                 >
-                  <div className="aspect-[3/4] overflow-hidden">
-                    <img 
-                      src={item.imageUrl} 
-                      alt={"name" in item ? item.name : item.title} 
-                      className="w-full h-full object-cover" 
-                    />
-                  </div>
-                  <div className="p-3">
-                    <div className="flex items-center gap-1 mb-1">
-                      {item.type === "business" ? (
-                        <Building2 className="h-3 w-3 text-muted-foreground" />
-                      ) : item.type === "article" ? (
-                        <FileText className="h-3 w-3 text-muted-foreground" />
-                      ) : (
-                        <Lightbulb className="h-3 w-3 text-muted-foreground" />
-                      )}
-                      <span className="text-xs text-muted-foreground">
-                        {item.type === "business" ? "Business" : item.type === "article" ? "Article" : "How-To"}
-                      </span>
-                    </div>
-                    <h3 className="font-semibold text-sm mb-1">
-                      {"name" in item ? item.name : item.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2">
-                      {item.type === "business" ? (
-                        <>
-                          <Badge variant="secondary" className="text-xs mb-1">{"category" in item && item.category}</Badge>
-                          <div className="flex items-center gap-1 mt-1">
-                            <MapPin className="h-3 w-3" />
-                            <span>{"location" in item && item.location}</span>
-                          </div>
-                        </>
-                      ) : (
-                        "excerpt" in item ? item.excerpt : item.description
-                      )}
-                    </p>
-                    {item.type !== "business" && "views" in item && (
-                      <p className="text-xs text-muted-foreground mt-2">{item.views} views</p>
-                    )}
-                  </div>
-                </div>
-              );
-
-              return item.type === "business" ? (
-                <Link key={`${item.type}-${item.id}`} href={`/business/${item.id}`}>
-                  {cardContent}
-                </Link>
-              ) : (
-                <div key={`${item.type}-${item.id}`}>
-                  {cardContent}
-                </div>
-              );
-            })}
+                  {category}
+                </button>
+              ))}
+            </div>
           </div>
-        )}
-      </div>
+
+          {/* Location Filters */}
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <MapPin className="h-5 w-5 text-dbb-charcoalSoft" />
+              <span 
+                className="text-sm font-medium text-dbb-charcoalSoft"
+                style={{ fontFamily: 'var(--font-body)' }}
+              >
+                Location
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {DFW_LOCATIONS.map((loc) => (
+                <button
+                  key={loc}
+                  onClick={() => setSelectedLocation(loc)}
+                  className={`px-4 py-2 rounded-full transition-all ${
+                    selectedLocation === loc
+                      ? 'bg-dbb-rose text-dbb-charcoal'
+                      : 'bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80'
+                  }`}
+                  style={{ fontFamily: 'var(--font-body)' }}
+                  data-testid={`button-location-${loc.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {loc}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Results Count */}
+          <div className="mb-6">
+            <p 
+              className="text-dbb-charcoalSoft"
+              style={{ fontFamily: 'var(--font-body)' }}
+              data-testid="text-results-count"
+            >
+              {isLoading ? 'Loading...' : `${filteredBusinesses.length} ${filteredBusinesses.length === 1 ? 'professional' : 'professionals'} found`}
+            </p>
+          </div>
+
+          {/* Business Grid */}
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <DbbCard key={i} className="animate-pulse">
+                  <div className="h-64 bg-dbb-sand rounded-t-2xl"></div>
+                  <div className="p-6">
+                    <div className="h-6 bg-dbb-sand rounded mb-3"></div>
+                    <div className="h-4 bg-dbb-sand rounded w-2/3 mb-3"></div>
+                    <div className="h-4 bg-dbb-sand rounded w-1/2"></div>
+                  </div>
+                </DbbCard>
+              ))}
+            </div>
+          ) : filteredBusinesses.length === 0 ? (
+            <div className="text-center py-16">
+              <p 
+                className="text-xl text-dbb-charcoalSoft mb-4"
+                style={{ fontFamily: 'var(--font-subheading)' }}
+              >
+                No professionals found matching your criteria
+              </p>
+              <Button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('All');
+                  setSelectedLocation('All Locations');
+                }}
+                className="rounded-full"
+                variant="outline"
+                data-testid="button-clear-filters"
+              >
+                Clear All Filters
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredBusinesses.map((business) => (
+                <Link 
+                  key={business.id} 
+                  href={`/business/${business.id}`}
+                  className="block group"
+                  data-testid={`card-business-${business.id}`}
+                >
+                  <DbbCard className="overflow-hidden hover-elevate active-elevate-2 transition-all h-full">
+                    <div className="aspect-[4/3] overflow-hidden relative bg-dbb-sand">
+                      <img 
+                        src={business.imageUrl} 
+                        alt={`${business.name} - service-focused imagery`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 
+                        className="text-xl mb-2 text-dbb-charcoal"
+                        style={{ fontFamily: 'var(--font-subheading)' }}
+                      >
+                        {business.name}
+                      </h3>
+                      <p 
+                        className="text-sm text-dbb-charcoalSoft mb-3 flex items-center gap-2"
+                        style={{ fontFamily: 'var(--font-body)' }}
+                      >
+                        <MapPin className="h-4 w-4" />
+                        {business.location}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <DbbTag className="text-xs">{business.category}</DbbTag>
+                      </div>
+                      {business.services && business.services.length > 0 && (
+                        <p 
+                          className="text-sm text-dbb-charcoalSoft line-clamp-2 mb-4"
+                          style={{ fontFamily: 'var(--font-body)' }}
+                        >
+                          {business.services.slice(0, 3).join(' • ')}
+                        </p>
+                      )}
+                      <Button 
+                        className="w-full rounded-full"
+                        variant="outline"
+                        data-testid={`button-view-${business.id}`}
+                      >
+                        View Profile
+                      </Button>
+                    </div>
+                  </DbbCard>
+                </Link>
+              ))}
+            </div>
+          )}
+        </DbbContainer>
+      </main>
+      
+      <Footer />
     </div>
   );
 }

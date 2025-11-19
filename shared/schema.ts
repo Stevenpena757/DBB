@@ -503,3 +503,70 @@ export const insertAiModerationQueueSchema = createInsertSchema(aiModerationQueu
   reviewedAt: true,
 });
 export type InsertAiModerationQueue = z.infer<typeof insertAiModerationQueueSchema>;
+
+// Business Leads - track inquiries from lead capture forms
+export const businessLeads = pgTable("business_leads", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id").notNull().references(() => businesses.id),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  message: text("message").notNull(),
+  service: text("service"), // Specific service they're interested in
+  preferredContact: text("preferred_contact"), // "email", "phone", "text"
+  source: text("source").default("profile_page").notNull(), // "profile_page", "quiz_match", "search"
+  status: text("status").default("new").notNull(), // "new", "contacted", "converted", "not_interested"
+  notes: text("notes"), // Business owner notes about this lead
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type BusinessLead = typeof businessLeads.$inferSelect;
+export const insertBusinessLeadSchema = createInsertSchema(businessLeads).omit({
+  id: true,
+  status: true,
+  notes: true,
+  createdAt: true,
+});
+export type InsertBusinessLead = z.infer<typeof insertBusinessLeadSchema>;
+
+// Quiz Submissions - Beauty Match Quiz responses
+export const quizSubmissions = pgTable("quiz_submissions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id), // Optional - anonymous users allowed
+  sessionId: text("session_id"), // For tracking anonymous submissions
+  responses: jsonb("responses").notNull(), // All quiz answers as JSON
+  matchedBusinessIds: integer("matched_business_ids").array().notNull(), // Top matches
+  matchScores: jsonb("match_scores"), // Score breakdown for each match
+  location: text("location"), // DFW area preference from quiz
+  services: text("services").array(), // Services they're interested in
+  budget: text("budget"), // Budget range from quiz
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type QuizSubmission = typeof quizSubmissions.$inferSelect;
+export const insertQuizSubmissionSchema = createInsertSchema(quizSubmissions).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertQuizSubmission = z.infer<typeof insertQuizSubmissionSchema>;
+
+// Analytics Events - track interactions for business insights
+export const analyticsEvents = pgTable("analytics_events", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id").notNull().references(() => businesses.id),
+  eventType: text("event_type").notNull(), // "profile_view", "phone_click", "website_click", "direction_click", "lead_form_view", "lead_form_submit", "quiz_match_view"
+  userId: integer("user_id").references(() => users.id), // Optional - track logged in users
+  sessionId: text("session_id"), // For anonymous tracking
+  metadata: jsonb("metadata"), // Additional context (referrer, device type, etc.)
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("analytics_business_idx").on(table.businessId),
+  index("analytics_created_idx").on(table.createdAt),
+]);
+
+export type AnalyticsEvent = typeof analyticsEvents.$inferSelect;
+export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertAnalyticsEvent = z.infer<typeof insertAnalyticsEventSchema>;

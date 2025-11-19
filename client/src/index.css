@@ -1,57 +1,71 @@
 @import './styles/tokens.css';
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Lato:wght@300;400;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Vibrant Miami Glow - Bold, Energetic, Modern Aesthetic */
+/* Soft Editorial Aesthetic - Wellness, Community, Service-Focused */
 :root {
-  --button-outline: rgba(204,74,40, .15);
-  --badge-outline: rgba(204,74,40, .08);
-  --opaque-button-border-intensity: -8;
-  --elevate-1: rgba(204,74,40, .10);
-  --elevate-2: rgba(217,29,102, .20);
-  --background: 14 100% 96%;
-  --foreground: 220 24% 13%;
-  --border: 14 50% 92%;
-  --card: 0 0% 100%;
-  --card-foreground: 220 24% 13%;
-  --card-border: 14 40% 95%;
-  --sidebar: 14 100% 96%;
-  --sidebar-foreground: 220 24% 13%;
-  --sidebar-border: 14 50% 92%;
-  --sidebar-primary: 11 68% 47%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 343 76% 49%;
-  --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-ring: 173 74% 42%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 220 24% 13%;
-  --popover-border: 14 50% 92%;
-  --primary: 11 68% 47%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 343 76% 49%;
-  --secondary-foreground: 0 0% 100%;
-  --muted: 14 100% 93%;
-  --muted-foreground: 220 10% 45%;
-  --accent: 173 74% 42%;
-  --accent-foreground: 220 60% 15%;
+  /* DallasBeautyBook brand colors - soft editorial (H S% L% format for Tailwind) */
+  --dbb-bg: 32 50% 96%;
+  --dbb-surface: 32 67% 99%;
+  --dbb-sand: 32 35% 88%;
+  --dbb-eucalyptus: 96 24% 78%;
+  --dbb-rose: 343 24% 86%;
+  --dbb-charcoal: 25 7% 28%;
+  --dbb-charcoal-soft: 25 5% 35%;
+  --dbb-border-soft: 32 30% 86%;
+  
+  /* Typography - Editorial Serif */
+  --font-heading: "Playfair Display", serif;
+  --font-subheading: "Cormorant Garamond", serif;
+  --font-body: "Lato", sans-serif;
+  --font-sans: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: Menlo, monospace;
+  
+  /* Shadcn color tokens - soft aesthetic */
+  --button-outline: rgba(75,70,67, .10);
+  --badge-outline: rgba(75,70,67, .06);
+  --opaque-button-border-intensity: -5;
+  --elevate-1: rgba(199,211,193, .15);
+  --elevate-2: rgba(232,209,213, .20);
+  --background: 32 50% 96%;
+  --foreground: 25 7% 28%;
+  --border: 32 35% 88%;
+  --card: 32 67% 99%;
+  --card-foreground: 25 7% 28%;
+  --card-border: 32 30% 90%;
+  --sidebar: 32 50% 96%;
+  --sidebar-foreground: 25 7% 28%;
+  --sidebar-border: 32 35% 88%;
+  --sidebar-primary: 96 24% 78%;
+  --sidebar-primary-foreground: 25 7% 28%;
+  --sidebar-accent: 343 24% 86%;
+  --sidebar-accent-foreground: 25 7% 28%;
+  --sidebar-ring: 96 24% 78%;
+  --popover: 32 67% 99%;
+  --popover-foreground: 25 7% 28%;
+  --popover-border: 32 30% 90%;
+  --primary: 96 24% 78%;
+  --primary-foreground: 25 7% 28%;
+  --secondary: 343 24% 86%;
+  --secondary-foreground: 25 7% 28%;
+  --muted: 32 35% 91%;
+  --muted-foreground: 25 5% 48%;
+  --accent: 96 24% 78%;
+  --accent-foreground: 25 7% 28%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --input: 14 50% 92%;
-  --ring: 173 70% 51%;
-  --chart-1: 11 68% 47%;
-  --chart-2: 343 76% 49%;
-  --chart-3: 173 74% 42%;
-  --chart-4: 220 60% 15%;
-  --chart-5: 14 100% 93%;
-  --font-heading: 'Montserrat', sans-serif;
-  --font-body: 'Hind Madurai', sans-serif;
-  --font-ui: 'Poppins', sans-serif;
-  --font-sans: 'Hind Madurai', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: 'Montserrat', Georgia, serif;
-  --font-mono: Menlo, monospace;
-  --radius: .5rem;
+  --input: 32 35% 88%;
+  --ring: 96 24% 78%;
+  --chart-1: 96 24% 78%;
+  --chart-2: 343 24% 86%;
+  --chart-3: 32 35% 88%;
+  --chart-4: 25 7% 28%;
+  --chart-5: 32 50% 96%;
+  --radius: .75rem;
   --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
   --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.06);
   --shadow-sm: 0px 2px 4px 0px rgba(0, 0, 0, 0.06);
@@ -176,21 +190,24 @@
   }
 
   body {
-    @apply antialiased bg-background text-foreground;
+    @apply antialiased text-foreground;
+    background-color: hsl(var(--dbb-bg));
+    color: hsl(var(--dbb-charcoal));
     font-family: var(--font-body);
   }
 
-  h1, h2, h3, h4, h5, h6, .heading {
+  h1, h2, h3, .font-heading {
     font-family: var(--font-heading);
-    font-weight: 700;
+    font-weight: 600;
   }
 
-  p {
+  h4, h5, h6, .font-subheading {
+    font-family: var(--font-subheading);
+    font-weight: 500;
+  }
+
+  p, span, .font-body {
     font-family: var(--font-body);
-  }
-
-  .ui-label, .chip, .nav-item {
-    font-family: var(--font-ui);
   }
 }
 

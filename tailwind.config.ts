@@ -51,25 +51,16 @@ export default {
           foreground: "hsl(var(--destructive-foreground) / <alpha-value>)",
           border: "var(--destructive-border)",
         },
-        // Brand colors for direct use - Vibrant Miami Glow (Accessible)
-        peach: {
-          DEFAULT: "#CC4A28",
-          light: "#FF7E5F",
-          foreground: "#FFFFFF",
-        },
-        sunset: {
-          DEFAULT: "#D91D66",
-          light: "#FD3A84",
-          foreground: "#FFFFFF",
-        },
-        mint: {
-          DEFAULT: "#1ABDA6",
-          light: "#2EDFD0",
-          foreground: "#FFFFFF",
-        },
-        navy: {
-          DEFAULT: "#102646",
-          foreground: "#FFFFFF",
+        // DallasBeautyBook soft editorial aesthetic colors
+        dbb: {
+          bg: "hsl(var(--dbb-bg) / <alpha-value>)",
+          surface: "hsl(var(--dbb-surface) / <alpha-value>)",
+          sand: "hsl(var(--dbb-sand) / <alpha-value>)",
+          eucalyptus: "hsl(var(--dbb-eucalyptus) / <alpha-value>)",
+          rose: "hsl(var(--dbb-rose) / <alpha-value>)",
+          charcoal: "hsl(var(--dbb-charcoal) / <alpha-value>)",
+          charcoalSoft: "hsl(var(--dbb-charcoal-soft) / <alpha-value>)",
+          borderSoft: "hsl(var(--dbb-border-soft) / <alpha-value>)",
         },
         ring: "hsl(var(--ring) / <alpha-value>)",
         chart: {
