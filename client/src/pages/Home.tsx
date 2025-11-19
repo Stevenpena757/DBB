@@ -8,6 +8,7 @@ import { DbbCard, DbbTag, DbbContainer } from "@/components/dbb/DbbComponents";
 import { Button } from "@/components/ui/button";
 import type { Business, ForumPost } from "@shared/schema";
 import { Search, MessageCircle, ArrowRight, Leaf, MapPin, Star } from "lucide-react";
+import { getBusinessImage } from "@/lib/categoryImages";
 
 // Import category images
 import hairSalonImg from "@assets/generated_images/Hair_Salon_category_image_4120201b.png";
@@ -158,9 +159,10 @@ export default function Home() {
                     <DbbCard className="overflow-hidden hover-elevate active-elevate-2 cursor-pointer">
                       <div className="aspect-[4/3] overflow-hidden">
                         <img 
-                          src={business.imageUrl} 
-                          alt={business.name}
+                          src={getBusinessImage(business)}
+                          alt={`${business.name} – ${business.category ?? "beauty service"}`}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                         />
                       </div>
                       <div className="p-4">

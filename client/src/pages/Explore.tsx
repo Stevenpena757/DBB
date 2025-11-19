@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { Business } from "@shared/schema";
 import { Search, MapPin, Filter } from "lucide-react";
+import { getBusinessImage } from "@/lib/categoryImages";
 
 // Import category images
 import hairSalonImg from "@assets/generated_images/Hair_Salon_category_image_4120201b.png";
@@ -239,9 +240,10 @@ export default function Explore() {
                   <DbbCard className="overflow-hidden hover-elevate active-elevate-2 transition-all h-full">
                     <div className="aspect-[4/3] overflow-hidden relative bg-dbb-sand">
                       <img 
-                        src={business.imageUrl} 
-                        alt={`${business.name} - service-focused imagery`}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                        src={getBusinessImage(business)}
+                        alt={`${business.name} – ${business.category ?? "beauty service"}`}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy" 
                       />
                     </div>
                     <div className="p-6">
