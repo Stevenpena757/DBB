@@ -9,6 +9,27 @@ import { Button } from "@/components/ui/button";
 import type { Business } from "@shared/schema";
 import { Search, MapPin, Filter } from "lucide-react";
 
+// Import category images
+import hairSalonImg from "@assets/generated_images/Hair_Salon_category_image_4120201b.png";
+import nailSalonImg from "@assets/generated_images/Nail_Salon_category_image_cb883119.png";
+import medSpaImg from "@assets/generated_images/Med_Spa_category_image_003dcdaa.png";
+import skincareImg from "@assets/generated_images/Skincare_category_image_e13794ea.png";
+import makeupArtistImg from "@assets/generated_images/Makeup_Artist_category_image_247ccaa1.png";
+import lashBrowImg from "@assets/generated_images/Lash_&_Brow_category_image_335d2acc.png";
+import massageWellnessImg from "@assets/generated_images/Massage_&_Wellness_category_image_5704d0e6.png";
+import medicalAestheticsImg from "@assets/generated_images/Medical_Aesthetics_category_image_de9b6fde.png";
+
+const categoryImages: Record<string, string> = {
+  "Hair Salon": hairSalonImg,
+  "Nail Salon": nailSalonImg,
+  "Med Spa": medSpaImg,
+  "Medical Aesthetics": medicalAestheticsImg,
+  "Skincare": skincareImg,
+  "Makeup Artist": makeupArtistImg,
+  "Lash & Brow": lashBrowImg,
+  "Massage & Wellness": massageWellnessImg,
+};
+
 const CATEGORIES = [
   "All",
   "Hair Salon",
@@ -110,7 +131,7 @@ export default function Explore() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                     selectedCategory === category
                       ? 'bg-dbb-forestLight text-dbb-charcoal dark:bg-dbb-forest dark:text-white'
                       : 'bg-dbb-sand text-dbb-charcoalSoft hover:bg-dbb-sand/80'
@@ -118,6 +139,13 @@ export default function Explore() {
                   style={{ fontFamily: 'var(--font-body)' }}
                   data-testid={`button-category-${category.toLowerCase().replace(/\s+/g, '-')}`}
                 >
+                  {categoryImages[category] && (
+                    <img 
+                      src={categoryImages[category]} 
+                      alt=""
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                  )}
                   {category}
                 </button>
               ))}

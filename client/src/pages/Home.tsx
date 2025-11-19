@@ -8,16 +8,30 @@ import { Button } from "@/components/ui/button";
 import type { Business } from "@shared/schema";
 import { Search, MessageCircle, ArrowRight, Leaf } from "lucide-react";
 
+// Import category images
+import hairSalonImg from "@assets/generated_images/Hair_Salon_category_image_4120201b.png";
+import nailSalonImg from "@assets/generated_images/Nail_Salon_category_image_cb883119.png";
+import medSpaImg from "@assets/generated_images/Med_Spa_category_image_003dcdaa.png";
+import skincareImg from "@assets/generated_images/Skincare_category_image_e13794ea.png";
+import makeupArtistImg from "@assets/generated_images/Makeup_Artist_category_image_247ccaa1.png";
+import lashBrowImg from "@assets/generated_images/Lash_&_Brow_category_image_335d2acc.png";
+import massageWellnessImg from "@assets/generated_images/Massage_&_Wellness_category_image_5704d0e6.png";
+import medicalAestheticsImg from "@assets/generated_images/Medical_Aesthetics_category_image_de9b6fde.png";
+
 export default function Home() {
   const { data: businesses = [] } = useQuery<Business[]>({
     queryKey: ['/api/businesses'],
   });
 
   const trendingCategories = [
-    'Hair Salons',
-    'Med Spas',
-    'Aesthetics',
-    'Skincare'
+    { name: 'Hair Salon', image: hairSalonImg, link: 'Hair Salon' },
+    { name: 'Med Spa', image: medSpaImg, link: 'Med Spa' },
+    { name: 'Skincare', image: skincareImg, link: 'Skincare' },
+    { name: 'Medical Aesthetics', image: medicalAestheticsImg, link: 'Medical Aesthetics' },
+    { name: 'Makeup Artist', image: makeupArtistImg, link: 'Makeup Artist' },
+    { name: 'Lash & Brow', image: lashBrowImg, link: 'Lash & Brow' },
+    { name: 'Nail Salon', image: nailSalonImg, link: 'Nail Salon' },
+    { name: 'Massage & Wellness', image: massageWellnessImg, link: 'Massage & Wellness' },
   ];
 
   return (
@@ -134,20 +148,34 @@ export default function Home() {
               className="text-3xl md:text-4xl mb-8 text-dbb-charcoal"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              Trending Categories
+              Popular Categories
             </h2>
-            <div className="flex flex-wrap gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {trendingCategories.map((category) => (
                 <Link 
-                  key={category} 
-                  href={`/explore?category=${encodeURIComponent(category)}`}
+                  key={category.name} 
+                  href={`/explore?category=${encodeURIComponent(category.link)}`}
                 >
-                  <DbbTag 
-                    className="px-6 py-3 text-base hover-elevate active-elevate-2 cursor-pointer"
-                    data-testid={`tag-category-${category.toLowerCase().replace(/\s+/g, '-')}`}
+                  <DbbCard 
+                    className="overflow-hidden hover-elevate active-elevate-2 cursor-pointer group"
+                    data-testid={`card-category-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
                   >
-                    {category}
-                  </DbbTag>
+                    <div className="aspect-square overflow-hidden">
+                      <img 
+                        src={category.image} 
+                        alt={category.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="p-4 text-center">
+                      <h3 
+                        className="text-lg font-medium text-dbb-charcoal"
+                        style={{ fontFamily: 'var(--font-subheading)' }}
+                      >
+                        {category.name}
+                      </h3>
+                    </div>
+                  </DbbCard>
                 </Link>
               ))}
             </div>
