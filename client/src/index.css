@@ -11,7 +11,8 @@
   --dbb-bg: 32 50% 96%;
   --dbb-surface: 32 67% 99%;
   --dbb-sand: 32 35% 88%;
-  --dbb-eucalyptus: 96 24% 78%;
+  --dbb-forest: 158 25% 30%;
+  --dbb-forest-light: 158 20% 85%;
   --dbb-rose: 343 24% 86%;
   --dbb-charcoal: 25 7% 28%;
   --dbb-charcoal-soft: 25 5% 35%;
@@ -40,31 +41,31 @@
   --sidebar: 32 50% 96%;
   --sidebar-foreground: 25 7% 28%;
   --sidebar-border: 32 35% 88%;
-  --sidebar-primary: 96 24% 78%;
-  --sidebar-primary-foreground: 25 7% 28%;
+  --sidebar-primary: 158 25% 30%;
+  --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 343 24% 86%;
   --sidebar-accent-foreground: 25 7% 28%;
-  --sidebar-ring: 96 24% 78%;
+  --sidebar-ring: 158 25% 30%;
   --popover: 32 67% 99%;
   --popover-foreground: 25 7% 28%;
   --popover-border: 32 30% 90%;
-  --primary: 96 24% 78%;
-  --primary-foreground: 25 7% 28%;
+  --primary: 158 25% 30%;
+  --primary-foreground: 0 0% 100%;
   --secondary: 343 24% 86%;
   --secondary-foreground: 25 7% 28%;
   --muted: 32 35% 91%;
   --muted-foreground: 25 5% 48%;
-  --accent: 96 24% 78%;
+  --accent: 158 20% 85%;
   --accent-foreground: 25 7% 28%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
   --input: 32 35% 88%;
-  --ring: 96 24% 78%;
-  --chart-1: 96 24% 78%;
+  --ring: 158 25% 30%;
+  --chart-1: 158 25% 30%;
   --chart-2: 343 24% 86%;
-  --chart-3: 32 35% 88%;
-  --chart-4: 25 7% 28%;
-  --chart-5: 32 50% 96%;
+  --chart-3: 158 20% 85%;
+  --chart-4: 32 35% 88%;
+  --chart-5: 25 7% 28%;
   --radius: .75rem;
   --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
   --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.06);
@@ -110,42 +111,42 @@
   --button-outline: rgba(255,255,255, .10);
   --badge-outline: rgba(255,255,255, .05);
   --opaque-button-border-intensity: 9;
-  --elevate-1: rgba(255,126,95, .15);
-  --elevate-2: rgba(253,58,132, .25);
-  --background: 220 60% 8%;
-  --foreground: 14 100% 96%;
-  --border: 220 30% 20%;
-  --card: 220 45% 12%;
-  --card-foreground: 14 100% 96%;
-  --card-border: 220 35% 18%;
-  --sidebar: 220 60% 10%;
-  --sidebar-foreground: 14 100% 96%;
-  --sidebar-border: 220 30% 18%;
-  --sidebar-primary: 11 68% 55%;
+  --elevate-1: rgba(199,211,193, .15);
+  --elevate-2: rgba(232,209,213, .20);
+  --background: 25 10% 12%;
+  --foreground: 32 50% 96%;
+  --border: 25 10% 22%;
+  --card: 25 10% 16%;
+  --card-foreground: 32 50% 96%;
+  --card-border: 25 10% 20%;
+  --sidebar: 25 10% 14%;
+  --sidebar-foreground: 32 50% 96%;
+  --sidebar-border: 25 10% 20%;
+  --sidebar-primary: 158 30% 45%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 343 76% 55%;
-  --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-ring: 173 74% 48%;
-  --popover: 220 50% 14%;
-  --popover-foreground: 14 100% 96%;
-  --popover-border: 220 30% 20%;
-  --primary: 11 68% 55%;
+  --sidebar-accent: 343 24% 70%;
+  --sidebar-accent-foreground: 25 10% 12%;
+  --sidebar-ring: 158 30% 45%;
+  --popover: 25 10% 16%;
+  --popover-foreground: 32 50% 96%;
+  --popover-border: 25 10% 20%;
+  --primary: 158 30% 45%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 343 76% 55%;
-  --secondary-foreground: 0 0% 100%;
-  --muted: 220 25% 25%;
-  --muted-foreground: 220 10% 65%;
-  --accent: 173 74% 48%;
-  --accent-foreground: 220 60% 15%;
+  --secondary: 343 24% 70%;
+  --secondary-foreground: 25 10% 12%;
+  --muted: 25 10% 24%;
+  --muted-foreground: 32 10% 65%;
+  --accent: 158 20% 60%;
+  --accent-foreground: 25 10% 12%;
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --input: 220 25% 25%;
-  --ring: 173 70% 51%;
-  --chart-1: 11 100% 65%;
-  --chart-2: 343 90% 58%;
-  --chart-3: 173 70% 51%;
-  --chart-4: 220 60% 15%;
-  --chart-5: 14 100% 88%;
+  --input: 25 10% 22%;
+  --ring: 158 30% 45%;
+  --chart-1: 158 30% 55%;
+  --chart-2: 343 30% 65%;
+  --chart-3: 32 35% 70%;
+  --chart-4: 25 10% 50%;
+  --chart-5: 32 50% 85%;
   --shadow-2xs: 0px 2px 0px 0px hsl(24 33% 12% / 0.00);
   --shadow-xs: 0px 2px 0px 0px hsl(24 33% 12% / 0.00);
   --shadow-sm: 0px 2px 0px 0px hsl(24 33% 12% / 0.00), 0px 1px 2px -1px hsl(24 33% 12% / 0.00);
@@ -322,25 +323,25 @@
     inset: -1px;
   }
 
-  /* Glow effects for Botanical Jewel */
+  /* Glow effects for Soft Editorial */
   .glow-primary {
-    box-shadow: 0 0 20px rgba(42, 93, 78, 0.3);
+    box-shadow: 0 0 20px rgba(67, 105, 91, 0.3);
   }
 
   .glow-secondary {
-    box-shadow: 0 0 20px rgba(201, 157, 165, 0.3);
+    box-shadow: 0 0 20px rgba(223, 200, 208, 0.3);
   }
 
   .glow-accent {
-    box-shadow: 0 0 20px rgba(232, 211, 198, 0.3);
+    box-shadow: 0 0 20px rgba(199, 211, 205, 0.3);
   }
 
-  /* Botanical gradients */
+  /* Soft Editorial gradients */
   .gradient-botanical {
-    background: linear-gradient(120deg, #C99DA5 0%, #F4ECE9 100%);
+    background: linear-gradient(120deg, hsl(343, 24%, 86%) 0%, hsl(32, 67%, 99%) 100%);
   }
 
   .gradient-emerald-rose {
-    background: linear-gradient(135deg, #2A5D4E 0%, #C99DA5 80%);
+    background: linear-gradient(135deg, hsl(158, 25%, 30%) 0%, hsl(343, 24%, 86%) 80%);
   }
 }

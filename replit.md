@@ -22,41 +22,47 @@ The platform includes comprehensive SEO optimization:
 - **Canonical URLs**: All pages include canonical link tags to prevent duplicate content
 - **Meta Tags**: Dynamic title, description, and Open Graph tags for social sharing
 
-## Brand Identity - Vibrant Miami Glow
+## Brand Identity - Soft Editorial
 
-Dallas Beauty Book features a bold, energetic, and modern brand aesthetic inspired by Miami's vibrant energy.
+Dallas Beauty Book features a refined, sophisticated editorial aesthetic with clean typography and natural tones.
 
 ### Color Palette (WCAG Accessible)
-- **Primary (Accessible Peach)**: #CC4A28 - Bold, energetic, warm (5.5:1 contrast with white)
-- **Secondary (Accessible Sunset)**: #D91D66 - Vibrant, eye-catching, feminine (4.8:1 contrast with white)
-- **Accent (Accessible Mint)**: #1ABDA6 - Fresh, modern, exciting (darker for better contrast)
-- **Navy (Ocean Navy)**: #102646 - Professional, trustworthy, grounding
-- **Background (Peach Mist)**: #FFF1ED - Soft, warm, inviting
-- **Light variants**: #FF7E5F (peach), #FD3A84 (sunset), #2EDFD0 (mint) - Used for backgrounds and decorative elements
+- **Background**: Warm cream (hsl(32 50% 96%)) - Soft, elegant, inviting
+- **Surface**: Off-white (hsl(32 67% 99%)) - Clean, fresh card backgrounds
+- **Primary (Forest Green)**: hsl(158 25% 30%) - Professional, trustworthy, wellness-focused
+- **Primary Foreground**: White - High contrast on forest green
+- **Sand**: hsl(32 35% 88%) - Neutral accent, warm undertones
+- **Forest Light**: hsl(158 20% 85%) - Soft sage green for accents
+- **Rose**: hsl(343 24% 86%) - Gentle, feminine touch
+- **Charcoal**: hsl(25 7% 28%) - Rich black for headings
+- **Charcoal Soft**: hsl(25 5% 35%) - Muted for body text
 
 ### Typography System
-- **Headings**: Montserrat (600-800 weight) - Bold, modern, geometric, confident
-- **Body Text**: Hind Madurai (400-600 weight) - Clean, readable, international appeal
-- **UI Elements**: Poppins (500-600 weight) - Friendly, modern, versatile
+- **Headings**: Playfair Display (serif) - Editorial, elegant, refined
+- **Subheadings**: Cormorant Garamond (serif) - Graceful, classic
+- **Body Text**: Lato (sans-serif) - Clean, readable, modern
+- **Font Loading**: Google Fonts with weights 400-700
 
 ### CSS Variables
-- `--font-heading`: 'Montserrat', sans-serif
-- `--font-body`: 'Hind Madurai', sans-serif
-- `--font-ui`: 'Poppins', sans-serif
+- `--font-heading`: 'Playfair Display', serif
+- `--font-subheading`: 'Cormorant Garamond', serif
+- `--font-body`: 'Lato', sans-serif
 
-### Brand Characteristics
-- Vibrant gradients (sunset gradient from pink to peach)
-- Pill-shaped buttons with shadows and hover effects
-- Card hover lifts with smooth transitions
-- Mint aqua accents for calls-to-action
-- Focus outlines using Mint Aqua for accessibility
+### Design Characteristics
+- Minimal, centered layouts with generous whitespace
+- Serif typography for headings (Playfair Display)
+- Pill-shaped category tags
+- Subtle gradients (rose to sand, forest light to sand)
+- Dark forest green primary buttons with white text
+- Product/service-focused photography (no faces)
+- Rounded corners on cards (border-radius: 0.75rem)
 
-### Components Updated
-- Homepage: Vibrant gradient hero with sunset overlay, bold white headings
-- Explore: Pill-shaped filter chips, vibrant cards
-- Forum: Gradient heading, bold CTA button
-- Header: Gradient logo, vibrant primary buttons
-- Footer: Clean white background, UI font
+### Components Style
+- **Buttons**: Forest green primary, rounded-full, generous padding
+- **Cards**: White surface with subtle shadows, soft rounded corners
+- **Tags**: Light background, dark text, pill-shaped
+- **Links**: Underlined ghost buttons for editorial feel
+- **Icons**: Outlined style, consistent sizing
 
 ## User Preferences
 
