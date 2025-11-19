@@ -175,6 +175,7 @@ export default function CreateBeautyBookPage() {
 
     // Filter by city
     const city = form.watch("city");
+    const enhanceAreas = form.watch("enhanceAreas");
     let filtered = businesses.filter((b) => b.location === city);
 
     // If city filter returns nothing, show all
@@ -182,11 +183,37 @@ export default function CreateBeautyBookPage() {
       filtered = businesses;
     }
 
-    // Prioritize sponsored and featured businesses
+    // Map enhance areas to business categories for relevance scoring
+    const categoryMatches: Record<string, string[]> = {
+      "Skin glow & complexion": ["Skincare", "Med Spa", "Medical Aesthetics"],
+      "Lashes": ["Lash & Brow"],
+      "Brows": ["Lash & Brow"],
+      "Nails": ["Nail Salon"],
+      "Hair care & styling": ["Hair Salon"],
+      "Injectable enhancements": ["Med Spa", "Medical Aesthetics"],
+      "Sculpting & body contour": ["Med Spa", "Medical Aesthetics"],
+      "Wellness & recovery": ["Massage & Wellness", "Med Spa"],
+      "Anti-aging optimization": ["Med Spa", "Medical Aesthetics", "Skincare"],
+    };
+
+    // Calculate relevance scores and sort
     filtered.sort((a, b) => {
-      const aScore = (a.isSponsored ? 2 : 0) + (a.featured ? 1 : 0);
-      const bScore = (b.isSponsored ? 2 : 0) + (b.featured ? 1 : 0);
-      return bScore - aScore;
+      // Score for sponsored/featured (highest priority)
+      const aSponsoredScore = (a.isSponsored ? 100 : 0) + (a.featured ? 50 : 0);
+      const bSponsoredScore = (b.isSponsored ? 100 : 0) + (b.featured ? 50 : 0);
+
+      // Score for category relevance (medium priority)
+      const aRelevanceScore = enhanceAreas.some((area) => 
+        categoryMatches[area]?.includes(a.category)
+      ) ? 10 : 0;
+      const bRelevanceScore = enhanceAreas.some((area) => 
+        categoryMatches[area]?.includes(b.category)
+      ) ? 10 : 0;
+
+      const aTotal = aSponsoredScore + aRelevanceScore;
+      const bTotal = bSponsoredScore + bRelevanceScore;
+      
+      return bTotal - aTotal;
     });
 
     return filtered.slice(0, 6);
