@@ -51,32 +51,48 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
-        {/* Hero Section - Centered, Minimal */}
+        {/* Hero Section - Text Left, Image Right */}
         <section className="py-16 md:py-24" data-testid="section-hero">
-          <DbbContainer className="max-w-4xl mx-auto text-center">
-            <h1 
-              className="text-4xl md:text-5xl lg:text-6xl mb-6 text-dbb-charcoal leading-tight"
-              style={{ fontFamily: 'var(--font-heading)' }}
-              data-testid="hero-heading"
-            >
-              Find Beauty Experts in DFW
-            </h1>
-            <p 
-              className="text-lg md:text-xl mb-10 text-dbb-charcoalSoft max-w-2xl mx-auto"
-              style={{ fontFamily: 'var(--font-body)' }}
-            >
-              Discover top health, beauty, and aesthetics professionals in Dallas-Fort Worth area
-            </p>
-            <Link href="/explore">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
-                data-testid="button-search-professionals"
-              >
-                Search Professionals
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
+          <DbbContainer className="max-w-6xl mx-auto">
+            <div className="grid gap-8 md:grid-cols-2 items-center">
+              {/* Left Column: Text Content */}
+              <div className="text-center md:text-left">
+                <h1 
+                  className="text-4xl md:text-5xl lg:text-6xl mb-6 text-dbb-charcoal leading-tight"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                  data-testid="hero-heading"
+                >
+                  Find Beauty Experts in DFW
+                </h1>
+                <p 
+                  className="text-lg md:text-xl mb-10 text-dbb-charcoalSoft"
+                  style={{ fontFamily: 'var(--font-body)' }}
+                >
+                  Discover top health, beauty, and aesthetics professionals in Dallas-Fort Worth area
+                </p>
+                <Link href="/explore">
+                  <Button 
+                    size="lg" 
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
+                    data-testid="button-search-professionals"
+                  >
+                    Search Professionals
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              </div>
+              
+              {/* Right Column: Hero Image */}
+              <div className="relative w-full h-72 md:h-80 lg:h-96 overflow-hidden rounded-3xl bg-[hsl(var(--dbb-sand))]">
+                <img
+                  src="/images/dallasbeautybook/hero-tools-and-textures.jpg"
+                  alt="Beauty tools, skincare products, and soft textures arranged on a neutral background"
+                  className="h-full w-full object-cover"
+                  loading="eager"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(249,246,242,0.7)] via-transparent to-transparent" />
+              </div>
+            </div>
           </DbbContainer>
         </section>
 
@@ -206,33 +222,42 @@ export default function Home() {
         {/* For Professionals Callout */}
         <section className="py-12" data-testid="section-professionals-callout">
           <DbbContainer className="max-w-6xl mx-auto">
-            <DbbCard className="overflow-hidden grid md:grid-cols-2 gap-0">
-              <div className="aspect-square md:aspect-auto bg-gradient-to-br from-accent to-dbb-sand flex items-center justify-center p-12">
-                <div className="w-48 h-48 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                  <Leaf className="h-32 w-32 text-primary" />
-                </div>
-              </div>
-              <div className="p-12 flex flex-col justify-center">
+            <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center">
+              <div>
                 <h2 
-                  className="text-3xl md:text-4xl mb-4 text-dbb-charcoal"
+                  className="text-3xl md:text-4xl mb-6 text-dbb-charcoal"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
                   For Professionals:
                   <br />
                   Grow Your Business
                 </h2>
+                <p 
+                  className="text-lg text-dbb-charcoalSoft mb-6"
+                  style={{ fontFamily: 'var(--font-body)' }}
+                >
+                  Get discovered by local clients, manage your business profile, and access powerful analytics to grow your practice.
+                </p>
                 <Link href="/claim-listing">
                   <Button 
-                    variant="ghost" 
-                    className="p-0 h-auto text-dbb-charcoal hover:text-dbb-charcoalSoft text-base underline"
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
                     data-testid="button-learn-more-professionals"
                   >
                     Learn More
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
               </div>
-            </DbbCard>
+              <div className="relative h-52 md:h-64">
+                <img
+                  src="/images/dallasbeautybook/pro-dashboard-abstract.jpg"
+                  alt="Abstract representation of beauty business analytics and growth tools"
+                  className="h-full w-full rounded-3xl object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </DbbContainer>
         </section>
 
@@ -275,10 +300,13 @@ export default function Home() {
 
               {/* Beauty Match Quiz Card */}
               <DbbCard className="overflow-hidden" data-testid="card-quiz">
-                <div className="aspect-[4/3] bg-gradient-to-br from-accent to-dbb-sand flex items-center justify-center">
-                  <div className="w-32 h-32 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <Search className="h-16 w-16 text-dbb-charcoal" />
-                  </div>
+                <div className="aspect-[4/3] overflow-hidden">
+                  <img
+                    src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
+                    alt="Notebook and beauty tools arranged neatly on a soft background"
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="p-8">
                   <h2 
@@ -291,11 +319,11 @@ export default function Home() {
                     className="text-dbb-charcoalSoft mb-6"
                     style={{ fontFamily: 'var(--font-body)' }}
                   >
-                    Get matched with local specialists
+                    Not sure where to go? Answer a few questions and we'll suggest DFW beauty pros.
                   </p>
                   <Link href="/quiz">
                     <Button 
-                      className="bg-muted hover:bg-muted/90 text-muted-foreground rounded-full"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
                       data-testid="button-get-started"
                     >
                       Get Started
