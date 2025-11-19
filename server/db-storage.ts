@@ -5,6 +5,7 @@ import {
   forumPosts, forumReplies, pendingBusinesses,
   subscriptions, abuseReports, userBans, adminActivityLogs, securityEvents, aiModerationQueue,
   businessLeads, quizSubmissions, analyticsEvents, beautyBooks,
+  userBusinessFollows, userGoals, userPromotions,
   type User, type InsertUser,
   type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
@@ -26,7 +27,10 @@ import {
   type BusinessLead, type InsertBusinessLead,
   type QuizSubmission, type InsertQuizSubmission,
   type AnalyticsEvent, type InsertAnalyticsEvent,
-  type BeautyBook, type InsertBeautyBook
+  type BeautyBook, type InsertBeautyBook,
+  type UserBusinessFollow, type InsertUserBusinessFollow,
+  type UserGoal, type InsertUserGoal,
+  type UserPromotion, type InsertUserPromotion
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -862,5 +866,124 @@ export class DbStorage implements IStorage {
       .from(analyticsEvents)
       .orderBy(desc(analyticsEvents.createdAt))
       .limit(limit);
+  }
+
+  // ============ USER BUSINESS FOLLOWS ============
+  async followBusiness(userId: number, businessId: number): Promise<UserBusinessFollow> {
+    const result = await db.insert(userBusinessFollows)
+      .values({ userId, businessId })
+      .onConflictDoNothing()
+      .returning();
+    return result[0];
+  }
+
+  async unfollowBusiness(userId: number, businessId: number): Promise<void> {
+    await db.delete(userBusinessFollows)
+      .where(and(
+        eq(userBusinessFollows.userId, userId),
+        eq(userBusinessFollows.businessId, businessId)
+      ));
+  }
+
+  async getUserFollows(userId: number): Promise<UserBusinessFollow[]> {
+    return db.select()
+      .from(userBusinessFollows)
+      .where(eq(userBusinessFollows.userId, userId))
+      .orderBy(desc(userBusinessFollows.createdAt));
+  }
+
+  async isFollowing(userId: number, businessId: number): Promise<boolean> {
+    const result = await db.select()
+      .from(userBusinessFollows)
+      .where(and(
+        eq(userBusinessFollows.userId, userId),
+        eq(userBusinessFollows.businessId, businessId)
+      ))
+      .limit(1);
+    return result.length > 0;
+  }
+
+  async getBusinessFollowerCount(businessId: number): Promise<number> {
+    const result = await db.select({ count: sql<number>`count(*)` })
+      .from(userBusinessFollows)
+      .where(eq(userBusinessFollows.businessId, businessId));
+    return Number(result[0]?.count || 0);
+  }
+
+  // ============ USER GOALS ============
+  async createUserGoal(goal: InsertUserGoal): Promise<UserGoal> {
+    const result = await db.insert(userGoals).values(goal).returning();
+    return result[0];
+  }
+
+  async getUserGoals(userId: number): Promise<UserGoal[]> {
+    return db.select()
+      .from(userGoals)
+      .where(eq(userGoals.userId, userId))
+      .orderBy(desc(userGoals.createdAt));
+  }
+
+  async updateUserGoal(id: number, updates: Partial<InsertUserGoal>): Promise<UserGoal | undefined> {
+    const result = await db.update(userGoals)
+      .set(updates)
+      .where(eq(userGoals.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async completeUserGoal(id: number): Promise<UserGoal | undefined> {
+    const result = await db.update(userGoals)
+      .set({ completed: true, completedAt: new Date() })
+      .where(eq(userGoals.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async deleteUserGoal(id: number): Promise<void> {
+    await db.delete(userGoals).where(eq(userGoals.id, id));
+  }
+
+  // ============ USER PROMOTIONS ============
+  async createUserPromotion(promo: InsertUserPromotion): Promise<UserPromotion> {
+    const result = await db.insert(userPromotions).values(promo).returning();
+    return result[0];
+  }
+
+  async getUserPromotions(userId: number, activeOnly: boolean = false): Promise<UserPromotion[]> {
+    if (activeOnly) {
+      return db.select()
+        .from(userPromotions)
+        .where(and(
+          eq(userPromotions.userId, userId),
+          eq(userPromotions.used, false),
+          sql`${userPromotions.validUntil} IS NULL OR ${userPromotions.validUntil} > NOW()`
+        ))
+        .orderBy(desc(userPromotions.createdAt));
+    }
+    
+    return db.select()
+      .from(userPromotions)
+      .where(eq(userPromotions.userId, userId))
+      .orderBy(desc(userPromotions.createdAt));
+  }
+
+  async markPromotionUsed(id: number): Promise<UserPromotion | undefined> {
+    const result = await db.update(userPromotions)
+      .set({ used: true, usedAt: new Date() })
+      .where(eq(userPromotions.id, id))
+      .returning();
+    return result[0];
+  }
+
+  async deleteUserPromotion(id: number): Promise<void> {
+    await db.delete(userPromotions).where(eq(userPromotions.id, id));
+  }
+
+  // ============ USER PROFILE DATA ============
+  async getUserBeautyBooks(userId: number): Promise<BeautyBook[]> {
+    return db.select()
+      .from(beautyBooks)
+      .where(eq(beautyBooks.userId, userId))
+      .orderBy(desc(beautyBooks.createdAt));
   }
 }

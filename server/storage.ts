@@ -20,7 +20,10 @@ import {
   type BusinessLead, type InsertBusinessLead,
   type QuizSubmission, type InsertQuizSubmission,
   type AnalyticsEvent, type InsertAnalyticsEvent,
-  type BeautyBook, type InsertBeautyBook
+  type BeautyBook, type InsertBeautyBook,
+  type UserBusinessFollow, type InsertUserBusinessFollow,
+  type UserGoal, type InsertUserGoal,
+  type UserPromotion, type InsertUserPromotion
 } from "@shared/schema";
 
 export interface IStorage {
@@ -186,6 +189,29 @@ export interface IStorage {
   createAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent>;
   getAnalyticsEventsByBusiness(businessId: number, eventType?: string): Promise<AnalyticsEvent[]>;
   getAllAnalyticsEvents(limit?: number): Promise<AnalyticsEvent[]>;
+  
+  // User Business Follows
+  followBusiness(userId: number, businessId: number): Promise<UserBusinessFollow>;
+  unfollowBusiness(userId: number, businessId: number): Promise<void>;
+  getUserFollows(userId: number): Promise<UserBusinessFollow[]>;
+  isFollowing(userId: number, businessId: number): Promise<boolean>;
+  getBusinessFollowerCount(businessId: number): Promise<number>;
+  
+  // User Goals
+  createUserGoal(goal: InsertUserGoal): Promise<UserGoal>;
+  getUserGoals(userId: number): Promise<UserGoal[]>;
+  updateUserGoal(id: number, updates: Partial<InsertUserGoal>): Promise<UserGoal | undefined>;
+  completeUserGoal(id: number): Promise<UserGoal | undefined>;
+  deleteUserGoal(id: number): Promise<void>;
+  
+  // User Promotions
+  createUserPromotion(promo: InsertUserPromotion): Promise<UserPromotion>;
+  getUserPromotions(userId: number, activeOnly?: boolean): Promise<UserPromotion[]>;
+  markPromotionUsed(id: number): Promise<UserPromotion | undefined>;
+  deleteUserPromotion(id: number): Promise<void>;
+  
+  // User Profile Data
+  getUserBeautyBooks(userId: number): Promise<BeautyBook[]>;
 }
 
 export class MemStorage implements IStorage {

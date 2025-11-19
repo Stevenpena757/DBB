@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb, varchar, index } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb, varchar, index, unique } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { sql } from "drizzle-orm";
@@ -655,3 +655,99 @@ export const insertBeautyBookSchema = createInsertSchema(beautyBooks).omit({
   consentMarketing: z.boolean().default(false),
 });
 export type InsertBeautyBook = z.infer<typeof insertBeautyBookSchema>;
+
+// User Business Follows - track which businesses users follow
+export const userBusinessFollows = pgTable("user_business_follows", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => ({
+  userFollowsUserIdx: index("user_follows_user_idx").on(table.userId),
+  userFollowsBusinessIdx: index("user_follows_business_idx").on(table.businessId),
+  userFollowsUnique: unique("user_follows_unique").on(table.userId, table.businessId),
+}));
+
+export type UserBusinessFollow = typeof userBusinessFollows.$inferSelect;
+export const insertUserBusinessFollowSchema = createInsertSchema(userBusinessFollows).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertUserBusinessFollow = z.infer<typeof insertUserBusinessFollowSchema>;
+
+// Goal categories for validation
+export const GOAL_CATEGORIES = [
+  "skin",
+  "hair",
+  "body",
+  "wellness",
+  "beauty",
+  "fitness",
+  "other",
+] as const;
+
+// User Goals - beauty goals and milestones
+export const userGoals = pgTable("user_goals", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  description: text("description"),
+  category: text("category"),
+  targetDate: timestamp("target_date"),
+  completed: boolean("completed").default(false).notNull(),
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("user_goals_user_idx").on(table.userId),
+]);
+
+export type UserGoal = typeof userGoals.$inferSelect;
+export const insertUserGoalSchema = createInsertSchema(userGoals).omit({
+  id: true,
+  completed: true,
+  completedAt: true,
+  createdAt: true,
+}).extend({
+  category: z.enum(GOAL_CATEGORIES).optional(),
+});
+export type InsertUserGoal = z.infer<typeof insertUserGoalSchema>;
+
+// Promotion types for validation
+export const PROMO_TYPES = [
+  "discount",
+  "feature",
+  "trial",
+  "recommendation",
+] as const;
+
+// Personalized Promotions - special offers and features for users
+export const userPromotions = pgTable("user_promotions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  businessId: integer("business_id").references(() => businesses.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  promoType: text("promo_type").notNull(),
+  value: text("value"),
+  code: text("code"),
+  validUntil: timestamp("valid_until"),
+  used: boolean("used").default(false).notNull(),
+  usedAt: timestamp("used_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("user_promotions_user_idx").on(table.userId),
+  index("user_promotions_business_idx").on(table.businessId),
+  index("user_promotions_active_idx").on(table.userId, table.used),
+]);
+
+export type UserPromotion = typeof userPromotions.$inferSelect;
+export const insertUserPromotionSchema = createInsertSchema(userPromotions).omit({
+  id: true,
+  used: true,
+  usedAt: true,
+  createdAt: true,
+}).extend({
+  promoType: z.enum(PROMO_TYPES),
+  businessId: z.number().optional().nullable(),
+});
+export type InsertUserPromotion = z.infer<typeof insertUserPromotionSchema>;
