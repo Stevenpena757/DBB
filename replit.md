@@ -117,6 +117,39 @@ A major update to improve first-time visitor clarity and engagement:
 - Comprehensive focus/blur handlers that detect when focus leaves carousel entirely
 - Verified through e2e testing with Playwright
 
+### Backend API and Lead Capture Infrastructure
+
+**Lead Capture System:**
+- Business Profile lead form modal with contact preferences
+- Forum sidebar lead capture module
+- Database schema additions: businessLeads, quizSubmissions, analyticsEvents tables
+
+**API Routes (November 2025):**
+- **POST /api/leads** - Public endpoint for lead capture with server-side analytics tracking
+  - Validates businessId is provided
+  - Tracks "lead_form_submit" analytics event server-side
+  - Enriches with userId from session if authenticated
+- **GET /api/leads** - Admin-only endpoint for all leads
+- **POST /api/quiz** - Public endpoint for Beauty Match Quiz submissions
+  - Enriches with userId from session if authenticated
+  - Returns quiz submission confirmation
+- **GET /api/quiz** - Admin-only endpoint for all quiz submissions
+- **GET /api/analytics/:businessId** - Protected endpoint for business owners and admins
+  - Validates ownership: business.claimedBy === user.id OR user.role === "admin"
+  - Filters by eventType query parameter
+
+**Security Implementation:**
+- All public endpoints validate required fields and data integrity
+- Protected endpoints use proper Replit auth pattern (req.user.claims.sub lookup via storage.getUserByReplitId())
+- Server-side analytics tracking only (no public POST /api/analytics endpoint to prevent spam/data poisoning)
+- Analytics events tracked from legitimate user actions (lead submissions, quiz submissions, etc.)
+- Ownership validation on analytics retrieval
+
+**Storage Methods Added:**
+- createBusinessLead, getBusinessLeadsByBusinessId, getAllBusinessLeads
+- createQuizSubmission, getQuizSubmissionById, getAllQuizSubmissions
+- createAnalyticsEvent, getAnalyticsEventsByBusiness, getAllAnalyticsEvents
+
 ## System Architecture
 
 ### Frontend Architecture
