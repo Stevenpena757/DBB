@@ -6,9 +6,9 @@ import { Footer } from "@/components/Footer";
 import { WelcomeModal } from "@/components/WelcomeModal";
 import { DbbCard, DbbTag, DbbContainer } from "@/components/dbb/DbbComponents";
 import { Button } from "@/components/ui/button";
+import { BusinessCard } from "@/components/BusinessCard";
 import type { Business, ForumPost } from "@shared/schema";
-import { Search, MessageCircle, ArrowRight, Leaf, MapPin, Star } from "lucide-react";
-import { getBusinessImage } from "@/lib/categoryImages";
+import { Search, MessageCircle, ArrowRight, Leaf } from "lucide-react";
 
 // Import category images
 import hairSalonImg from "@assets/generated_images/Hair_Salon_category_image_4120201b.png";
@@ -84,12 +84,16 @@ export default function Home() {
               </div>
               
               {/* Right Column: Hero Image */}
-              <div className="relative w-full h-72 md:h-80 lg:h-96 overflow-hidden rounded-3xl bg-[hsl(var(--dbb-sand))]">
+              <div 
+                className="relative w-full h-72 md:h-80 lg:h-96 overflow-hidden rounded-3xl bg-[hsl(var(--dbb-sand))]"
+                data-testid="hero-image-container"
+              >
                 <img
                   src="/images/dallasbeautybook/hero-tools-and-textures.jpg"
                   alt="Beauty tools, skincare products, and soft textures arranged on a neutral background"
                   className="h-full w-full object-cover"
                   loading="eager"
+                  data-testid="hero-image"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(249,246,242,0.7)] via-transparent to-transparent" />
               </div>
@@ -156,29 +160,7 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {displayedBusinesses.map((business) => (
                   <Link key={business.id} href={`/business/${business.id}`}>
-                    <DbbCard className="overflow-hidden hover-elevate active-elevate-2 cursor-pointer">
-                      <div className="aspect-[4/3] overflow-hidden">
-                        <img 
-                          src={getBusinessImage(business)}
-                          alt={`${business.name} – ${business.category ?? "beauty service"}`}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <h4 
-                          className="text-lg font-medium text-dbb-charcoal mb-2"
-                          style={{ fontFamily: 'var(--font-subheading)' }}
-                        >
-                          {business.name}
-                        </h4>
-                        <div className="flex items-center gap-2 text-sm text-dbb-charcoalSoft mb-2">
-                          <MapPin className="h-4 w-4" />
-                          {business.location}
-                        </div>
-                        <DbbTag>{business.category}</DbbTag>
-                      </div>
-                    </DbbCard>
+                    <BusinessCard business={business} />
                   </Link>
                 ))}
               </div>

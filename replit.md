@@ -73,6 +73,46 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 
 ## Recent Features (November 2025)
 
+### Landing Page Images Implementation (November 19, 2025)
+
+Added engaging, on-brand imagery throughout the landing page with NO FACES requirement.
+
+**Images Generated:**
+- 11 AI-generated images (1.1-1.7M each) using OpenAI
+- Soft Editorial aesthetic: warm cream, beige, eucalyptus green tones
+- Service and ambiance-focused (no people/faces)
+- Stored in: `public/images/dallasbeautybook/`
+
+**Images:**
+1. `hero-tools-and-textures.jpg` - Homepage hero (right column)
+2-8. `cat-*.jpg` (7 category images) - Business card defaults (medspa, injectables, lashes, brows, hair, nails, skin)
+9. `quiz-notebook-brush.jpg` - Quiz page and quiz card
+10. `pro-dashboard-abstract.jpg` - For Professionals section
+11. `community-background.jpg` - Optional community background (not used yet)
+
+**Technical Implementation:**
+- Created `client/src/lib/categoryImages.ts` utility with category → image mapping
+- Updated `BusinessCard` component to use `getBusinessImage()` with fallback logic
+- Homepage uses category defaults for all business cards via `getBusinessImage()`
+- Explore page uses category defaults for all business cards via `getBusinessImage()`
+- Created `/quiz` page with quiz image displayed alongside form (desktop only)
+- All images have proper alt text and loading attributes
+- Hero image uses loading="eager", others use loading="lazy"
+- Mobile responsive: grids stack, quiz image hidden on mobile
+
+**Homepage Updates:**
+- Hero section: Grid layout with text on left, image on right
+- Quiz card: Replaced gradient with actual quiz image
+- For Professionals: Replaced gradient/icon with pro dashboard image
+
+**Files Modified:**
+- `client/src/pages/Home.tsx` - Added hero, quiz, and pro images
+- `client/src/pages/Explore.tsx` - Uses getBusinessImage for business cards
+- `client/src/pages/Quiz.tsx` - New quiz page with image
+- `client/src/components/BusinessCard.tsx` - Updated to use Dbb components and getBusinessImage
+- `client/src/lib/categoryImages.ts` - New category image mapping utility
+- `client/src/App.tsx` - Added /quiz route
+
 ### Homepage Reorganization with Dynamic Content (November 19, 2025)
 
 Reorganized homepage layout and added dynamic business listings and community submissions to Trending Categories section.
