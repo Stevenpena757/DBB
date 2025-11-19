@@ -70,3 +70,35 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 **AI and Automation:**
 - OpenAI Integration (via Replit AI Integrations)
 - p-limit, p-retry
+
+## Recent Features (November 2025)
+
+### AI-Generated Category Images (November 19, 2025)
+
+Replaced text-only and icon-based category displays with AI-generated product photography that matches the Soft Editorial aesthetic.
+
+**Implementation:**
+- Generated 8 custom AI images for beauty categories using OpenAI image generation
+- Categories with images: Hair Salon, Nail Salon, Med Spa, Medical Aesthetics, Skincare, Makeup Artist, Lash & Brow, Massage & Wellness
+- Image style: Product-focused photography with warm cream backgrounds, forest green accents, professional editorial aesthetic (no people/faces)
+- Images stored in: `attached_assets/generated_images/`
+
+**Homepage Updates:**
+- Renamed section: "Trending Categories" → "Popular Categories"
+- Replaced simple tag-based display with elegant image cards
+- Grid layout: 2 columns on mobile, 4 on desktop
+- Each card features: Square AI-generated image, hover scale effect (105%), category name in serif font
+- Cards link to `/explore` with category filter applied
+
+**Explore Page Updates:**
+- Added small circular thumbnail images (6x6 pixels) to category filter buttons
+- Thumbnails appear to the left of category text
+- Maintains existing selection states (forest green for selected, sand for unselected)
+- "All" button correctly displays without image
+
+**Technical Details:**
+- Images imported using `@assets` alias for optimal Vite bundling
+- No runtime image loading - all assets bundled at build time
+- Responsive design with smooth hover transitions (300ms)
+- Dark mode compatible
+- Maintains SPA navigation using wouter Link components
