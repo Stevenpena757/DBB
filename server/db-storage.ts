@@ -4,7 +4,7 @@ import {
   users, businesses, posts, articles, howTos, vendors, vendorProducts, claimRequests, saves,
   forumPosts, forumReplies, pendingBusinesses,
   subscriptions, abuseReports, userBans, adminActivityLogs, securityEvents, aiModerationQueue,
-  businessLeads, quizSubmissions, analyticsEvents,
+  businessLeads, quizSubmissions, analyticsEvents, beautyBooks,
   type User, type InsertUser,
   type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
@@ -25,7 +25,8 @@ import {
   type AiModerationQueue, type InsertAiModerationQueue,
   type BusinessLead, type InsertBusinessLead,
   type QuizSubmission, type InsertQuizSubmission,
-  type AnalyticsEvent, type InsertAnalyticsEvent
+  type AnalyticsEvent, type InsertAnalyticsEvent,
+  type BeautyBook, type InsertBeautyBook
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -812,6 +813,26 @@ export class DbStorage implements IStorage {
     return db.select()
       .from(quizSubmissions)
       .orderBy(desc(quizSubmissions.createdAt));
+  }
+
+  // ============ BEAUTY BOOKS ============
+  async createBeautyBook(beautyBook: InsertBeautyBook): Promise<BeautyBook> {
+    const result = await db.insert(beautyBooks).values(beautyBook).returning();
+    return result[0];
+  }
+
+  async getBeautyBookById(id: string): Promise<BeautyBook | undefined> {
+    const result = await db.select()
+      .from(beautyBooks)
+      .where(eq(beautyBooks.id, id))
+      .limit(1);
+    return result[0];
+  }
+
+  async getAllBeautyBooks(): Promise<BeautyBook[]> {
+    return db.select()
+      .from(beautyBooks)
+      .orderBy(desc(beautyBooks.createdAt));
   }
 
   // ============ ANALYTICS EVENTS ============

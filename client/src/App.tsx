@@ -20,6 +20,7 @@ import ClaimListing from "@/pages/ClaimListing";
 import AddListing from "@/pages/AddListing";
 import StartHere from "@/pages/StartHere";
 import Quiz from "@/pages/Quiz";
+import CreateBeautyBookPage from "@/pages/CreateBeautyBookPage";
 import { LandingPage } from "@/pages/LandingPage";
 import NotFound from "@/pages/not-found";
 
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/add-listing" component={AddListing} />
       <Route path="/start-here" component={StartHere} />
       <Route path="/quiz" component={Quiz} />
+      <Route path="/my-beauty-book" component={CreateBeautyBookPage} />
       <Route path="/business/:id" component={BusinessProfile} />
       
       {/* IMPORTANT: SEO Landing Page catch-all route.

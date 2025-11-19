@@ -8,7 +8,7 @@ import { DbbCard, DbbTag, DbbContainer } from "@/components/dbb/DbbComponents";
 import { Button } from "@/components/ui/button";
 import { BusinessCard } from "@/components/BusinessCard";
 import type { Business, ForumPost } from "@shared/schema";
-import { Search, MessageCircle, ArrowRight, Leaf } from "lucide-react";
+import { Search, MessageCircle, ArrowRight, Leaf, Sparkles } from "lucide-react";
 
 // Import category images
 import hairSalonImg from "@assets/generated_images/Hair_Salon_category_image_4120201b.png";
@@ -245,10 +245,10 @@ export default function Home() {
           </DbbContainer>
         </section>
 
-        {/* Feature Cards - Ask Community + Beauty Match Quiz */}
+        {/* Feature Cards - Ask Community + Beauty Match Quiz + Beauty Book */}
         <section className="py-12" data-testid="section-features">
           <DbbContainer className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {/* Ask the Community Card */}
               <DbbCard className="overflow-hidden" data-testid="card-community">
                 <div className="aspect-[4/3] bg-gradient-to-br from-dbb-rose to-dbb-sand flex items-center justify-center">
@@ -309,6 +309,38 @@ export default function Home() {
                     <Button 
                       className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
                       data-testid="button-get-started"
+                    >
+                      Get Started
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </DbbCard>
+
+              {/* Create Your Beauty Book Card */}
+              <DbbCard className="overflow-hidden" data-testid="card-beauty-book">
+                <div className="aspect-[4/3] bg-gradient-to-br from-primary/20 via-dbb-sand to-primary/10 flex items-center justify-center">
+                  <div className="w-32 h-32 bg-white/40 backdrop-blur-sm rounded-full flex items-center justify-center">
+                    <Sparkles className="h-16 w-16 text-primary" />
+                  </div>
+                </div>
+                <div className="p-8">
+                  <h2 
+                    className="text-2xl md:text-3xl mb-3 text-dbb-charcoal"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
+                    Create Your Beauty Book
+                  </h2>
+                  <p 
+                    className="text-dbb-charcoalSoft mb-6"
+                    style={{ fontFamily: 'var(--font-body)' }}
+                  >
+                    Get personalized recommendations based on your preferences, location, and beauty goals
+                  </p>
+                  <Link href="/my-beauty-book">
+                    <Button 
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full"
+                      data-testid="button-create-beauty-book"
                     >
                       Get Started
                       <ArrowRight className="ml-2 h-4 w-4" />

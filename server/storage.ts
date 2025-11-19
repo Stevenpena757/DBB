@@ -19,7 +19,8 @@ import {
   type AiModerationQueue, type InsertAiModerationQueue,
   type BusinessLead, type InsertBusinessLead,
   type QuizSubmission, type InsertQuizSubmission,
-  type AnalyticsEvent, type InsertAnalyticsEvent
+  type AnalyticsEvent, type InsertAnalyticsEvent,
+  type BeautyBook, type InsertBeautyBook
 } from "@shared/schema";
 
 export interface IStorage {
@@ -175,6 +176,11 @@ export interface IStorage {
   createQuizSubmission(submission: InsertQuizSubmission): Promise<QuizSubmission>;
   getQuizSubmissionById(id: number): Promise<QuizSubmission | undefined>;
   getAllQuizSubmissions(): Promise<QuizSubmission[]>;
+  
+  // Beauty Books
+  createBeautyBook(beautyBook: InsertBeautyBook): Promise<BeautyBook>;
+  getBeautyBookById(id: string): Promise<BeautyBook | undefined>;
+  getAllBeautyBooks(): Promise<BeautyBook[]>;
   
   // Analytics Events
   createAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent>;

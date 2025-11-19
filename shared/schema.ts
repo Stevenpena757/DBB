@@ -575,3 +575,26 @@ export const insertAnalyticsEventSchema = createInsertSchema(analyticsEvents).om
   createdAt: true,
 });
 export type InsertAnalyticsEvent = z.infer<typeof insertAnalyticsEventSchema>;
+
+// Beauty Books - Personalized beauty discovery profiles
+export const beautyBooks = pgTable("beauty_books", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }), // Optional - can be anonymous
+  name: text("name"),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  city: text("city").notNull(),
+  enhanceAreas: jsonb("enhance_areas").notNull(), // Array of enhancement interests
+  vibe: jsonb("vibe").notNull(), // Array of vibe preferences
+  frequency: text("frequency").notNull(), // Beauty routine frequency
+  preferences: jsonb("preferences"), // Additional preferences
+  consentMarketing: boolean("consent_marketing").default(false).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type BeautyBook = typeof beautyBooks.$inferSelect;
+export const insertBeautyBookSchema = createInsertSchema(beautyBooks).omit({
+  id: true,
+  createdAt: true,
+});
+export type InsertBeautyBook = z.infer<typeof insertBeautyBookSchema>;

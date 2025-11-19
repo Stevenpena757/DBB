@@ -15,7 +15,8 @@ import {
   insertAbuseReportSchema,
   insertBusinessLeadSchema,
   insertQuizSubmissionSchema,
-  insertAnalyticsEventSchema
+  insertAnalyticsEventSchema,
+  insertBeautyBookSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -1191,6 +1192,70 @@ ${forumUrls}
     } catch (error) {
       console.error("Error fetching quiz submissions:", error);
       res.status(500).json({ error: "Failed to fetch quiz submissions" });
+    }
+  });
+
+  // ============ BEAUTY BOOKS ============
+  app.post("/api/beauty-book", async (req: any, res) => {
+    try {
+      let userId = null;
+      
+      // If user is authenticated, get their ID
+      if (req.user) {
+        const replitId = req.user.claims.sub.toString();
+        const user = await storage.getUserByReplitId(replitId);
+        if (user) {
+          userId = user.id;
+        }
+      }
+      
+      const beautyBookData = insertBeautyBookSchema.parse({
+        ...req.body,
+        userId,
+      });
+      
+      const beautyBook = await storage.createBeautyBook(beautyBookData);
+      
+      // Return response with beauty book details for recommendations
+      res.json({
+        status: "ok",
+        beautyBookId: beautyBook.id,
+        city: beautyBook.city,
+        primaryEnhanceArea: Array.isArray(beautyBook.enhanceAreas) && beautyBook.enhanceAreas.length > 0
+          ? beautyBook.enhanceAreas[0]
+          : null,
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: "Invalid input", details: error.errors });
+      }
+      console.error("Failed to create beauty book:", error);
+      res.status(500).json({ error: "Failed to create beauty book" });
+    }
+  });
+
+  app.get("/api/beauty-book", isAuthenticated, isAdmin, async (_req, res) => {
+    try {
+      const beautyBooks = await storage.getAllBeautyBooks();
+      res.json(beautyBooks);
+    } catch (error) {
+      console.error("Error fetching beauty books:", error);
+      res.status(500).json({ error: "Failed to fetch beauty books" });
+    }
+  });
+
+  app.get("/api/beauty-book/:id", async (req, res) => {
+    try {
+      const beautyBook = await storage.getBeautyBookById(req.params.id);
+      
+      if (!beautyBook) {
+        return res.status(404).json({ error: "Beauty book not found" });
+      }
+      
+      res.json(beautyBook);
+    } catch (error) {
+      console.error("Error fetching beauty book:", error);
+      res.status(500).json({ error: "Failed to fetch beauty book" });
     }
   });
 

@@ -1,0 +1,210 @@
+REPLIT AGENT IMPLEMENTATION INSTRUCTIONS
+=========================================
+Feature: “Create Your Dallas Beauty Book”
+Scope: Add this feature WITHOUT removing or breaking any existing pages, components, routes, APIs, or database schemas.
+
+GOAL
+----
+Add a new personalized beauty-discovery flow that:
+- Collects user preferences
+- Stores them in a new `beauty_books` table
+- Generates recommendations using existing directory
+- Shows promotions / sponsored businesses
+- Invites users to contribute community content
+- Does NOT replace or break any existing functionality
+
+
+0. SAFETY RULES FOR REPLIT AGENT
+--------------------------------
+1. DO NOT modify or delete any existing pages.
+2. DO NOT modify or delete any existing backend routes.
+3. DO NOT modify or delete any existing database tables.
+4. All new code must be additive:
+   - New components
+   - New routes
+   - New API endpoint(s)
+   - New DB table(s)
+5. Maintain all current functionality exactly as-is.
+6. Only INSERT the “Create Your Dallas Beauty Book” feature.
+
+
+1. NEW ROUTE & PAGE
+-------------------
+Add a new route:
+
+Route: /my-beauty-book
+
+Create new frontend file:
+src/pages/CreateBeautyBookPage.tsx
+
+This page must:
+- Use a multi-step flow
+- Collect user enhancement preferences
+- Collect city and vibe info
+- Collect beauty routine habits
+- Collect sensitivities/preferences
+- Collect name, email, optional phone
+- POST to a new backend endpoint
+- Then display recommendations
+
+
+2. FRONTEND STEP FLOW UI
+------------------------
+Create 5 steps:
+
+STEP 1 – Enhance/Explore Areas
+--------------------------------
+Multi-select chips with:
+- Skin glow & complexion
+- Lashes
+- Brows
+- Nails
+- Hair care & styling
+- Injectable enhancements
+- Sculpting & body contour
+- Wellness & recovery
+- Anti-aging optimization
+- I’m exploring
+
+STEP 2 – City / Area
+--------------------
+Use existing DFW cities:
+Dallas, Plano, Frisco, Arlington, Irving, Fort Worth, McKinney, etc.
+
+STEP 3 – Preferred Vibe
+-----------------------
+Multi-select chips:
+- Natural & minimal
+- Clean clinical
+- Luxury spa
+- Trendy & glam
+- Quiet & private
+- Budget-friendly
+- First-timer friendly
+
+STEP 4 – Beauty Routine Frequency
+---------------------------------
+- Monthly maintenance
+- Seasonal refresh
+- Special occasions
+- Treating myself
+- Exploring
+
+STEP 5 – Contact Info
+---------------------
+Fields:
+- Name (optional)
+- Email (required)
+- Phone (optional)
+
+Button:
+“Create My Dallas Beauty Book”
+
+
+3. DATA TYPE FOR FORM STATE
+---------------------------
+
+type BeautyBookForm = {
+  enhanceAreas: string[];
+  city: string;
+  vibe: string[];
+  frequency: string;
+  preferences: string[];
+  name: string;
+  email: string;
+  phone?: string;
+};
+
+
+4. BACKEND IMPLEMENTATION
+-------------------------
+Add new table ONLY:
+
+beauty_books table:
+
+id (uuid)
+user_id (uuid)
+name (text)
+email (text)
+phone (text)
+city (text)
+enhance_areas (jsonb)
+vibe (jsonb)
+frequency (text)
+preferences (jsonb)
+consent_marketing (boolean)
+created_at (timestamp)
+
+
+5. NEW BACKEND ENDPOINT
+-----------------------
+POST /api/beauty-book
+
+Validate input and insert into `beauty_books`.
+
+Return:
+
+{
+  status: "ok",
+  beautyBookId: "...",
+  city: "...",
+  primaryEnhanceArea: "..."
+}
+
+
+6. RESULTS SCREEN
+-----------------
+After submit, show:
+
+1. Recommended Categories (link to Explore with query params)
+2. Featured/Sponsored Businesses (use existing directory API)
+3. Promotions placeholder
+4. Community CTAs:
+   - Share a beauty tip
+   - Ask a question
+   - Browse community answers
+
+
+7. ADD CTA TO HOMEPAGE
+----------------------
+Add a card or button linking to:
+
+href="/my-beauty-book"
+
+Do NOT remove existing homepage content.
+
+Suggested CTA:
+
+“Create Your Dallas Beauty Book”
+
+
+8. LANGUAGE RULES
+-----------------
+Avoid negative terms:
+fix, problem, issue, flaws, imperfections
+
+Use positive:
+enhance, optimize, refresh, explore, glow, maintain, self-care
+
+
+9. OPTIONAL ANALYTICS EVENTS
+----------------------------
+beauty_book_created
+beauty_book_view_recommendations_clicked
+beauty_book_contribute_content_clicked
+
+
+10. ACCEPTANCE CHECKLIST
+------------------------
+✓ /my-beauty-book route exists  
+✓ Flow steps working  
+✓ New backend endpoint working  
+✓ DB insert successful  
+✓ Homepage CTA added without removing anything  
+✓ Recommendations show using existing directory data  
+✓ Community links functional  
+✓ No breaking changes  
+✓ No TypeScript or console errors  
+
+
+END OF FILE
