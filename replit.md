@@ -28,9 +28,25 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 
 ### Key Features
 
-- **Personalized Discovery Flow:** A 5-step flow capturing user preferences for tailored business recommendations.
-- **Dynamic Content & Layouts:** Homepage reorganization with dynamic business listings and community content, utilizing AI-generated category images.
+- **Personalized Discovery Flow ("Create Your Dallas Beauty Book"):** A 5-step form-based flow capturing user preferences for tailored business recommendations. Features a responsive two-column layout with sticky image on desktop, mobile-first design with hidden image on mobile. Uses type-safe chip toggle functions for enhance areas and vibes with proper React Hook Form state management.
+- **Dynamic Content & Layouts:** Homepage reorganization with dynamic business listings and community content, utilizing AI-generated category images. Homepage features a 2-column grid for feature cards: "Ask the Community" and "Create Your Beauty Book".
 - **Admin Delete Functionality:** Comprehensive delete capabilities in the admin console for users and businesses with CASCADE deletion and confirmation dialogs.
+
+### Recent Changes (November 2025)
+
+**Beauty Book Enhancement:**
+- Added quiz-notebook-brush.jpg image to Create Your Beauty Book page
+- Implemented responsive two-column grid layout (form left, image right)
+- Image sticky positioning on desktop, hidden on mobile
+- Type-safe chip toggle functions (toggleEnhanceArea, toggleVibe) with proper form state management
+
+**Quiz Feature Removal:**
+- Completely removed Beauty Match Quiz feature from platform
+- Deleted Quiz.tsx page component (377 lines)
+- Removed /quiz route from App.tsx (returns 404)
+- Removed Quiz card from homepage
+- Removed orphaned Quiz API endpoints (POST/GET /api/quiz) from server/routes.ts
+- Updated homepage layout from 3-column to 2-column grid for feature cards
 
 ## External Dependencies
 
