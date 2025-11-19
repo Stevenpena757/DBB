@@ -19,6 +19,7 @@ import ForumPost from "@/pages/ForumPost";
 import ClaimListing from "@/pages/ClaimListing";
 import AddListing from "@/pages/AddListing";
 import StartHere from "@/pages/StartHere";
+import Quiz from "@/pages/Quiz";
 import { LandingPage } from "@/pages/LandingPage";
 import NotFound from "@/pages/not-found";
 
@@ -39,6 +40,7 @@ function Router() {
       <Route path="/claim-listing" component={ClaimListing} />
       <Route path="/add-listing" component={AddListing} />
       <Route path="/start-here" component={StartHere} />
+      <Route path="/quiz" component={Quiz} />
       <Route path="/business/:id" component={BusinessProfile} />
       
       {/* IMPORTANT: SEO Landing Page catch-all route.
