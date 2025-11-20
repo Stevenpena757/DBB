@@ -182,7 +182,7 @@ export default function Home() {
                     fontFamily: 'var(--font-body)' 
                   }}
                 >
-                  Build your personalized Dallas Beauty Book based on your goals, location, and beauty vibe. Get curated matches and exclusive offers.
+                  Build your personalized Dallas Beauty Book based on your goals, location, and beauty vibe. Get curated matches and exclusive offers from DFW pros.
                 </p>
                 <p 
                   className="text-xs md:text-sm mb-4 max-w-xl italic"
