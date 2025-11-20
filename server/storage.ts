@@ -120,6 +120,7 @@ export interface IStorage {
   // Forum Methods
   getAllForumPosts(type?: string, category?: string): Promise<ForumPost[]>;
   getForumPostById(id: number): Promise<ForumPost | undefined>;
+  getForumPostsByUserId(userId: number): Promise<ForumPost[]>;
   createForumPost(post: InsertForumPost): Promise<ForumPost>;
   updateForumPost(id: number, post: Partial<InsertForumPost>): Promise<ForumPost | undefined>;
   upvoteForumPost(id: number): Promise<ForumPost | undefined>;

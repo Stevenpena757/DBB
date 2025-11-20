@@ -455,6 +455,10 @@ export class DbStorage implements IStorage {
     return result[0];
   }
 
+  async getForumPostsByUserId(userId: number): Promise<ForumPost[]> {
+    return db.select().from(forumPosts).where(eq(forumPosts.userId, userId)).orderBy(desc(forumPosts.createdAt));
+  }
+
   async createForumPost(post: InsertForumPost): Promise<ForumPost> {
     const result = await db.insert(forumPosts).values(post).returning();
     return result[0];
