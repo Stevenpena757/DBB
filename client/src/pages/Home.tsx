@@ -71,16 +71,28 @@ export default function Home() {
                 >
                   Discover top health, beauty, and aesthetics professionals in Dallas-Fort Worth area
                 </p>
-                <Link href="/explore">
-                  <Button 
-                    size="lg" 
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
-                    data-testid="button-search-professionals"
-                  >
-                    Search Professionals
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="/explore">
+                    <Button 
+                      size="lg" 
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
+                      data-testid="button-search-professionals"
+                    >
+                      Search Professionals
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                  <Link href="/my-beauty-book">
+                    <Button 
+                      size="lg" 
+                      className="rounded-full px-8 bg-[#e8c5b5] hover:bg-[#e8c5b5]/90 text-[#2d3433] border-0"
+                      data-testid="button-create-beauty-book"
+                    >
+                      <Sparkles className="mr-2 h-5 w-5" />
+                      Create Your Dallas Beauty Book
+                    </Button>
+                  </Link>
+                </div>
               </div>
               
               {/* Right Column: Hero Image */}
@@ -101,8 +113,44 @@ export default function Home() {
           </DbbContainer>
         </section>
 
+        {/* Beauty Book Promo Banner */}
+        <section className="py-8" data-testid="section-beauty-book-promo">
+          <DbbContainer className="max-w-6xl mx-auto">
+            <div className="w-full p-8 rounded-2xl text-center"
+              style={{ 
+                backgroundColor: 'hsl(var(--dbb-sand))',
+              }}
+            >
+              <h3 
+                className="text-2xl md:text-3xl mb-3 text-dbb-charcoal"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                New: Create Your Dallas Beauty Book
+              </h3>
+              <p 
+                className="text-base md:text-lg mb-4 max-w-2xl mx-auto"
+                style={{ 
+                  color: 'hsl(var(--dbb-charcoalSoft))',
+                  fontFamily: 'var(--font-body)' 
+                }}
+              >
+                Build a personalized beauty journey with curated recommendations, local offers, and your favorite services — all in one place.
+              </p>
+              <Link href="/my-beauty-book">
+                <Button 
+                  variant="ghost" 
+                  className="underline font-medium hover:no-underline"
+                  data-testid="button-banner-start-building"
+                >
+                  Start Building <ArrowRight className="ml-1 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </DbbContainer>
+        </section>
+
         {/* Trending Categories with Dynamic Content */}
-        <section className="py-12" data-testid="section-trending-categories">
+        <section className="py-12 mt-8" data-testid="section-trending-categories">
           <DbbContainer className="max-w-6xl mx-auto">
             <h2 
               className="text-3xl md:text-4xl mb-8 text-dbb-charcoal"
