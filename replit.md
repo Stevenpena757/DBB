@@ -54,6 +54,21 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
   - Optimized queries with JOINs for performance
 - **Login Encouragement:** All protected features show login prompts instead of hiding from unauthenticated users
 
+**Beauty Book → Profile Integration (Completed):**
+- **Wizard Flow:** "Create Your Dallas Beauty Book" at /my-beauty-book automatically links to user account
+  - Authenticated users: Beauty Book auto-linked to userId during creation
+  - Unauthenticated users: Beauty Book saved to localStorage, claimed after login
+  - Success screen shows "Save to Profile" CTA for unauthenticated users
+- **Auto-Claim System:** When user logs in, profile automatically claims pending Beauty Book
+  - localStorage tracking of pendingBeautyBookId
+  - PATCH /api/beauty-book/:uuid/claim endpoint with ownership verification
+  - Returns 403 if trying to claim another user's Beauty Book
+  - Idempotent - safe to call multiple times
+- **Profile Display:** Beauty Book preferences shown in Profile Overview tab
+  - Displays location, enhancement areas, vibe preferences, and routine frequency
+  - Created date shown with card
+- **Security:** Claim endpoint verifies Beauty Book is unclaimed (userId=null) or already belongs to requesting user
+
 **Beauty Book Enhancement:**
 - Added quiz-notebook-brush.jpg image to Create Your Beauty Book page
 - Implemented responsive two-column grid layout (form left, image right)

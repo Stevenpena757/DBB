@@ -101,13 +101,13 @@ export default function UserProfile() {
   });
 
   useEffect(() => {
-    if (user && profile) {
+    if (user) {
       const pendingBeautyBookId = localStorage.getItem("pendingBeautyBookId");
-      if (pendingBeautyBookId) {
+      if (pendingBeautyBookId && !claimBeautyBookMutation.isPending) {
         claimBeautyBookMutation.mutate(pendingBeautyBookId);
       }
     }
-  }, [user, profile]);
+  }, [user]);
 
   if (!user) {
     return (

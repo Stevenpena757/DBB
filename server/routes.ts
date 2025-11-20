@@ -1236,17 +1236,23 @@ ${forumUrls}
 
       const { uuid } = req.params;
       
-      // Check if beauty book exists and is unclaimed
+      // Check if beauty book exists
       const beautyBook = await storage.getBeautyBookById(uuid);
       if (!beautyBook) {
         return res.status(404).json({ error: "Beauty book not found" });
       }
 
-      if (beautyBook.userId) {
-        return res.status(400).json({ error: "Beauty book already claimed" });
+      // Security check: Only allow claiming if book is unclaimed OR already belongs to this user
+      if (beautyBook.userId && beautyBook.userId !== user.id) {
+        return res.status(403).json({ error: "This beauty book belongs to another user" });
       }
 
-      // Claim the beauty book
+      // If already claimed by this user, return success without updating
+      if (beautyBook.userId === user.id) {
+        return res.json(beautyBook);
+      }
+
+      // Claim the beauty book (it's currently unclaimed)
       const claimedBook = await storage.claimBeautyBook(uuid, user.id);
       res.json(claimedBook);
     } catch (error) {
