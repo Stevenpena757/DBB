@@ -31,6 +31,17 @@ export default function Home() {
     queryKey: ['/api/forum'],
   });
 
+  const allCategories = [
+    { name: 'Hair Salon', image: hairSalonImg, link: '/explore?category=Hair Salon' },
+    { name: 'Nail Salon', image: nailSalonImg, link: '/explore?category=Nail Salon' },
+    { name: 'Med Spa', image: medSpaImg, link: '/explore?category=Med Spa' },
+    { name: 'Skincare', image: skincareImg, link: '/explore?category=Skincare' },
+    { name: 'Makeup Artist', image: makeupArtistImg, link: '/explore?category=Makeup Artist' },
+    { name: 'Lash & Brow', image: lashBrowImg, link: '/explore?category=Lash & Brow' },
+    { name: 'Massage & Wellness', image: massageWellnessImg, link: '/explore?category=Massage & Wellness' },
+    { name: 'Medical Aesthetics', image: medicalAestheticsImg, link: '/explore?category=Medical Aesthetics' },
+  ];
+
   const trendingCategories = [
     { name: 'Hair Salon', image: hairSalonImg, link: 'Hair Salon' },
     { name: 'Med Spa', image: medSpaImg, link: 'Med Spa' },
@@ -145,6 +156,46 @@ export default function Home() {
                   Start Building <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* Browse by Category - Visual Tiles */}
+        <section className="py-16" data-testid="section-browse-categories">
+          <DbbContainer className="max-w-6xl mx-auto">
+            <h2 
+              className="text-3xl md:text-4xl mb-8 text-dbb-charcoal text-center"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Browse by Category
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {allCategories.map((category) => (
+                <Link key={category.name} href={category.link}>
+                  <div 
+                    className="group hover-elevate active-elevate-2 cursor-pointer overflow-hidden rounded-2xl"
+                    data-testid={`tile-category-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    <div className="aspect-square relative overflow-hidden">
+                      <img 
+                        src={category.image} 
+                        alt={category.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h3 
+                          className="text-white text-lg md:text-xl font-medium"
+                          style={{ fontFamily: 'var(--font-subheading)' }}
+                        >
+                          {category.name}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </DbbContainer>
         </section>
