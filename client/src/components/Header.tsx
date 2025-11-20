@@ -73,6 +73,11 @@ export function Header() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem asChild>
+                <Link href="/for-professionals" className="cursor-pointer" data-testid="menu-item-for-pros">
+                  About Business Benefits
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/claim-listing" className="cursor-pointer" data-testid="menu-item-claim">
                   Claim Your Listing
                 </Link>

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { SeoHead, BreadcrumbListJsonLd } from '@/components/seo';
 import { BusinessCard } from '@/components/BusinessCard';
-import { Link, useParams } from 'wouter';
+import { Link, useParams, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { SEO_LANDING_PAGES } from '@/data/seoLandingPages';
@@ -13,6 +13,7 @@ import { itemListJsonLd, injectJsonLd, removeJsonLd } from '@/lib/schema';
 
 export function LandingPage() {
   const { slug } = useParams();
+  const [, setLocation] = useLocation();
   const landing = SEO_LANDING_PAGES.find(p => p.slug === slug);
 
   if (!landing) {
@@ -191,13 +192,8 @@ export function LandingPage() {
                     {idx + 1}
                   </div>
                   <BusinessCard 
-                    id={business.id.toString()}
-                    name={business.name}
-                    category={business.category}
-                    description={business.description}
-                    image={business.imageUrl}
-                    location={business.location}
-                    onClick={() => window.location.href = `/business/${business.id}`}
+                    business={business}
+                    onClick={() => setLocation(`/business/${business.id}`)}
                   />
                 </div>
               ))}

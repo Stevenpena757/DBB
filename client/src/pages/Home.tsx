@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -22,6 +22,7 @@ import medicalAestheticsImg from "@assets/generated_images/Medical_Aesthetics_ca
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [, setLocation] = useLocation();
 
   const { data: allBusinesses = [] } = useQuery<Business[]>({
     queryKey: ['/api/businesses'],
@@ -258,9 +259,11 @@ export default function Home() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {displayedBusinesses.map((business) => (
-                  <Link key={business.id} href={`/business/${business.id}`}>
-                    <BusinessCard business={business} />
-                  </Link>
+                  <BusinessCard 
+                    key={business.id} 
+                    business={business}
+                    onClick={() => setLocation(`/business/${business.id}`)}
+                  />
                 ))}
               </div>
             </div>

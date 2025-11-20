@@ -10,6 +10,10 @@ type BusinessCardProps = {
 };
 
 export function BusinessCard({ business, onClick }: BusinessCardProps) {
+  const handleClaimClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <DbbCard 
       className="overflow-hidden hover-elevate active-elevate-2 cursor-pointer"
@@ -38,7 +42,12 @@ export function BusinessCard({ business, onClick }: BusinessCardProps) {
         {business.category && <DbbTag>{business.category}</DbbTag>}
         {!business.isClaimed && (
           <p className="text-xs mt-2 text-dbb-charcoalSoft">
-            <Link href="/claim-listing" className="underline" data-testid="link-own-business">
+            <Link 
+              href="/claim-listing" 
+              className="underline" 
+              data-testid="link-own-business"
+              onClick={handleClaimClick}
+            >
               Own this business?
             </Link>
           </p>
