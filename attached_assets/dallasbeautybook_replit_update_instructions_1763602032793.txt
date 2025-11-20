@@ -1,0 +1,193 @@
+DALLASBEAUTYBOOK – REPLIT AGENT IMPLEMENTATION INSTRUCTIONS
+=============================================================
+GOAL
+----
+Bring “Create Your Dallas Beauty Book” to the forefront of the site AND increase business claiming conversions — without removing or breaking any existing features, pages, components, routes, or database schemas.
+
+All changes must be additive and non-destructive.
+
+------------------------------------------------------------
+0. SAFETY RULES (REQUIRED)
+------------------------------------------------------------
+1. Do NOT delete or modify existing pages.
+2. Do NOT refactor existing components.
+3. Do NOT remove any existing CTAs, hero sections, Explore filters, or Community features.
+4. Do NOT change backend routes or tables.
+5. Only ADD new UI blocks, new pages, and optional new small components.
+6. Preserve all current design, functions, and behavior.
+
+------------------------------------------------------------
+1. SURFACE “CREATE YOUR DALLAS BEAUTY BOOK”
+------------------------------------------------------------
+
+=== 1.1 Add Primary CTA Under Hero (Homepage) ===
+File: src/pages/HomePage.tsx
+
+Add directly under the main hero text (KEEP existing Explore CTA):
+
+<a
+  href="/my-beauty-book"
+  className="mt-4 inline-block px-6 py-3 rounded-lg font-semibold bg-[var(--dbb-roseSoft)] text-[var(--dbb-charcoal)] hover:opacity-90 transition"
+>
+ ✨ Create Your Dallas Beauty Book — Personalized Beauty Guide →
+</a>
+
+
+=== 1.2 Add Soft Promo Banner Below Hero ===
+
+<div className="w-full mt-10 p-6 rounded-xl bg-[var(--dbb-beigeSoft)] text-center">
+  <h3 className="font-heading text-xl">New: Create Your Dallas Beauty Book</h3>
+  <p className="text-sm mt-2 text-[var(--dbb-charcoalSoft)]">
+    Build a personalized beauty journey with curated recommendations, local offers, and your favorite services — all in one place.
+  </p>
+  <a href="/my-beauty-book" className="mt-3 inline-block underline font-medium">
+    Start Building →
+  </a>
+</div>
+
+
+=== 1.3 Add Beauty Book to Navbar ===
+
+Add to the existing navbar:
+
+<NavLink href="/my-beauty-book">Beauty Book</NavLink>
+
+
+------------------------------------------------------------
+2. BUSINESS CLAIMING OPTIMIZATION
+------------------------------------------------------------
+
+=== 2.1 Add “For Professionals” Navigation Item ===
+
+<NavLink href="/for-professionals">For Professionals</NavLink>
+
+
+=== 2.2 Create New Page: /for-professionals ===
+File: src/pages/ForProfessionalsPage.tsx
+
+This page explains benefits, increases claim rate, and is additive.
+
+Suggested content:
+
+<div className="max-w-3xl mx-auto py-16">
+  <h1 className="font-heading text-4xl mb-6">For Beauty Professionals in DFW</h1>
+  <p className="text-lg text-[var(--dbb-charcoalSoft)]">
+    Claim your listing, share your expertise, and reach thousands of active beauty seekers across Dallas-Fort Worth.
+  </p>
+
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+    <BenefitCard title="Increase Visibility" text="Appear in Explore and Beauty Book recommendations." />
+    <BenefitCard title="Share Content" text="Post tips and updates to grow your authority." />
+    <BenefitCard title="Boost SEO" text="Content boosts your ranking in DFW searches." />
+    <BenefitCard title="Free to Join" text="Basic exposure is always free for beauty pros." />
+  </div>
+
+  <a href="/claim" className="mt-10 inline-block bg-[var(--dbb-roseSoft)] px-6 py-3 rounded-lg">
+    Claim Your Business →
+  </a>
+</div>
+
+
+=== 2.3 Add Unclaimed Badge to Business Profiles ===
+
+If business.claimed === false:
+
+<div className="p-3 rounded-lg bg-[var(--dbb-beigeSoft)] text-sm mt-4">
+  This business is not yet claimed.
+  <a href="/claim" className="underline font-medium ml-1">Claim it now →</a>
+</div>
+
+
+=== 2.4 Add “Own This Business?” Under Business Cards ===
+
+Only for unclaimed businesses:
+
+<p className="text-xs mt-1 text-[var(--dbb-charcoalSoft)]">
+  <a href="/claim" className="underline">Own this business?</a>
+</p>
+
+
+=== 2.5 Add Smart Bottom Bar for Potential Owners (Optional) ===
+
+After viewing 3+ business profiles:
+
+<div className="bg-[var(--dbb-oat)] text-center py-3 text-sm">
+  Own a beauty business in DFW? <a className="underline" href="/claim">Claim your page for free →</a>
+</div>
+
+
+------------------------------------------------------------
+3. HOMEPAGE EDITORIAL IMPROVEMENTS (NON-BREAKING)
+------------------------------------------------------------
+
+=== 3.1 Add Extra Spacing & Breathing Room ===
+Add more margin between homepage sections:
+
+className="mt-16 md:mt-24"
+
+
+=== 3.2 Add Category Tile Section ===
+Place BELOW Beauty Book banner.
+
+Tiles should use non-face images:
+- skincare textures
+- brushes
+- tools
+- nail polish
+- serum drops
+
+Use folder:
+public/images/category-tiles/
+
+
+=== 3.3 Add Mini Community Section (3 posts max) ===
+Do NOT remove anything existing.
+
+Insert small block:
+
+<h3 className="font-heading text-2xl mb-4">From the Community</h3>
+<CommunityFeed limit={3} />
+
+
+------------------------------------------------------------
+4. CATEGORY TILE IMAGE FALLBACKS
+------------------------------------------------------------
+If category lacks business images, use tile images.
+
+Categories → images:
+- skincare → skincare-texture.jpg
+- lashes → lashes-tools.jpg
+- brows → brows-tools.jpg
+- nails → nails-polish.jpg
+- injectables → injectables-tools.jpg
+- wellness → wellness-stones.jpg
+
+
+------------------------------------------------------------
+5. TONE & COPY REQUIREMENTS
+------------------------------------------------------------
+Never use:
+fix, problem, correct, flaw, imperfection
+
+Use instead:
+enhance, elevate, optimize, refresh, glow, discover, explore, care, maintain, beauty journey
+
+
+------------------------------------------------------------
+6. ACCEPTANCE CHECKLIST
+------------------------------------------------------------
+Replit agent MUST verify:
+
+✓ Homepage CTA added  
+✓ Soft banner added  
+✓ Beauty Book added to navbar  
+✓ For Professionals page added  
+✓ Claim prompts added to profile + explore  
+✓ Homepage spacing improved  
+✓ Category tiles added without breaking layout  
+✓ Community preview added  
+✓ No existing functionalities changed or removed  
+✓ No TypeScript errors  
+✓ No console errors  
+
+END OF FILE

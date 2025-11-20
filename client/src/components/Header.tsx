@@ -59,6 +59,11 @@ export function Header() {
               Ask the Community
             </Button>
           </Link>
+          <Link href="/my-beauty-book" className="hidden lg:block">
+            <Button variant="ghost" size="sm" data-testid="button-beauty-book">
+              Beauty Book
+            </Button>
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="hidden lg:flex">
               <Button variant="ghost" size="sm" data-testid="button-for-professionals">
