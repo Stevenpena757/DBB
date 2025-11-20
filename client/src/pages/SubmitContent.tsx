@@ -168,7 +168,7 @@ export default function SubmitContent() {
             Share expertise. Build authority. Grow your business.
           </p>
           <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-            Join our AI-powered platform connecting DFW's top health, beauty & aesthetics professionals with clients seeking excellence
+            Share tips, stories, and insights with the DFW beauty community. Contributors are eligible for features, spotlights, and future rewards.
           </p>
         </div>
 

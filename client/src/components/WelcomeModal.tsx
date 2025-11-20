@@ -37,13 +37,13 @@ export function WelcomeModal() {
   const handleExplore = () => {
     localStorage.setItem(STORAGE_KEY, "true");
     setIsOpen(false);
-    setLocation("/explore");
+    setLocation("/my-beauty-book");
   };
 
-  const handleCommunity = () => {
+  const handleBusiness = () => {
     localStorage.setItem(STORAGE_KEY, "true");
     setIsOpen(false);
-    setLocation("/forum");
+    setLocation("/for-professionals");
   };
 
   return (
@@ -58,26 +58,18 @@ export function WelcomeModal() {
               <Sparkles className="h-10 w-10 text-white" />
             </div>
             
-            <Badge 
-              variant="outline" 
-              className="mx-auto px-6 py-2 text-base rounded-full border-2"
-              style={{ fontFamily: 'var(--font-ui)' }}
-            >
-              Welcome to DallasBeautyBook
-            </Badge>
-
             <DialogTitle 
               className="text-3xl md:text-4xl font-extrabold text-navy"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              Discover DFW's Best Beauty & Aesthetics Professionals
+              Welcome to DallasBeautyBook
             </DialogTitle>
             
             <DialogDescription 
               className="text-lg text-muted-foreground leading-relaxed"
               style={{ fontFamily: 'var(--font-body)' }}
             >
-              Your complete directory and community for beauty, health, and aesthetics across Dallas-Fort Worth. Join thousands finding trusted professionals and sharing real experiences.
+              A DFW hub for beauty, wellness, and aesthetics. Choose how you'd like to start.
             </DialogDescription>
           </DialogHeader>
 
@@ -91,19 +83,19 @@ export function WelcomeModal() {
                 data-testid="button-modal-explore"
               >
                 <Search className="h-5 w-5 mr-2" />
-                Explore Businesses
+                I'm exploring services
               </Button>
 
               <Button
                 size="lg"
                 variant="outline"
-                onClick={handleCommunity}
+                onClick={handleBusiness}
                 className="w-full rounded-2xl font-semibold border-2 h-16"
                 style={{ fontFamily: 'var(--font-ui)' }}
-                data-testid="button-modal-community"
+                data-testid="button-modal-business"
               >
                 <MessageCircle className="h-5 w-5 mr-2" />
-                Ask the Community
+                I run a beauty business
               </Button>
             </div>
 

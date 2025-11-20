@@ -84,15 +84,15 @@ export default function Home() {
                  style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
               <div>
                 <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Beauty Book</div>
-                <p>Personalized results.</p>
+                <p>Answer a few questions for personalized results.</p>
               </div>
               <div>
                 <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover Local Pros</div>
-                <p>Explore Dallas–Fort Worth.</p>
+                <p>Explore Dallas–Fort Worth beauty and aesthetics providers.</p>
               </div>
               <div>
                 <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the Community</div>
-                <p>Share content & unlock rewards.</p>
+                <p>Share content and unlock rewards and promotions.</p>
               </div>
             </div>
           </DbbContainer>
@@ -324,7 +324,7 @@ export default function Home() {
                 fontFamily: 'var(--font-body)' 
               }}
             >
-              Browse tips, experiences, and insights from local professionals and beauty lovers. Stay inspired and discover what's possible on your beauty journey.
+              Every post helps the community and can unlock rewards like featured placement, spotlights, and special offers.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

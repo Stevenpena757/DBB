@@ -35,12 +35,15 @@ export default function ForProfessionalsPage() {
                  style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
               <div className="text-center">
                 <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Claim Your Business</div>
+                <p>Verify your listing and update your details.</p>
               </div>
               <div className="text-center">
                 <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Get Discovered in Beauty Books</div>
+                <p>Be recommended when users share their goals and location.</p>
               </div>
               <div className="text-center">
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Share Content → Unlock Promotions</div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Share Content & Unlock Promotions</div>
+                <p>Post tips and updates to earn more visibility and rewards.</p>
               </div>
             </div>
 
