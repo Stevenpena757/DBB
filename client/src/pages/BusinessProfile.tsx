@@ -260,7 +260,7 @@ export default function BusinessProfile() {
                   style={{ backgroundColor: 'hsl(var(--dbb-sand))' }}
                   data-testid="unclaimed-badge"
                 >
-                  This business is not yet claimed.{" "}
+                  This business has not yet been claimed by the owner. If this is your business, claim your page to update details, share content, and appear in more Dallas Beauty Book matches.{" "}
                   <Link href="/claim-listing" className="underline font-medium">
                     Claim it now →
                   </Link>

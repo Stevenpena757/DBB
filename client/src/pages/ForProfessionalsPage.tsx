@@ -20,13 +20,13 @@ export default function ForProfessionalsPage() {
                 style={{ fontFamily: 'var(--font-heading)' }}
                 data-testid="for-professionals-heading"
               >
-                For Beauty Professionals in DFW
+                Grow Your Beauty Business with DallasBeautyBook
               </h1>
               <p 
                 className="text-lg md:text-xl text-dbb-charcoalSoft max-w-2xl mx-auto"
                 style={{ fontFamily: 'var(--font-body)' }}
               >
-                Claim your listing, share your expertise, and reach thousands of active beauty seekers across Dallas-Fort Worth.
+                DallasBeautyBook is a dedicated hub for beauty, wellness, and aesthetics in DFW. Claim your listing, get discovered inside personalized Dallas Beauty Books, share your expertise, and turn local beauty seekers into loyal clients.
               </p>
             </div>
 
@@ -42,10 +42,10 @@ export default function ForProfessionalsPage() {
                         className="text-xl mb-2 text-dbb-charcoal"
                         style={{ fontFamily: 'var(--font-subheading)' }}
                       >
-                        Enhance Visibility
+                        Be Where DFW Clients Are
                       </h3>
                       <p className="text-dbb-charcoalSoft">
-                        Appear in Explore and Beauty Book recommendations to reach clients actively seeking your services.
+                        Show up when locals explore services and build their Dallas Beauty Book.
                       </p>
                     </div>
                   </div>
@@ -63,10 +63,10 @@ export default function ForProfessionalsPage() {
                         className="text-xl mb-2 text-dbb-charcoal"
                         style={{ fontFamily: 'var(--font-subheading)' }}
                       >
-                        Share Content
+                        Build Trust with Content
                       </h3>
                       <p className="text-dbb-charcoalSoft">
-                        Post tips and updates to the community to elevate your authority and connect with potential clients.
+                        Post tips, insights, and stories to stand out as a trusted expert.
                       </p>
                     </div>
                   </div>
@@ -84,10 +84,10 @@ export default function ForProfessionalsPage() {
                         className="text-xl mb-2 text-dbb-charcoal"
                         style={{ fontFamily: 'var(--font-subheading)' }}
                       >
-                        Optimize SEO
+                        Get Featured in Beauty Books
                       </h3>
                       <p className="text-dbb-charcoalSoft">
-                        Content enhances your ranking in DFW searches, helping you discover more opportunities.
+                        Appear as a recommendation when clients share their preferences and location.
                       </p>
                     </div>
                   </div>
@@ -105,10 +105,10 @@ export default function ForProfessionalsPage() {
                         className="text-xl mb-2 text-dbb-charcoal"
                         style={{ fontFamily: 'var(--font-subheading)' }}
                       >
-                        Free to Join
+                        Start Free, Grow Over Time
                       </h3>
                       <p className="text-dbb-charcoalSoft">
-                        Basic exposure is always free for beauty pros. Elevate your presence with premium options.
+                        Claim your page at no cost, then unlock more visibility, promotions, and insights as you grow.
                       </p>
                     </div>
                   </div>
@@ -123,8 +123,7 @@ export default function ForProfessionalsPage() {
                   className="rounded-full px-8 bg-[#e8c5b5] hover:bg-[#e8c5b5]/90 text-[#2d3433] border-0"
                   data-testid="button-claim-your-business"
                 >
-                  Claim Your Business
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  Claim Your Business for Free <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <p className="mt-4 text-sm text-dbb-charcoalSoft">

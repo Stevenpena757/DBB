@@ -75,33 +75,33 @@ export default function Home() {
                   style={{ fontFamily: 'var(--font-heading)' }}
                   data-testid="hero-heading"
                 >
-                  Find Beauty Experts in DFW
+                  Dallas's Beauty, Wellness & Aesthetics Hub
                 </h1>
                 <p 
                   className="text-lg md:text-xl mb-10 text-dbb-charcoalSoft"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
-                  Discover top health, beauty, and aesthetics professionals in Dallas-Fort Worth area
+                  Discover DFW beauty professionals, create your personalized Dallas Beauty Book, explore treatments, and join a community built around your self-care and aesthetics journey.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/explore">
-                    <Button 
-                      size="lg" 
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
-                      data-testid="button-search-professionals"
-                    >
-                      Search Professionals
-                      <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </Link>
                   <Link href="/my-beauty-book">
                     <Button 
                       size="lg" 
-                      className="rounded-full px-8 bg-[#e8c5b5] hover:bg-[#e8c5b5]/90 text-[#2d3433] border-0"
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
                       data-testid="button-create-beauty-book"
                     >
                       <Sparkles className="mr-2 h-5 w-5" />
                       Create Your Dallas Beauty Book
+                    </Button>
+                  </Link>
+                  <Link href="/explore">
+                    <Button 
+                      size="lg" 
+                      className="rounded-full px-8 bg-[#e8c5b5] hover:bg-[#e8c5b5]/90 text-[#2d3433] border-0"
+                      data-testid="button-explore-businesses"
+                    >
+                      Explore Businesses
+                      <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
                 </div>
@@ -125,44 +125,61 @@ export default function Home() {
           </DbbContainer>
         </section>
 
-        {/* Beauty Book Promo Banner */}
-        <section className="py-16" data-testid="section-beauty-book-promo">
+        {/* Beauty Book Highlight Card */}
+        <section className="mt-16 md:mt-24" data-testid="section-beauty-book-promo">
           <DbbContainer className="max-w-6xl mx-auto">
-            <div className="w-full p-8 rounded-2xl text-center"
-              style={{ 
-                backgroundColor: 'hsl(var(--dbb-sand))',
-              }}
-            >
-              <h3 
-                className="text-2xl md:text-3xl mb-3 text-dbb-charcoal"
-                style={{ fontFamily: 'var(--font-heading)' }}
-              >
-                New: Create Your Dallas Beauty Book
-              </h3>
-              <p 
-                className="text-base md:text-lg mb-4 max-w-2xl mx-auto"
-                style={{ 
-                  color: 'hsl(var(--dbb-charcoalSoft))',
-                  fontFamily: 'var(--font-body)' 
-                }}
-              >
-                Build a personalized beauty journey with curated recommendations, local offers, and your favorite services — all in one place.
-              </p>
-              <Link href="/my-beauty-book">
-                <Button 
-                  variant="ghost" 
-                  className="underline font-medium hover:no-underline"
-                  data-testid="button-banner-start-building"
+            <div className="rounded-3xl border border-[hsl(var(--dbb-sand))] bg-gradient-to-r from-[hsl(var(--dbb-surface))] via-[hsl(var(--dbb-beigeSoft))] to-[hsl(var(--dbb-surface))] px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row gap-6 items-center">
+              {/* Left: text */}
+              <div className="flex-1 text-left">
+                <p className="text-xs uppercase tracking-[0.25em] mb-2"
+                   style={{ color: 'hsl(var(--dbb-rose))' }}>
+                  Personalized Beauty
+                </p>
+                <h2 
+                  className="text-2xl md:text-3xl mb-3 text-dbb-charcoal"
+                  style={{ fontFamily: 'var(--font-heading)' }}
                 >
-                  Start Building <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-              </Link>
+                  Create Your Dallas Beauty Book
+                </h2>
+                <p 
+                  className="text-sm md:text-base mb-4 max-w-xl"
+                  style={{ 
+                    color: 'hsl(var(--dbb-charcoalSoft))',
+                    fontFamily: 'var(--font-body)' 
+                  }}
+                >
+                  Tell us what you'd like to enhance, where you are in DFW, and your beauty vibe. We'll build a personalized guide with local professionals, offers, and ideas just for you.
+                </p>
+                <Link href="/my-beauty-book">
+                  <Button 
+                    className="mt-4 rounded-full px-6 py-2 text-sm font-semibold hover:opacity-90 transition"
+                    style={{
+                      backgroundColor: 'hsl(var(--dbb-roseSoft))',
+                      color: 'hsl(var(--dbb-charcoal))'
+                    }}
+                    data-testid="button-start-beauty-book"
+                  >
+                    Start Your Beauty Book <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Right: decorative image */}
+              <div className="w-full md:w-64 h-32 md:h-40 rounded-2xl overflow-hidden"
+                   style={{ backgroundColor: 'hsl(var(--dbb-sand))' }}>
+                <img
+                  src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
+                  alt="Notebook and beauty tools arranged on a neutral background"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
             </div>
           </DbbContainer>
         </section>
 
         {/* Browse by Category - Visual Tiles */}
-        <section className="py-16" data-testid="section-browse-categories">
+        <section className="mt-16 md:mt-24" data-testid="section-browse-categories">
           <DbbContainer className="max-w-6xl mx-auto">
             <h2 
               className="text-3xl md:text-4xl mb-8 text-dbb-charcoal text-center"
@@ -198,115 +215,117 @@ export default function Home() {
                 </Link>
               ))}
             </div>
+            <div className="mt-6 text-center">
+              <Link href="/explore">
+                <Button
+                  variant="ghost"
+                  className="text-sm font-semibold underline underline-offset-4"
+                  data-testid="button-view-all-categories"
+                >
+                  View all categories <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </DbbContainer>
         </section>
 
-        {/* Trending Categories with Dynamic Content */}
-        <section className="py-16" data-testid="section-trending-categories">
+        {/* Featured Businesses */}
+        <section className="mt-16 md:mt-24" data-testid="section-featured-businesses">
           <DbbContainer className="max-w-6xl mx-auto">
             <h2 
               className="text-3xl md:text-4xl mb-8 text-dbb-charcoal"
               style={{ fontFamily: 'var(--font-heading)' }}
             >
-              Trending Categories
+              Featured Businesses
             </h2>
-            
-            {/* Category Filter Buttons */}
-            <div className="flex flex-wrap gap-3 mb-8">
-              <Button
-                variant={selectedCategory === 'all' ? 'default' : 'outline'}
-                onClick={() => setSelectedCategory('all')}
-                className="rounded-full"
-                style={{
-                  backgroundColor: selectedCategory === 'all' ? 'hsl(var(--dbb-forest))' : 'hsl(var(--dbb-sand))',
-                  color: selectedCategory === 'all' ? 'white' : 'hsl(var(--dbb-charcoal))',
-                  borderColor: 'transparent',
-                }}
-                data-testid="button-category-all"
-              >
-                All
-              </Button>
-              {trendingCategories.map((category) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {allBusinesses.slice(0, 4).map((business) => (
+                <BusinessCard 
+                  key={business.id} 
+                  business={business}
+                  onClick={() => setLocation(`/business/${business.id}`)}
+                />
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <Link href="/explore">
                 <Button
-                  key={category.name}
-                  variant={selectedCategory === category.link ? 'default' : 'outline'}
-                  onClick={() => setSelectedCategory(category.link)}
-                  className="rounded-full flex items-center gap-2"
-                  style={{
-                    backgroundColor: selectedCategory === category.link ? 'hsl(var(--dbb-forest))' : 'hsl(var(--dbb-sand))',
-                    color: selectedCategory === category.link ? 'white' : 'hsl(var(--dbb-charcoal))',
-                    borderColor: 'transparent',
-                  }}
-                  data-testid={`button-category-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  variant="ghost"
+                  className="text-sm font-semibold underline underline-offset-4"
+                  data-testid="button-view-all-businesses"
                 >
-                  <img 
-                    src={category.image} 
-                    alt={category.name}
-                    className="w-6 h-6 rounded-full object-cover"
-                  />
-                  {category.name}
+                  View all businesses <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
+              </Link>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* Beauty Stories & Guides / Community */}
+        <section className="mt-16 md:mt-24" data-testid="section-community-stories">
+          <DbbContainer className="max-w-6xl mx-auto">
+            <p className="text-xs uppercase tracking-[0.25em] mb-2"
+               style={{ color: 'hsl(var(--dbb-rose))' }}>
+              Beauty Stories & Guides
+            </p>
+            <h2 
+              className="text-2xl md:text-3xl mb-3 text-dbb-charcoal"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Learn from the Dallas beauty community
+            </h2>
+            <p 
+              className="text-sm md:text-base mb-6 max-w-2xl"
+              style={{ 
+                color: 'hsl(var(--dbb-charcoalSoft))',
+                fontFamily: 'var(--font-body)' 
+              }}
+            >
+              Browse tips, experiences, and insights from local professionals and beauty lovers. Stay inspired and discover what's possible on your beauty journey.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {recentForumPosts.map((post) => (
+                <Link key={post.id} href={`/forum/${post.id}`}>
+                  <DbbCard className="hover-elevate active-elevate-2 cursor-pointer p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <DbbTag>{post.category}</DbbTag>
+                      <DbbTag>{post.type === 'question' ? 'Question' : 'Tip'}</DbbTag>
+                    </div>
+                    <h4 
+                      className="text-lg font-medium text-dbb-charcoal mb-2"
+                      style={{ fontFamily: 'var(--font-subheading)' }}
+                    >
+                      {post.title}
+                    </h4>
+                    <p className="text-sm text-dbb-charcoalSoft line-clamp-2 mb-3">
+                      {post.content}
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-dbb-charcoalSoft">
+                      <span>{post.replyCount} replies</span>
+                      <span>{post.upvotes} upvotes</span>
+                    </div>
+                  </DbbCard>
+                </Link>
               ))}
             </div>
 
-            {/* Business Listings Grid */}
-            <div className="mb-12">
-              <h3 
-                className="text-2xl mb-6 text-dbb-charcoal"
-                style={{ fontFamily: 'var(--font-subheading)' }}
-              >
-                Featured Businesses
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {displayedBusinesses.map((business) => (
-                  <BusinessCard 
-                    key={business.id} 
-                    business={business}
-                    onClick={() => setLocation(`/business/${business.id}`)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Community Submissions */}
-            <div>
-              <h3 
-                className="text-2xl mb-6 text-dbb-charcoal"
-                style={{ fontFamily: 'var(--font-subheading)' }}
-              >
-                Community Submissions
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {recentForumPosts.map((post) => (
-                  <Link key={post.id} href={`/forum/${post.id}`}>
-                    <DbbCard className="hover-elevate active-elevate-2 cursor-pointer p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <DbbTag>{post.category}</DbbTag>
-                        <DbbTag>{post.type === 'question' ? 'Question' : 'Tip'}</DbbTag>
-                      </div>
-                      <h4 
-                        className="text-lg font-medium text-dbb-charcoal mb-2"
-                        style={{ fontFamily: 'var(--font-subheading)' }}
-                      >
-                        {post.title}
-                      </h4>
-                      <p className="text-sm text-dbb-charcoalSoft line-clamp-2 mb-3">
-                        {post.content}
-                      </p>
-                      <div className="flex items-center gap-4 text-xs text-dbb-charcoalSoft">
-                        <span>{post.replyCount} replies</span>
-                        <span>{post.upvotes} upvotes</span>
-                      </div>
-                    </DbbCard>
-                  </Link>
-                ))}
-              </div>
+            <div className="mt-6">
+              <Link href="/forum">
+                <Button
+                  variant="ghost"
+                  className="text-sm font-semibold underline underline-offset-4"
+                  data-testid="button-visit-community"
+                >
+                  Visit the Community <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </DbbContainer>
         </section>
 
         {/* For Professionals Callout */}
-        <section className="py-16" data-testid="section-professionals-callout">
+        <section className="mt-16 md:mt-24" data-testid="section-professionals-callout">
           <DbbContainer className="max-w-6xl mx-auto">
             <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center">
               <div>
@@ -314,17 +333,15 @@ export default function Home() {
                   className="text-3xl md:text-4xl mb-6 text-dbb-charcoal"
                   style={{ fontFamily: 'var(--font-heading)' }}
                 >
-                  For Professionals:
-                  <br />
-                  Grow Your Business
+                  Grow Your Beauty Business with DallasBeautyBook
                 </h2>
                 <p 
                   className="text-lg text-dbb-charcoalSoft mb-6"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
-                  Get discovered by local clients, manage your business profile, and access powerful analytics to grow your practice.
+                  Claim your listing, get discovered inside personalized Dallas Beauty Books, share your expertise, and turn local beauty seekers into loyal clients.
                 </p>
-                <Link href="/claim-listing">
+                <Link href="/for-professionals">
                   <Button 
                     size="lg"
                     className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
@@ -348,7 +365,7 @@ export default function Home() {
         </section>
 
         {/* Feature Cards - Ask Community + Beauty Book */}
-        <section className="py-16" data-testid="section-features">
+        <section className="mt-16 md:mt-24" data-testid="section-features">
           <DbbContainer className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Ask the Community Card */}

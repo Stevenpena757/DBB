@@ -1,0 +1,311 @@
+DALLASBEAUTYBOOK – REPLIT AGENT PRIORITY IMPLEMENTATION SPEC
+==============================================================
+GOAL
+----
+Bring “Create Your Dallas Beauty Book” and “For Professionals” to the forefront, simplify the homepage visually, and add an editorial/community showcase — WITHOUT removing, refactoring, or breaking any existing features, routes, or database schemas.
+
+All changes must be additive or light copy/styling edits.
+
+
+SECTION 0 — SAFETY RULES
+------------------------
+1. Do NOT delete or rename existing components, pages, or routes.
+2. Do NOT remove or change any backend API endpoints.
+3. Do NOT modify database tables or migrations.
+4. DO keep all existing homepage sections and functionality.
+5. ONLY:
+   - update text copy,
+   - adjust spacing/layout,
+   - and add new visually supportive sections/blocks.
+
+
+SECTION 1 — PRIORITY 1: HOMEPAGE HERO PURPOSE CLARITY
+-----------------------------------------------------
+File: src/pages/HomePage.tsx (or equivalent homepage component)
+
+Objective: Make it instantly clear what DallasBeautyBook is and who it serves.
+
+1.1 HERO HEADING
+----------------
+Update ONLY the heading text (keep structure/classes):
+
+Current heading (example):
+  <h1>...</h1>
+
+Replace inner text with:
+  “Dallas’s Beauty, Wellness & Aesthetics Hub”
+
+Example:
+  <h1 className="...existing classes...">
+    Dallas’s Beauty, Wellness & Aesthetics Hub
+  </h1>
+
+
+1.2 HERO SUBTEXT
+----------------
+Update the main hero paragraph text (keep styling):
+
+New subtext:
+  “Discover DFW beauty professionals, create your personalized Dallas Beauty Book, explore treatments, and join a community built around your self-care and aesthetics journey.”
+
+Example:
+  <p className="...existing classes...">
+    Discover DFW beauty professionals, create your personalized Dallas Beauty Book, explore treatments, and join a community built around your self-care and aesthetics journey.
+  </p>
+
+
+1.3 HERO PRIMARY & SECONDARY CTAs
+---------------------------------
+Ensure the hero CTA row includes:
+
+Primary:
+  “Create Your Dallas Beauty Book” → href="/my-beauty-book"
+
+Secondary:
+  “Explore Businesses” → href="/explore"
+
+Do NOT remove any existing buttons; change only their text labels if needed.
+
+Example:
+
+  <a href="/my-beauty-book" className="...primary button classes...">
+    Create Your Dallas Beauty Book
+  </a>
+
+  <a href="/explore" className="...secondary button classes...">
+    Explore Businesses
+  </a>
+
+
+SECTION 2 — PRIORITY 2: BEAUTIFY THE BEAUTY BOOK CTA BLOCK
+----------------------------------------------------------
+Goal: Make the Beauty Book feel like a central feature, visually highlighted.
+
+File: src/pages/HomePage.tsx
+
+Locate the existing section that promotes the Beauty Book (link to /my-beauty-book).
+Wrap its content in a visually distinct card with soft gradient + border.
+
+2.1 BEAUTY BOOK HIGHLIGHT CARD
+------------------------------
+
+Insert or refactor around the existing Beauty Book content:
+
+  <section className="mt-12">
+    <div className="rounded-3xl border border-[var(--dbb-sand)] bg-gradient-to-r from-[var(--dbb-surface)] via-[var(--dbb-beigeSoft)] to-[var(--dbb-surface)] px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row gap-6 items-center">
+      {/* Left: text */}
+      <div className="flex-1 text-left">
+        <p className="text-xs uppercase tracking-[0.25em] text-[var(--dbb-rose)] mb-2">
+          Personalized Beauty
+        </p>
+        <h2 className="font-heading text-2xl md:text-3xl mb-3">
+          Create Your Dallas Beauty Book
+        </h2>
+        <p className="text-sm md:text-base text-[var(--dbb-charcoalSoft)] max-w-xl">
+          Tell us what you’d like to enhance, where you are in DFW, and your beauty vibe. We’ll build a personalized guide with local professionals, offers, and ideas just for you.
+        </p>
+        <a
+          href="/my-beauty-book"
+          className="mt-4 inline-flex items-center rounded-full px-6 py-2 text-sm font-semibold bg-[var(--dbb-roseSoft)] text-[var(--dbb-charcoal)] hover:opacity-90 transition"
+        >
+          Start Your Beauty Book →
+        </a>
+      </div>
+
+      {/* Right: decorative image */}
+      <div className="w-full md:w-64 h-32 md:h-40 rounded-2xl overflow-hidden bg-[var(--dbb-sand)]">
+        <img
+          src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
+          alt="Notebook and beauty tools arranged on a neutral background"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </section>
+
+Important:
+- Reuse existing paths if your project already has an image.
+- Do NOT change routing or form logic for the Beauty Book – only UI/presentation.
+
+
+SECTION 3 — PRIORITY 3: STRENGTHEN “FOR PROFESSIONALS” MESSAGING
+----------------------------------------------------------------
+Goal: Make business owners clearly see why they should claim and use DallasBeautyBook.
+
+3.1 NAVBAR LINK
+---------------
+If not already present, ensure navbar contains:
+
+  <NavLink href="/for-professionals">For Professionals</NavLink>
+
+
+3.2 FOR PROFESSIONALS PAGE CONTENT
+----------------------------------
+File: src/pages/ForProfessionalsPage.tsx
+
+Without changing layout/structure, update key copy blocks:
+
+MAIN HEADING:
+  “Grow Your Beauty Business with DallasBeautyBook”
+
+INTRO PARAGRAPH:
+
+  “DallasBeautyBook is a dedicated hub for beauty, wellness, and aesthetics in DFW. Claim your listing, get discovered inside personalized Dallas Beauty Books, share your expertise, and turn local beauty seekers into loyal clients.”
+
+BENEFITS GRID TEXT (example):
+
+Card 1:
+  Title: “Be Where DFW Clients Are”
+  Text: “Show up when locals explore services and build their Dallas Beauty Book.”
+
+Card 2:
+  Title: “Build Trust with Content”
+  Text: “Post tips, insights, and stories to stand out as a trusted expert.”
+
+Card 3:
+  Title: “Get Featured in Beauty Books”
+  Text: “Appear as a recommendation when clients share their preferences and location.”
+
+Card 4:
+  Title: “Start Free, Grow Over Time”
+  Text: “Claim your page at no cost, then unlock more visibility, promotions, and insights as you grow.”
+
+CTA BUTTON (existing button, change text only if needed):
+
+  “Claim Your Business for Free →”
+
+
+3.3 UNCLAIMED BUSINESS CALLOUT
+------------------------------
+On business profile pages, if you already have a “not claimed” banner, keep logic and update copy:
+
+  “This business has not yet been claimed by the owner. If this is your business, claim your page to update details, share content, and appear in more Dallas Beauty Book matches.”
+
+Keep the link to your existing claim flow; do NOT change the route.
+
+
+SECTION 4 — PRIORITY 4: REDUCE HOMEPAGE CLUTTER (WITHOUT REMOVING FEATURES)
+---------------------------------------------------------------------------
+Goal: Make the homepage feel calm and editorial while preserving all sections/functionality.
+
+4.1 SECTION SPACING
+-------------------
+Between each major homepage section (hero, Beauty Book, categories, community, professionals, etc.), ensure there is consistent vertical spacing:
+
+  className="mt-16 md:mt-24"
+
+Add or adjust top margins on outer <section> containers only (do NOT remove sections).
+
+
+4.2 LIMIT ITEMS PER SECTION VISUALLY
+------------------------------------
+If any homepage section currently renders a large number of cards (e.g., businesses, posts, etc.), reduce on-screen count to 3–6 while keeping data intact.
+
+Example pattern:
+
+  {items.slice(0, 4).map(...render card...)}
+
+  <a href="/explore" className="mt-3 inline-block text-sm underline underline-offset-4">
+    View all →
+  </a>
+
+Rules:
+- Do NOT change the data fetching logic.
+- Do NOT remove the ability to see more; always include a “View all / See more” link.
+
+
+SECTION 5 — PRIORITY 5: ADD EDITORIAL “BEAUTY STORIES & GUIDES / COMMUNITY” SECTION
+-----------------------------------------------------------------------------------
+Goal: Showcase content/community in a soft editorial way.
+
+File: src/pages/HomePage.tsx
+
+Placement:
+- Insert AFTER the Beauty Book and categories sections.
+- BEFORE the “For Professionals” block.
+
+5.1 SECTION STRUCTURE
+---------------------
+
+<section className="mt-16 md:mt-24">
+  <div className="max-w-5xl mx-auto px-4">
+    <p className="text-xs uppercase tracking-[0.25em] text-[var(--dbb-rose)] mb-2">
+      Beauty Stories & Guides
+    </p>
+    <h2 className="font-heading text-2xl md:text-3xl mb-3">
+      Learn from the Dallas beauty community
+    </h2>
+    <p className="text-sm md:text-base text-[var(--dbb-charcoalSoft)] mb-6 max-w-2xl">
+      Browse tips, experiences, and insights from local professionals and beauty lovers. Stay inspired and discover what’s possible on your beauty journey.
+    </p>
+
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Use existing components or data:
+          - For example, latest 3 forum posts or articles:
+          - e.g., <CommunityPreviewCard post={post} />
+      */}
+    </div>
+
+    <a
+      href="/community"
+      className="mt-6 inline-block text-sm font-semibold underline underline-offset-4"
+    >
+      Visit the Community →
+    </a>
+  </div>
+</section>
+
+Implementation guidance:
+- Prefer using existing APIs like /api/forum, /api/articles, or similar.
+- Map over the latest 3 items and render existing small card components if available.
+- If no API hook exists yet, for now a static placeholder layout is acceptable as long as it links to /community.
+
+
+SECTION 6 — LANGUAGE & TONE (GLOBAL FOR NEW COPY)
+--------------------------------------------------
+In ALL new or edited text:
+
+AVOID:
+- “fix”
+- “problem”
+- “issue”
+- “flaw”
+- “imperfection”
+- “correct” (when referring to appearance)
+
+USE:
+- enhance
+- elevate
+- optimize
+- refresh
+- explore
+- discover
+- glow
+- self-care
+- maintain
+- beauty journey
+- feel confident
+
+
+SECTION 7 — ACCEPTANCE CHECKLIST
+--------------------------------
+Before finalizing these changes, confirm:
+
+[ ] Homepage hero heading shows “Dallas’s Beauty, Wellness & Aesthetics Hub”.
+[ ] Hero subtext clearly explains discovery, Beauty Book, and community.
+[ ] Hero CTAs include “Create Your Dallas Beauty Book” and “Explore Businesses”.
+[ ] Beauty Book highlight card appears as a prominent, gradient-backed section.
+[ ] Beauty Book CTA goes to /my-beauty-book and existing flow is unchanged.
+[ ] “For Professionals” appears in the main navigation and links to /for-professionals.
+[ ] /for-professionals page copy clearly communicates benefits and free claiming.
+[ ] Unclaimed business messaging still works but with improved copy.
+[ ] Homepage sections are visually separated with consistent vertical spacing.
+[ ] Each homepage content section shows a smaller number of items with a “View all” link.
+[ ] A new “Beauty Stories & Guides” section exists, showing up to 3 items and linking to /community.
+[ ] No existing features or pages have been removed or broken.
+[ ] All TypeScript checks pass.
+[ ] No errors appear in the browser console.
+[ ] Mobile view remains clean, readable, and scrollable.
+
+END OF FILE
