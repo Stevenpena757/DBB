@@ -64,6 +64,40 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
+        {/* How DallasBeautyBook Works */}
+        <section className="py-12 md:py-16" data-testid="section-how-it-works">
+          <DbbContainer className="max-w-5xl mx-auto">
+            <p 
+              className="text-xs uppercase tracking-[0.25em] mb-2"
+              style={{ color: 'hsl(var(--dbb-rose))' }}
+            >
+              How DallasBeautyBook Works
+            </p>
+            <h2 
+              className="text-2xl md:text-3xl mb-6 text-dbb-charcoal"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Three simple steps to your Dallas beauty journey
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-base"
+                 style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Beauty Book</div>
+                <p>Personalized results.</p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover Local Pros</div>
+                <p>Explore Dallas–Fort Worth.</p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the Community</div>
+                <p>Share content & unlock rewards.</p>
+              </div>
+            </div>
+          </DbbContainer>
+        </section>
+
         {/* Hero Section - Text Left, Image Right */}
         <section className="py-16 md:py-24" data-testid="section-hero">
           <DbbContainer className="max-w-6xl mx-auto">
@@ -120,40 +154,6 @@ export default function Home() {
                   data-testid="hero-image"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(249,246,242,0.7)] via-transparent to-transparent" />
-              </div>
-            </div>
-          </DbbContainer>
-        </section>
-
-        {/* How DallasBeautyBook Works */}
-        <section className="mt-12 md:mt-16" data-testid="section-how-it-works">
-          <DbbContainer className="max-w-5xl mx-auto">
-            <p 
-              className="text-xs uppercase tracking-[0.25em] mb-2"
-              style={{ color: 'hsl(var(--dbb-rose))' }}
-            >
-              How DallasBeautyBook Works
-            </p>
-            <h2 
-              className="text-2xl md:text-3xl mb-6 text-dbb-charcoal"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Three simple steps to your Dallas beauty journey
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-base"
-                 style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Beauty Book</div>
-                <p>Personalized results.</p>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover Local Pros</div>
-                <p>Explore Dallas–Fort Worth.</p>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the Community</div>
-                <p>Share content & unlock rewards.</p>
               </div>
             </div>
           </DbbContainer>
