@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -248,12 +248,24 @@ export default function BusinessProfile() {
                 )}
               </div>
               <p className="text-dbb-charcoalSoft text-lg mb-4 leading-relaxed">{business.description}</p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mb-4">
                 <DbbTag>{business.category}</DbbTag>
                 <DbbTag>
                   <MapPin className="h-3 w-3 mr-1" /> {business.location}
                 </DbbTag>
               </div>
+              {!business.isClaimed && (
+                <div 
+                  className="p-3 rounded-lg text-sm mb-4"
+                  style={{ backgroundColor: 'hsl(var(--dbb-sand))' }}
+                  data-testid="unclaimed-badge"
+                >
+                  This business is not yet claimed.{" "}
+                  <Link href="/claim-listing" className="underline font-medium">
+                    Claim it now →
+                  </Link>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3">

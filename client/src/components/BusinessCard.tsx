@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { DbbCard, DbbTag } from "@/components/dbb/DbbComponents";
 import { MapPin } from "lucide-react";
 import { getBusinessImage } from "@/lib/categoryImages";
@@ -35,6 +36,13 @@ export function BusinessCard({ business, onClick }: BusinessCardProps) {
           {business.location}
         </div>
         {business.category && <DbbTag>{business.category}</DbbTag>}
+        {!business.isClaimed && (
+          <p className="text-xs mt-2 text-dbb-charcoalSoft">
+            <Link href="/claim-listing" className="underline" data-testid="link-own-business">
+              Own this business?
+            </Link>
+          </p>
+        )}
       </div>
     </DbbCard>
   );
