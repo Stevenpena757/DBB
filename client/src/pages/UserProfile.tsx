@@ -445,10 +445,21 @@ export default function UserProfile() {
           <DialogFooter>
             <Button variant="ghost" onClick={() => setIsAddGoalOpen(false)}>Cancel</Button>
             <Button 
-              onClick={() => addGoalMutation.mutate({
-                ...newGoal,
-                targetDate: newGoal.targetDate ? new Date(newGoal.targetDate).toISOString() : undefined,
-              })}
+              onClick={() => {
+                const goalData: any = {
+                  title: newGoal.title,
+                };
+                if (newGoal.description?.trim()) {
+                  goalData.description = newGoal.description;
+                }
+                if (newGoal.category) {
+                  goalData.category = newGoal.category;
+                }
+                if (newGoal.targetDate) {
+                  goalData.targetDate = newGoal.targetDate;
+                }
+                addGoalMutation.mutate(goalData);
+              }}
               disabled={!newGoal.title}
               data-testid="button-save-goal"
             >

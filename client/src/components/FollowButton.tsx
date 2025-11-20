@@ -43,22 +43,21 @@ export function FollowButton({ businessId, className }: FollowButtonProps) {
     return (
       <Button
         variant="outline"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          window.location.href = "/api/auth/login";
-        }}
+        asChild
         className={className}
         data-testid={`button-login-to-follow-${businessId}`}
       >
-        <Heart className="w-4 h-4 mr-2" />
-        Sign in to Follow
+        <a
+          href="/api/login"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <Heart className="w-4 h-4 mr-2" />
+          Sign in to Follow
+        </a>
       </Button>
     );
-  }
-
-  if (isLoading) {
-    return null;
   }
 
   const isFollowing = followStatus?.isFollowing || false;
@@ -71,12 +70,12 @@ export function FollowButton({ businessId, className }: FollowButtonProps) {
         e.stopPropagation();
         followMutation.mutate();
       }}
-      disabled={followMutation.isPending}
+      disabled={followMutation.isPending || isLoading}
       className={className}
       data-testid={`button-follow-${businessId}`}
     >
       <Heart className={`w-4 h-4 mr-2 ${isFollowing ? "fill-current" : ""}`} />
-      {isFollowing ? "Following" : "Follow"}
+      {isLoading ? "..." : isFollowing ? "Following" : "Follow"}
     </Button>
   );
 }
