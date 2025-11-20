@@ -288,11 +288,20 @@ export default function CreateBeautyBookPage() {
 
                 {/* Hero Section */}
                 <div className="mb-8">
-                  <h1 className="font-serif text-4xl md:text-5xl mb-4 text-foreground">
+                  <h1 
+                    className="text-3xl md:text-4xl mb-3 text-dbb-charcoal"
+                    style={{ fontFamily: 'var(--font-heading)' }}
+                  >
                     Create Your Dallas Beauty Book
                   </h1>
-                  <p className="text-lg text-muted-foreground">
-                    Discover personalized recommendations for health, beauty, and aesthetics services in the DFW area
+                  <p 
+                    className="text-sm md:text-base max-w-xl mb-6"
+                    style={{ 
+                      color: 'hsl(var(--dbb-charcoalSoft))',
+                      fontFamily: 'var(--font-body)' 
+                    }}
+                  >
+                    Answer a few gentle questions about the services you'd like to enhance, your DFW area, and your beauty vibe. We'll use your answers to suggest local professionals, categories, and community content that fit your goals—no pressure, no judgment.
                   </p>
                 </div>
 
@@ -538,11 +547,20 @@ export default function CreateBeautyBookPage() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
                 <Check className="w-8 h-8 text-primary" />
               </div>
-              <h1 className="font-serif text-4xl md:text-5xl mb-4 text-foreground">
-                Your Beauty Book is Ready!
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Based on your preferences in {form.watch("city")}, here are some personalized recommendations
+              <h2 
+                className="text-2xl md:text-3xl mb-2 text-dbb-charcoal"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Your Dallas Beauty Book is ready ✨
+              </h2>
+              <p 
+                className="text-sm md:text-base mb-6 max-w-xl mx-auto"
+                style={{ 
+                  color: 'hsl(var(--dbb-charcoalSoft))',
+                  fontFamily: 'var(--font-body)' 
+                }}
+              >
+                We built this for you based on your interests, location, and beauty vibe. Explore these matches, save your favorites, and return anytime to refine your Dallas Beauty Book as your beauty journey evolves.
               </p>
             </div>
 

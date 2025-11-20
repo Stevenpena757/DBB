@@ -30,6 +30,29 @@ export default function ForProfessionalsPage() {
               </p>
             </div>
 
+            {/* How it Works for Pros */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-sm md:text-base"
+                 style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Claim your business</div>
+                <p>
+                  Make sure your information is accurate, add your services, and show up as the official owner of your page.
+                </p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Get discovered in Beauty Books</div>
+                <p>
+                  When users create their Dallas Beauty Book, we can recommend businesses like yours based on their location, interests, and vibe.
+                </p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Share content and convert leads</div>
+                <p>
+                  Post tips, updates, and offers to stay top-of-mind. As the platform grows, you'll gain insight into demand, trends, and client interests.
+                </p>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
               <Card className="border-dbb-sand hover-elevate active-elevate-2">
                 <CardContent className="p-6">
@@ -116,7 +139,17 @@ export default function ForProfessionalsPage() {
               </Card>
             </div>
 
-            <div className="text-center">
+            <p 
+              className="text-sm md:text-base max-w-2xl mt-6 mx-auto text-center"
+              style={{ 
+                color: 'hsl(var(--dbb-charcoalSoft))',
+                fontFamily: 'var(--font-body)' 
+              }}
+            >
+              As our platform grows, we plan to offer anonymized insights into what services people are searching for, which areas are trending, and how clients prefer to discover beauty services in DFW. Our long-term goal is to give you data you can actually use to make smarter decisions—not just another directory listing.
+            </p>
+
+            <div className="text-center mt-8">
               <Link href="/claim-listing">
                 <Button 
                   size="lg"

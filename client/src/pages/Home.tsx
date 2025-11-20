@@ -125,6 +125,46 @@ export default function Home() {
           </DbbContainer>
         </section>
 
+        {/* How DallasBeautyBook Works */}
+        <section className="mt-12 md:mt-16" data-testid="section-how-it-works">
+          <DbbContainer className="max-w-5xl mx-auto">
+            <p 
+              className="text-xs uppercase tracking-[0.25em] mb-2"
+              style={{ color: 'hsl(var(--dbb-rose))' }}
+            >
+              How DallasBeautyBook Works
+            </p>
+            <h2 
+              className="text-2xl md:text-3xl mb-6 text-dbb-charcoal"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Three simple steps to your Dallas beauty journey
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-base"
+                 style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Dallas Beauty Book</div>
+                <p>
+                  Tell us what you'd like to enhance, your DFW area, and your beauty vibe. We'll build a personalized beauty profile for you.
+                </p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover local pros & offers</div>
+                <p>
+                  Explore curated professionals, categories, and promotions that match your preferences and location.
+                </p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the community</div>
+                <p>
+                  Ask questions, share tips, and update your Beauty Book as your beauty journey evolves.
+                </p>
+              </div>
+            </div>
+          </DbbContainer>
+        </section>
+
         {/* Beauty Book Highlight Card */}
         <section className="mt-16 md:mt-24" data-testid="section-beauty-book-promo">
           <DbbContainer className="max-w-6xl mx-auto">
@@ -320,6 +360,39 @@ export default function Home() {
                   Visit the Community <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* Platform Value Teaser */}
+        <section className="mt-16 md:mt-24" data-testid="section-value-teaser">
+          <DbbContainer className="max-w-5xl mx-auto">
+            <div 
+              className="rounded-2xl border px-6 py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-sm md:text-base"
+              style={{ 
+                borderColor: 'hsl(var(--dbb-sand))',
+                backgroundColor: 'hsl(var(--dbb-surface))',
+                color: 'hsl(var(--dbb-charcoalSoft))'
+              }}
+            >
+              <div>
+                <p 
+                  className="text-xs uppercase tracking-[0.25em] mb-1"
+                  style={{ color: 'hsl(var(--dbb-rose))' }}
+                >
+                  Growing DFW Beauty Network
+                </p>
+                <p>
+                  As more users create their Dallas Beauty Book and more professionals claim their pages, DallasBeautyBook becomes a powerful source of insights into what DFW beauty clients really want.
+                </p>
+              </div>
+              <div 
+                className="text-xs md:text-sm"
+                style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}
+              >
+                <p>Today: curated directory + community.</p>
+                <p>Tomorrow: anonymized trends, demand signals, and smarter marketing for beauty pros.</p>
+              </div>
             </div>
           </DbbContainer>
         </section>
