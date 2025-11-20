@@ -83,6 +83,10 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 - Removed orphaned Quiz API endpoints (POST/GET /api/quiz) from server/routes.ts
 - Updated homepage layout from 3-column to 2-column grid for feature cards
 
+## Email Verification Note
+
+**Deferred Email Verification:** Email verification codes are not currently implemented. The Beauty Book wizard validates that emails are from major providers (Gmail, Yahoo, Outlook, iCloud, ProtonMail, etc.) to ensure data quality. Future implementation could add verification codes via Resend or SendGrid integration. User dismissed Resend integration during initial setup.
+
 ## External Dependencies
 
 **Database Services:**
