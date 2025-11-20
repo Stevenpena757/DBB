@@ -48,6 +48,11 @@ export default function CreateBeautyBookPage() {
     },
   });
 
+  const { data: user } = useQuery<{ id: number; username: string } | null>({
+    queryKey: ["/api/auth/user"],
+    retry: false,
+  });
+
   const createMutation = useMutation({
     mutationFn: async (data: InsertBeautyBook) => {
       const response = await fetch("/api/beauty-book", {
@@ -67,6 +72,12 @@ export default function CreateBeautyBookPage() {
     },
     onSuccess: (response) => {
       setBeautyBookId(response.beautyBookId);
+      
+      // Store beauty book ID in localStorage for unauthenticated users to claim later
+      if (!user) {
+        localStorage.setItem("pendingBeautyBookId", response.beautyBookId);
+      }
+      
       setStep(6); // Results step
       toast({
         title: "Success!",
@@ -569,6 +580,28 @@ export default function CreateBeautyBookPage() {
                 ))}
               </div>
             </div>
+
+            {/* Profile Save CTA for unauthenticated users */}
+            {!user && (
+              <DbbCard className="p-6 mb-6 bg-primary/5 border-primary/20">
+                <div className="flex items-start gap-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full flex-shrink-0">
+                    <Check className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-serif text-xl mb-2 text-foreground">
+                      Save to Your Profile
+                    </h3>
+                    <p className="text-muted-foreground mb-4">
+                      Create an account to save your Beauty Book preferences, follow businesses, set goals, and get personalized recommendations.
+                    </p>
+                    <Button onClick={() => window.location.href = "/api/login"} data-testid="button-save-to-profile">
+                      Sign In to Save
+                    </Button>
+                  </div>
+                </div>
+              </DbbCard>
+            )}
 
             {/* Community CTAs */}
             <div className="grid md:grid-cols-2 gap-6">

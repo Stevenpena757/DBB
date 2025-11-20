@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Heart, Target, Gift, MessageSquare, Calendar, MapPin, Sparkles, Check, X } from "lucide-react";
 import { Link } from "wouter";
 import { format } from "date-fns";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,6 +77,37 @@ export default function UserProfile() {
       toast({ title: "Promotion claimed! 🎁" });
     },
   });
+
+  const claimBeautyBookMutation = useMutation({
+    mutationFn: async (beautyBookId: string) => {
+      const response = await fetch(`/api/beauty-book/${beautyBookId}/claim`, {
+        method: "PATCH",
+        credentials: "include",
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to claim beauty book");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      localStorage.removeItem("pendingBeautyBookId");
+      queryClient.invalidateQueries({ queryKey: ["/api/profile"] });
+      toast({ 
+        title: "Beauty Book Saved! ✨", 
+        description: "Your preferences have been saved to your profile"
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (user && profile) {
+      const pendingBeautyBookId = localStorage.getItem("pendingBeautyBookId");
+      if (pendingBeautyBookId) {
+        claimBeautyBookMutation.mutate(pendingBeautyBookId);
+      }
+    }
+  }, [user, profile]);
 
   if (!user) {
     return (
