@@ -260,7 +260,7 @@ export class MemStorage implements IStorage {
   }
 
   private seedData() {
-    // Real DFW Health, Beauty, and Aesthetics businesses
+    // Real DFW Beauty, Aesthetics, and Wellness businesses
     const sampleBusinesses: InsertBusiness[] = [
       {
         name: "Enlighten MD",

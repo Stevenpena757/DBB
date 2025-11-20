@@ -2,11 +2,12 @@
 
 ## Overview
 
-Dallas Beauty Book is a Pinterest-inspired B2B SaaS platform for Health, Beauty, and Aesthetics businesses in the DFW area. It aims to provide visibility, facilitate content sharing, and connect businesses with clients and suppliers through a visual-first approach. The platform's core value is free visibility through content, with paid subscription tiers for enhanced features and additional revenue from sponsored content and supplier listings. It targets DFW beauty businesses and entrepreneurs, offering a supplier directory and leveraging a masonry grid layout for content discovery.
+Dallas Beauty Book is a Pinterest-inspired B2B SaaS platform for Beauty, Aesthetics, and Wellness businesses in the DFW area. It aims to provide visibility, facilitate content sharing, and connect businesses with clients and suppliers through a visual-first approach. The platform's core value is free visibility through content, with paid subscription tiers for enhanced features and additional revenue from sponsored content and supplier listings. It targets DFW beauty businesses and entrepreneurs, offering a supplier directory and leveraging a masonry grid layout for content discovery.
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language.
+- Preferred communication style: Simple, everyday language
+- Terminology: Use "connection" instead of "hub"; always order as "Beauty, Aesthetics, and Wellness" (not "Health, Beauty, and Aesthetics" or "Beauty, Wellness, and Aesthetics")
 
 ## System Architecture
 

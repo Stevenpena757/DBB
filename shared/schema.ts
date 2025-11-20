@@ -3,7 +3,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { sql } from "drizzle-orm";
 
-// Categories for DFW Health, Beauty & Aesthetics
+// Categories for DFW Beauty, Aesthetics & Wellness
 export const categories = [
   "Hair Salon",
   "Nail Salon", 

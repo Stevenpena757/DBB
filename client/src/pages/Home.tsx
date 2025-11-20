@@ -75,13 +75,13 @@ export default function Home() {
                   style={{ fontFamily: 'var(--font-heading)' }}
                   data-testid="hero-heading"
                 >
-                  Dallas's Beauty, Wellness & Aesthetics Hub
+                  Dallas's Beauty, Aesthetics, and Wellness Connection
                 </h1>
                 <p 
                   className="text-lg md:text-xl mb-10 text-dbb-charcoalSoft"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
-                  Your DFW beauty & aesthetics hub. Discover local pros, create your Beauty Book, and unlock personalized offers and insights.
+                  Your DFW beauty & aesthetics connection. Discover local pros, create your Beauty Book, and unlock personalized offers and insights.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/my-beauty-book">
