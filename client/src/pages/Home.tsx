@@ -55,8 +55,8 @@ export default function Home() {
     ? allBusinesses.slice(0, 4) // Show first 4 if "all"
     : allBusinesses.filter(b => b.category === selectedCategory).slice(0, 4);
 
-  // Get recent forum posts (first 3)
-  const recentForumPosts = forumPosts.slice(0, 3);
+  // Get recent forum posts (first 4)
+  const recentForumPosts = forumPosts.slice(0, 4);
 
   return (
     <div className="min-h-screen flex flex-col pb-16 md:pb-0">
@@ -81,7 +81,7 @@ export default function Home() {
                   className="text-lg md:text-xl mb-10 text-dbb-charcoalSoft"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
-                  Discover DFW beauty professionals, create your personalized Dallas Beauty Book, explore treatments, and join a community built around your self-care and aesthetics journey.
+                  Your DFW beauty & aesthetics hub. Discover local pros, create your Beauty Book, and unlock personalized offers and insights.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/my-beauty-book">
@@ -144,22 +144,16 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-base"
                  style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
               <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Dallas Beauty Book</div>
-                <p>
-                  Tell us what you'd like to enhance, your DFW area, and your beauty vibe. We'll build a personalized beauty profile for you.
-                </p>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Beauty Book</div>
+                <p>Personalized results.</p>
               </div>
               <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover local pros & offers</div>
-                <p>
-                  Explore curated professionals, categories, and promotions that match your preferences and location.
-                </p>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover Local Pros</div>
+                <p>Explore Dallas–Fort Worth.</p>
               </div>
               <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the community</div>
-                <p>
-                  Ask questions, share tips, and update your Beauty Book as your beauty journey evolves.
-                </p>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the Community</div>
+                <p>Share content & unlock rewards.</p>
               </div>
             </div>
           </DbbContainer>
@@ -188,7 +182,16 @@ export default function Home() {
                     fontFamily: 'var(--font-body)' 
                   }}
                 >
-                  Tell us what you'd like to enhance, where you are in DFW, and your beauty vibe. We'll build a personalized guide with local professionals, offers, and ideas just for you.
+                  Build your personalized Dallas Beauty Book based on your goals, location, and beauty vibe. Get curated matches and exclusive offers.
+                </p>
+                <p 
+                  className="text-xs md:text-sm mb-4 max-w-xl italic"
+                  style={{ 
+                    color: 'hsl(var(--dbb-charcoalSoft))',
+                    fontFamily: 'var(--font-body)' 
+                  }}
+                >
+                  Users and businesses who contribute content unlock featured placement, promotions, and rewards.
                 </p>
                 <Link href="/my-beauty-book">
                   <Button 
@@ -228,7 +231,7 @@ export default function Home() {
               Browse by Category
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {allCategories.map((category) => (
+              {allCategories.slice(0, 4).map((category) => (
                 <Link key={category.name} href={category.link}>
                   <div 
                     className="group hover-elevate active-elevate-2 cursor-pointer overflow-hidden rounded-2xl"
@@ -324,7 +327,7 @@ export default function Home() {
               Browse tips, experiences, and insights from local professionals and beauty lovers. Stay inspired and discover what's possible on your beauty journey.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {recentForumPosts.map((post) => (
                 <Link key={post.id} href={`/forum/${post.id}`}>
                   <DbbCard className="hover-elevate active-elevate-2 cursor-pointer p-6">
@@ -361,6 +364,19 @@ export default function Home() {
                 </Button>
               </Link>
             </div>
+
+            {/* Content Submission Incentive */}
+            <div className="mt-8 p-4 rounded-lg border" style={{ 
+              borderColor: 'hsl(var(--dbb-sand))',
+              backgroundColor: 'hsl(var(--dbb-beigeSoft))'
+            }}>
+              <p className="text-sm text-center" style={{ 
+                color: 'hsl(var(--dbb-charcoalSoft))',
+                fontFamily: 'var(--font-body)'
+              }}>
+                Submitting content helps you unlock featured placement, rewards, and special offers — while helping the community grow.
+              </p>
+            </div>
           </DbbContainer>
         </section>
 
@@ -368,31 +384,22 @@ export default function Home() {
         <section className="mt-16 md:mt-24" data-testid="section-value-teaser">
           <DbbContainer className="max-w-5xl mx-auto">
             <div 
-              className="rounded-2xl border px-6 py-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-sm md:text-base"
+              className="rounded-2xl border px-6 py-5 text-center"
               style={{ 
                 borderColor: 'hsl(var(--dbb-sand))',
                 backgroundColor: 'hsl(var(--dbb-surface))',
                 color: 'hsl(var(--dbb-charcoalSoft))'
               }}
             >
-              <div>
-                <p 
-                  className="text-xs uppercase tracking-[0.25em] mb-1"
-                  style={{ color: 'hsl(var(--dbb-rose))' }}
-                >
-                  Growing DFW Beauty Network
-                </p>
-                <p>
-                  As more users create their Dallas Beauty Book and more professionals claim their pages, DallasBeautyBook becomes a powerful source of insights into what DFW beauty clients really want.
-                </p>
-              </div>
-              <div 
-                className="text-xs md:text-sm"
-                style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}
+              <p 
+                className="text-xs uppercase tracking-[0.25em] mb-2"
+                style={{ color: 'hsl(var(--dbb-rose))' }}
               >
-                <p>Today: curated directory + community.</p>
-                <p>Tomorrow: anonymized trends, demand signals, and smarter marketing for beauty pros.</p>
-              </div>
+                Data Engine
+              </p>
+              <p className="text-sm md:text-base max-w-3xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
+                As the platform grows, anonymized insights will help businesses understand what DFW beauty clients are looking for — turning data into meaningful opportunities.
+              </p>
             </div>
           </DbbContainer>
         </section>

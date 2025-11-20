@@ -1,0 +1,114 @@
+DALLASBEAUTYBOOK — TLDR REPLIT AGENT IMPLEMENTATION INSTRUCTIONS
+=================================================================
+GOAL
+----
+Create a clean, simple landing experience for USERS and BUSINESSES.
+Keep the current design and functionality. Only shorten text, simplify flow,
+and emphasize monetization drivers: claimed listings, content submissions, 
+and consumer-data insights.
+
+SAFETY RULES (DO NOT BREAK)
+---------------------------
+1. Do NOT remove or rename existing pages, components, routes, or APIs.
+2. Do NOT modify backend logic, DB schemas, or authentication flows.
+3. Do NOT change Tailwind config, global.css, or design tokens.
+4. Do NOT refactor or move component import paths.
+5. New UI must follow existing mobile-first patterns.
+
+=================================================================
+A. HOMEPAGE SIMPLIFICATION (KEEP DESIGN, REDUCE WORDS)
+=================================================================
+
+1. HERO PARAGRAPH (SHORTER, CLEAR)
+Replace hero paragraph with:
+
+“Your DFW beauty & aesthetics hub. Discover local pros, create your Beauty Book, and unlock personalized offers and insights.”
+
+Keep existing CTAs unchanged.
+
+2. “HOW IT WORKS” SECTION (REDUCE TO 1-LINERS)
+Replace each step description with:
+
+1. Create Your Beauty Book → Personalized results.  
+2. Discover Local Pros → Explore Dallas–Fort Worth.  
+3. Join the Community → Share content & unlock rewards.
+
+3. BEAUTY BOOK HIGHLIGHT (SHORTEN PARAGRAPH)
+Replace current paragraph with:
+
+“Build your personalized Dallas Beauty Book based on your goals, location, and beauty vibe. Get curated matches and exclusive offers.”
+
+4. LIMIT HOMEPAGE CONTENT ITEMS
+For Explore, Community, Articles:
+- Display ONLY 4 items each using .slice(0,4)
+- Add a “View all →” link to each section
+- Do NOT change backend fetching
+
+5. ADD REWARDS MESSAGE (UNDER BEAUTY BOOK HIGHLIGHT)
+Add:
+
+“Users and businesses who contribute content unlock featured placement, promotions, and rewards.”
+
+=================================================================
+B. FOR PROFESSIONALS PAGE — SHORT, CLEAR, VALUE-DRIVEN
+=================================================================
+
+1. HERO PARAGRAPH (SIMPLIFIED)
+Replace with:
+
+“Grow your beauty business in DFW. Claim your listing, showcase your expertise, and unlock exposure, tools, and insights.”
+
+2. SIMPLIFIED 3-STEP FLOW
+Replace descriptions with:
+
+1. Claim Your Business  
+2. Get Discovered in Beauty Books  
+3. Share Content → Unlock Promotions
+
+3. SHORT BENEFITS GRID
+Replace large explanations with bullet-style benefits:
+
+- Visibility across DFW  
+- Personalized client matching  
+- Featured listings & promos  
+- Future insights & trends  
+
+4. ADD REWARDS MESSAGE FOR BUSINESSES
+Add near claim CTA:
+
+“Businesses that submit content receive increased visibility, priority placement, and discounts on future promotions.”
+
+=================================================================
+C. CONTENT SUBMISSION INCENTIVES (USERS + BUSINESSES)
+=================================================================
+Add this small block under Community preview AND For Professionals page:
+
+“Submitting content helps you unlock featured placement, rewards, and special offers — while helping the community grow.”
+
+=================================================================
+D. DATA ENGINE (SHORT, SIMPLE FUTURE VALUE)
+=================================================================
+Replace long insights section with:
+
+“As the platform grows, anonymized insights will help businesses understand what DFW beauty clients are looking for — turning data into meaningful opportunities.”
+
+=================================================================
+E. LANDING PAGE CLARITY CHECKLIST
+=================================================================
+Before completing work, verify:
+
+[ ] Homepage hero text shortened  
+[ ] 3-step “How it Works” simplified  
+[ ] Beauty Book highlight text shortened  
+[ ] Rewards message added  
+[ ] Homepage grids limited to 4 items + View All  
+[ ] For Professionals hero simplified  
+[ ] For Professionals steps simplified  
+[ ] Content incentive block added  
+[ ] Data insights text shortened  
+[ ] No backend or DB changed  
+[ ] No global styles or tokens edited  
+[ ] No components/imports renamed or moved  
+[ ] Mobile layout untouched  
+
+END OF FILE

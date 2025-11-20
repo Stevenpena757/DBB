@@ -26,117 +26,49 @@ export default function ForProfessionalsPage() {
                 className="text-lg md:text-xl text-dbb-charcoalSoft max-w-2xl mx-auto"
                 style={{ fontFamily: 'var(--font-body)' }}
               >
-                DallasBeautyBook is a dedicated hub for beauty, wellness, and aesthetics in DFW. Claim your listing, get discovered inside personalized Dallas Beauty Books, share your expertise, and turn local beauty seekers into loyal clients.
+                Grow your beauty business in DFW. Claim your listing, showcase your expertise, and unlock exposure, tools, and insights.
               </p>
             </div>
 
             {/* How it Works for Pros */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-sm md:text-base"
                  style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Claim your business</div>
-                <p>
-                  Make sure your information is accurate, add your services, and show up as the official owner of your page.
-                </p>
+              <div className="text-center">
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Claim Your Business</div>
               </div>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Get discovered in Beauty Books</div>
-                <p>
-                  When users create their Dallas Beauty Book, we can recommend businesses like yours based on their location, interests, and vibe.
-                </p>
+              <div className="text-center">
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Get Discovered in Beauty Books</div>
               </div>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Share content and convert leads</div>
-                <p>
-                  Post tips, updates, and offers to stay top-of-mind. As the platform grows, you'll gain insight into demand, trends, and client interests.
-                </p>
+              <div className="text-center">
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Share Content → Unlock Promotions</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <Card className="border-dbb-sand hover-elevate active-elevate-2">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-[hsl(var(--dbb-sand))]">
-                      <Eye className="h-6 w-6 text-dbb-forest" />
-                    </div>
-                    <div>
-                      <h3 
-                        className="text-xl mb-2 text-dbb-charcoal"
-                        style={{ fontFamily: 'var(--font-subheading)' }}
-                      >
-                        Be Where DFW Clients Are
-                      </h3>
-                      <p className="text-dbb-charcoalSoft">
-                        Show up when locals explore services and build their Dallas Beauty Book.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-dbb-sand hover-elevate active-elevate-2">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-[hsl(var(--dbb-sand))]">
-                      <MessageCircle className="h-6 w-6 text-dbb-forest" />
-                    </div>
-                    <div>
-                      <h3 
-                        className="text-xl mb-2 text-dbb-charcoal"
-                        style={{ fontFamily: 'var(--font-subheading)' }}
-                      >
-                        Build Trust with Content
-                      </h3>
-                      <p className="text-dbb-charcoalSoft">
-                        Post tips, insights, and stories to stand out as a trusted expert.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-dbb-sand hover-elevate active-elevate-2">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-[hsl(var(--dbb-sand))]">
-                      <TrendingUp className="h-6 w-6 text-dbb-forest" />
-                    </div>
-                    <div>
-                      <h3 
-                        className="text-xl mb-2 text-dbb-charcoal"
-                        style={{ fontFamily: 'var(--font-subheading)' }}
-                      >
-                        Get Featured in Beauty Books
-                      </h3>
-                      <p className="text-dbb-charcoalSoft">
-                        Appear as a recommendation when clients share their preferences and location.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-dbb-sand hover-elevate active-elevate-2">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-[hsl(var(--dbb-sand))]">
-                      <Sparkles className="h-6 w-6 text-dbb-forest" />
-                    </div>
-                    <div>
-                      <h3 
-                        className="text-xl mb-2 text-dbb-charcoal"
-                        style={{ fontFamily: 'var(--font-subheading)' }}
-                      >
-                        Start Free, Grow Over Time
-                      </h3>
-                      <p className="text-dbb-charcoalSoft">
-                        Claim your page at no cost, then unlock more visibility, promotions, and insights as you grow.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="mb-12">
+              <h3 
+                className="text-2xl mb-6 text-dbb-charcoal text-center"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Benefits for DFW Beauty Professionals
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                <div className="flex items-start gap-3">
+                  <div className="text-dbb-forest mt-1">•</div>
+                  <p className="text-dbb-charcoalSoft">Visibility across DFW</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-dbb-forest mt-1">•</div>
+                  <p className="text-dbb-charcoalSoft">Personalized client matching</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-dbb-forest mt-1">•</div>
+                  <p className="text-dbb-charcoalSoft">Featured listings & promos</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="text-dbb-forest mt-1">•</div>
+                  <p className="text-dbb-charcoalSoft">Future insights & trends</p>
+                </div>
+              </div>
             </div>
 
             <p 
@@ -146,10 +78,26 @@ export default function ForProfessionalsPage() {
                 fontFamily: 'var(--font-body)' 
               }}
             >
-              As our platform grows, we plan to offer anonymized insights into what services people are searching for, which areas are trending, and how clients prefer to discover beauty services in DFW. Our long-term goal is to give you data you can actually use to make smarter decisions—not just another directory listing.
+              As the platform grows, anonymized insights will help businesses understand what DFW beauty clients are looking for — turning data into meaningful opportunities.
             </p>
 
+            {/* Content Submission Incentive */}
+            <div className="mt-8 p-4 rounded-lg border max-w-2xl mx-auto" style={{ 
+              borderColor: 'hsl(var(--dbb-sand))',
+              backgroundColor: 'hsl(var(--dbb-beigeSoft))'
+            }}>
+              <p className="text-sm text-center" style={{ 
+                color: 'hsl(var(--dbb-charcoalSoft))',
+                fontFamily: 'var(--font-body)'
+              }}>
+                Submitting content helps you unlock featured placement, rewards, and special offers — while helping the community grow.
+              </p>
+            </div>
+
             <div className="text-center mt-8">
+              <p className="mb-4 text-sm italic text-dbb-charcoalSoft max-w-md mx-auto">
+                Businesses that submit content receive increased visibility, priority placement, and discounts on future promotions.
+              </p>
               <Link href="/claim-listing">
                 <Button 
                   size="lg"
