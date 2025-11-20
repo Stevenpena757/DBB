@@ -114,7 +114,7 @@ export default function Home() {
         </section>
 
         {/* Beauty Book Promo Banner */}
-        <section className="py-8" data-testid="section-beauty-book-promo">
+        <section className="py-16" data-testid="section-beauty-book-promo">
           <DbbContainer className="max-w-6xl mx-auto">
             <div className="w-full p-8 rounded-2xl text-center"
               style={{ 
@@ -150,7 +150,7 @@ export default function Home() {
         </section>
 
         {/* Trending Categories with Dynamic Content */}
-        <section className="py-12 mt-8" data-testid="section-trending-categories">
+        <section className="py-16" data-testid="section-trending-categories">
           <DbbContainer className="max-w-6xl mx-auto">
             <h2 
               className="text-3xl md:text-4xl mb-8 text-dbb-charcoal"
@@ -252,7 +252,7 @@ export default function Home() {
         </section>
 
         {/* For Professionals Callout */}
-        <section className="py-12" data-testid="section-professionals-callout">
+        <section className="py-16" data-testid="section-professionals-callout">
           <DbbContainer className="max-w-6xl mx-auto">
             <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center">
               <div>
@@ -294,7 +294,7 @@ export default function Home() {
         </section>
 
         {/* Feature Cards - Ask Community + Beauty Book */}
-        <section className="py-12" data-testid="section-features">
+        <section className="py-16" data-testid="section-features">
           <DbbContainer className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Ask the Community Card */}
