@@ -185,6 +185,8 @@ export interface IStorage {
   createBeautyBook(beautyBook: InsertBeautyBook): Promise<BeautyBook>;
   getBeautyBookById(id: string): Promise<BeautyBook | undefined>;
   getAllBeautyBooks(): Promise<BeautyBook[]>;
+  claimBeautyBook(beautyBookId: string, userId: number): Promise<BeautyBook | undefined>;
+  getUserActiveBeautyBook(userId: number): Promise<BeautyBook | undefined>;
   
   // Analytics Events
   createAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent>;

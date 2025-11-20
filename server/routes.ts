@@ -1225,6 +1225,36 @@ ${forumUrls}
     }
   });
 
+  app.patch("/api/beauty-book/:uuid/claim", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+
+      const { uuid } = req.params;
+      
+      // Check if beauty book exists and is unclaimed
+      const beautyBook = await storage.getBeautyBookById(uuid);
+      if (!beautyBook) {
+        return res.status(404).json({ error: "Beauty book not found" });
+      }
+
+      if (beautyBook.userId) {
+        return res.status(400).json({ error: "Beauty book already claimed" });
+      }
+
+      // Claim the beauty book
+      const claimedBook = await storage.claimBeautyBook(uuid, user.id);
+      res.json(claimedBook);
+    } catch (error) {
+      console.error("Error claiming beauty book:", error);
+      res.status(500).json({ error: "Failed to claim beauty book" });
+    }
+  });
+
   // ============ ANALYTICS EVENTS ============
   // Note: Analytics are tracked server-side from other endpoints (leads, quiz, etc.)
   // No public POST endpoint to prevent spam and data poisoning attacks

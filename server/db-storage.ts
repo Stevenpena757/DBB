@@ -843,6 +843,23 @@ export class DbStorage implements IStorage {
       .orderBy(desc(beautyBooks.createdAt));
   }
 
+  async claimBeautyBook(beautyBookId: string, userId: number): Promise<BeautyBook | undefined> {
+    const result = await db.update(beautyBooks)
+      .set({ userId })
+      .where(eq(beautyBooks.id, beautyBookId))
+      .returning();
+    return result[0];
+  }
+
+  async getUserActiveBeautyBook(userId: number): Promise<BeautyBook | undefined> {
+    const result = await db.select()
+      .from(beautyBooks)
+      .where(eq(beautyBooks.userId, userId))
+      .orderBy(desc(beautyBooks.createdAt))
+      .limit(1);
+    return result[0];
+  }
+
   // ============ ANALYTICS EVENTS ============
   async createAnalyticsEvent(event: InsertAnalyticsEvent): Promise<AnalyticsEvent> {
     const result = await db.insert(analyticsEvents).values(event).returning();
