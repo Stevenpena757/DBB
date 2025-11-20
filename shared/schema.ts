@@ -639,11 +639,59 @@ export const DFW_CITIES = [
   "Garland",
 ] as const;
 
+// Approved email domains for Beauty Book submissions
+// Only major email providers to ensure data quality and reduce spam
+export const APPROVED_EMAIL_DOMAINS = [
+  // Google
+  "gmail.com",
+  "googlemail.com",
+  // Microsoft
+  "outlook.com",
+  "hotmail.com",
+  "live.com",
+  "msn.com",
+  // Yahoo
+  "yahoo.com",
+  "yahoo.co.uk",
+  "yahoo.ca",
+  "ymail.com",
+  // Apple
+  "icloud.com",
+  "me.com",
+  "mac.com",
+  // AOL
+  "aol.com",
+  "aim.com",
+  // ProtonMail
+  "protonmail.com",
+  "proton.me",
+  "pm.me",
+  // Other major providers
+  "zoho.com",
+  "mail.com",
+  "gmx.com",
+  "fastmail.com",
+] as const;
+
+// Email validation helper
+export function isApprovedEmailDomain(email: string): boolean {
+  const domain = email.toLowerCase().split("@")[1];
+  if (!domain) return false;
+  return APPROVED_EMAIL_DOMAINS.includes(domain as any);
+}
+
 export const insertBeautyBookSchema = createInsertSchema(beautyBooks).omit({
   id: true,
   createdAt: true,
 }).extend({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string()
+    .email("Please enter a valid email address")
+    .refine(
+      (email) => isApprovedEmailDomain(email),
+      {
+        message: "Please use a valid email from a major provider (Gmail, Yahoo, Outlook, iCloud, etc.)"
+      }
+    ),
   enhanceAreas: z.array(z.enum(ENHANCE_AREAS)).min(1, "Please select at least one area of interest"),
   vibe: z.array(z.enum(VIBE_OPTIONS)).min(1, "Please select at least one vibe"),
   city: z.enum(DFW_CITIES, { required_error: "Please select a city" }),
