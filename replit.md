@@ -34,6 +34,26 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 
 ### Recent Changes (November 2025)
 
+**Personal Profile System (Completed):**
+- **Database Schema:** Added 3 new tables for user engagement:
+  - `user_business_follows`: Track business follows with unique constraint on (userId, businessId)
+  - `user_goals`: Beauty/wellness goals with categories, completion tracking, and target dates
+  - `user_promotions`: Personalized offers with business association, validity tracking, and usage status
+- **User Profile Page:** Comprehensive profile at /profile with 4 tabs:
+  - Overview: Beauty Book responses, recent community activity
+  - Goals: Create, track, and complete beauty goals with 7 categories (skin, hair, body, wellness, beauty, fitness, other)
+  - Following: Grid of followed businesses with direct navigation
+  - Promotions: View and claim personalized offers
+- **Follow System:** FollowButton component integrated into business pages:
+  - Unauthenticated users see "Sign in to Follow" with redirect to login
+  - Authenticated users can follow/unfollow with real-time UI updates
+  - Denormalized queries to avoid N+1 performance issues
+- **API Routes:** 17 new endpoints for follows, goals, promotions, and profile data
+  - All routes protected with Replit Auth middleware
+  - Comprehensive Zod validation on all mutations
+  - Optimized queries with JOINs for performance
+- **Login Encouragement:** All protected features show login prompts instead of hiding from unauthenticated users
+
 **Beauty Book Enhancement:**
 - Added quiz-notebook-brush.jpg image to Create Your Beauty Book page
 - Implemented responsive two-column grid layout (form left, image right)
