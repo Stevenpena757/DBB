@@ -21,6 +21,7 @@ import AddListing from "@/pages/AddListing";
 import StartHere from "@/pages/StartHere";
 import CreateBeautyBookPage from "@/pages/CreateBeautyBookPage";
 import UserProfile from "@/pages/UserProfile";
+import ForProfessionalsPage from "@/pages/ForProfessionalsPage";
 import { LandingPage } from "@/pages/LandingPage";
 import NotFound from "@/pages/not-found";
 
@@ -43,6 +44,7 @@ function Router() {
       <Route path="/start-here" component={StartHere} />
       <Route path="/my-beauty-book" component={CreateBeautyBookPage} />
       <Route path="/profile" component={UserProfile} />
+      <Route path="/for-professionals" component={ForProfessionalsPage} />
       <Route path="/business/:id" component={BusinessProfile} />
       
       {/* IMPORTANT: SEO Landing Page catch-all route.
