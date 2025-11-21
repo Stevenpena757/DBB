@@ -84,6 +84,28 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 - Removed orphaned Quiz API endpoints (POST/GET /api/quiz) from server/routes.ts
 - Updated homepage layout from 3-column to 2-column grid for feature cards
 
+**TLDR V2 Optimization (November 2025):**
+- **Homepage Simplification:** Shortened all copy, one-line "How It Works" steps, limited content grids to 4 items with "View all" links
+- **Welcome Modal:** Concise messaging with two clear paths (exploring services vs running a business)
+- **Content Rewards Messaging:** Added incentives for user and business content submission throughout platform
+- **Data Insights:** Condensed to single future-focused paragraph about anonymized insights
+
+**TLDR V3 Guided Flows (November 2025):**
+- **Two-Persona Homepage:** Clear separation for users (locals) and businesses (pros)
+  - Hero: "Where DFW Beauty Meets Community" with streamlined copy
+  - "I'm here to..." CTA strip: Quick path selection (Discover services / Promote business)
+  - "Start Here" split section: Side-by-side cards for locals vs professionals with distinct 3-step journeys
+  - Section reordering: Hero → CTA strip → How It Works → Start Here split → Beauty Book → Browse → Community
+- **Welcome Modal Enhancement:** Stacked button layout with clearer CTAs:
+  - "I'm looking for beauty services" → /my-beauty-book
+  - "I run or manage a beauty business" → /for-professionals
+  - "Just browse for now" → close modal
+- **How It Works:** Ultra-concise one-liners:
+  - "Answer a few questions to create your Beauty Book."
+  - "We match you with DFW beauty pros and categories."
+  - "Explore, save, and join the community."
+- **Monetization Clarity:** Explicit messaging about claiming listings, content submission rewards, and future data/insights value
+
 ## Email Verification Note
 
 **Deferred Email Verification:** Email verification codes are not currently implemented. The Beauty Book wizard validates that emails are from major providers (Gmail, Yahoo, Outlook, iCloud, ProtonMail, etc.) to ensure data quality. Future implementation could add verification codes via Resend or SendGrid integration. User dismissed Resend integration during initial setup.
