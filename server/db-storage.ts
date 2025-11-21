@@ -5,7 +5,7 @@ import {
   forumPosts, forumReplies, pendingBusinesses,
   subscriptions, abuseReports, userBans, adminActivityLogs, securityEvents, aiModerationQueue,
   businessLeads, quizSubmissions, analyticsEvents, beautyBooks,
-  userBusinessFollows, userGoals, userPromotions,
+  userBusinessFollows, userGoals, userPromotions, businessReviews,
   type User, type InsertUser,
   type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
@@ -30,7 +30,8 @@ import {
   type BeautyBook, type InsertBeautyBook,
   type UserBusinessFollow, type InsertUserBusinessFollow,
   type UserGoal, type InsertUserGoal,
-  type UserPromotion, type InsertUserPromotion
+  type UserPromotion, type InsertUserPromotion,
+  type BusinessReview, type InsertBusinessReview
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -1018,5 +1019,109 @@ export class DbStorage implements IStorage {
       .from(beautyBooks)
       .where(eq(beautyBooks.userId, userId))
       .orderBy(desc(beautyBooks.createdAt));
+  }
+
+  // ============ BUSINESS REVIEWS ============
+  async createBusinessReview(review: InsertBusinessReview): Promise<BusinessReview> {
+    const result = await db.insert(businessReviews).values(review).returning();
+    
+    // Update business average rating using SQL aggregation (more efficient than selecting all reviews)
+    await db.execute(sql`
+      UPDATE ${businesses}
+      SET 
+        rating = (SELECT ROUND(AVG(rating) * 10) FROM ${businessReviews} WHERE business_id = ${review.businessId}),
+        review_count = (SELECT COUNT(*) FROM ${businessReviews} WHERE business_id = ${review.businessId})
+      WHERE id = ${review.businessId}
+    `);
+    
+    return result[0];
+  }
+
+  async getReviewsByBusiness(businessId: number): Promise<BusinessReview[]> {
+    return db.select({
+      id: businessReviews.id,
+      businessId: businessReviews.businessId,
+      userId: businessReviews.userId,
+      rating: businessReviews.rating,
+      title: businessReviews.title,
+      review: businessReviews.review,
+      helpful: businessReviews.helpful,
+      response: businessReviews.response,
+      respondedAt: businessReviews.respondedAt,
+      createdAt: businessReviews.createdAt,
+      user: {
+        id: users.id,
+        username: users.username,
+        profileImage: users.profileImage,
+        replitId: users.replitId,
+        email: users.email,
+        role: users.role,
+        createdAt: users.createdAt,
+      }
+    })
+      .from(businessReviews)
+      .leftJoin(users, eq(businessReviews.userId, users.id))
+      .where(eq(businessReviews.businessId, businessId))
+      .orderBy(desc(businessReviews.createdAt)) as any;
+  }
+
+  async getPositiveReviewsByBusiness(businessId: number): Promise<BusinessReview[]> {
+    return db.select({
+      id: businessReviews.id,
+      businessId: businessReviews.businessId,
+      userId: businessReviews.userId,
+      rating: businessReviews.rating,
+      title: businessReviews.title,
+      review: businessReviews.review,
+      helpful: businessReviews.helpful,
+      response: businessReviews.response,
+      respondedAt: businessReviews.respondedAt,
+      createdAt: businessReviews.createdAt,
+      user: {
+        id: users.id,
+        username: users.username,
+        profileImage: users.profileImage,
+        replitId: users.replitId,
+        email: users.email,
+        role: users.role,
+        createdAt: users.createdAt,
+      }
+    })
+      .from(businessReviews)
+      .leftJoin(users, eq(businessReviews.userId, users.id))
+      .where(and(
+        eq(businessReviews.businessId, businessId),
+        sql`${businessReviews.rating} >= 4`
+      ))
+      .orderBy(desc(businessReviews.createdAt)) as any;
+  }
+
+  async getBusinessFollowers(businessId: number): Promise<UserBusinessFollow[]> {
+    return db.select({
+      id: userBusinessFollows.id,
+      userId: userBusinessFollows.userId,
+      businessId: userBusinessFollows.businessId,
+      createdAt: userBusinessFollows.createdAt,
+      user: {
+        id: users.id,
+        username: users.username,
+        profileImage: users.profileImage,
+        replitId: users.replitId,
+        email: users.email,
+        role: users.role,
+        createdAt: users.createdAt,
+      }
+    })
+      .from(userBusinessFollows)
+      .leftJoin(users, eq(userBusinessFollows.userId, users.id))
+      .where(eq(userBusinessFollows.businessId, businessId))
+      .orderBy(desc(userBusinessFollows.createdAt)) as any;
+  }
+
+  async getClaimedBusinessesByUser(userId: number): Promise<Business[]> {
+    return db.select()
+      .from(businesses)
+      .where(eq(businesses.claimedBy, userId))
+      .orderBy(desc(businesses.createdAt));
   }
 }

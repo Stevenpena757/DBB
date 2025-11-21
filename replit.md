@@ -106,6 +106,22 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
   - "Explore, save, and join the community."
 - **Monetization Clarity:** Explicit messaging about claiming listings, content submission rewards, and future data/insights value
 
+**Business Dashboard (November 2025):**
+- **New Feature:** Comprehensive dashboard at /business-dashboard for claimed businesses
+  - Shows follower count, average rating, and positive review metrics
+  - Three tabs: Followers, Reviews, Send Promotions
+  - Followers tab displays users following the business with join dates
+  - Reviews tab shows all reviews with 4-5 star reviews highlighted
+  - Send Promotions tab enables targeted offers to followers and positive reviewers
+- **Database Schema:** Added business_reviews table with rating (1-5), title, review text, helpful count
+- **API Enhancements:**
+  - Fixed critical route ordering: GET /api/businesses/claimed now before /:id route
+  - Added POST /api/follows with authorization (users follow as themselves, admins can follow as any user)
+  - Review creation automatically updates business average rating and count via SQL aggregation
+  - All dashboard endpoints verify business ownership before returning sensitive data
+- **Performance Optimization:** Review rating calculation uses SQL aggregation instead of fetching all reviews (O(1) vs O(n))
+- **Storage Methods:** getClaimedBusinessesByUser, getBusinessFollowers, getReviewsByBusiness, getPositiveReviewsByBusiness, createBusinessReview
+
 ## Email Verification Note
 
 **Deferred Email Verification:** Email verification codes are not currently implemented. The Beauty Book wizard validates that emails are from major providers (Gmail, Yahoo, Outlook, iCloud, ProtonMail, etc.) to ensure data quality. Future implementation could add verification codes via Resend or SendGrid integration. User dismissed Resend integration during initial setup.

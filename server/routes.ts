@@ -17,7 +17,8 @@ import {
   insertQuizSubmissionSchema,
   insertAnalyticsEventSchema,
   insertBeautyBookSchema,
-  insertUserGoalSchema
+  insertUserGoalSchema,
+  insertBusinessReviewSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -215,6 +216,28 @@ ${recentPosts.map(post => `  <url>
       res.json(businesses);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch featured businesses" });
+    }
+  });
+
+  // Get businesses claimed by current user (MUST be before /:id route)
+  app.get("/api/businesses/claimed", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      console.log('[BusinessDashboard] Fetching claimed businesses for replitId:', replitId);
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        console.log('[BusinessDashboard] User not found for replitId:', replitId);
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      console.log('[BusinessDashboard] Found user:', user.id, user.username);
+      const businesses = await storage.getClaimedBusinessesByUser(user.id);
+      console.log('[BusinessDashboard] Claimed businesses count:', businesses.length, businesses.map(b => ({ id: b.id, name: b.name, claimedBy: b.claimedBy })));
+      res.json(businesses);
+    } catch (error) {
+      console.error('[BusinessDashboard] Error fetching claimed businesses:', error);
+      res.status(500).json({ error: "Failed to fetch claimed businesses" });
     }
   });
 
@@ -687,6 +710,131 @@ ${recentPosts.map(post => `  <url>
       res.json(business);
     } catch (error) {
       res.status(500).json({ error: "Failed to upvote business" });
+    }
+  });
+
+  // ============ BUSINESS DASHBOARD & REVIEWS ============
+  // Get followers for a business
+  app.get("/api/businesses/:id/followers", isAuthenticated, async (req: any, res) => {
+    try {
+      const businessId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      // Verify user owns this business
+      const business = await storage.getBusinessById(businessId);
+      if (!business || business.claimedBy !== user.id) {
+        return res.status(403).json({ error: "Unauthorized" });
+      }
+      
+      const followers = await storage.getBusinessFollowers(businessId);
+      res.json(followers);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch followers" });
+    }
+  });
+
+  // Get positive reviews (4-5 stars) for a business
+  app.get("/api/businesses/:id/positive-reviews", isAuthenticated, async (req: any, res) => {
+    try {
+      const businessId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      // Verify user owns this business
+      const business = await storage.getBusinessById(businessId);
+      if (!business || business.claimedBy !== user.id) {
+        return res.status(403).json({ error: "Unauthorized" });
+      }
+      
+      const reviews = await storage.getPositiveReviewsByBusiness(businessId);
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch positive reviews" });
+    }
+  });
+
+  // Get all reviews for a business
+  app.get("/api/businesses/:id/reviews", async (req, res) => {
+    try {
+      const businessId = parseInt(req.params.id);
+      const reviews = await storage.getReviewsByBusiness(businessId);
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch reviews" });
+    }
+  });
+
+  // Create a review for a business
+  app.post("/api/businesses/:id/reviews", isAuthenticated, async (req: any, res) => {
+    try {
+      const businessId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validated = insertBusinessReviewSchema.parse({
+        ...req.body,
+        businessId,
+        userId: user.id,
+      });
+      
+      const review = await storage.createBusinessReview(validated);
+      res.status(201).json(review);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to create review" });
+    }
+  });
+
+  // Send promotions to selected users
+  app.post("/api/promotions/send", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const { businessId, userIds, ...promoData } = req.body;
+      
+      // Verify user owns the business
+      const business = await storage.getBusinessById(businessId);
+      if (!business || business.claimedBy !== user.id) {
+        return res.status(403).json({ error: "Unauthorized" });
+      }
+      
+      // Create promotions for each selected user
+      const promotions = await Promise.all(
+        userIds.map((userId: number) =>
+          storage.createUserPromotion({
+            userId,
+            businessId,
+            ...promoData,
+          })
+        )
+      );
+      
+      res.status(201).json({ count: promotions.length, promotions });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: error.errors });
+      }
+      res.status(500).json({ error: "Failed to send promotions" });
     }
   });
 
@@ -1298,7 +1446,37 @@ ${forumUrls}
   });
 
   // ============ USER PROFILE & FOLLOWS ============
-  // Follow/Unfollow Business
+  // Follow business (body-based for testing/admin) - MUST come before /:businessId route
+  app.post("/api/follows", isAuthenticated, async (req: any, res) => {
+    try {
+      const { userId, businessId } = req.body;
+      
+      if (!userId || !businessId) {
+        return res.status(400).json({ error: "userId and businessId are required" });
+      }
+      
+      // Verify the request is authorized (either acting as self or admin)
+      const replitId = req.user.claims.sub.toString();
+      const currentUser = await storage.getUserByReplitId(replitId);
+      
+      if (!currentUser) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      // Allow if acting as self or if admin
+      if (currentUser.id !== userId && currentUser.role !== "admin") {
+        return res.status(403).json({ error: "Unauthorized: can only follow as yourself unless admin" });
+      }
+      
+      const follow = await storage.followBusiness(userId, businessId);
+      res.json(follow);
+    } catch (error) {
+      console.error('[Follow] Error creating follow:', error);
+      res.status(500).json({ error: "Failed to follow business" });
+    }
+  });
+
+  // Follow/Unfollow Business (path-based for regular use)
   app.post("/api/follows/:businessId", isAuthenticated, async (req: any, res) => {
     try {
       const businessId = parseInt(req.params.businessId);

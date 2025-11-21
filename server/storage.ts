@@ -23,7 +23,8 @@ import {
   type BeautyBook, type InsertBeautyBook,
   type UserBusinessFollow, type InsertUserBusinessFollow,
   type UserGoal, type InsertUserGoal,
-  type UserPromotion, type InsertUserPromotion
+  type UserPromotion, type InsertUserPromotion,
+  type BusinessReview, type InsertBusinessReview
 } from "@shared/schema";
 
 export interface IStorage {
@@ -216,6 +217,13 @@ export interface IStorage {
   
   // User Profile Data
   getUserBeautyBooks(userId: number): Promise<BeautyBook[]>;
+  
+  // Business Reviews
+  createBusinessReview(review: InsertBusinessReview): Promise<BusinessReview>;
+  getReviewsByBusiness(businessId: number): Promise<BusinessReview[]>;
+  getPositiveReviewsByBusiness(businessId: number): Promise<BusinessReview[]>;
+  getBusinessFollowers(businessId: number): Promise<UserBusinessFollow[]>;
+  getClaimedBusinessesByUser(userId: number): Promise<Business[]>;
 }
 
 export class MemStorage implements IStorage {

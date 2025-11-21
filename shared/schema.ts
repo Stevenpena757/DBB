@@ -799,3 +799,35 @@ export const insertUserPromotionSchema = createInsertSchema(userPromotions).omit
   businessId: z.number().optional().nullable(),
 });
 export type InsertUserPromotion = z.infer<typeof insertUserPromotionSchema>;
+
+// Business Reviews - user reviews and ratings for businesses
+export const businessReviews = pgTable("business_reviews", {
+  id: serial("id").primaryKey(),
+  businessId: integer("business_id").notNull().references(() => businesses.id, { onDelete: "cascade" }),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  rating: integer("rating").notNull(), // 1-5 stars
+  title: text("title"),
+  review: text("review").notNull(),
+  helpful: integer("helpful").default(0).notNull(), // Count of users who found this helpful
+  response: text("response"), // Business owner response
+  respondedAt: timestamp("responded_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("business_reviews_business_idx").on(table.businessId),
+  index("business_reviews_user_idx").on(table.userId),
+  index("business_reviews_rating_idx").on(table.businessId, table.rating),
+  unique("business_reviews_unique").on(table.userId, table.businessId), // One review per user per business
+]);
+
+export type BusinessReview = typeof businessReviews.$inferSelect;
+export const insertBusinessReviewSchema = createInsertSchema(businessReviews).omit({
+  id: true,
+  helpful: true,
+  response: true,
+  respondedAt: true,
+  createdAt: true,
+}).extend({
+  rating: z.number().min(1).max(5),
+  review: z.string().min(10, "Review must be at least 10 characters"),
+});
+export type InsertBusinessReview = z.infer<typeof insertBusinessReviewSchema>;
