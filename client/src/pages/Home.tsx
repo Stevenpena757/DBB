@@ -64,8 +64,47 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
+        {/* I'm here to... CTA Strip */}
+        <section className="py-6 md:py-8" data-testid="section-cta-strip">
+          <DbbContainer className="max-w-5xl mx-auto">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-4 md:items-center">
+              <p className="text-sm font-medium" style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+                I'm here to:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Link href="/my-beauty-book">
+                  <button 
+                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
+                    style={{ 
+                      backgroundColor: 'hsl(var(--dbb-surface))',
+                      border: '1px solid hsl(var(--dbb-sand))',
+                      color: 'hsl(var(--dbb-charcoalSoft))'
+                    }}
+                    data-testid="button-cta-discover"
+                  >
+                    Discover beauty services
+                  </button>
+                </Link>
+                <Link href="/for-professionals">
+                  <button 
+                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
+                    style={{ 
+                      backgroundColor: 'hsl(var(--dbb-surface))',
+                      border: '1px solid hsl(var(--dbb-sand))',
+                      color: 'hsl(var(--dbb-charcoalSoft))'
+                    }}
+                    data-testid="button-cta-promote"
+                  >
+                    Promote my beauty business
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </DbbContainer>
+        </section>
+
         {/* Hero Section - Text Left, Image Right */}
-        <section className="py-16 md:py-24" data-testid="section-hero">
+        <section className="py-12 md:py-20" data-testid="section-hero">
           <DbbContainer className="max-w-6xl mx-auto">
             <div className="grid gap-8 md:grid-cols-2 items-center">
               {/* Left Column: Text Content */}
@@ -125,40 +164,120 @@ export default function Home() {
           </DbbContainer>
         </section>
 
-        {/* I'm here to... CTA Strip */}
-        <section className="mt-6 md:mt-8" data-testid="section-cta-strip">
-          <DbbContainer className="max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row gap-3 md:gap-4 md:items-center">
-              <p className="text-sm font-medium" style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
-                I'm here to:
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Link href="/my-beauty-book">
-                  <button 
-                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold hover:opacity-90 transition"
-                    style={{ 
-                      backgroundColor: 'hsl(var(--dbb-roseSoft))',
-                      color: 'hsl(var(--dbb-charcoal))'
-                    }}
-                    data-testid="button-cta-discover"
-                  >
-                    Discover beauty services
-                  </button>
-                </Link>
+        {/* Featured Businesses & For Professionals */}
+        <section className="mt-16 md:mt-24" data-testid="section-featured-businesses">
+          <DbbContainer className="max-w-6xl mx-auto">
+            <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center mb-12">
+              <div>
+                <h2 
+                  className="text-3xl md:text-4xl mb-6 text-dbb-charcoal"
+                  style={{ fontFamily: 'var(--font-heading)' }}
+                >
+                  Grow Your Beauty Business with DallasBeautyBook
+                </h2>
+                <p 
+                  className="text-lg text-dbb-charcoalSoft mb-6"
+                  style={{ fontFamily: 'var(--font-body)' }}
+                >
+                  Claim your listing, get discovered inside personalized Dallas Beauty Books, share your expertise, and turn local beauty seekers into loyal clients.
+                </p>
                 <Link href="/for-professionals">
-                  <button 
-                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
-                    style={{ 
-                      backgroundColor: 'hsl(var(--dbb-surface))',
-                      border: '1px solid hsl(var(--dbb-sand))',
-                      color: 'hsl(var(--dbb-charcoalSoft))'
-                    }}
-                    data-testid="button-cta-promote"
+                  <Button 
+                    size="lg"
+                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
+                    data-testid="button-learn-more-professionals"
                   >
-                    Promote my beauty business
-                  </button>
+                    Learn More
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
                 </Link>
               </div>
+              <div className="relative h-52 md:h-64">
+                <img
+                  src="/images/dallasbeautybook/pro-dashboard-abstract.jpg"
+                  alt="Abstract representation of beauty business analytics and growth tools"
+                  className="h-full w-full rounded-3xl object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <h3 
+              className="text-2xl md:text-3xl mb-8 text-dbb-charcoal"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Featured Businesses
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {allBusinesses.slice(0, 4).map((business) => (
+                <BusinessCard 
+                  key={business.id} 
+                  business={business}
+                  onClick={() => setLocation(`/business/${business.id}`)}
+                />
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <Link href="/explore">
+                <Button
+                  variant="ghost"
+                  className="text-sm font-semibold underline underline-offset-4"
+                  data-testid="button-view-all-businesses"
+                >
+                  View all businesses <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* Browse by Category - Visual Tiles */}
+        <section className="mt-16 md:mt-24" data-testid="section-browse-categories">
+          <DbbContainer className="max-w-6xl mx-auto">
+            <h2 
+              className="text-3xl md:text-4xl mb-8 text-dbb-charcoal text-center"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Browse by Category
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {allCategories.slice(0, 4).map((category) => (
+                <Link key={category.name} href={category.link}>
+                  <div 
+                    className="group hover-elevate active-elevate-2 cursor-pointer overflow-hidden rounded-2xl"
+                    data-testid={`tile-category-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  >
+                    <div className="aspect-square relative overflow-hidden">
+                      <img 
+                        src={category.image} 
+                        alt={category.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h3 
+                          className="text-white text-lg md:text-xl font-medium"
+                          style={{ fontFamily: 'var(--font-subheading)' }}
+                        >
+                          {category.name}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <Link href="/explore">
+                <Button
+                  variant="ghost"
+                  className="text-sm font-semibold underline underline-offset-4"
+                  data-testid="button-view-all-categories"
+                >
+                  View all categories <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </DbbContainer>
         </section>
@@ -273,151 +392,6 @@ export default function Home() {
           </DbbContainer>
         </section>
 
-        {/* Beauty Book Highlight Card */}
-        <section className="mt-16 md:mt-24" data-testid="section-beauty-book-promo">
-          <DbbContainer className="max-w-6xl mx-auto">
-            <div className="rounded-3xl border border-[hsl(var(--dbb-sand))] bg-gradient-to-r from-[hsl(var(--dbb-surface))] via-[hsl(var(--dbb-beigeSoft))] to-[hsl(var(--dbb-surface))] px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row gap-6 items-center">
-              {/* Left: text */}
-              <div className="flex-1 text-left">
-                <p className="text-xs uppercase tracking-[0.25em] mb-2"
-                   style={{ color: 'hsl(var(--dbb-rose))' }}>
-                  Personalized Beauty
-                </p>
-                <h2 
-                  className="text-2xl md:text-3xl mb-3 text-dbb-charcoal"
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  Create Your Dallas Beauty Book
-                </h2>
-                <p 
-                  className="text-sm md:text-base mb-4 max-w-xl"
-                  style={{ 
-                    color: 'hsl(var(--dbb-charcoalSoft))',
-                    fontFamily: 'var(--font-body)' 
-                  }}
-                >
-                  Build your personalized Dallas Beauty Book based on your goals, location, and beauty vibe. Get curated matches and exclusive offers from DFW pros.
-                </p>
-                <p 
-                  className="text-xs md:text-sm mb-4 max-w-xl italic"
-                  style={{ 
-                    color: 'hsl(var(--dbb-charcoalSoft))',
-                    fontFamily: 'var(--font-body)' 
-                  }}
-                >
-                  Users and businesses who contribute content unlock featured placement, promotions, and rewards.
-                </p>
-                <Link href="/my-beauty-book">
-                  <Button 
-                    className="mt-4 rounded-full px-6 py-2 text-sm font-semibold hover:opacity-90 transition"
-                    style={{
-                      backgroundColor: 'hsl(var(--dbb-roseSoft))',
-                      color: 'hsl(var(--dbb-charcoal))'
-                    }}
-                    data-testid="button-start-beauty-book"
-                  >
-                    Start Your Beauty Book <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Right: decorative image */}
-              <div className="w-full md:w-64 h-32 md:h-40 rounded-2xl overflow-hidden"
-                   style={{ backgroundColor: 'hsl(var(--dbb-sand))' }}>
-                <img
-                  src="/images/dallasbeautybook/quiz-notebook-brush.jpg"
-                  alt="Notebook and beauty tools arranged on a neutral background"
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </DbbContainer>
-        </section>
-
-        {/* Browse by Category - Visual Tiles */}
-        <section className="mt-16 md:mt-24" data-testid="section-browse-categories">
-          <DbbContainer className="max-w-6xl mx-auto">
-            <h2 
-              className="text-3xl md:text-4xl mb-8 text-dbb-charcoal text-center"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Browse by Category
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {allCategories.slice(0, 4).map((category) => (
-                <Link key={category.name} href={category.link}>
-                  <div 
-                    className="group hover-elevate active-elevate-2 cursor-pointer overflow-hidden rounded-2xl"
-                    data-testid={`tile-category-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    <div className="aspect-square relative overflow-hidden">
-                      <img 
-                        src={category.image} 
-                        alt={category.name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-4">
-                        <h3 
-                          className="text-white text-lg md:text-xl font-medium"
-                          style={{ fontFamily: 'var(--font-subheading)' }}
-                        >
-                          {category.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="mt-6 text-center">
-              <Link href="/explore">
-                <Button
-                  variant="ghost"
-                  className="text-sm font-semibold underline underline-offset-4"
-                  data-testid="button-view-all-categories"
-                >
-                  View all categories <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </DbbContainer>
-        </section>
-
-        {/* Featured Businesses */}
-        <section className="mt-16 md:mt-24" data-testid="section-featured-businesses">
-          <DbbContainer className="max-w-6xl mx-auto">
-            <h2 
-              className="text-3xl md:text-4xl mb-8 text-dbb-charcoal"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Featured Businesses
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {allBusinesses.slice(0, 4).map((business) => (
-                <BusinessCard 
-                  key={business.id} 
-                  business={business}
-                  onClick={() => setLocation(`/business/${business.id}`)}
-                />
-              ))}
-            </div>
-            <div className="mt-6 text-center">
-              <Link href="/explore">
-                <Button
-                  variant="ghost"
-                  className="text-sm font-semibold underline underline-offset-4"
-                  data-testid="button-view-all-businesses"
-                >
-                  View all businesses <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </DbbContainer>
-        </section>
-
         {/* Beauty Stories & Guides / Community */}
         <section className="mt-16 md:mt-24" data-testid="section-community-stories">
           <DbbContainer className="max-w-6xl mx-auto">
@@ -490,70 +464,6 @@ export default function Home() {
               }}>
                 Submitting content helps you unlock featured placement, rewards, and special offers — while helping the community grow.
               </p>
-            </div>
-          </DbbContainer>
-        </section>
-
-        {/* Platform Value Teaser */}
-        <section className="mt-16 md:mt-24" data-testid="section-value-teaser">
-          <DbbContainer className="max-w-5xl mx-auto">
-            <div 
-              className="rounded-2xl border px-6 py-5 text-center"
-              style={{ 
-                borderColor: 'hsl(var(--dbb-sand))',
-                backgroundColor: 'hsl(var(--dbb-surface))',
-                color: 'hsl(var(--dbb-charcoalSoft))'
-              }}
-            >
-              <p 
-                className="text-xs uppercase tracking-[0.25em] mb-2"
-                style={{ color: 'hsl(var(--dbb-rose))' }}
-              >
-                Data Engine
-              </p>
-              <p className="text-sm md:text-base max-w-3xl mx-auto" style={{ fontFamily: 'var(--font-body)' }}>
-                As the platform grows, anonymized insights will help businesses understand what DFW beauty clients are looking for — turning data into meaningful opportunities.
-              </p>
-            </div>
-          </DbbContainer>
-        </section>
-
-        {/* For Professionals Callout */}
-        <section className="mt-16 md:mt-24" data-testid="section-professionals-callout">
-          <DbbContainer className="max-w-6xl mx-auto">
-            <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center">
-              <div>
-                <h2 
-                  className="text-3xl md:text-4xl mb-6 text-dbb-charcoal"
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  Grow Your Beauty Business with DallasBeautyBook
-                </h2>
-                <p 
-                  className="text-lg text-dbb-charcoalSoft mb-6"
-                  style={{ fontFamily: 'var(--font-body)' }}
-                >
-                  Claim your listing, get discovered inside personalized Dallas Beauty Books, share your expertise, and turn local beauty seekers into loyal clients.
-                </p>
-                <Link href="/for-professionals">
-                  <Button 
-                    size="lg"
-                    className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8"
-                    data-testid="button-learn-more-professionals"
-                  >
-                    Learn More
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </Link>
-              </div>
-              <div className="relative h-52 md:h-64">
-                <img
-                  src="/images/dallasbeautybook/pro-dashboard-abstract.jpg"
-                  alt="Abstract representation of beauty business analytics and growth tools"
-                  className="h-full w-full rounded-3xl object-cover"
-                  loading="lazy"
-                />
-              </div>
             </div>
           </DbbContainer>
         </section>
