@@ -159,6 +159,19 @@ export default function Home() {
                     Promote my beauty business
                   </button>
                 </Link>
+                <Link href="/my-beauty-book">
+                  <button 
+                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
+                    style={{ 
+                      backgroundColor: 'hsl(var(--dbb-surface))',
+                      border: '1px solid hsl(var(--dbb-sand))',
+                      color: 'hsl(var(--dbb-charcoalSoft))'
+                    }}
+                    data-testid="button-cta-community"
+                  >
+                    Add to community
+                  </button>
+                </Link>
               </div>
             </div>
           </DbbContainer>
