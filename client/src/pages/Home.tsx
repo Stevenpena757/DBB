@@ -123,7 +123,7 @@ export default function Home() {
                   color: 'hsl(25, 7%, 28%)',
                   fontFamily: 'var(--font-body)'
                 }}>
-                  Submit content and unlock featured placement, rewards, and special offers
+                  Create your profile to start submitting content and unlock featured placement, rewards, and special offers
                 </p>
               </div>
               
@@ -152,7 +152,7 @@ export default function Home() {
               </div>
               
               <div className="text-center">
-                <Link href="/submit-content">
+                <Link href="/profile">
                   <Button 
                     size="lg"
                     className="rounded-full px-8 font-semibold shadow-md"
@@ -162,7 +162,7 @@ export default function Home() {
                     }}
                     data-testid="button-submit-content-home"
                   >
-                    Start Sharing Content
+                    Create Profile to Start
                   </Button>
                 </Link>
               </div>

@@ -106,7 +106,7 @@ export default function ForProfessionalsPage() {
                   color: 'hsl(25, 7%, 28%)',
                   fontFamily: 'var(--font-body)'
                 }}>
-                  Submit content and unlock featured placement, rewards, and special offers
+                  Claim your business listing to start submitting content and unlock featured placement, rewards, and special offers
                 </p>
               </div>
               
@@ -135,7 +135,7 @@ export default function ForProfessionalsPage() {
               </div>
               
               <div className="text-center">
-                <Link href="/submit-content">
+                <Link href="/claim-listing">
                   <Button 
                     size="lg"
                     className="rounded-full px-8 font-semibold shadow-md"
@@ -145,11 +145,11 @@ export default function ForProfessionalsPage() {
                     }}
                     data-testid="button-submit-content-professionals"
                   >
-                    Start Sharing Content
+                    Claim Your Listing to Start
                   </Button>
                 </Link>
                 <p className="mt-4 text-sm" style={{ color: 'hsl(25, 5%, 48%)' }}>
-                  Help DFW discover your business while unlocking premium benefits
+                  First claim your listing, then submit articles and guides to help DFW discover your business
                 </p>
               </div>
             </div>

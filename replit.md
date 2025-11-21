@@ -136,15 +136,21 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 - **Transformed simple text banners into prominent, eye-catching sections** to encourage content submission for SEO and engagement
 - **Homepage Banner:**
   - Large heading "🌟 Unlock Exclusive Benefits" with forest green color
+  - Subtitle: "Create your profile to start submitting content and unlock featured placement, rewards, and special offers"
   - Three benefit cards: Featured Placement (🏆), Exclusive Rewards (🎁), Priority Offers (💫)
-  - Prominent "Start Sharing Content" CTA button in forest green
+  - CTA button "Create Profile to Start" routes to `/profile`
 - **For Professionals Banner:**
   - Tailored heading "🌟 Unlock Business Growth Benefits"
+  - Subtitle: "Claim your business listing to start submitting content and unlock featured placement, rewards, and special offers"
   - Business-specific benefits: Featured Placement (🏆), Promotional Discounts (🎁), SEO Boost (📈)
-  - Additional footer text: "Help DFW discover your business while unlocking premium benefits"
+  - CTA button "Claim Your Listing to Start" routes to `/claim-listing`
+  - Footer text: "First claim your listing, then submit articles and guides to help DFW discover your business"
 - **Visual Design:** Forest green 2px border, gradient background, large emojis (text-3xl), shadow effects, responsive 3-column grid
 - **Implementation:** Uses inline HSL values for consistent cross-browser rendering
 - **Locations:** Homepage CTA section, For Professionals page after data insights section
+- **User Flow:** 
+  - Regular users: Homepage → Profile Creation → Content Submission
+  - Business users: For Professionals → Claim Listing → Content Submission
 
 ## Email Verification Note
 
