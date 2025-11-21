@@ -85,10 +85,18 @@ export default function Home() {
                 >
                   🌟 Unlock Exclusive Benefits
                 </h3>
-                <p className="text-xs" style={{ 
-                  color: 'hsl(25, 5%, 48%)',
-                  fontFamily: 'var(--font-body)'
-                }}>
+                <p 
+                  className="text-xs md:text-sm font-semibold animate-pulse"
+                  style={{ 
+                    background: 'linear-gradient(90deg, hsl(158, 25%, 30%) 0%, hsl(25, 7%, 28%) 50%, hsl(158, 25%, 30%) 100%)',
+                    backgroundSize: '200% auto',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    animation: 'gradient-shift 3s ease infinite',
+                    fontFamily: 'var(--font-body)'
+                  }}
+                >
                   Create your profile to start submitting content and unlock featured placement, rewards, and special offers
                 </p>
               </div>
