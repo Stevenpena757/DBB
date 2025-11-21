@@ -70,9 +70,6 @@ export default function Home() {
         <section 
           className="py-4 md:py-5" 
           style={{ 
-            border: '2px solid hsl(158, 25%, 30%)',
-            borderLeft: 'none',
-            borderRight: 'none',
             background: 'linear-gradient(135deg, hsl(32, 67%, 99%) 0%, hsl(32, 35%, 91%) 100%)'
           }}
         >
