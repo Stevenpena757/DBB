@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { BusinessCard } from "@/components/BusinessCard";
 import type { Business, ForumPost } from "@shared/schema";
 import { Search, MessageCircle, ArrowRight, Leaf, Sparkles } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 // Import category images
 import hairSalonImg from "@assets/generated_images/Hair_Salon_category_image_4120201b.png";
@@ -23,6 +24,7 @@ import medicalAestheticsImg from "@assets/generated_images/Medical_Aesthetics_ca
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [, setLocation] = useLocation();
+  const { isAuthenticated } = useAuth();
 
   const { data: allBusinesses = [] } = useQuery<Business[]>({
     queryKey: ['/api/businesses'],
@@ -152,19 +154,35 @@ export default function Home() {
               </div>
               
               <div className="text-center">
-                <Link href="/profile">
-                  <Button 
-                    size="lg"
-                    className="rounded-full px-8 font-semibold shadow-md"
-                    style={{
-                      backgroundColor: 'hsl(158, 25%, 30%)',
-                      color: 'white'
-                    }}
-                    data-testid="button-submit-content-home"
-                  >
-                    Create Profile to Start
-                  </Button>
-                </Link>
+                {isAuthenticated ? (
+                  <Link href="/profile">
+                    <Button 
+                      size="lg"
+                      className="rounded-full px-8 font-semibold shadow-md"
+                      style={{
+                        backgroundColor: 'hsl(158, 25%, 30%)',
+                        color: 'white'
+                      }}
+                      data-testid="button-submit-content-home"
+                    >
+                      Create Profile to Start
+                    </Button>
+                  </Link>
+                ) : (
+                  <a href="/api/login">
+                    <Button 
+                      size="lg"
+                      className="rounded-full px-8 font-semibold shadow-md"
+                      style={{
+                        backgroundColor: 'hsl(158, 25%, 30%)',
+                        color: 'white'
+                      }}
+                      data-testid="button-submit-content-home"
+                    >
+                      Create Profile to Start
+                    </Button>
+                  </a>
+                )}
               </div>
             </div>
           </DbbContainer>
