@@ -101,17 +101,71 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Content Submission Incentive */}
-            <div className="mt-6 p-4 rounded-lg border" style={{ 
-              borderColor: 'hsl(var(--dbb-sand))',
-              backgroundColor: 'hsl(var(--dbb-beigeSoft))'
-            }}>
-              <p className="text-sm text-center" style={{ 
-                color: 'hsl(var(--dbb-charcoalSoft))',
-                fontFamily: 'var(--font-body)'
-              }}>
-                Submitting content helps you unlock featured placement, rewards, and special offers — while helping the community grow.
-              </p>
+            {/* Content Submission Incentive - Enhanced */}
+            <div 
+              className="mt-8 p-6 md:p-8 rounded-xl shadow-lg" 
+              style={{ 
+                border: '2px solid hsl(158, 25%, 30%)',
+                background: 'linear-gradient(135deg, hsl(32, 67%, 99%) 0%, hsl(32, 35%, 91%) 100%)'
+              }}
+            >
+              <div className="text-center mb-6">
+                <h3 
+                  className="text-xl md:text-2xl font-bold mb-3"
+                  style={{ 
+                    color: 'hsl(158, 25%, 30%)',
+                    fontFamily: 'var(--font-heading)'
+                  }}
+                >
+                  🌟 Unlock Exclusive Benefits
+                </h3>
+                <p className="text-base md:text-lg font-semibold" style={{ 
+                  color: 'hsl(25, 7%, 28%)',
+                  fontFamily: 'var(--font-body)'
+                }}>
+                  Submit content and unlock featured placement, rewards, and special offers
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'hsl(32, 67%, 99%)' }}>
+                  <div className="text-3xl">🏆</div>
+                  <div>
+                    <p className="font-semibold text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Featured Placement</p>
+                    <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>Top visibility</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'hsl(32, 67%, 99%)' }}>
+                  <div className="text-3xl">🎁</div>
+                  <div>
+                    <p className="font-semibold text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Exclusive Rewards</p>
+                    <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>Special perks</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'hsl(32, 67%, 99%)' }}>
+                  <div className="text-3xl">💫</div>
+                  <div>
+                    <p className="font-semibold text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Priority Offers</p>
+                    <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>First access</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-center">
+                <Link href="/submit-content">
+                  <Button 
+                    size="lg"
+                    className="rounded-full px-8 font-semibold shadow-md"
+                    style={{
+                      backgroundColor: 'hsl(158, 25%, 30%)',
+                      color: 'white'
+                    }}
+                    data-testid="button-submit-content-home"
+                  >
+                    Start Sharing Content
+                  </Button>
+                </Link>
+              </div>
             </div>
           </DbbContainer>
         </section>
