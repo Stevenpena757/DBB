@@ -100,6 +100,19 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+            
+            {/* Content Submission Incentive */}
+            <div className="mt-6 p-4 rounded-lg border" style={{ 
+              borderColor: 'hsl(var(--dbb-sand))',
+              backgroundColor: 'hsl(var(--dbb-beigeSoft))'
+            }}>
+              <p className="text-sm text-center" style={{ 
+                color: 'hsl(var(--dbb-charcoalSoft))',
+                fontFamily: 'var(--font-body)'
+              }}>
+                Submitting content helps you unlock featured placement, rewards, and special offers — while helping the community grow.
+              </p>
+            </div>
           </DbbContainer>
         </section>
 
@@ -451,19 +464,6 @@ export default function Home() {
                   Visit the Community <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-            </div>
-
-            {/* Content Submission Incentive */}
-            <div className="mt-8 p-4 rounded-lg border" style={{ 
-              borderColor: 'hsl(var(--dbb-sand))',
-              backgroundColor: 'hsl(var(--dbb-beigeSoft))'
-            }}>
-              <p className="text-sm text-center" style={{ 
-                color: 'hsl(var(--dbb-charcoalSoft))',
-                fontFamily: 'var(--font-body)'
-              }}>
-                Submitting content helps you unlock featured placement, rewards, and special offers — while helping the community grow.
-              </p>
             </div>
           </DbbContainer>
         </section>
