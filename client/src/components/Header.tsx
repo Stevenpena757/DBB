@@ -109,7 +109,11 @@ export function Header() {
 
           {isAuthenticated && (
             <>
-              <Link href={user?.claimedBusinesses?.[0] ? `/business/${user.claimedBusinesses[0].id}` : "/submit-content"} className="hidden md:block" title="Share content and grow your business for FREE">
+              <Link 
+                href={user?.claimedBusinesses?.[0] ? "/submit-content" : "/claim-listing"} 
+                className="hidden md:block" 
+                title={user?.claimedBusinesses?.[0] ? "Share content and grow your business" : "Claim your business to start sharing content"}
+              >
                 <Button variant="default" size="sm" data-testid="button-submit-content" className="bg-dbb-forest hover:bg-dbb-forest/90 text-white">
                   Share & Get Noticed
                 </Button>
