@@ -167,7 +167,34 @@ export default function Home() {
         {/* Featured Businesses & For Professionals */}
         <section className="mt-16 md:mt-24" data-testid="section-featured-businesses">
           <DbbContainer className="max-w-6xl mx-auto">
-            <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center mb-12">
+            <h3 
+              className="text-2xl md:text-3xl mb-8 text-dbb-charcoal"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Featured Businesses
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {allBusinesses.slice(0, 4).map((business) => (
+                <BusinessCard 
+                  key={business.id} 
+                  business={business}
+                  onClick={() => setLocation(`/business/${business.id}`)}
+                />
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <Link href="/explore">
+                <Button
+                  variant="ghost"
+                  className="text-sm font-semibold underline underline-offset-4"
+                  data-testid="button-view-all-businesses"
+                >
+                  View all businesses <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-center mt-16">
               <div>
                 <h2 
                   className="text-3xl md:text-4xl mb-6 text-dbb-charcoal"
@@ -200,33 +227,6 @@ export default function Home() {
                   loading="lazy"
                 />
               </div>
-            </div>
-
-            <h3 
-              className="text-2xl md:text-3xl mb-8 text-dbb-charcoal"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Featured Businesses
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {allBusinesses.slice(0, 4).map((business) => (
-                <BusinessCard 
-                  key={business.id} 
-                  business={business}
-                  onClick={() => setLocation(`/business/${business.id}`)}
-                />
-              ))}
-            </div>
-            <div className="mt-6 text-center">
-              <Link href="/explore">
-                <Button
-                  variant="ghost"
-                  className="text-sm font-semibold underline underline-offset-4"
-                  data-testid="button-view-all-businesses"
-                >
-                  View all businesses <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
             </div>
           </DbbContainer>
         </section>
