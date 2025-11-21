@@ -74,7 +74,7 @@ export function WelcomeModal() {
           </DialogHeader>
 
           <div className="mt-8 space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
               <Button
                 size="lg"
                 onClick={handleExplore}
@@ -83,7 +83,7 @@ export function WelcomeModal() {
                 data-testid="button-modal-explore"
               >
                 <Search className="h-5 w-5 mr-2" />
-                I'm exploring services
+                I'm looking for beauty services
               </Button>
 
               <Button
@@ -95,7 +95,7 @@ export function WelcomeModal() {
                 data-testid="button-modal-business"
               >
                 <MessageCircle className="h-5 w-5 mr-2" />
-                I run a beauty business
+                I run or manage a beauty business
               </Button>
             </div>
 
@@ -106,7 +106,7 @@ export function WelcomeModal() {
                 style={{ fontFamily: 'var(--font-body)' }}
                 data-testid="button-modal-close"
               >
-                Continue to homepage
+                Just browse for now
               </button>
             </div>
           </div>

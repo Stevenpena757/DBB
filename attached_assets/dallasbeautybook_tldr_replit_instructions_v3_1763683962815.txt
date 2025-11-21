@@ -1,0 +1,268 @@
+DALLASBEAUTYBOOK — TLDR REPLIT AGENT IMPLEMENTATION INSTRUCTIONS (V3 – GUIDED FLOWS)
+======================================================================================
+GOAL
+----
+Optimize DallasBeautyBook to clearly guide:
+- USERS (locals) → to “Create Your Beauty Book” and “Explore Businesses”
+- BUSINESSES (pros) → to “Claim Your Business” and “For Professionals”
+
+Emphasize monetization levers in the UX:
+- Businesses claiming their listings
+- Users & businesses submitting content
+- Data/insights as a future value-add
+
+IMPORTANT: Keep all existing design, visual style, and functionality.
+Only change copy, layout of sections on the homepage, and add small, simple blocks.
+
+
+SECTION 0 — SAFETY RULES (DO NOT BREAK)
+---------------------------------------
+1. Do NOT:
+   - Remove or rename existing pages, components, routes, or backend endpoints.
+   - Modify database schemas or authentication logic.
+   - Change Tailwind config, design tokens, or global styles (global.css / index.css).
+   - Move/rename React component files or imports.
+
+2. You MAY:
+   - Replace text inside existing components.
+   - Add new sections using existing layout patterns.
+   - Reorder sections on the homepage.
+   - Limit number of cards rendered in a section.
+   - Add small text blocks or CTA rows.
+
+3. Maintain existing mobile-first behavior & breakpoints.
+
+
+SECTION A — HOMEPAGE: CLEAR 2-PERSONA “START HERE”
+--------------------------------------------------
+File: client/src/pages/Home.tsx (or equivalent homepage component)
+
+A1. ADD “I’M HERE FOR…” CTA STRIP UNDER HERO
+--------------------------------------------
+Directly UNDER the hero section, add a slim strip with two big pill buttons:
+
+<section className="mt-6 md:mt-8">
+  <div className="max-w-5xl mx-auto px-4 flex flex-col md:flex-row gap-3 md:gap-4 md:items-center">
+    <p className="text-sm font-medium text-[var(--dbb-charcoalSoft)]">
+      I’m here to:
+    </p>
+    <div className="flex flex-wrap gap-2">
+      <a
+        href="/my-beauty-book"
+        className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold bg-[var(--dbb-roseSoft)] text-[var(--dbb-charcoal)] hover:opacity-90 transition"
+      >
+        Discover beauty services
+      </a>
+      <a
+        href="/for-professionals"
+        className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold bg-[var(--dbb-surface)] border border-[var(--dbb-sand)] text-[var(--dbb-charcoalSoft)] hover:bg-[var(--dbb-sandSoft)] transition"
+      >
+        Promote my beauty business
+      </a>
+    </div>
+  </div>
+</section>
+
+A2. HERO TEXT — KEEP SHORT & CLEAR
+----------------------------------
+Heading (keep current style, just ensure language is short):
+
+“Where DFW Beauty Meets Community”
+
+Paragraph (only 1 sentence):
+
+“Discover local beauty pros, create your Dallas Beauty Book, and unlock personalized offers and insights across Dallas–Fort Worth.”
+
+A3. ADD “START HERE” SPLIT SECTION (FOR LOCALS VS PROS)
+--------------------------------------------------------
+Place this BELOW the “How it works” section and ABOVE the Beauty Book highlight or Explore.
+
+<section className="mt-16 md:mt-24">
+  <div className="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* For locals */}
+    <div className="rounded-2xl border border-[var(--dbb-sand)] bg-[var(--dbb-surface)] px-5 py-6">
+      <p className="text-xs uppercase tracking-[0.25em] text-[var(--dbb-rose)] mb-2">
+        For locals
+      </p>
+      <h2 className="font-heading text-xl md:text-2xl mb-3">
+        Start your Dallas beauty journey
+      </h2>
+      <ol className="text-sm text-[var(--dbb-charcoalSoft)] space-y-2 mb-4">
+        <li>1. Create your Dallas Beauty Book for personalized ideas.</li>
+        <li>2. Explore businesses by category and city.</li>
+        <li>3. Save favorites and join the community conversations.</li>
+      </ol>
+      <a
+        href="/my-beauty-book"
+        className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold bg-[var(--dbb-roseSoft)] text-[var(--dbb-charcoal)] hover:opacity-90 transition"
+      >
+        Create Your Beauty Book →
+      </a>
+    </div>
+
+    {/* For pros */}
+    <div className="rounded-2xl border border-[var(--dbb-sand)] bg-[var(--dbb-surface)] px-5 py-6">
+      <p className="text-xs uppercase tracking-[0.25em] text-[var(--dbb-rose)] mb-2">
+        For beauty professionals
+      </p>
+      <h2 className="font-heading text-xl md:text-2xl mb-3">
+        Get in front of DFW beauty seekers
+      </h2>
+      <ol className="text-sm text-[var(--dbb-charcoalSoft)] space-y-2 mb-4">
+        <li>1. Find or submit your business listing.</li>
+        <li>2. Claim your page and update your services.</li>
+        <li>3. Share content to unlock featured placement and promotions.</li>
+      </ol>
+      <a
+        href="/for-professionals"
+        className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold bg-[var(--dbb-surface)] border border-[var(--dbb-sand)] text-[var(--dbb-charcoal)] hover:bg-[var(--dbb-sandSoft)] transition"
+      >
+        For Professionals →
+      </a>
+    </div>
+  </div>
+</section>
+
+A4. KEEP “HOW IT WORKS” BUT MAKE EACH STEP 1 LINE
+-------------------------------------------------
+Ensure each step in the “How it works” section is ONE LINE only (no long paragraphs):
+
+1. “Answer a few questions to create your Beauty Book.”  
+2. “We match you with DFW beauty pros and categories.”  
+3. “Explore, save, and join the community.”
+
+No extra text.
+
+
+SECTION B — WELCOME MODAL: USE IT AS A CHOICE GATE
+--------------------------------------------------
+File: client/src/components/WelcomeModal.tsx (or equivalent)
+
+B1. SHORTEN TITLE & BODY
+------------------------
+Title:
+“Welcome to DallasBeautyBook”
+
+Paragraph:
+“A DFW hub for beauty, wellness, and aesthetics. Choose how you’d like to start.”
+
+B2. TWO MAIN CHOICES
+--------------------
+Inside the modal, present:
+
+- Button 1: “I’m looking for beauty services”  
+  - Action: close modal, navigate to /my-beauty-book
+
+- Button 2: “I run or manage a beauty business”  
+  - Action: close modal, navigate to /for-professionals
+
+Small tertiary link:
+- “Just browse for now” → close modal, stay on homepage.
+
+Keep existing logic for when the modal appears; only update UI and text.
+
+
+SECTION C — FOR PROFESSIONALS PAGE: CLEAR BUSINESS VALUE
+--------------------------------------------------------
+File: client/src/pages/ForProfessionalsPage.tsx
+
+C1. HERO PARAGRAPH
+------------------
+Use a single clear paragraph:
+
+“DallasBeautyBook connects your beauty business with local clients across DFW. Claim your listing, share your expertise, and unlock visibility, leads, and future insights.”
+
+C2. SHORT 3-STEP FLOW
+---------------------
+Ensure the steps read:
+
+1. **Claim your business** – Verify your listing or submit a new one.  
+2. **Get discovered in Beauty Books** – Be recommended when locals share their goals and location.  
+3. **Share content & unlock promotions** – Post tips and updates to earn more visibility and rewards.
+
+C3. BENEFITS LIST
+-----------------
+Present benefits as short bullets:
+
+- **More Visibility in DFW** – Show up where beauty seekers are browsing.  
+- **Better Matching** – Appear in personalized Beauty Books.  
+- **Featured Listings & Campaigns** – Eligible for spotlights and paid promotions.  
+- **Future Data & Insights** – Anonymized trends about what locals are exploring.
+
+C4. CLAIM + INCENTIVE LINE
+--------------------------
+Under the main Claim CTA, add a line:
+
+“Businesses that claim and contribute content receive increased visibility, priority placement, and access to future promotional discounts.”
+
+
+SECTION D — CONTENT & REWARDS: MAKE INCENTIVE EXPLICIT
+------------------------------------------------------
+D1. HOMEPAGE COMMUNITY PREVIEW
+------------------------------
+Under the Community/Forum preview on Home, add a one-line message:
+
+“Every post, tip, and story helps the community—and can unlock rewards like features, shout-outs, and special offers.”
+
+D2. SUBMIT/CREATE CONTENT PAGE
+------------------------------
+At the top of any “create post” or “submit content” page, ensure intro is:
+
+“Share your expertise and experience with the DFW beauty community. Contributors are eligible for spotlights, featured placements, and future rewards.”
+
+No backend changes required; this is forward-looking messaging.
+
+
+SECTION E — DATA & INSIGHTS (SHORT + FUTURE-FOCUSED)
+----------------------------------------------------
+Wherever “data” or “insights” are discussed (Home / For Professionals), keep it to ONE short paragraph:
+
+“As DallasBeautyBook grows, anonymized insights will help you understand what DFW beauty clients are searching for—turning data into better decisions and new opportunities.”
+
+Remove or replace any longer “data platform” paragraphs with this.
+
+
+SECTION F — HOMEPAGE DENSITY & LIMITS
+--------------------------------------
+F1. LIMIT CARDS PER SECTION
+---------------------------
+For each of these homepage sections:
+- Featured / latest businesses
+- Community / forum preview
+- Articles / guides preview
+
+Use `.slice(0, 4)` for the displayed list in JSX and include a “View all →” link to the full page.
+
+F2. SECTION ORDER (RECOMMENDED)
+-------------------------------
+Homepage sections should appear in this order (top to bottom):
+
+1. Hero
+2. “I’m here to:” CTA strip (A1)
+3. “How it works” (shortened)  
+4. “Start here: For locals / For pros” split section (A3)
+5. Beauty Book highlight card
+6. Explore / Directory preview
+7. Community / Stories preview
+8. For Professionals teaser or link
+
+Do NOT remove sections; only reorder as necessary.
+
+
+SECTION G — FINAL CHECKLIST
+---------------------------
+[ ] Homepage clearly shows two main paths (“Discover beauty services” and “Promote my beauty business”).  
+[ ] Hero paragraph is a single, clear sentence.  
+[ ] “How it works” steps are one-line descriptions.  
+[ ] “Start here” split section for locals vs pros is present and readable on mobile.  
+[ ] Welcome modal offers two main choices plus a “browse” option.  
+[ ] For Professionals page clearly states value in short copy and shows a simple 3-step path.  
+[ ] Incentives for content (rewards, features, promos) are mentioned on Home and content/Pro pages.  
+[ ] Data/insights messaging is one short paragraph only.  
+[ ] Homepage card grids are limited to 4 items with “View all” links.  
+[ ] No backend, routes, or DB schemas were changed.  
+[ ] No global styles, Tailwind config, or design tokens were edited.  
+[ ] No components/imports were renamed or moved.  
+[ ] Mobile layout remains clean and consistent with the current design.
+
+END OF FILE

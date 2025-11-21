@@ -64,40 +64,6 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
-        {/* How DallasBeautyBook Works */}
-        <section className="py-12 md:py-16" data-testid="section-how-it-works">
-          <DbbContainer className="max-w-5xl mx-auto">
-            <p 
-              className="text-xs uppercase tracking-[0.25em] mb-2"
-              style={{ color: 'hsl(var(--dbb-rose))' }}
-            >
-              How DallasBeautyBook Works
-            </p>
-            <h2 
-              className="text-2xl md:text-3xl mb-6 text-dbb-charcoal"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              Three simple steps to your Dallas beauty journey
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-base"
-                 style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Beauty Book</div>
-                <p>Answer a few questions for personalized results.</p>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover Local Pros</div>
-                <p>Explore Dallas–Fort Worth beauty and aesthetics providers.</p>
-              </div>
-              <div>
-                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the Community</div>
-                <p>Share content and unlock rewards and promotions.</p>
-              </div>
-            </div>
-          </DbbContainer>
-        </section>
-
         {/* Hero Section - Text Left, Image Right */}
         <section className="py-16 md:py-24" data-testid="section-hero">
           <DbbContainer className="max-w-6xl mx-auto">
@@ -109,13 +75,13 @@ export default function Home() {
                   style={{ fontFamily: 'var(--font-heading)' }}
                   data-testid="hero-heading"
                 >
-                  Dallas's Beauty, Aesthetics, and Wellness Connection
+                  Where DFW Beauty Meets Community
                 </h1>
                 <p 
                   className="text-lg md:text-xl mb-10 text-dbb-charcoalSoft"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
-                  Your DFW beauty & aesthetics connection. Discover local pros, create your Beauty Book, and unlock personalized offers and insights.
+                  Discover local beauty pros, create your Dallas Beauty Book, and unlock personalized offers and insights across Dallas–Fort Worth.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/my-beauty-book">
@@ -154,6 +120,154 @@ export default function Home() {
                   data-testid="hero-image"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgba(249,246,242,0.7)] via-transparent to-transparent" />
+              </div>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* I'm here to... CTA Strip */}
+        <section className="mt-6 md:mt-8" data-testid="section-cta-strip">
+          <DbbContainer className="max-w-5xl mx-auto">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-4 md:items-center">
+              <p className="text-sm font-medium" style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+                I'm here to:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Link href="/my-beauty-book">
+                  <button 
+                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold hover:opacity-90 transition"
+                    style={{ 
+                      backgroundColor: 'hsl(var(--dbb-roseSoft))',
+                      color: 'hsl(var(--dbb-charcoal))'
+                    }}
+                    data-testid="button-cta-discover"
+                  >
+                    Discover beauty services
+                  </button>
+                </Link>
+                <Link href="/for-professionals">
+                  <button 
+                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
+                    style={{ 
+                      backgroundColor: 'hsl(var(--dbb-surface))',
+                      border: '1px solid hsl(var(--dbb-sand))',
+                      color: 'hsl(var(--dbb-charcoalSoft))'
+                    }}
+                    data-testid="button-cta-promote"
+                  >
+                    Promote my beauty business
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* How DallasBeautyBook Works */}
+        <section className="py-12 md:py-16 mt-8" data-testid="section-how-it-works">
+          <DbbContainer className="max-w-5xl mx-auto">
+            <p 
+              className="text-xs uppercase tracking-[0.25em] mb-2"
+              style={{ color: 'hsl(var(--dbb-rose))' }}
+            >
+              How DallasBeautyBook Works
+            </p>
+            <h2 
+              className="text-2xl md:text-3xl mb-6 text-dbb-charcoal"
+              style={{ fontFamily: 'var(--font-heading)' }}
+            >
+              Three simple steps to your Dallas beauty journey
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm md:text-base"
+                 style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">1. Create Your Beauty Book</div>
+                <p>Answer a few questions to create your Beauty Book.</p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">2. Discover Local Pros</div>
+                <p>We match you with DFW beauty pros and categories.</p>
+              </div>
+              <div>
+                <div className="text-sm font-semibold mb-1 text-dbb-charcoal">3. Join the Community</div>
+                <p>Explore, save, and join the community.</p>
+              </div>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* Start Here: For Locals vs For Pros Split Section */}
+        <section className="mt-16 md:mt-24" data-testid="section-start-here">
+          <DbbContainer className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* For locals */}
+              <div className="rounded-2xl border px-5 py-6"
+                   style={{
+                     borderColor: 'hsl(var(--dbb-sand))',
+                     backgroundColor: 'hsl(var(--dbb-surface))'
+                   }}>
+                <p className="text-xs uppercase tracking-[0.25em] mb-2"
+                   style={{ color: 'hsl(var(--dbb-rose))' }}>
+                  For locals
+                </p>
+                <h2 className="text-xl md:text-2xl mb-3 text-dbb-charcoal"
+                    style={{ fontFamily: 'var(--font-heading)' }}>
+                  Start your Dallas beauty journey
+                </h2>
+                <ol className="text-sm mb-4 space-y-2"
+                    style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+                  <li>1. Create your Dallas Beauty Book for personalized ideas.</li>
+                  <li>2. Explore businesses by category and city.</li>
+                  <li>3. Save favorites and join the community conversations.</li>
+                </ol>
+                <Link href="/my-beauty-book">
+                  <button 
+                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold hover:opacity-90 transition"
+                    style={{ 
+                      backgroundColor: 'hsl(var(--dbb-roseSoft))',
+                      color: 'hsl(var(--dbb-charcoal))'
+                    }}
+                    data-testid="button-start-beauty-book-locals"
+                  >
+                    Create Your Beauty Book →
+                  </button>
+                </Link>
+              </div>
+
+              {/* For pros */}
+              <div className="rounded-2xl border px-5 py-6"
+                   style={{
+                     borderColor: 'hsl(var(--dbb-sand))',
+                     backgroundColor: 'hsl(var(--dbb-surface))'
+                   }}>
+                <p className="text-xs uppercase tracking-[0.25em] mb-2"
+                   style={{ color: 'hsl(var(--dbb-rose))' }}>
+                  For beauty professionals
+                </p>
+                <h2 className="text-xl md:text-2xl mb-3 text-dbb-charcoal"
+                    style={{ fontFamily: 'var(--font-heading)' }}>
+                  Get in front of DFW beauty seekers
+                </h2>
+                <ol className="text-sm mb-4 space-y-2"
+                    style={{ color: 'hsl(var(--dbb-charcoalSoft))' }}>
+                  <li>1. Find or submit your business listing.</li>
+                  <li>2. Claim your page and update your services.</li>
+                  <li>3. Share content to unlock featured placement and promotions.</li>
+                </ol>
+                <Link href="/for-professionals">
+                  <button 
+                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
+                    style={{ 
+                      backgroundColor: 'hsl(var(--dbb-surface))',
+                      border: '1px solid hsl(var(--dbb-sand))',
+                      color: 'hsl(var(--dbb-charcoal))'
+                    }}
+                    data-testid="button-for-professionals-split"
+                  >
+                    For Professionals →
+                  </button>
+                </Link>
               </div>
             </div>
           </DbbContainer>
