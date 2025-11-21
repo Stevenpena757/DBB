@@ -927,3 +927,28 @@ export const insertContentSubmissionSchema = createInsertSchema(contentSubmissio
   body: z.string().min(50, "Content must be at least 50 characters"),
 });
 export type InsertContentSubmission = z.infer<typeof insertContentSubmissionSchema>;
+
+// Newsletter signups for lead generation and email marketing
+export const newsletterSignups = pgTable("newsletter_signups", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  source: text("source"), // Where they signed up: "homepage", "for-professionals", etc
+  subscribed: boolean("subscribed").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  unsubscribedAt: timestamp("unsubscribed_at"),
+}, (table) => [
+  index("newsletter_signups_email_idx").on(table.email),
+  index("newsletter_signups_subscribed_idx").on(table.subscribed),
+]);
+
+export type NewsletterSignup = typeof newsletterSignups.$inferSelect;
+export const insertNewsletterSignupSchema = createInsertSchema(newsletterSignups).omit({
+  id: true,
+  subscribed: true,
+  createdAt: true,
+  unsubscribedAt: true,
+}).extend({
+  email: z.string().email("Valid email required"),
+  source: z.string().optional(),
+});
+export type InsertNewsletterSignup = z.infer<typeof insertNewsletterSignupSchema>;

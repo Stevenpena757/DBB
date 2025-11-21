@@ -1905,6 +1905,36 @@ ${forumUrls}
     }
   });
 
+  // ============ NEWSLETTER SIGNUPS ============
+  // Newsletter signup (public - no auth required)
+  app.post("/api/newsletter-signups", async (req, res) => {
+    try {
+      const { insertNewsletterSignupSchema } = await import("@shared/schema");
+      const validatedData = insertNewsletterSignupSchema.parse(req.body);
+      
+      const signup = await storage.createNewsletterSignup(validatedData);
+      res.json(signup);
+    } catch (error: any) {
+      console.error("Error creating newsletter signup:", error);
+      if (error.code === '23505') { // Duplicate email
+        return res.status(409).json({ error: "This email is already subscribed" });
+      }
+      res.status(400).json({ error: error.message || "Failed to subscribe" });
+    }
+  });
+
+  // Get all newsletter signups (admin only)
+  app.get("/api/newsletter-signups", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const subscribedOnly = req.query.subscribed === 'true';
+      const signups = await storage.getAllNewsletterSignups(subscribedOnly);
+      res.json(signups);
+    } catch (error) {
+      console.error("Error fetching newsletter signups:", error);
+      res.status(500).json({ error: "Failed to fetch newsletter signups" });
+    }
+  });
+
   // ============ STRIPE PAYMENTS ============
   // Webhook must be publicly accessible for Stripe's servers
   // Other routes need authentication and ownership validation

@@ -27,7 +27,8 @@ import {
   type BusinessReview, type InsertBusinessReview,
   type SubmissionEvent, type InsertSubmissionEvent,
   type VerificationRequest, type InsertVerificationRequest,
-  type ContentSubmission, type InsertContentSubmission
+  type ContentSubmission, type InsertContentSubmission,
+  type NewsletterSignup, type InsertNewsletterSignup
 } from "@shared/schema";
 
 export interface IStorage {
@@ -240,6 +241,10 @@ export interface IStorage {
   // Content Submissions
   createContentSubmission(content: InsertContentSubmission): Promise<ContentSubmission>;
   getUserContentSubmissions(userId: number): Promise<ContentSubmission[]>;
+  
+  // Newsletter Signups
+  createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup>;
+  getAllNewsletterSignups(subscribedOnly?: boolean): Promise<NewsletterSignup[]>;
 }
 
 export class MemStorage implements IStorage {

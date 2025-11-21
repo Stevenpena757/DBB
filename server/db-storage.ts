@@ -6,7 +6,7 @@ import {
   subscriptions, abuseReports, userBans, adminActivityLogs, securityEvents, aiModerationQueue,
   businessLeads, quizSubmissions, analyticsEvents, beautyBooks,
   userBusinessFollows, userGoals, userPromotions, businessReviews,
-  submissionEvents, verificationRequests, contentSubmissions,
+  submissionEvents, verificationRequests, contentSubmissions, newsletterSignups,
   type User, type InsertUser,
   type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
@@ -35,7 +35,8 @@ import {
   type BusinessReview, type InsertBusinessReview,
   type SubmissionEvent, type InsertSubmissionEvent,
   type VerificationRequest, type InsertVerificationRequest,
-  type ContentSubmission, type InsertContentSubmission
+  type ContentSubmission, type InsertContentSubmission,
+  type NewsletterSignup, type InsertNewsletterSignup
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -1264,5 +1265,23 @@ export class DbStorage implements IStorage {
       .from(contentSubmissions)
       .where(eq(contentSubmissions.userId, userId))
       .orderBy(desc(contentSubmissions.createdAt));
+  }
+
+  // ============ NEWSLETTER SIGNUPS ============
+  async createNewsletterSignup(signup: InsertNewsletterSignup): Promise<NewsletterSignup> {
+    const result = await db.insert(newsletterSignups).values(signup).returning();
+    return result[0];
+  }
+
+  async getAllNewsletterSignups(subscribedOnly?: boolean): Promise<NewsletterSignup[]> {
+    if (subscribedOnly) {
+      return db.select()
+        .from(newsletterSignups)
+        .where(eq(newsletterSignups.subscribed, true))
+        .orderBy(desc(newsletterSignups.createdAt));
+    }
+    return db.select()
+      .from(newsletterSignups)
+      .orderBy(desc(newsletterSignups.createdAt));
   }
 }

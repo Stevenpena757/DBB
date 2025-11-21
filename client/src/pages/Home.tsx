@@ -134,43 +134,24 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-2">
                 <Link href="/my-beauty-book">
-                  <button 
-                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
-                    style={{ 
-                      backgroundColor: 'hsl(var(--dbb-surface))',
-                      border: '1px solid hsl(var(--dbb-sand))',
-                      color: 'hsl(var(--dbb-charcoalSoft))'
-                    }}
+                  <Button 
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full bg-dbb-surface border-dbb-sand text-dbb-charcoalSoft font-semibold"
                     data-testid="button-cta-discover"
                   >
                     Discover beauty services
-                  </button>
+                  </Button>
                 </Link>
                 <Link href="/for-professionals">
-                  <button 
-                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
-                    style={{ 
-                      backgroundColor: 'hsl(var(--dbb-surface))',
-                      border: '1px solid hsl(var(--dbb-sand))',
-                      color: 'hsl(var(--dbb-charcoalSoft))'
-                    }}
+                  <Button 
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full bg-dbb-surface border-dbb-sand text-dbb-charcoalSoft font-semibold"
                     data-testid="button-cta-promote"
                   >
                     Promote my beauty business
-                  </button>
-                </Link>
-                <Link href="/my-beauty-book">
-                  <button 
-                    className="inline-flex items-center rounded-full px-4 py-2 text-sm font-semibold transition"
-                    style={{ 
-                      backgroundColor: 'hsl(var(--dbb-surface))',
-                      border: '1px solid hsl(var(--dbb-sand))',
-                      color: 'hsl(var(--dbb-charcoalSoft))'
-                    }}
-                    data-testid="button-cta-community"
-                  >
-                    Add to community
-                  </button>
+                  </Button>
                 </Link>
               </div>
             </div>
@@ -184,17 +165,26 @@ export default function Home() {
               {/* Left Column: Text Content */}
               <div className="text-center md:text-left">
                 <h1 
-                  className="text-4xl md:text-5xl lg:text-6xl mb-6 text-dbb-charcoal leading-tight"
+                  className="text-4xl md:text-5xl lg:text-6xl mb-4 text-dbb-charcoal leading-tight"
                   style={{ fontFamily: 'var(--font-heading)' }}
                   data-testid="hero-heading"
                 >
-                  Where DFW Beauty Meets Community
+                  Create Your Dallas Beauty Book
                 </h1>
                 <p 
-                  className="text-lg md:text-xl mb-10 text-dbb-charcoalSoft"
+                  className="text-xl md:text-2xl mb-6 font-medium"
+                  style={{ 
+                    fontFamily: 'var(--font-body)',
+                    color: 'hsl(158, 25%, 30%)'
+                  }}
+                >
+                  Answer a few quick questions and we'll build your personal DFW beauty guide.
+                </p>
+                <p 
+                  className="text-base md:text-lg mb-8 text-dbb-charcoalSoft"
                   style={{ fontFamily: 'var(--font-body)' }}
                 >
-                  Discover local beauty pros, create your Dallas Beauty Book, and unlock personalized offers and insights across Dallas–Fort Worth.
+                  Discover local beauty pros matched to your preferences, unlock personalized offers, and connect with the DFW beauty community.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/my-beauty-book">
@@ -204,16 +194,17 @@ export default function Home() {
                       data-testid="button-create-beauty-book"
                     >
                       <Sparkles className="mr-2 h-5 w-5" />
-                      Create Your Dallas Beauty Book
+                      Get Started - It's Free
                     </Button>
                   </Link>
                   <Link href="/explore">
                     <Button 
                       size="lg" 
-                      className="rounded-full px-8 bg-[#e8c5b5] hover:bg-[#e8c5b5]/90 text-[#2d3433] border-0"
+                      variant="outline"
+                      className="rounded-full px-8"
                       data-testid="button-explore-businesses"
                     >
-                      Explore Businesses
+                      Browse Businesses
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </Link>
@@ -597,6 +588,80 @@ export default function Home() {
                   </Link>
                 </div>
               </DbbCard>
+            </div>
+          </DbbContainer>
+        </section>
+
+        {/* Email Capture - Stay in the Loop */}
+        <section className="py-16 md:py-20" data-testid="section-email-capture">
+          <DbbContainer className="max-w-2xl mx-auto">
+            <div className="text-center">
+              <h2 
+                className="text-3xl md:text-4xl mb-4 text-dbb-charcoal"
+                style={{ fontFamily: 'var(--font-heading)' }}
+              >
+                Stay in the Loop
+              </h2>
+              <p 
+                className="text-base md:text-lg text-dbb-charcoalSoft mb-8"
+                style={{ fontFamily: 'var(--font-body)' }}
+              >
+                Get curated DFW beauty picks, new pros, and exclusive local offers as DallasBeautyBook grows.
+              </p>
+              
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const email = formData.get('email') as string;
+                  
+                  fetch('/api/newsletter-signups', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'homepage' }),
+                    credentials: 'include'
+                  })
+                    .then(res => res.json())
+                    .then(() => {
+                      (e.target as HTMLFormElement).reset();
+                      alert('Thanks for subscribing! We\'ll keep you updated on DFW beauty.');
+                    })
+                    .catch(() => {
+                      alert('Something went wrong. Please try again.');
+                    });
+                }}
+                className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+              >
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 px-4 py-3 rounded-full text-base"
+                  style={{
+                    backgroundColor: 'hsl(var(--dbb-surface))',
+                    border: '1px solid hsl(var(--dbb-sand))',
+                    color: 'hsl(var(--dbb-charcoal))'
+                  }}
+                  data-testid="input-email-newsletter"
+                />
+                <Button 
+                  type="submit"
+                  size="lg"
+                  className="rounded-full px-8 whitespace-nowrap"
+                  style={{
+                    backgroundColor: 'hsl(158, 25%, 30%)',
+                    color: 'white'
+                  }}
+                  data-testid="button-subscribe-newsletter"
+                >
+                  Join the List
+                </Button>
+              </form>
+
+              <p className="mt-4 text-xs text-dbb-charcoalSoft">
+                We respect your privacy. Unsubscribe anytime.
+              </p>
             </div>
           </DbbContainer>
         </section>

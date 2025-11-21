@@ -232,6 +232,56 @@ export default function BusinessProfile() {
               className="w-full h-full object-cover"
             />
           </div>
+
+          {/* Claim This Business Banner - Prominent CTA */}
+          {!business.isClaimed && (
+            <Card 
+              className="mb-6 overflow-hidden border-2 border-dbb-forest"
+              data-testid="claim-business-banner"
+            >
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 
+                      className="text-xl md:text-2xl font-bold mb-2 text-dbb-forest font-heading"
+                    >
+                      Are you the owner or manager?
+                    </h3>
+                    <p 
+                      className="text-base md:text-lg text-dbb-charcoalSoft mb-3 font-body"
+                    >
+                      Claim this business to update your details, share content, and unlock visibility + future insights.
+                    </p>
+                    <ul className="space-y-2 text-sm text-dbb-charcoalSoft">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-dbb-forest flex-shrink-0" />
+                        Show up where DFW clients search
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-dbb-forest flex-shrink-0" />
+                        Featured placements & targeted promotions
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-dbb-forest flex-shrink-0" />
+                        Future anonymized insights (trends, neighborhoods, services)
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <Link href="/claim-listing">
+                      <Button 
+                        size="lg"
+                        className="rounded-full px-8 whitespace-nowrap bg-dbb-forest text-white hover:bg-dbb-forest/90"
+                        data-testid="button-claim-business-banner"
+                      >
+                        Claim Your Listing
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
           
           <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
             <div className="flex-1 min-w-0">
@@ -254,18 +304,6 @@ export default function BusinessProfile() {
                   <MapPin className="h-3 w-3 mr-1" /> {business.location}
                 </DbbTag>
               </div>
-              {!business.isClaimed && (
-                <div 
-                  className="p-3 rounded-lg text-sm mb-4"
-                  style={{ backgroundColor: 'hsl(var(--dbb-sand))' }}
-                  data-testid="unclaimed-badge"
-                >
-                  This business has not yet been claimed by the owner. If this is your business, claim your page to update details, share content, and appear in more Dallas Beauty Book matches.{" "}
-                  <Link href="/claim-listing" className="underline font-medium">
-                    Claim it now →
-                  </Link>
-                </div>
-              )}
             </div>
 
             <div className="flex gap-3">
