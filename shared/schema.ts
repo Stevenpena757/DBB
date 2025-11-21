@@ -831,3 +831,99 @@ export const insertBusinessReviewSchema = createInsertSchema(businessReviews).om
   review: z.string().min(10, "Review must be at least 10 characters"),
 });
 export type InsertBusinessReview = z.infer<typeof insertBusinessReviewSchema>;
+
+// Submission tracking for content verification and access control
+export const SUBMISSION_TYPES = ["beauty_book", "claim_request", "new_business", "content", "review"] as const;
+export const SUBMISSION_STATUSES = ["draft", "submitted", "approved", "rejected", "pending_info"] as const;
+export const VERIFICATION_LEVELS = ["auto", "manual_pending", "verified", "flagged"] as const;
+
+export const submissionEvents = pgTable("submission_events", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  submissionType: text("submission_type").notNull(),
+  status: text("status").default("submitted").notNull(),
+  verificationLevel: text("verification_level").default("manual_pending").notNull(),
+  entityId: integer("entity_id"), // ID of related entity (beautyBook, business, etc.)
+  metadata: jsonb("metadata"),
+  accessGrantedAt: timestamp("access_granted_at"),
+  verifiedAt: timestamp("verified_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+}, (table) => [
+  index("submission_events_user_idx").on(table.userId),
+  index("submission_events_status_idx").on(table.status),
+  index("submission_events_type_idx").on(table.submissionType),
+  index("submission_events_verification_idx").on(table.verificationLevel),
+]);
+
+export type SubmissionEvent = typeof submissionEvents.$inferSelect;
+export const insertSubmissionEventSchema = createInsertSchema(submissionEvents).omit({
+  id: true,
+  accessGrantedAt: true,
+  verifiedAt: true,
+  createdAt: true,
+  updatedAt: true,
+}).extend({
+  submissionType: z.enum(SUBMISSION_TYPES),
+  status: z.enum(SUBMISSION_STATUSES).optional(),
+  verificationLevel: z.enum(VERIFICATION_LEVELS).optional(),
+});
+export type InsertSubmissionEvent = z.infer<typeof insertSubmissionEventSchema>;
+
+// Verification requests linking submissions to admin reviewers
+export const verificationRequests = pgTable("verification_requests", {
+  id: serial("id").primaryKey(),
+  submissionEventId: integer("submission_event_id").notNull().references(() => submissionEvents.id, { onDelete: "cascade" }),
+  reviewerUserId: integer("reviewer_user_id").references(() => users.id, { onDelete: "set null" }),
+  notes: text("notes"),
+  evidenceUrls: text("evidence_urls").array(),
+  decision: text("decision"),
+  decidedAt: timestamp("decided_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("verification_requests_submission_idx").on(table.submissionEventId),
+  index("verification_requests_reviewer_idx").on(table.reviewerUserId),
+  index("verification_requests_pending_idx").on(table.decidedAt),
+]);
+
+export type VerificationRequest = typeof verificationRequests.$inferSelect;
+export const insertVerificationRequestSchema = createInsertSchema(verificationRequests).omit({
+  id: true,
+  decidedAt: true,
+  createdAt: true,
+});
+export type InsertVerificationRequest = z.infer<typeof insertVerificationRequestSchema>;
+
+// Content submissions for articles, guides, and user-generated content
+export const contentSubmissions = pgTable("content_submissions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  businessId: integer("business_id").references(() => businesses.id, { onDelete: "cascade" }),
+  beautyBookId: varchar("beauty_book_id").references(() => beautyBooks.id, { onDelete: "set null" }),
+  submissionEventId: integer("submission_event_id").references(() => submissionEvents.id, { onDelete: "set null" }),
+  title: text("title").notNull(),
+  body: text("body").notNull(),
+  contentType: text("content_type").notNull(),
+  attachments: text("attachments").array(),
+  requiresApproval: boolean("requires_approval").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+}, (table) => [
+  index("content_submissions_user_idx").on(table.userId),
+  index("content_submissions_business_idx").on(table.businessId),
+  index("content_submissions_event_idx").on(table.submissionEventId),
+  index("content_submissions_approval_idx").on(table.requiresApproval),
+]);
+
+export const CONTENT_TYPES = ["article", "guide", "tip", "review", "testimonial"] as const;
+
+export type ContentSubmission = typeof contentSubmissions.$inferSelect;
+export const insertContentSubmissionSchema = createInsertSchema(contentSubmissions).omit({
+  id: true,
+  requiresApproval: true,
+  createdAt: true,
+}).extend({
+  contentType: z.enum(CONTENT_TYPES),
+  title: z.string().min(5, "Title must be at least 5 characters"),
+  body: z.string().min(50, "Content must be at least 50 characters"),
+});
+export type InsertContentSubmission = z.infer<typeof insertContentSubmissionSchema>;

@@ -154,35 +154,19 @@ export default function Home() {
               </div>
               
               <div className="text-center">
-                {isAuthenticated ? (
-                  <Link href="/profile">
-                    <Button 
-                      size="lg"
-                      className="rounded-full px-8 font-semibold shadow-md"
-                      style={{
-                        backgroundColor: 'hsl(158, 25%, 30%)',
-                        color: 'white'
-                      }}
-                      data-testid="button-submit-content-home"
-                    >
-                      Create Profile to Start
-                    </Button>
-                  </Link>
-                ) : (
-                  <a href="/api/login">
-                    <Button 
-                      size="lg"
-                      className="rounded-full px-8 font-semibold shadow-md"
-                      style={{
-                        backgroundColor: 'hsl(158, 25%, 30%)',
-                        color: 'white'
-                      }}
-                      data-testid="button-submit-content-home"
-                    >
-                      Create Profile to Start
-                    </Button>
-                  </a>
-                )}
+                <Link href="/start">
+                  <Button 
+                    size="lg"
+                    className="rounded-full px-8 font-semibold shadow-md"
+                    style={{
+                      backgroundColor: 'hsl(158, 25%, 30%)',
+                      color: 'white'
+                    }}
+                    data-testid="button-submit-content-home"
+                  >
+                    Create Profile to Start
+                  </Button>
+                </Link>
               </div>
             </div>
           </DbbContainer>

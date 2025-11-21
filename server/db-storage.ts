@@ -6,6 +6,7 @@ import {
   subscriptions, abuseReports, userBans, adminActivityLogs, securityEvents, aiModerationQueue,
   businessLeads, quizSubmissions, analyticsEvents, beautyBooks,
   userBusinessFollows, userGoals, userPromotions, businessReviews,
+  submissionEvents, verificationRequests, contentSubmissions,
   type User, type InsertUser,
   type Business, type InsertBusiness, type BusinessAdminUpdate,
   type Post, type InsertPost,
@@ -31,7 +32,10 @@ import {
   type UserBusinessFollow, type InsertUserBusinessFollow,
   type UserGoal, type InsertUserGoal,
   type UserPromotion, type InsertUserPromotion,
-  type BusinessReview, type InsertBusinessReview
+  type BusinessReview, type InsertBusinessReview,
+  type SubmissionEvent, type InsertSubmissionEvent,
+  type VerificationRequest, type InsertVerificationRequest,
+  type ContentSubmission, type InsertContentSubmission
 } from "@shared/schema";
 import type { IStorage } from "./storage";
 
@@ -1123,5 +1127,142 @@ export class DbStorage implements IStorage {
       .from(businesses)
       .where(eq(businesses.claimedBy, userId))
       .orderBy(desc(businesses.createdAt));
+  }
+
+  // ============ SUBMISSION TRACKING ============
+  async createSubmissionEvent(submission: InsertSubmissionEvent): Promise<SubmissionEvent> {
+    const result = await db.insert(submissionEvents).values(submission).returning();
+    return result[0];
+  }
+
+  async getUserSubmissions(userId: number): Promise<SubmissionEvent[]> {
+    return db.select()
+      .from(submissionEvents)
+      .where(eq(submissionEvents.userId, userId))
+      .orderBy(desc(submissionEvents.createdAt));
+  }
+
+  async getAllSubmissions(filters?: { status?: string; submissionType?: string; verificationLevel?: string }): Promise<SubmissionEvent[]> {
+    const conditions: any[] = [];
+    
+    if (filters?.status) {
+      conditions.push(eq(submissionEvents.status, filters.status));
+    }
+    if (filters?.submissionType) {
+      conditions.push(eq(submissionEvents.submissionType, filters.submissionType));
+    }
+    if (filters?.verificationLevel) {
+      conditions.push(eq(submissionEvents.verificationLevel, filters.verificationLevel));
+    }
+
+    const query = db.select()
+      .from(submissionEvents)
+      .orderBy(desc(submissionEvents.createdAt));
+
+    if (conditions.length > 0) {
+      return query.where(and(...conditions));
+    }
+
+    return query;
+  }
+
+  async getSubmissionEventById(id: number): Promise<SubmissionEvent | undefined> {
+    const result = await db.select()
+      .from(submissionEvents)
+      .where(eq(submissionEvents.id, id))
+      .limit(1);
+    return result[0];
+  }
+
+  async approveSubmission(id: number, reviewerId: number, notes?: string): Promise<SubmissionEvent> {
+    await db.transaction(async (tx) => {
+      await tx.update(submissionEvents)
+        .set({
+          status: 'approved',
+          verificationLevel: 'verified',
+          verifiedAt: new Date(),
+          accessGrantedAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .where(eq(submissionEvents.id, id));
+
+      await tx.insert(verificationRequests).values({
+        submissionEventId: id,
+        reviewerUserId: reviewerId,
+        notes: notes || null,
+        decision: 'approved',
+        decidedAt: new Date(),
+      });
+    });
+
+    const result = await this.getSubmissionEventById(id);
+    if (!result) {
+      throw new Error('Submission not found after approval');
+    }
+    return result;
+  }
+
+  async rejectSubmission(id: number, reviewerId: number, notes?: string): Promise<SubmissionEvent> {
+    await db.transaction(async (tx) => {
+      await tx.update(submissionEvents)
+        .set({
+          status: 'rejected',
+          verificationLevel: 'flagged',
+          updatedAt: new Date(),
+        })
+        .where(eq(submissionEvents.id, id));
+
+      await tx.insert(verificationRequests).values({
+        submissionEventId: id,
+        reviewerUserId: reviewerId,
+        notes: notes || null,
+        decision: 'rejected',
+        decidedAt: new Date(),
+      });
+    });
+
+    const result = await this.getSubmissionEventById(id);
+    if (!result) {
+      throw new Error('Submission not found after rejection');
+    }
+    return result;
+  }
+
+  async requestSubmissionInfo(id: number, reviewerId: number, notes?: string): Promise<SubmissionEvent> {
+    await db.transaction(async (tx) => {
+      await tx.update(submissionEvents)
+        .set({
+          status: 'pending_info',
+          updatedAt: new Date(),
+        })
+        .where(eq(submissionEvents.id, id));
+
+      await tx.insert(verificationRequests).values({
+        submissionEventId: id,
+        reviewerUserId: reviewerId,
+        notes: notes || null,
+        decision: 'request_info',
+        decidedAt: new Date(),
+      });
+    });
+
+    const result = await this.getSubmissionEventById(id);
+    if (!result) {
+      throw new Error('Submission not found after requesting info');
+    }
+    return result;
+  }
+
+  // ============ CONTENT SUBMISSIONS ============
+  async createContentSubmission(content: InsertContentSubmission): Promise<ContentSubmission> {
+    const result = await db.insert(contentSubmissions).values(content).returning();
+    return result[0];
+  }
+
+  async getUserContentSubmissions(userId: number): Promise<ContentSubmission[]> {
+    return db.select()
+      .from(contentSubmissions)
+      .where(eq(contentSubmissions.userId, userId))
+      .orderBy(desc(contentSubmissions.createdAt));
   }
 }

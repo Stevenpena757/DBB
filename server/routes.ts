@@ -18,7 +18,10 @@ import {
   insertAnalyticsEventSchema,
   insertBeautyBookSchema,
   insertUserGoalSchema,
-  insertBusinessReviewSchema
+  insertBusinessReviewSchema,
+  insertSubmissionEventSchema,
+  insertVerificationRequestSchema,
+  insertContentSubmissionSchema
 } from "@shared/schema";
 import { z } from "zod";
 import { createAdminRouter } from "./routes/admin";
@@ -1720,6 +1723,185 @@ ${forumUrls}
     } catch (error) {
       console.error("Error fetching user profile:", error);
       res.status(500).json({ error: "Failed to fetch user profile" });
+    }
+  });
+
+  // ============ SUBMISSION TRACKING ============
+  // Create a new submission event (user submits content, claims business, etc.)
+  app.post("/api/submissions", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertSubmissionEventSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
+      
+      const submission = await storage.createSubmissionEvent(validatedData);
+      res.json(submission);
+    } catch (error: any) {
+      console.error("Error creating submission event:", error);
+      res.status(400).json({ error: error.message || "Failed to create submission" });
+    }
+  });
+
+  // Get user's own submissions
+  app.get("/api/submissions/me", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const submissions = await storage.getUserSubmissions(user.id);
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching user submissions:", error);
+      res.status(500).json({ error: "Failed to fetch submissions" });
+    }
+  });
+
+  // Get all submissions (admin only)
+  app.get("/api/submissions", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { status, type, verificationLevel } = req.query;
+      const submissions = await storage.getAllSubmissions({
+        status: status as string,
+        submissionType: type as string,
+        verificationLevel: verificationLevel as string,
+      });
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching all submissions:", error);
+      res.status(500).json({ error: "Failed to fetch submissions" });
+    }
+  });
+
+  // Get single submission with details (admin only)
+  app.get("/api/submissions/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const submissionId = parseInt(req.params.id);
+      const submission = await storage.getSubmissionEventById(submissionId);
+      
+      if (!submission) {
+        return res.status(404).json({ error: "Submission not found" });
+      }
+      
+      res.json(submission);
+    } catch (error) {
+      console.error("Error fetching submission:", error);
+      res.status(500).json({ error: "Failed to fetch submission" });
+    }
+  });
+
+  // Approve submission (admin only)
+  app.patch("/api/submissions/:id/approve", isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const submissionId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const admin = await storage.getUserByReplitId(replitId);
+      
+      if (!admin) {
+        return res.status(401).json({ error: "Admin not found" });
+      }
+      
+      const { notes } = req.body;
+      
+      const submission = await storage.approveSubmission(submissionId, admin.id, notes);
+      res.json(submission);
+    } catch (error: any) {
+      console.error("Error approving submission:", error);
+      res.status(400).json({ error: error.message || "Failed to approve submission" });
+    }
+  });
+
+  // Reject submission (admin only)
+  app.patch("/api/submissions/:id/reject", isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const submissionId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const admin = await storage.getUserByReplitId(replitId);
+      
+      if (!admin) {
+        return res.status(401).json({ error: "Admin not found" });
+      }
+      
+      const { notes } = req.body;
+      
+      const submission = await storage.rejectSubmission(submissionId, admin.id, notes);
+      res.json(submission);
+    } catch (error: any) {
+      console.error("Error rejecting submission:", error);
+      res.status(400).json({ error: error.message || "Failed to reject submission" });
+    }
+  });
+
+  // Request additional information (admin only)
+  app.patch("/api/submissions/:id/request-info", isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const submissionId = parseInt(req.params.id);
+      const replitId = req.user.claims.sub.toString();
+      const admin = await storage.getUserByReplitId(replitId);
+      
+      if (!admin) {
+        return res.status(401).json({ error: "Admin not found" });
+      }
+      
+      const { notes } = req.body;
+      
+      const submission = await storage.requestSubmissionInfo(submissionId, admin.id, notes);
+      res.json(submission);
+    } catch (error: any) {
+      console.error("Error requesting info:", error);
+      res.status(400).json({ error: error.message || "Failed to request info" });
+    }
+  });
+
+  // Create content submission
+  app.post("/api/content-submissions", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const validatedData = insertContentSubmissionSchema.parse({
+        ...req.body,
+        userId: user.id,
+      });
+      
+      const content = await storage.createContentSubmission(validatedData);
+      res.json(content);
+    } catch (error: any) {
+      console.error("Error creating content submission:", error);
+      res.status(400).json({ error: error.message || "Failed to create content submission" });
+    }
+  });
+
+  // Get user's content submissions
+  app.get("/api/content-submissions/me", isAuthenticated, async (req: any, res) => {
+    try {
+      const replitId = req.user.claims.sub.toString();
+      const user = await storage.getUserByReplitId(replitId);
+      
+      if (!user) {
+        return res.status(401).json({ error: "User not found" });
+      }
+      
+      const submissions = await storage.getUserContentSubmissions(user.id);
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching content submissions:", error);
+      res.status(500).json({ error: "Failed to fetch content submissions" });
     }
   });
 

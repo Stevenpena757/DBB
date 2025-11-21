@@ -23,6 +23,7 @@ import CreateBeautyBookPage from "@/pages/CreateBeautyBookPage";
 import UserProfile from "@/pages/UserProfile";
 import ForProfessionalsPage from "@/pages/ForProfessionalsPage";
 import BusinessDashboard from "@/pages/BusinessDashboard";
+import StartJourney from "@/pages/StartJourney";
 import { LandingPage } from "@/pages/LandingPage";
 import NotFound from "@/pages/not-found";
 
@@ -43,6 +44,7 @@ function Router() {
       <Route path="/claim-listing" component={ClaimListing} />
       <Route path="/add-listing" component={AddListing} />
       <Route path="/start-here" component={StartHere} />
+      <Route path="/start" component={StartJourney} />
       <Route path="/my-beauty-book" component={CreateBeautyBookPage} />
       <Route path="/profile" component={UserProfile} />
       <Route path="/for-professionals" component={ForProfessionalsPage} />

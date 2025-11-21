@@ -24,7 +24,10 @@ import {
   type UserBusinessFollow, type InsertUserBusinessFollow,
   type UserGoal, type InsertUserGoal,
   type UserPromotion, type InsertUserPromotion,
-  type BusinessReview, type InsertBusinessReview
+  type BusinessReview, type InsertBusinessReview,
+  type SubmissionEvent, type InsertSubmissionEvent,
+  type VerificationRequest, type InsertVerificationRequest,
+  type ContentSubmission, type InsertContentSubmission
 } from "@shared/schema";
 
 export interface IStorage {
@@ -224,6 +227,19 @@ export interface IStorage {
   getPositiveReviewsByBusiness(businessId: number): Promise<BusinessReview[]>;
   getBusinessFollowers(businessId: number): Promise<UserBusinessFollow[]>;
   getClaimedBusinessesByUser(userId: number): Promise<Business[]>;
+  
+  // Submission Tracking
+  createSubmissionEvent(submission: InsertSubmissionEvent): Promise<SubmissionEvent>;
+  getUserSubmissions(userId: number): Promise<SubmissionEvent[]>;
+  getAllSubmissions(filters?: { status?: string; submissionType?: string; verificationLevel?: string }): Promise<SubmissionEvent[]>;
+  getSubmissionEventById(id: number): Promise<SubmissionEvent | undefined>;
+  approveSubmission(id: number, reviewerId: number, notes?: string): Promise<SubmissionEvent>;
+  rejectSubmission(id: number, reviewerId: number, notes?: string): Promise<SubmissionEvent>;
+  requestSubmissionInfo(id: number, reviewerId: number, notes?: string): Promise<SubmissionEvent>;
+  
+  // Content Submissions
+  createContentSubmission(content: InsertContentSubmission): Promise<ContentSubmission>;
+  getUserContentSubmissions(userId: number): Promise<ContentSubmission[]>;
 }
 
 export class MemStorage implements IStorage {
