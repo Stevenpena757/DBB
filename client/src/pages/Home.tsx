@@ -66,6 +66,77 @@ export default function Home() {
       <Header />
       
       <main className="flex-1">
+        {/* Unlock Exclusive Benefits - Thin Banner at Top */}
+        <section 
+          className="py-4 md:py-5" 
+          style={{ 
+            border: '2px solid hsl(158, 25%, 30%)',
+            borderLeft: 'none',
+            borderRight: 'none',
+            background: 'linear-gradient(135deg, hsl(32, 67%, 99%) 0%, hsl(32, 35%, 91%) 100%)'
+          }}
+        >
+          <DbbContainer className="max-w-6xl mx-auto">
+            <div className="text-center mb-4">
+              <h3 
+                className="text-lg md:text-xl font-bold mb-2"
+                style={{ 
+                  color: 'hsl(158, 25%, 30%)',
+                  fontFamily: 'var(--font-heading)'
+                }}
+              >
+                🌟 Unlock Exclusive Benefits
+              </h3>
+              <p className="text-sm md:text-base" style={{ 
+                color: 'hsl(25, 7%, 28%)',
+                fontFamily: 'var(--font-body)'
+              }}>
+                Create your profile to start submitting content and unlock featured placement, rewards, and special offers
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="text-2xl">🏆</div>
+                <div>
+                  <p className="font-semibold text-xs md:text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Featured Placement</p>
+                  <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>Top visibility</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl">🎁</div>
+                <div>
+                  <p className="font-semibold text-xs md:text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Exclusive Rewards</p>
+                  <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>Special perks</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl">💫</div>
+                <div>
+                  <p className="font-semibold text-xs md:text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Priority Offers</p>
+                  <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>First access</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <Link href="/start">
+                <Button 
+                  size="default"
+                  className="rounded-full px-6 font-semibold"
+                  style={{
+                    backgroundColor: 'hsl(158, 25%, 30%)',
+                    color: 'white'
+                  }}
+                  data-testid="button-submit-content-home"
+                >
+                  Create Profile to Start
+                </Button>
+              </Link>
+            </div>
+          </DbbContainer>
+        </section>
+
         {/* I'm here to... CTA Strip */}
         <section className="py-6 md:py-8" data-testid="section-cta-strip">
           <DbbContainer className="max-w-5xl mx-auto">
@@ -99,73 +170,6 @@ export default function Home() {
                   >
                     Promote my beauty business
                   </button>
-                </Link>
-              </div>
-            </div>
-            
-            {/* Content Submission Incentive - Enhanced */}
-            <div 
-              className="mt-8 p-6 md:p-8 rounded-xl shadow-lg" 
-              style={{ 
-                border: '2px solid hsl(158, 25%, 30%)',
-                background: 'linear-gradient(135deg, hsl(32, 67%, 99%) 0%, hsl(32, 35%, 91%) 100%)'
-              }}
-            >
-              <div className="text-center mb-6">
-                <h3 
-                  className="text-xl md:text-2xl font-bold mb-3"
-                  style={{ 
-                    color: 'hsl(158, 25%, 30%)',
-                    fontFamily: 'var(--font-heading)'
-                  }}
-                >
-                  🌟 Unlock Exclusive Benefits
-                </h3>
-                <p className="text-base md:text-lg font-semibold" style={{ 
-                  color: 'hsl(25, 7%, 28%)',
-                  fontFamily: 'var(--font-body)'
-                }}>
-                  Create your profile to start submitting content and unlock featured placement, rewards, and special offers
-                </p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'hsl(32, 67%, 99%)' }}>
-                  <div className="text-3xl">🏆</div>
-                  <div>
-                    <p className="font-semibold text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Featured Placement</p>
-                    <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>Top visibility</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'hsl(32, 67%, 99%)' }}>
-                  <div className="text-3xl">🎁</div>
-                  <div>
-                    <p className="font-semibold text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Exclusive Rewards</p>
-                    <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>Special perks</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: 'hsl(32, 67%, 99%)' }}>
-                  <div className="text-3xl">💫</div>
-                  <div>
-                    <p className="font-semibold text-sm" style={{ color: 'hsl(25, 7%, 28%)' }}>Priority Offers</p>
-                    <p className="text-xs" style={{ color: 'hsl(25, 5%, 48%)' }}>First access</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <Link href="/start">
-                  <Button 
-                    size="lg"
-                    className="rounded-full px-8 font-semibold shadow-md"
-                    style={{
-                      backgroundColor: 'hsl(158, 25%, 30%)',
-                      color: 'white'
-                    }}
-                    data-testid="button-submit-content-home"
-                  >
-                    Create Profile to Start
-                  </Button>
                 </Link>
               </div>
             </div>
