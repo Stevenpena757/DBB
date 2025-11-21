@@ -18,25 +18,6 @@ export default function StartJourney() {
 
   const isAuthenticated = !!user;
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      const intendedPath = localStorage.getItem('onboardingIntent');
-      if (intendedPath) {
-        localStorage.removeItem('onboardingIntent');
-        navigate(intendedPath);
-      }
-    }
-  }, [isAuthenticated, navigate]);
-
-  const handleConsumerSignIn = () => {
-    localStorage.setItem('onboardingIntent', '/my-beauty-book?mode=onboarding');
-    window.location.href = '/api/login';
-  };
-
-  const handleBusinessSignIn = () => {
-    localStorage.setItem('onboardingIntent', '/start?business=true');
-    window.location.href = '/api/login';
-  };
 
   if (isLoading) {
     return (
@@ -117,16 +98,16 @@ export default function StartJourney() {
                     </div>
 
                     <Button 
-                      onClick={handleConsumerSignIn}
+                      onClick={() => navigate("/my-beauty-book")}
                       size="lg"
                       className="w-full rounded-full font-semibold"
                       style={{
                         backgroundColor: 'hsl(158, 25%, 30%)',
                         color: 'white'
                       }}
-                      data-testid="button-consumer-sign-in"
+                      data-testid="button-consumer-get-started"
                     >
-                      Sign In to Continue
+                      Get Started
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </div>
@@ -168,16 +149,16 @@ export default function StartJourney() {
                     </div>
 
                     <Button 
-                      onClick={handleBusinessSignIn}
+                      onClick={() => navigate("/business-onboarding")}
                       size="lg"
                       className="w-full rounded-full font-semibold"
                       style={{
                         backgroundColor: 'hsl(158, 25%, 30%)',
                         color: 'white'
                       }}
-                      data-testid="button-business-sign-in"
+                      data-testid="button-business-get-started"
                     >
-                      Sign In to Continue
+                      Get Started
                       <ArrowRight className="ml-2 h-5 w-5" />
                     </Button>
                   </div>

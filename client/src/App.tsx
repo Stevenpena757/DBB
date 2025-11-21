@@ -1,4 +1,6 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
+import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -24,12 +26,36 @@ import UserProfile from "@/pages/UserProfile";
 import ForProfessionalsPage from "@/pages/ForProfessionalsPage";
 import BusinessDashboard from "@/pages/BusinessDashboard";
 import StartJourney from "@/pages/StartJourney";
+import BusinessOnboarding from "@/pages/BusinessOnboarding";
+import BusinessOnboardingSubmit from "@/pages/BusinessOnboardingSubmit";
 import { LandingPage } from "@/pages/LandingPage";
 import NotFound from "@/pages/not-found";
 
+function PostAuthRedirectHandler() {
+  const [, navigate] = useLocation();
+  const { data: user } = useQuery<{ id: number } | null>({
+    queryKey: ["/api/auth/user"],
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (user) {
+      const redirectPath = localStorage.getItem('postAuthRedirect');
+      if (redirectPath) {
+        localStorage.removeItem('postAuthRedirect');
+        navigate(redirectPath);
+      }
+    }
+  }, [user, navigate]);
+
+  return null;
+}
+
 function Router() {
   return (
-    <Switch>
+    <>
+      <PostAuthRedirectHandler />
+      <Switch>
       <Route path="/" component={Home} />
       <Route path="/explore" component={Explore} />
       <Route path="/shop" component={Shop} />
@@ -46,6 +72,8 @@ function Router() {
       <Route path="/start-here" component={StartHere} />
       <Route path="/start" component={StartJourney} />
       <Route path="/my-beauty-book" component={CreateBeautyBookPage} />
+      <Route path="/business-onboarding" component={BusinessOnboarding} />
+      <Route path="/business-onboarding-submit" component={BusinessOnboardingSubmit} />
       <Route path="/profile" component={UserProfile} />
       <Route path="/for-professionals" component={ForProfessionalsPage} />
       <Route path="/business-dashboard" component={BusinessDashboard} />
@@ -58,7 +86,8 @@ function Router() {
       <Route path="/:slug" component={LandingPage} />
       
       <Route component={NotFound} />
-    </Switch>
+      </Switch>
+    </>
   );
 }
 
