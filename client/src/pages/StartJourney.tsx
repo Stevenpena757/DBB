@@ -35,6 +35,33 @@ export default function StartJourney() {
     <div className="min-h-screen bg-background">
       <Header />
 
+      <div className="bg-gradient-to-r from-dbb-cream/50 to-dbb-cream/30 border-t-2 border-b-2 py-4" style={{ borderColor: 'hsl(158, 25%, 30%)' }}>
+        <DbbContainer className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-dbb-forestGreen" />
+              <span className="font-semibold text-dbb-charcoal" style={{ fontFamily: 'var(--font-heading)' }}>
+                Unlock Exclusive Benefits
+              </span>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-dbb-charcoalSoft">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle className="h-4 w-4 text-dbb-forestGreen" />
+                <span>Personalized recommendations</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle className="h-4 w-4 text-dbb-forestGreen" />
+                <span>Exclusive offers</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle className="h-4 w-4 text-dbb-forestGreen" />
+                <span>Community access</span>
+              </div>
+            </div>
+          </div>
+        </DbbContainer>
+      </div>
+
       <DbbContainer className="py-12 md:py-20 max-w-4xl mx-auto">
         {!isAuthenticated ? (
           <div className="text-center space-y-8">
@@ -49,7 +76,7 @@ export default function StartJourney() {
                 className="text-lg md:text-xl text-dbb-charcoalSoft max-w-2xl mx-auto"
                 style={{ fontFamily: 'var(--font-body)' }}
               >
-                Join our community to discover beauty services, share your experiences, and unlock exclusive benefits.
+                Join our community to discover beauty services, share your experiences, and connect with DFW's best professionals.
               </p>
             </div>
 
@@ -58,7 +85,7 @@ export default function StartJourney() {
                 className="text-2xl font-semibold text-dbb-charcoal"
                 style={{ fontFamily: 'var(--font-heading)' }}
               >
-                🌟 Get Started Today
+                I'm here to...
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
