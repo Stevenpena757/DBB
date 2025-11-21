@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Facebook, Instagram, Twitter, Building2, Sparkles, ShoppingCart, Heart, MessageCircle } from "lucide-react";
+import { Facebook, Instagram, Twitter, Building2, Sparkles, Heart, MessageCircle } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
 
 export function Footer() {
@@ -22,7 +22,7 @@ export function Footer() {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t md:hidden z-50 pb-safe">
-        <div className="grid grid-cols-5 h-16">
+        <div className="grid grid-cols-4 h-16">
           <Link href="/" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-home">
             <Building2 className="h-5 w-5" />
             <span className="text-xs font-medium">Home</span>
@@ -30,10 +30,6 @@ export function Footer() {
           <Link href="/explore" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-explore">
             <Sparkles className="h-5 w-5" />
             <span className="text-xs font-medium">Explore</span>
-          </Link>
-          <Link href="/shop" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-vendors">
-            <ShoppingCart className="h-5 w-5" />
-            <span className="text-xs font-medium">Shop</span>
           </Link>
           <Link href="/forum" className="flex flex-col items-center justify-center gap-1 hover-elevate active-elevate-2" data-testid="button-mobile-nav-forum">
             <MessageCircle className="h-5 w-5" />

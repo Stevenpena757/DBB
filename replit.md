@@ -122,6 +122,16 @@ The system integrates OpenAI via Replit AI Integrations (using gpt-5) for conten
 - **Performance Optimization:** Review rating calculation uses SQL aggregation instead of fetching all reviews (O(1) vs O(n))
 - **Storage Methods:** getClaimedBusinessesByUser, getBusinessFollowers, getReviewsByBusiness, getPositiveReviewsByBusiness, createBusinessReview
 
+**Mobile Navigation Update (November 2025):**
+- **Removed "Shop" tab** from mobile bottom navigation bar (feature not implemented)
+- **Mobile navigation now has 4 tabs:**
+  - Home: Navigate to homepage
+  - Explore: Browse businesses and content
+  - Community: Access the forum
+  - Saved: View saved items
+- Updated grid layout from 5 columns to 4 columns for even spacing
+- Located in Footer.tsx component, visible only on mobile devices (hidden on desktop)
+
 ## Email Verification Note
 
 **Deferred Email Verification:** Email verification codes are not currently implemented. The Beauty Book wizard validates that emails are from major providers (Gmail, Yahoo, Outlook, iCloud, ProtonMail, etc.) to ensure data quality. Future implementation could add verification codes via Resend or SendGrid integration. User dismissed Resend integration during initial setup.
